@@ -1,0 +1,110 @@
+{{#args}}
+  {{python_type}} {{name}}{{initialization}};
+{{/args}}
+
+{{#has_args}}
+  if (!PyArg_ParseTuple(args, {{tuple_format}}))
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments ({{count_args}} arguments expected)");
+    return NULL;
+  }
+{{/has_args}}
+{{#return_long}}
+  long value = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  {{#args}}{{release}}{{/args}}
+  return PyLong_FromLong(value);
+{{/return_long}}
+{{#return_static_string}}
+  const char* s = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  {{#args}}{{release}}{{/args}}
+  if (s == NULL)
+  {
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
+  else
+  {
+    return PyUnicode_FromString(s);
+  }
+{{/return_static_string}}
+{{#return_dynamic_string}}
+  OrthancPlugins::OrthancString s;
+  s.Assign({{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}}));
+  {{#args}}{{release}}{{/args}}
+  if (s.GetContent() == NULL)
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
+    PyErr_SetString(PyExc_ValueError, "Internal error");
+    return NULL;
+  }
+  else
+  {
+    return PyUnicode_FromString(s.GetContent());
+  }
+{{/return_dynamic_string}}
+{{#return_void}}
+  {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  {{#args}}{{release}}{{/args}}
+
+  Py_INCREF(Py_None);
+  return Py_None;
+{{/return_void}}
+{{#return_error}}
+  OrthancPluginErrorCode code = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  {{#args}}{{release}}{{/args}}
+
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
+  else
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    //PythonLock::RaiseException(module, code);
+    PyErr_SetString(PyExc_ValueError, "Internal error");
+    return NULL;
+  }
+{{/return_error}}
+{{#return_object}}
+  // This is the case of a constructor
+  {{return_object}}* obj = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  {{#args}}{{release}}{{/args}}
+  if (obj == NULL)
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
+    PyErr_SetString(PyExc_ValueError, "Internal error");
+    return NULL;  
+  }
+  else
+  {
+    PyObject *argList = Py_BuildValue("Lb", obj, false /* not borrowed */);
+    PyObject *python = PyObject_CallObject((PyObject *) &sdk_{{return_object}}_Type, argList);
+    Py_DECREF(argList);
+    return python;
+  }
+{{/return_object}}
+{{#return_bytes}}
+  OrthancPlugins::MemoryBuffer buffer;
+  OrthancPluginErrorCode code = {{c_function}}(OrthancPlugins::GetGlobalContext(), *buffer{{self}}{{call_args}});
+  {{#args}}{{release}}{{/args}}
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    return PyBytes_FromStringAndSize(buffer.GetData(), buffer.GetSize());
+  }
+  else
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
+    PyErr_SetString(PyExc_ValueError, "Internal error");
+    return NULL;  
+  }
+{{/return_bytes}}
+{{#return_enumeration}}
+  {{return_enumeration}} value = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  {{#args}}{{release}}{{/args}}
+  return PyLong_FromLong(value);
+{{/return_enumeration}}
