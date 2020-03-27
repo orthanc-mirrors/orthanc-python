@@ -53,7 +53,18 @@ static OrthancPluginErrorCode OnStoredInstanceCallback(OrthancPluginDicomInstanc
     PyTuple_SetItem(args2.GetPyObject(), 1, PyUnicode_FromString(instanceId));
 
     PythonObject result(lock, PyObject_CallObject(storedInstanceCallback_, args2.GetPyObject()));
-    return OrthancPluginErrorCode_Success;
+
+    std::string traceback;
+    if (lock.HasErrorOccurred(traceback))
+    {
+      OrthancPlugins::LogError("Error in the Python on-change callback, "
+                               "traceback:\n" + traceback);
+      return OrthancPluginErrorCode_Plugin;
+    }
+    else
+    {
+      return OrthancPluginErrorCode_Success;
+    }
   }
   catch (OrthancPlugins::PluginException& e)
   {

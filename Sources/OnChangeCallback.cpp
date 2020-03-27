@@ -152,6 +152,13 @@ static void ChangesWorker()
           PyTuple_SetItem(args.GetPyObject(), 1, PyLong_FromLong(change->GetResourceType()));
           PyTuple_SetItem(args.GetPyObject(), 2, PyUnicode_FromString(change->GetResourceId().c_str()));
           PythonObject result(lock, PyObject_CallObject(changesCallback_, args.GetPyObject()));
+
+          std::string traceback;
+          if (lock.HasErrorOccurred(traceback))
+          {
+            OrthancPlugins::LogError("Error in the Python on-change callback, "
+                                     "traceback:\n" + traceback);
+          }
         }
         catch (OrthancPlugins::PluginException& e)
         {

@@ -95,7 +95,6 @@ static void RestCallbackHandler(OrthancPluginRestOutput* output,
       PyTuple_SetItem(args2.GetPyObject(), 1, PyUnicode_FromString(uri));
       // No need to decrement refcount with "PyTuple_SetItem()"
 
-
       /**
        * Construct the named arguments from the "request" argument
        **/
@@ -172,13 +171,19 @@ static void RestCallbackHandler(OrthancPluginRestOutput* output,
                                reinterpret_cast<const char*>(request->body), request->bodySize));
       }
 
-
       /**
        * Call the user-defined function
        **/
       PythonObject result(lock, PyObject_Call(
                             (*it)->GetCallback(), args2.GetPyObject(), kw.GetPyObject()));
-      
+
+      std::string traceback;
+      if (lock.HasErrorOccurred(traceback))
+      {
+        OrthancPlugins::LogError("Error in the REST callback, traceback:\n" + traceback);
+        ORTHANC_PLUGINS_THROW_EXCEPTION(Plugin);
+      }
+
       return;
     }
   }
