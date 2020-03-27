@@ -94,6 +94,8 @@ with open(os.path.join(ROOT, 'Enumeration.mustache'), 'r') as f:
 classes = {}
 enumerations = {}
 globalFunctions = []
+countAllFunctions = 0
+countSupportedFunctions = 0
 
 def IsSourceStringType(t):
     return (t.kind == clang.cindex.TypeKind.POINTER and
@@ -349,6 +351,7 @@ for node in tu.cursor.get_children():
                 continue
 
             # Discard the context from the arguments
+            countAllFunctions += 1
             args = args[1:]
 
             if not IsSupportedTargetType(node.result_type):
@@ -360,6 +363,7 @@ for node in tu.cursor.get_children():
                 print('Destructor: %s' % node.spelling)
                 className = args[0].type.get_pointee().spelling
                 classes[className]['destructor'] = node.spelling
+                countSupportedFunctions += 1
 
             elif CheckOnlySupportedArguments(args):
                 if IsClassType(node.result_type):
@@ -369,6 +373,7 @@ for node in tu.cursor.get_children():
 
                 body = GenerateFunctionBodyTemplate(node.spelling, node.result_type, args)
                 globalFunctions.append(body)
+                countSupportedFunctions += 1
 
             elif (len(args) >= 2 and
                   IsTargetMemoryBufferType(args[0].type) and
@@ -377,6 +382,7 @@ for node in tu.cursor.get_children():
 
                 body = GenerateFunctionBodyTemplate(node.spelling, args[0].type, args[1:])
                 globalFunctions.append(body)
+                countSupportedFunctions += 1
                 
             elif (IsClassType(args[0].type) and
                   CheckOnlySupportedArguments(args[1:])):
@@ -390,6 +396,7 @@ for node in tu.cursor.get_children():
                 method = GenerateFunctionBodyTemplate(node.spelling, node.result_type, args[1:])
                 method['self'] = ', self->object_'
                 classes[className]['methods'].append(method)
+                countSupportedFunctions += 1
 
             elif (len(args) >= 2 and
                   IsTargetMemoryBufferType(args[0].type) and
@@ -402,6 +409,7 @@ for node in tu.cursor.get_children():
                 method = GenerateFunctionBodyTemplate(node.spelling, args[0].type, args[2:])
                 method['self'] = ', self->object_'
                 classes[className]['methods'].append(method)
+                countSupportedFunctions += 1
 
             else:
                 print('*** UNSUPPORTED INPUT: %s' % node.spelling)
@@ -466,3 +474,10 @@ with open(os.path.join(ROOT, 'sdk.h.mustache'), 'r') as f:
         h.write(renderer.render(f.read(), {
             'classes' : FlattenDictionary(classes),
         }))
+
+
+print('')
+print('Total functions in the SDK: %d' % countAllFunctions)
+print('Total supported functions: %d' % countSupportedFunctions)
+print('Coverage: %.0f%%' % (float(countSupportedFunctions) /
+                            float(countAllFunctions) * 100.0))
