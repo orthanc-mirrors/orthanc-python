@@ -9,8 +9,6 @@ set(PYTHON_WINDOWS_ROOT "" CACHE STRING "")
 set(USE_SYSTEM_BOOST ON CACHE BOOL "Use the system version of Boost")
 set(USE_SYSTEM_JSONCPP ON CACHE BOOL "Use the system version of JsonCpp")
 set(USE_LEGACY_JSONCPP OFF CACHE BOOL "Use the old branch 0.x.y of JsonCpp, that does not require a C++11 compiler (for LSB and old versions of Visual Studio)")
-set(USE_SYSTEM_ORTHANC_SDK ON CACHE BOOL "Use the system version of the Orthanc plugin SDK")
-
 
 include(CheckIncludeFile)
 include(CheckIncludeFileCXX)
@@ -41,16 +39,9 @@ include(${ORTHANC_ROOT}/Resources/CMake/DownloadPackage.cmake)
 include(${ORTHANC_ROOT}/Resources/CMake/BoostConfiguration.cmake)
 include(${ORTHANC_ROOT}/Resources/CMake/JsonCppConfiguration.cmake)
 
-if (STATIC_BUILD OR NOT USE_SYSTEM_ORTHANC_SDK)
-  include_directories(
-    ${ORTHANC_ROOT}/Sdk-1.5.7
-    )
-else()
-  CHECK_INCLUDE_FILE_CXX(orthanc/OrthancCPlugin.h HAVE_ORTHANC_H)
-  if (NOT HAVE_ORTHANC_H)
-    message(FATAL_ERROR "Please install the headers of the Orthanc plugins SDK")
-  endif()
-endif()
+include_directories(
+  ${ORTHANC_ROOT}/Sdk-1.5.7
+  )
 
 add_definitions(
   -DHAS_ORTHANC_EXCEPTION=0
