@@ -139,8 +139,6 @@ static void RestCallbackHandler(OrthancPluginRestOutput* output,
       {
         PythonObject get(lock, PyDict_New());
 
-        OrthancPlugins::LogError(boost::lexical_cast<std::string>(request->getCount));
-        
         for (uint32_t i = 0; i < request->getCount; i++)
         {
           PyDict_SetItemString(get.GetPyObject(), request->getKeys[i],
@@ -153,8 +151,6 @@ static void RestCallbackHandler(OrthancPluginRestOutput* output,
       {
         PythonObject headers(lock, PyDict_New());
 
-        OrthancPlugins::LogError(boost::lexical_cast<std::string>(request->headersCount));
-        
         for (uint32_t i = 0; i < request->headersCount; i++)
         {
           PyDict_SetItemString(headers.GetPyObject(), request->headersKeys[i],
