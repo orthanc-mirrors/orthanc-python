@@ -16,9 +16,10 @@ ROOT_DIR=`dirname $(readlink -f $0)`/../../..
 
 mkdir -p ${ROOT_DIR}/docker-build/
 
-docker build \
-       -f ${ROOT_DIR}/Resources/Builders/Dockerfile-MinGW-BuildEnvironment \
-       -t mingw-python-build .
+( cd ${ROOT_DIR}/Resources/Builders/ && \
+        docker build \
+               -f ./Dockerfile-MinGW-BuildEnvironment \
+               -t mingw-python-build . )
 
 docker run -t ${DOCKER_FLAGS} --rm \
     --user $(id -u):$(id -g) \
