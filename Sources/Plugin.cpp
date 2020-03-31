@@ -159,7 +159,6 @@ extern "C"
   ORTHANC_PLUGINS_API int32_t OrthancPluginInitialize(OrthancPluginContext* c)
   {
     OrthancPlugins::SetGlobalContext(c);
-    
     OrthancPlugins::LogWarning("Python plugin is initializing");
     
 
@@ -175,8 +174,9 @@ extern "C"
       OrthancPluginLogError(c, info);
       return -1;
     }
-
-
+    
+    OrthancPluginSetDescription(c, "Run Python scripts as Orthanc plugins");
+    
     try
     {
       /**
