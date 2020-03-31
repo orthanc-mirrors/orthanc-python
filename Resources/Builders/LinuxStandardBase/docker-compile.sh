@@ -17,7 +17,7 @@ ROOT_DIR=`dirname $(readlink -f $0)`/../../..
 mkdir -p ${ROOT_DIR}/docker-build/
 
 docker build \
-       -f ${ROOT_DIR}/Resources/Builders/Docker/Dockerfile-BuildEnvironment \
+       -f ${ROOT_DIR}/Resources/Builders/LinuxStandardBase/Dockerfile-BuildEnvironment \
        -t debian-stable-python-build .
 
 docker run -t ${DOCKER_FLAGS} --rm \
@@ -25,6 +25,6 @@ docker run -t ${DOCKER_FLAGS} --rm \
     -v ${ROOT_DIR}:/source:ro \
     -v ${ROOT_DIR}/docker-build:/target:rw \
     debian-stable-python-build \
-    bash /source/Resources/Builders/Docker/docker-internal.sh $1
+    bash /source/Resources/Builders/LinuxStandardBase/docker-internal.sh $1
 
 ls -lR ${ROOT_DIR}/docker-build/
