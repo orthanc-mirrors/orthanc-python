@@ -367,6 +367,7 @@ void PythonLock::GlobalInitialize(const std::string& moduleName,
 
   Py_InitializeEx(0 /* Python is embedded, skip signal handlers */);
 
+#if 0
 #if PY_MAJOR_VERSION == 2
   std::cout << Py_GetPath() << std::endl;  
   std::cout << Py_GetProgramName() << std::endl;
@@ -376,7 +377,7 @@ void PythonLock::GlobalInitialize(const std::string& moduleName,
   std::wcout << Py_GetProgramName() << std::endl;
   std::wcout << Py_GetProgramFullPath() << std::endl;
 #endif
-  
+#endif
 
 #if (PY_VERSION_HEX >= 0x03020000 /* 3.2.0 */ &&        \
      PY_VERSION_HEX < 0x03070000 /* 3.7.0 */)
