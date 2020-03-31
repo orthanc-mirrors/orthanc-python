@@ -25,6 +25,6 @@ docker run -t ${DOCKER_FLAGS} --rm \
     -v ${ROOT_DIR}:/source:ro \
     -v ${ROOT_DIR}/docker-build:/target:rw \
     mingw-python-build \
-    bash /source/Resources/Builders/Windows32-Python2.7/docker-internal.sh $1
+    bash /source/Resources/Builders/MinGW32-Python2.7/docker-internal.sh $1
 
 ls -lR ${ROOT_DIR}/docker-build/
