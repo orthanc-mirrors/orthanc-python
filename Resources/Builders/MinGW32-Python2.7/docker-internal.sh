@@ -11,7 +11,7 @@ mkdir /tmp/build
 cd /tmp/build
 
 wget http://orthanc.osimis.io/ThirdPartyDownloads/Python/python-2.7.17-win32.tar.bz2
-tar xvfj python-2.7.17-win32.tar.bz2
+tar xfj python-2.7.17-win32.tar.bz2
 
 cmake /tmp/source-writeable/ \
       -DCMAKE_BUILD_TYPE=$1 \
