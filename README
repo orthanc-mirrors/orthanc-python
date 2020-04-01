@@ -6,16 +6,15 @@ General Information
 -------------------
 
 This repository contains the source code of a plugin to create new
-plugins for Orthanc using the Python programming language.
+plugins for Orthanc using the Python programming language, rather than
+using C/C++.
 
 
 Installation and usage
 ----------------------
 
-Build instructions are similar to that of Orthanc:
-http://book.orthanc-server.com/faq/compiling.html
-
-Usage details are available as part of the Orthanc Book:
+Build instructions and usage details are available as part of the
+Orthanc Book:
 http://book.orthanc-server.com/plugins/python.html
 
 

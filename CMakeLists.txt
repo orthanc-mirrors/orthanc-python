@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(OrthancPython)
 
-set(PLUGIN_VERSION "mainline")
+set(PLUGIN_VERSION "1.0")
 
 
 set(PYTHON_VERSION "3.6" CACHE STRING "Version of Python to be used")
