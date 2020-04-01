@@ -39,7 +39,7 @@ PythonObject* PythonFunction::CallUnchecked(PyObject* args)
 
 
 PythonFunction::PythonFunction(PythonLock& lock,
-                               PythonModule& module,
+                               const PythonModule& module,
                                const std::string& name) :
   lock_(lock)
 {
@@ -78,7 +78,7 @@ PythonObject* PythonFunction::Call()
 }
 
 
-PythonObject* PythonFunction::Call(PythonObject& args)
+PythonObject* PythonFunction::Call(const PythonObject& args)
 {
   std::unique_ptr<PythonObject> result(CallUnchecked(args.GetPyObject()));
 

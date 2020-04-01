@@ -98,7 +98,7 @@ public:
 
   PendingChange* Dequeue(unsigned int millisecondsTimeout)
   {
-    if (millisecondsTimeout <= 0)
+    if (millisecondsTimeout == 0)
     {
       ORTHANC_PLUGINS_THROW_EXCEPTION(ParameterOutOfRange);
     }

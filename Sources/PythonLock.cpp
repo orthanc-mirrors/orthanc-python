@@ -47,10 +47,10 @@ static struct module_state _state;
 #endif
 
 
-PythonLock::PythonLock()
+PythonLock::PythonLock() :
+  gstate_(PyGILState_Ensure())
 {
   //OrthancPlugins::LogInfo("Python lock (GIL) acquired");
-  gstate_ = PyGILState_Ensure();
 }
 
 

@@ -38,7 +38,7 @@ private:
 
 public:
   PythonFunction(PythonLock& lock,
-                 PythonModule& module,
+                 const PythonModule& module,
                  const std::string& name);
 
   bool IsValid() const
@@ -48,7 +48,7 @@ public:
 
   PythonObject* Call();
 
-  PythonObject* Call(PythonObject& args);
+  PythonObject* Call(const PythonObject& args);
 
   void CallVoid()
   {

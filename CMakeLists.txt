@@ -48,7 +48,6 @@ add_definitions(
   )
 
 include_directories(
-  ${ORTHANC_ROOT}/Plugins/Include
   ${ORTHANC_ROOT}/Plugins/Samples/Common
   ${PYTHON_INCLUDE_DIRS}
   )
