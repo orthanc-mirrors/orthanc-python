@@ -30,6 +30,8 @@ FILES = [
     'Resources/MinGW-W64-Toolchain64.cmake',
     'Resources/MinGWToolchain.cmake',
     'Resources/Patches/boost-1.69.0-linux-standard-base.patch',
+    'Resources/WindowsResources.py',
+    'Resources/WindowsResources.rc',
 ]
 
 SDK = [
