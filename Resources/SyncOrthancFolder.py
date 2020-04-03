@@ -30,6 +30,10 @@ FILES = [
     'Resources/MinGW-W64-Toolchain64.cmake',
     'Resources/MinGWToolchain.cmake',
     'Resources/Patches/boost-1.69.0-linux-standard-base.patch',
+    'Resources/ThirdParty/patch/NOTES.txt',
+    'Resources/ThirdParty/patch/msys-1.0.dll',
+    'Resources/ThirdParty/patch/patch.exe',
+    'Resources/ThirdParty/patch/patch.exe.manifest',
     'Resources/WindowsResources.py',
     'Resources/WindowsResources.rc',
 ]

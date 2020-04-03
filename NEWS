@@ -1,6 +1,8 @@
 Pending changes in the mainline
 ===============================
 
+* Fix compilation using Visual Studio
+
 
 Version 1.0 (2020-04-01)
 ========================
