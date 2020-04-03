@@ -29,7 +29,7 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
     set(Prefix "")
     set(Suffix ".lib")
   else()
-    set(Prefix "lib")
+    list(GET CMAKE_FIND_LIBRARY_PREFIXES 0 Prefix)
     set(Suffix ".a")
   endif()
   
