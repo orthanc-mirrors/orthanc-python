@@ -26,12 +26,14 @@ endif()
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
   if (MSVC)
+    set(Prefix "")
     set(Suffix ".lib")
   else()
+    set(Prefix "lib")
     set(Suffix ".a")
   endif()
   
-  set(PYTHON_LIBRARY_NAME libpython${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}.${Suffix})
+  set(PYTHON_LIBRARY_NAME ${Prefix}python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}${Suffix})
   set(PYTHON_INCLUDE_DIRS ${PYTHON_WINDOWS_ROOT}/include)
   set(PYTHON_LIBRARIES ${PYTHON_WINDOWS_ROOT}/libs/${PYTHON_LIBRARY_NAME})
   
