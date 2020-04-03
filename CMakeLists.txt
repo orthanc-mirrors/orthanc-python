@@ -25,7 +25,13 @@ if (NOT PYTHON_VERSION STREQUAL
 endif()
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
-  set(PYTHON_LIBRARY_NAME libpython${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}.a)
+  if (MSVC)
+    set(Suffix ".lib")
+  else()
+    set(Suffix ".a")
+  endif()
+  
+  set(PYTHON_LIBRARY_NAME libpython${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}.${Suffix})
   set(PYTHON_INCLUDE_DIRS ${PYTHON_WINDOWS_ROOT}/include)
   set(PYTHON_LIBRARIES ${PYTHON_WINDOWS_ROOT}/libs/${PYTHON_LIBRARY_NAME})
   
