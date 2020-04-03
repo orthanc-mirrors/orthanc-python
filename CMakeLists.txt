@@ -16,9 +16,18 @@ include(CheckIncludeFiles)
 include(CheckLibraryExists)
 include(FindPythonInterp)
 
+string(REGEX REPLACE "^([0-9]*)\\.([0-9]*)$" "\\1" PYTHON_VERSION_MAJOR ${PYTHON_VERSION})
+string(REGEX REPLACE "^([0-9]*)\\.([0-9]*)$" "\\2" PYTHON_VERSION_MINOR ${PYTHON_VERSION})
+
+if (NOT PYTHON_VERSION STREQUAL
+    "${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}")
+  message(FATAL_ERROR "Error in the (x.y) format of the Python version: ${PYTHON_VERSION}")
+endif()
+
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+  set(PYTHON_LIBRARY_NAME libpython${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}.a)
   set(PYTHON_INCLUDE_DIRS ${PYTHON_WINDOWS_ROOT}/include)
-  set(PYTHON_LIBRARIES ${PYTHON_WINDOWS_ROOT}/libs/libpython27.a)
+  set(PYTHON_LIBRARIES ${PYTHON_WINDOWS_ROOT}/libs/${PYTHON_LIBRARY_NAME})
   
 else()
   find_package(PkgConfig REQUIRED)
