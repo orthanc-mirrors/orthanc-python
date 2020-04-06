@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Python.h>
+#include "PythonHeaderWrapper.h"
 
 PyObject* RegisterRestCallback(PyObject* module, PyObject* args);
 

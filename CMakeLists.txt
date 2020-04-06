@@ -6,6 +6,7 @@ set(PLUGIN_VERSION "mainline")
 
 set(PYTHON_VERSION "3.6" CACHE STRING "Version of Python to be used")
 set(PYTHON_WINDOWS_ROOT "" CACHE STRING "")
+set(PYTHON_WINDOWS_USE_RELEASE_LIBS ON CACHE BOOL "Use the release Python libraries when building with Microsoft Visual Studio, even when compiling in _DEBUG mode (set it to OFF if you require linking to a Python debug build)")
 set(USE_SYSTEM_BOOST ON CACHE BOOL "Use the system version of Boost")
 set(USE_SYSTEM_JSONCPP ON CACHE BOOL "Use the system version of JsonCpp")
 set(USE_LEGACY_JSONCPP OFF CACHE BOOL "Use the old branch 0.x.y of JsonCpp, that does not require a C++11 compiler (for LSB and old versions of Visual Studio)")
@@ -28,6 +29,9 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
   if (MSVC)
     set(Prefix "")
     set(Suffix ".lib")
+    if(PYTHON_WINDOWS_USE_RELEASE_LIBS)
+      add_definitions(-DORTHANC_PYTHON_WINDOWS_USE_RELEASE_LIBS=1)
+    endif()
   else()
     list(GET CMAKE_FIND_LIBRARY_PREFIXES 0 Prefix)
     set(Suffix ".a")
@@ -77,6 +81,7 @@ endif()
 
 
 include_directories(
+  #${CMAKE_SOURCE_DIR}/Sources
   ${ORTHANC_ROOT}/Sdk-1.5.7
   )
 

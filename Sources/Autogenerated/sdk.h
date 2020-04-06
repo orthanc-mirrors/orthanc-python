@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Python.h>
+#include "../PythonHeaderWrapper.h"
 
 void RegisterOrthancSdk(PyObject* module);
 PyMethodDef* GetOrthancSdkFunctions();

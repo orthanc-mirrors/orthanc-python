@@ -16,11 +16,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
+#if defined(_MSC_VER) && (ORTHANC_PYTHON_WINDOWS_USE_RELEASE_LIBS == 1) && defined(_DEBUG)
+#  undef _DEBUG
+#    include <Python.h>
+#  define _DEBUG
+#else
+#  include <Python.h>
+#endif
 
-#pragma once
-
-#include "PythonHeaderWrapper.h"
-
-PyObject* RegisterOnStoredInstanceCallback(PyObject* module, PyObject* args);
-
-void FinalizeOnStoredInstanceCallback();
