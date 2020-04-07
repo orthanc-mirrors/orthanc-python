@@ -81,7 +81,6 @@ endif()
 
 
 include_directories(
-  #${CMAKE_SOURCE_DIR}/Sources
   ${ORTHANC_ROOT}/Sdk-1.5.7
   )
 
