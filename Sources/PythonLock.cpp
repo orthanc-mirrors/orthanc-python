@@ -32,6 +32,7 @@ static PythonLock::ModuleFunctionsInstaller moduleFunctions_ = NULL;
 static PythonLock::ModuleClassesInstaller  moduleClasses_ = NULL;
 static std::string  moduleName_;
 static std::string  exceptionName_;
+static bool verbose_ = false;
 
 
 struct module_state 
@@ -345,6 +346,7 @@ void PythonLock::GlobalInitialize(const std::string& moduleName,
 
   Py_InspectFlag = 1;   // Don't exit the Orthanc process on Python error
 
+  verbose_ = verbose;
   if (verbose)
   {
     Py_VerboseFlag = 1;
@@ -467,5 +469,20 @@ void PythonLock::RaiseException(PyObject* module,
     {
       PyErr_SetString(state->exceptionClass_, message);
     }
+  }
+}
+
+
+void PythonLock::LogCall(const std::string& message)
+{
+  /**
+   * For purity, this function should lock the global "mutex_", but
+   * "verbose_" cannot change after the initial call to
+   * "GlobalInitialize()".
+   **/
+  
+  if (verbose_)
+  {
+    OrthancPlugins::LogInfo(message);
   }
 }

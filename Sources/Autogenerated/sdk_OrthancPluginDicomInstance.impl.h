@@ -74,7 +74,7 @@ static PyMethodDef sdk_OrthancPluginDicomInstance_Methods[] = {
 static int sdk_OrthancPluginDicomInstance_Constructor(
   sdk_OrthancPluginDicomInstance_Object *self, PyObject *args, PyObject *kwds)
 {
-  OrthancPlugins::LogInfo("Creating Python object of class OrthancPluginDicomInstance");
+  PythonLock::LogCall("Creating Python object of class OrthancPluginDicomInstance");
 
   self->object_ = NULL;
   self->borrowed_ = false;
@@ -114,7 +114,7 @@ static PyTypeObject sdk_OrthancPluginDicomInstance_Type = {
 static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRemoteAet(
   sdk_OrthancPluginDicomInstance_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginGetInstanceRemoteAet() on object of class OrthancPluginDicomInstance");
+  PythonLock::LogCall("Calling method OrthancPluginGetInstanceRemoteAet() on object of class OrthancPluginDicomInstance");
 
   if (self->object_ == NULL)
   {
@@ -141,7 +141,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRemoteAe
 static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceSize(
   sdk_OrthancPluginDicomInstance_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginGetInstanceSize() on object of class OrthancPluginDicomInstance");
+  PythonLock::LogCall("Calling method OrthancPluginGetInstanceSize() on object of class OrthancPluginDicomInstance");
 
   if (self->object_ == NULL)
   {
@@ -160,7 +160,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceSize(
 static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceJson(
   sdk_OrthancPluginDicomInstance_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginGetInstanceJson() on object of class OrthancPluginDicomInstance");
+  PythonLock::LogCall("Calling method OrthancPluginGetInstanceJson() on object of class OrthancPluginDicomInstance");
 
   if (self->object_ == NULL)
   {
@@ -190,7 +190,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceJson(
 static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceSimplifiedJson(
   sdk_OrthancPluginDicomInstance_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginGetInstanceSimplifiedJson() on object of class OrthancPluginDicomInstance");
+  PythonLock::LogCall("Calling method OrthancPluginGetInstanceSimplifiedJson() on object of class OrthancPluginDicomInstance");
 
   if (self->object_ == NULL)
   {
@@ -220,7 +220,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceSimplifi
 static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginHasInstanceMetadata(
   sdk_OrthancPluginDicomInstance_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginHasInstanceMetadata() on object of class OrthancPluginDicomInstance");
+  PythonLock::LogCall("Calling method OrthancPluginHasInstanceMetadata() on object of class OrthancPluginDicomInstance");
 
   if (self->object_ == NULL)
   {
@@ -246,7 +246,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginHasInstanceMetadata
 static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceMetadata(
   sdk_OrthancPluginDicomInstance_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginGetInstanceMetadata() on object of class OrthancPluginDicomInstance");
+  PythonLock::LogCall("Calling method OrthancPluginGetInstanceMetadata() on object of class OrthancPluginDicomInstance");
 
   if (self->object_ == NULL)
   {
@@ -280,7 +280,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceMetadata
 static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceOrigin(
   sdk_OrthancPluginDicomInstance_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginGetInstanceOrigin() on object of class OrthancPluginDicomInstance");
+  PythonLock::LogCall("Calling method OrthancPluginGetInstanceOrigin() on object of class OrthancPluginDicomInstance");
 
   if (self->object_ == NULL)
   {

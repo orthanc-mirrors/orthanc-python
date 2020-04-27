@@ -59,7 +59,7 @@ static PyMethodDef sdk_OrthancPluginStorageArea_Methods[] = {
 static int sdk_OrthancPluginStorageArea_Constructor(
   sdk_OrthancPluginStorageArea_Object *self, PyObject *args, PyObject *kwds)
 {
-  OrthancPlugins::LogInfo("Creating Python object of class OrthancPluginStorageArea");
+  PythonLock::LogCall("Creating Python object of class OrthancPluginStorageArea");
 
   self->object_ = NULL;
   self->borrowed_ = false;
@@ -99,7 +99,7 @@ static PyTypeObject sdk_OrthancPluginStorageArea_Type = {
 static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaCreate(
   sdk_OrthancPluginStorageArea_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginStorageAreaCreate() on object of class OrthancPluginStorageArea");
+  PythonLock::LogCall("Calling method OrthancPluginStorageAreaCreate() on object of class OrthancPluginStorageArea");
 
   if (self->object_ == NULL)
   {
@@ -140,7 +140,7 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaCreate(
 static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaRead(
   sdk_OrthancPluginStorageArea_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginStorageAreaRead() on object of class OrthancPluginStorageArea");
+  PythonLock::LogCall("Calling method OrthancPluginStorageAreaRead() on object of class OrthancPluginStorageArea");
 
   if (self->object_ == NULL)
   {
@@ -178,7 +178,7 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaRead(
 static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaRemove(
   sdk_OrthancPluginStorageArea_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginStorageAreaRemove() on object of class OrthancPluginStorageArea");
+  PythonLock::LogCall("Calling method OrthancPluginStorageAreaRemove() on object of class OrthancPluginStorageArea");
 
   if (self->object_ == NULL)
   {
@@ -217,7 +217,7 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaRemove(
 static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginReconstructMainDicomTags(
   sdk_OrthancPluginStorageArea_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginReconstructMainDicomTags() on object of class OrthancPluginStorageArea");
+  PythonLock::LogCall("Calling method OrthancPluginReconstructMainDicomTags() on object of class OrthancPluginStorageArea");
 
   if (self->object_ == NULL)
   {

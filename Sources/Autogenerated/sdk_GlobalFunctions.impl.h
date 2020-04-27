@@ -19,7 +19,7 @@
 
 static PyObject* sdk_OrthancPluginCheckVersionAdvanced(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginCheckVersionAdvanced()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginCheckVersionAdvanced()");
 
   int arg0 = 0;
   int arg1 = 0;
@@ -38,7 +38,7 @@ static PyObject* sdk_OrthancPluginCheckVersionAdvanced(PyObject* module, PyObjec
 
 static PyObject* sdk_OrthancPluginCheckVersion(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginCheckVersion()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginCheckVersion()");
 
 
   long value = OrthancPluginCheckVersion(OrthancPlugins::GetGlobalContext());
@@ -48,7 +48,7 @@ static PyObject* sdk_OrthancPluginCheckVersion(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginLogError(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginLogError()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginLogError()");
 
   const char* arg0 = NULL;
 
@@ -67,7 +67,7 @@ static PyObject* sdk_OrthancPluginLogError(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginLogWarning(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginLogWarning()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginLogWarning()");
 
   const char* arg0 = NULL;
 
@@ -86,7 +86,7 @@ static PyObject* sdk_OrthancPluginLogWarning(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginLogInfo(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginLogInfo()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginLogInfo()");
 
   const char* arg0 = NULL;
 
@@ -105,7 +105,7 @@ static PyObject* sdk_OrthancPluginLogInfo(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginGetDicomForInstance(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginGetDicomForInstance()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGetDicomForInstance()");
 
   const char* arg0 = NULL;
 
@@ -133,7 +133,7 @@ static PyObject* sdk_OrthancPluginGetDicomForInstance(PyObject* module, PyObject
 
 static PyObject* sdk_OrthancPluginRestApiGet(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginRestApiGet()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginRestApiGet()");
 
   const char* arg0 = NULL;
 
@@ -161,7 +161,7 @@ static PyObject* sdk_OrthancPluginRestApiGet(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginRestApiGetAfterPlugins(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginRestApiGetAfterPlugins()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginRestApiGetAfterPlugins()");
 
   const char* arg0 = NULL;
 
@@ -189,7 +189,7 @@ static PyObject* sdk_OrthancPluginRestApiGetAfterPlugins(PyObject* module, PyObj
 
 static PyObject* sdk_OrthancPluginRestApiPost(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginRestApiPost()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginRestApiPost()");
 
   const char* arg0 = NULL;
   Py_buffer arg1;
@@ -218,7 +218,7 @@ static PyObject* sdk_OrthancPluginRestApiPost(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginRestApiPostAfterPlugins(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginRestApiPostAfterPlugins()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginRestApiPostAfterPlugins()");
 
   const char* arg0 = NULL;
   Py_buffer arg1;
@@ -247,7 +247,7 @@ static PyObject* sdk_OrthancPluginRestApiPostAfterPlugins(PyObject* module, PyOb
 
 static PyObject* sdk_OrthancPluginRestApiDelete(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginRestApiDelete()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginRestApiDelete()");
 
   const char* arg0 = NULL;
 
@@ -276,7 +276,7 @@ static PyObject* sdk_OrthancPluginRestApiDelete(PyObject* module, PyObject* args
 
 static PyObject* sdk_OrthancPluginRestApiDeleteAfterPlugins(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginRestApiDeleteAfterPlugins()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginRestApiDeleteAfterPlugins()");
 
   const char* arg0 = NULL;
 
@@ -305,7 +305,7 @@ static PyObject* sdk_OrthancPluginRestApiDeleteAfterPlugins(PyObject* module, Py
 
 static PyObject* sdk_OrthancPluginRestApiPut(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginRestApiPut()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginRestApiPut()");
 
   const char* arg0 = NULL;
   Py_buffer arg1;
@@ -334,7 +334,7 @@ static PyObject* sdk_OrthancPluginRestApiPut(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginRestApiPutAfterPlugins(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginRestApiPutAfterPlugins()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginRestApiPutAfterPlugins()");
 
   const char* arg0 = NULL;
   Py_buffer arg1;
@@ -363,7 +363,7 @@ static PyObject* sdk_OrthancPluginRestApiPutAfterPlugins(PyObject* module, PyObj
 
 static PyObject* sdk_OrthancPluginLookupPatient(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginLookupPatient()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginLookupPatient()");
 
   const char* arg0 = NULL;
 
@@ -391,7 +391,7 @@ static PyObject* sdk_OrthancPluginLookupPatient(PyObject* module, PyObject* args
 
 static PyObject* sdk_OrthancPluginLookupStudy(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginLookupStudy()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginLookupStudy()");
 
   const char* arg0 = NULL;
 
@@ -419,7 +419,7 @@ static PyObject* sdk_OrthancPluginLookupStudy(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginLookupStudyWithAccessionNumber(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginLookupStudyWithAccessionNumber()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginLookupStudyWithAccessionNumber()");
 
   const char* arg0 = NULL;
 
@@ -447,7 +447,7 @@ static PyObject* sdk_OrthancPluginLookupStudyWithAccessionNumber(PyObject* modul
 
 static PyObject* sdk_OrthancPluginLookupSeries(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginLookupSeries()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginLookupSeries()");
 
   const char* arg0 = NULL;
 
@@ -475,7 +475,7 @@ static PyObject* sdk_OrthancPluginLookupSeries(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginLookupInstance(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginLookupInstance()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginLookupInstance()");
 
   const char* arg0 = NULL;
 
@@ -503,7 +503,7 @@ static PyObject* sdk_OrthancPluginLookupInstance(PyObject* module, PyObject* arg
 
 static PyObject* sdk_OrthancPluginGetOrthancPath(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginGetOrthancPath()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGetOrthancPath()");
 
 
   OrthancPlugins::OrthancString s;
@@ -524,7 +524,7 @@ static PyObject* sdk_OrthancPluginGetOrthancPath(PyObject* module, PyObject* arg
 
 static PyObject* sdk_OrthancPluginGetOrthancDirectory(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginGetOrthancDirectory()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGetOrthancDirectory()");
 
 
   OrthancPlugins::OrthancString s;
@@ -545,7 +545,7 @@ static PyObject* sdk_OrthancPluginGetOrthancDirectory(PyObject* module, PyObject
 
 static PyObject* sdk_OrthancPluginGetConfigurationPath(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginGetConfigurationPath()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGetConfigurationPath()");
 
 
   OrthancPlugins::OrthancString s;
@@ -566,7 +566,7 @@ static PyObject* sdk_OrthancPluginGetConfigurationPath(PyObject* module, PyObjec
 
 static PyObject* sdk_OrthancPluginSetRootUri(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginSetRootUri()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginSetRootUri()");
 
   const char* arg0 = NULL;
 
@@ -585,7 +585,7 @@ static PyObject* sdk_OrthancPluginSetRootUri(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginSetDescription(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginSetDescription()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginSetDescription()");
 
   const char* arg0 = NULL;
 
@@ -604,7 +604,7 @@ static PyObject* sdk_OrthancPluginSetDescription(PyObject* module, PyObject* arg
 
 static PyObject* sdk_OrthancPluginExtendOrthancExplorer(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginExtendOrthancExplorer()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginExtendOrthancExplorer()");
 
   const char* arg0 = NULL;
 
@@ -623,7 +623,7 @@ static PyObject* sdk_OrthancPluginExtendOrthancExplorer(PyObject* module, PyObje
 
 static PyObject* sdk_OrthancPluginGetGlobalProperty(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginGetGlobalProperty()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGetGlobalProperty()");
 
   long int arg0 = 0;
   const char* arg1 = NULL;
@@ -652,7 +652,7 @@ static PyObject* sdk_OrthancPluginGetGlobalProperty(PyObject* module, PyObject* 
 
 static PyObject* sdk_OrthancPluginSetGlobalProperty(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginSetGlobalProperty()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginSetGlobalProperty()");
 
   long int arg0 = 0;
   const char* arg1 = NULL;
@@ -682,7 +682,7 @@ static PyObject* sdk_OrthancPluginSetGlobalProperty(PyObject* module, PyObject* 
 
 static PyObject* sdk_OrthancPluginGetCommandLineArgumentsCount(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginGetCommandLineArgumentsCount()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGetCommandLineArgumentsCount()");
 
 
   long value = OrthancPluginGetCommandLineArgumentsCount(OrthancPlugins::GetGlobalContext());
@@ -692,7 +692,7 @@ static PyObject* sdk_OrthancPluginGetCommandLineArgumentsCount(PyObject* module,
 
 static PyObject* sdk_OrthancPluginGetCommandLineArgument(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginGetCommandLineArgument()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGetCommandLineArgument()");
 
   unsigned long arg0 = 0;
 
@@ -720,7 +720,7 @@ static PyObject* sdk_OrthancPluginGetCommandLineArgument(PyObject* module, PyObj
 
 static PyObject* sdk_OrthancPluginGetExpectedDatabaseVersion(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginGetExpectedDatabaseVersion()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGetExpectedDatabaseVersion()");
 
 
   long value = OrthancPluginGetExpectedDatabaseVersion(OrthancPlugins::GetGlobalContext());
@@ -730,7 +730,7 @@ static PyObject* sdk_OrthancPluginGetExpectedDatabaseVersion(PyObject* module, P
 
 static PyObject* sdk_OrthancPluginGetConfiguration(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginGetConfiguration()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGetConfiguration()");
 
 
   OrthancPlugins::OrthancString s;
@@ -751,7 +751,7 @@ static PyObject* sdk_OrthancPluginGetConfiguration(PyObject* module, PyObject* a
 
 static PyObject* sdk_OrthancPluginBufferCompression(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginBufferCompression()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginBufferCompression()");
 
   Py_buffer arg0;
   long int arg2 = 0;
@@ -781,7 +781,7 @@ static PyObject* sdk_OrthancPluginBufferCompression(PyObject* module, PyObject* 
 
 static PyObject* sdk_OrthancPluginReadFile(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginReadFile()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginReadFile()");
 
   const char* arg0 = NULL;
 
@@ -809,7 +809,7 @@ static PyObject* sdk_OrthancPluginReadFile(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginWriteFile(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginWriteFile()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginWriteFile()");
 
   const char* arg0 = NULL;
   Py_buffer arg1;
@@ -839,7 +839,7 @@ static PyObject* sdk_OrthancPluginWriteFile(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginGetErrorDescription(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginGetErrorDescription()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGetErrorDescription()");
 
   long int arg0 = 0;
 
@@ -864,7 +864,7 @@ static PyObject* sdk_OrthancPluginGetErrorDescription(PyObject* module, PyObject
 
 static PyObject* sdk_OrthancPluginUncompressImage(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginUncompressImage()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginUncompressImage()");
 
   Py_buffer arg0;
   long int arg2 = 0;
@@ -896,7 +896,7 @@ static PyObject* sdk_OrthancPluginUncompressImage(PyObject* module, PyObject* ar
 
 static PyObject* sdk_OrthancPluginCompressPngImage(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginCompressPngImage()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginCompressPngImage()");
 
   long int arg0 = 0;
   unsigned long arg1 = 0;
@@ -928,7 +928,7 @@ static PyObject* sdk_OrthancPluginCompressPngImage(PyObject* module, PyObject* a
 
 static PyObject* sdk_OrthancPluginCompressJpegImage(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginCompressJpegImage()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginCompressJpegImage()");
 
   long int arg0 = 0;
   unsigned long arg1 = 0;
@@ -961,7 +961,7 @@ static PyObject* sdk_OrthancPluginCompressJpegImage(PyObject* module, PyObject* 
 
 static PyObject* sdk_OrthancPluginHttpGet(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginHttpGet()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginHttpGet()");
 
   const char* arg0 = NULL;
   const char* arg1 = NULL;
@@ -991,7 +991,7 @@ static PyObject* sdk_OrthancPluginHttpGet(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginHttpPost(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginHttpPost()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginHttpPost()");
 
   const char* arg0 = NULL;
   Py_buffer arg1;
@@ -1022,7 +1022,7 @@ static PyObject* sdk_OrthancPluginHttpPost(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginHttpPut(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginHttpPut()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginHttpPut()");
 
   const char* arg0 = NULL;
   Py_buffer arg1;
@@ -1053,7 +1053,7 @@ static PyObject* sdk_OrthancPluginHttpPut(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginHttpDelete(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginHttpDelete()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginHttpDelete()");
 
   const char* arg0 = NULL;
   const char* arg1 = NULL;
@@ -1084,7 +1084,7 @@ static PyObject* sdk_OrthancPluginHttpDelete(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginGetFontsCount(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginGetFontsCount()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGetFontsCount()");
 
 
   long value = OrthancPluginGetFontsCount(OrthancPlugins::GetGlobalContext());
@@ -1094,7 +1094,7 @@ static PyObject* sdk_OrthancPluginGetFontsCount(PyObject* module, PyObject* args
 
 static PyObject* sdk_OrthancPluginGetFontName(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginGetFontName()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGetFontName()");
 
   unsigned long arg0 = 0;
 
@@ -1119,7 +1119,7 @@ static PyObject* sdk_OrthancPluginGetFontName(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginGetFontSize(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginGetFontSize()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGetFontSize()");
 
   unsigned long arg0 = 0;
 
@@ -1136,7 +1136,7 @@ static PyObject* sdk_OrthancPluginGetFontSize(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginRegisterErrorCode(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginRegisterErrorCode()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginRegisterErrorCode()");
 
   long int arg0 = 0;
   unsigned short arg1 = 0;
@@ -1167,7 +1167,7 @@ static PyObject* sdk_OrthancPluginRegisterErrorCode(PyObject* module, PyObject* 
 
 static PyObject* sdk_OrthancPluginRegisterDictionaryTag(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginRegisterDictionaryTag()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginRegisterDictionaryTag()");
 
   unsigned short arg0 = 0;
   unsigned short arg1 = 0;
@@ -1201,7 +1201,7 @@ static PyObject* sdk_OrthancPluginRegisterDictionaryTag(PyObject* module, PyObje
 
 static PyObject* sdk_OrthancPluginRegisterPrivateDictionaryTag(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginRegisterPrivateDictionaryTag()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginRegisterPrivateDictionaryTag()");
 
   unsigned short arg0 = 0;
   unsigned short arg1 = 0;
@@ -1236,7 +1236,7 @@ static PyObject* sdk_OrthancPluginRegisterPrivateDictionaryTag(PyObject* module,
 
 static PyObject* sdk_OrthancPluginDicomBufferToJson(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginDicomBufferToJson()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginDicomBufferToJson()");
 
   Py_buffer arg0;
   long int arg2 = 0;
@@ -1267,7 +1267,7 @@ static PyObject* sdk_OrthancPluginDicomBufferToJson(PyObject* module, PyObject* 
 
 static PyObject* sdk_OrthancPluginDicomInstanceToJson(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginDicomInstanceToJson()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginDicomInstanceToJson()");
 
   const char* arg0 = NULL;
   long int arg1 = 0;
@@ -1298,7 +1298,7 @@ static PyObject* sdk_OrthancPluginDicomInstanceToJson(PyObject* module, PyObject
 
 static PyObject* sdk_OrthancPluginCreateImage(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginCreateImage()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginCreateImage()");
 
   long int arg0 = 0;
   unsigned long arg1 = 0;
@@ -1331,7 +1331,7 @@ static PyObject* sdk_OrthancPluginCreateImage(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginDecodeDicomImage(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginDecodeDicomImage()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginDecodeDicomImage()");
 
   Py_buffer arg0;
   unsigned long arg2 = 0;
@@ -1363,7 +1363,7 @@ static PyObject* sdk_OrthancPluginDecodeDicomImage(PyObject* module, PyObject* a
 
 static PyObject* sdk_OrthancPluginComputeMd5(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginComputeMd5()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginComputeMd5()");
 
   Py_buffer arg0;
 
@@ -1391,7 +1391,7 @@ static PyObject* sdk_OrthancPluginComputeMd5(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginComputeSha1(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginComputeSha1()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginComputeSha1()");
 
   Py_buffer arg0;
 
@@ -1419,7 +1419,7 @@ static PyObject* sdk_OrthancPluginComputeSha1(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginGenerateUuid(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginGenerateUuid()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGenerateUuid()");
 
 
   OrthancPlugins::OrthancString s;
@@ -1440,7 +1440,7 @@ static PyObject* sdk_OrthancPluginGenerateUuid(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginGetPeers(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginGetPeers()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGetPeers()");
 
 
   // This is the case of a constructor
@@ -1464,7 +1464,7 @@ static PyObject* sdk_OrthancPluginGetPeers(PyObject* module, PyObject* args)
 
 static PyObject* sdk_OrthancPluginAutodetectMimeType(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginAutodetectMimeType()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginAutodetectMimeType()");
 
   const char* arg0 = NULL;
 
@@ -1489,7 +1489,7 @@ static PyObject* sdk_OrthancPluginAutodetectMimeType(PyObject* module, PyObject*
 
 static PyObject* sdk_OrthancPluginSetMetricsValue(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginSetMetricsValue()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginSetMetricsValue()");
 
   const char* arg0 = NULL;
   float arg1 = 0;
@@ -1510,7 +1510,7 @@ static PyObject* sdk_OrthancPluginSetMetricsValue(PyObject* module, PyObject* ar
 
 static PyObject* sdk_OrthancPluginGetTagName(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: OrthancPluginGetTagName()");
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGetTagName()");
 
   unsigned short arg0 = 0;
   unsigned short arg1 = 0;

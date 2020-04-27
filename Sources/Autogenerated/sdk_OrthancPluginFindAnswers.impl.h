@@ -49,7 +49,7 @@ static PyMethodDef sdk_OrthancPluginFindAnswers_Methods[] = {
 static int sdk_OrthancPluginFindAnswers_Constructor(
   sdk_OrthancPluginFindAnswers_Object *self, PyObject *args, PyObject *kwds)
 {
-  OrthancPlugins::LogInfo("Creating Python object of class OrthancPluginFindAnswers");
+  PythonLock::LogCall("Creating Python object of class OrthancPluginFindAnswers");
 
   self->object_ = NULL;
   self->borrowed_ = false;
@@ -89,7 +89,7 @@ static PyTypeObject sdk_OrthancPluginFindAnswers_Type = {
 static PyObject *sdk_OrthancPluginFindAnswers_OrthancPluginFindAddAnswer(
   sdk_OrthancPluginFindAnswers_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginFindAddAnswer() on object of class OrthancPluginFindAnswers");
+  PythonLock::LogCall("Calling method OrthancPluginFindAddAnswer() on object of class OrthancPluginFindAnswers");
 
   if (self->object_ == NULL)
   {
@@ -127,7 +127,7 @@ static PyObject *sdk_OrthancPluginFindAnswers_OrthancPluginFindAddAnswer(
 static PyObject *sdk_OrthancPluginFindAnswers_OrthancPluginFindMarkIncomplete(
   sdk_OrthancPluginFindAnswers_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginFindMarkIncomplete() on object of class OrthancPluginFindAnswers");
+  PythonLock::LogCall("Calling method OrthancPluginFindMarkIncomplete() on object of class OrthancPluginFindAnswers");
 
   if (self->object_ == NULL)
   {

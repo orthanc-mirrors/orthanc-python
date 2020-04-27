@@ -48,7 +48,7 @@ static PyMethodDef sdk_{{class_name}}_Methods[] = {
 static int sdk_{{class_name}}_Constructor(
   sdk_{{class_name}}_Object *self, PyObject *args, PyObject *kwds)
 {
-  OrthancPlugins::LogInfo("Creating Python object of class {{class_name}}");
+  PythonLock::LogCall("Creating Python object of class {{class_name}}");
 
   self->object_ = NULL;
   self->borrowed_ = false;
@@ -85,7 +85,7 @@ static PyTypeObject sdk_{{class_name}}_Type = {
 {{#destructor}}
 static void sdk_{{class_name}}_Destructor(PyObject *self)
 {
-  OrthancPlugins::LogInfo("Destroying Python object of class {{class_name}}");
+  PythonLock::LogCall("Destroying Python object of class {{class_name}}");
 
   sdk_{{class_name}}_Object& tmp = *((sdk_{{class_name}}_Object*) self);
   
@@ -106,7 +106,7 @@ static void sdk_{{class_name}}_Destructor(PyObject *self)
 static PyObject *sdk_{{class_name}}_{{c_function}}(
   sdk_{{class_name}}_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method {{c_function}}() on object of class {{class_name}}");
+  PythonLock::LogCall("Calling method {{c_function}}() on object of class {{class_name}}");
 
   if (self->object_ == NULL)
   {

@@ -54,7 +54,7 @@ static PyMethodDef sdk_OrthancPluginFindQuery_Methods[] = {
 static int sdk_OrthancPluginFindQuery_Constructor(
   sdk_OrthancPluginFindQuery_Object *self, PyObject *args, PyObject *kwds)
 {
-  OrthancPlugins::LogInfo("Creating Python object of class OrthancPluginFindQuery");
+  PythonLock::LogCall("Creating Python object of class OrthancPluginFindQuery");
 
   self->object_ = NULL;
   self->borrowed_ = false;
@@ -94,7 +94,7 @@ static PyTypeObject sdk_OrthancPluginFindQuery_Type = {
 static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQuerySize(
   sdk_OrthancPluginFindQuery_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginGetFindQuerySize() on object of class OrthancPluginFindQuery");
+  PythonLock::LogCall("Calling method OrthancPluginGetFindQuerySize() on object of class OrthancPluginFindQuery");
 
   if (self->object_ == NULL)
   {
@@ -113,7 +113,7 @@ static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQuerySize(
 static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQueryTagName(
   sdk_OrthancPluginFindQuery_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginGetFindQueryTagName() on object of class OrthancPluginFindQuery");
+  PythonLock::LogCall("Calling method OrthancPluginGetFindQueryTagName() on object of class OrthancPluginFindQuery");
 
   if (self->object_ == NULL)
   {
@@ -150,7 +150,7 @@ static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQueryTagName(
 static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQueryValue(
   sdk_OrthancPluginFindQuery_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginGetFindQueryValue() on object of class OrthancPluginFindQuery");
+  PythonLock::LogCall("Calling method OrthancPluginGetFindQueryValue() on object of class OrthancPluginFindQuery");
 
   if (self->object_ == NULL)
   {

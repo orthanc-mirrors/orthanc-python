@@ -69,7 +69,7 @@ static PyMethodDef sdk_OrthancPluginImage_Methods[] = {
 static int sdk_OrthancPluginImage_Constructor(
   sdk_OrthancPluginImage_Object *self, PyObject *args, PyObject *kwds)
 {
-  OrthancPlugins::LogInfo("Creating Python object of class OrthancPluginImage");
+  PythonLock::LogCall("Creating Python object of class OrthancPluginImage");
 
   self->object_ = NULL;
   self->borrowed_ = false;
@@ -105,7 +105,7 @@ static PyTypeObject sdk_OrthancPluginImage_Type = {
 
 static void sdk_OrthancPluginImage_Destructor(PyObject *self)
 {
-  OrthancPlugins::LogInfo("Destroying Python object of class OrthancPluginImage");
+  PythonLock::LogCall("Destroying Python object of class OrthancPluginImage");
 
   sdk_OrthancPluginImage_Object& tmp = *((sdk_OrthancPluginImage_Object*) self);
   
@@ -124,7 +124,7 @@ static void sdk_OrthancPluginImage_Destructor(PyObject *self)
 static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImagePixelFormat(
   sdk_OrthancPluginImage_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginGetImagePixelFormat() on object of class OrthancPluginImage");
+  PythonLock::LogCall("Calling method OrthancPluginGetImagePixelFormat() on object of class OrthancPluginImage");
 
   if (self->object_ == NULL)
   {
@@ -143,7 +143,7 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImagePixelFormat(
 static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImageWidth(
   sdk_OrthancPluginImage_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginGetImageWidth() on object of class OrthancPluginImage");
+  PythonLock::LogCall("Calling method OrthancPluginGetImageWidth() on object of class OrthancPluginImage");
 
   if (self->object_ == NULL)
   {
@@ -162,7 +162,7 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImageWidth(
 static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImageHeight(
   sdk_OrthancPluginImage_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginGetImageHeight() on object of class OrthancPluginImage");
+  PythonLock::LogCall("Calling method OrthancPluginGetImageHeight() on object of class OrthancPluginImage");
 
   if (self->object_ == NULL)
   {
@@ -181,7 +181,7 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImageHeight(
 static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImagePitch(
   sdk_OrthancPluginImage_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginGetImagePitch() on object of class OrthancPluginImage");
+  PythonLock::LogCall("Calling method OrthancPluginGetImagePitch() on object of class OrthancPluginImage");
 
   if (self->object_ == NULL)
   {
@@ -200,7 +200,7 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImagePitch(
 static PyObject *sdk_OrthancPluginImage_OrthancPluginConvertPixelFormat(
   sdk_OrthancPluginImage_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginConvertPixelFormat() on object of class OrthancPluginImage");
+  PythonLock::LogCall("Calling method OrthancPluginConvertPixelFormat() on object of class OrthancPluginImage");
 
   if (self->object_ == NULL)
   {
@@ -240,7 +240,7 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginConvertPixelFormat(
 static PyObject *sdk_OrthancPluginImage_OrthancPluginDrawText(
   sdk_OrthancPluginImage_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginDrawText() on object of class OrthancPluginImage");
+  PythonLock::LogCall("Calling method OrthancPluginDrawText() on object of class OrthancPluginImage");
 
   if (self->object_ == NULL)
   {

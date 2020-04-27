@@ -59,4 +59,6 @@ public:
 
   static void RaiseException(PyObject* module,
                              OrthancPluginErrorCode code);
+
+  static void LogCall(const std::string& message);
 };

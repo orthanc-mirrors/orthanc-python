@@ -59,7 +59,7 @@ static PyMethodDef sdk_OrthancPluginPeers_Methods[] = {
 static int sdk_OrthancPluginPeers_Constructor(
   sdk_OrthancPluginPeers_Object *self, PyObject *args, PyObject *kwds)
 {
-  OrthancPlugins::LogInfo("Creating Python object of class OrthancPluginPeers");
+  PythonLock::LogCall("Creating Python object of class OrthancPluginPeers");
 
   self->object_ = NULL;
   self->borrowed_ = false;
@@ -95,7 +95,7 @@ static PyTypeObject sdk_OrthancPluginPeers_Type = {
 
 static void sdk_OrthancPluginPeers_Destructor(PyObject *self)
 {
-  OrthancPlugins::LogInfo("Destroying Python object of class OrthancPluginPeers");
+  PythonLock::LogCall("Destroying Python object of class OrthancPluginPeers");
 
   sdk_OrthancPluginPeers_Object& tmp = *((sdk_OrthancPluginPeers_Object*) self);
   
@@ -114,7 +114,7 @@ static void sdk_OrthancPluginPeers_Destructor(PyObject *self)
 static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeersCount(
   sdk_OrthancPluginPeers_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginGetPeersCount() on object of class OrthancPluginPeers");
+  PythonLock::LogCall("Calling method OrthancPluginGetPeersCount() on object of class OrthancPluginPeers");
 
   if (self->object_ == NULL)
   {
@@ -133,7 +133,7 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeersCount(
 static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeerName(
   sdk_OrthancPluginPeers_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginGetPeerName() on object of class OrthancPluginPeers");
+  PythonLock::LogCall("Calling method OrthancPluginGetPeerName() on object of class OrthancPluginPeers");
 
   if (self->object_ == NULL)
   {
@@ -167,7 +167,7 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeerName(
 static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeerUrl(
   sdk_OrthancPluginPeers_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginGetPeerUrl() on object of class OrthancPluginPeers");
+  PythonLock::LogCall("Calling method OrthancPluginGetPeerUrl() on object of class OrthancPluginPeers");
 
   if (self->object_ == NULL)
   {
@@ -201,7 +201,7 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeerUrl(
 static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeerUserProperty(
   sdk_OrthancPluginPeers_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginGetPeerUserProperty() on object of class OrthancPluginPeers");
+  PythonLock::LogCall("Calling method OrthancPluginGetPeerUserProperty() on object of class OrthancPluginPeers");
 
   if (self->object_ == NULL)
   {

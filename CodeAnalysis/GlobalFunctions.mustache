@@ -20,7 +20,7 @@
 {{#global_functions}}
 static PyObject* sdk_{{c_function}}(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogInfo("Calling Python global function: {{c_function}}()");
+  PythonLock::LogCall("Calling Python global function: {{c_function}}()");
 
 {{> function_body}}
 }

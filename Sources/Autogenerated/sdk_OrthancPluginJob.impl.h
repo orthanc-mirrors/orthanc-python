@@ -44,7 +44,7 @@ static PyMethodDef sdk_OrthancPluginJob_Methods[] = {
 static int sdk_OrthancPluginJob_Constructor(
   sdk_OrthancPluginJob_Object *self, PyObject *args, PyObject *kwds)
 {
-  OrthancPlugins::LogInfo("Creating Python object of class OrthancPluginJob");
+  PythonLock::LogCall("Creating Python object of class OrthancPluginJob");
 
   self->object_ = NULL;
   self->borrowed_ = false;
@@ -80,7 +80,7 @@ static PyTypeObject sdk_OrthancPluginJob_Type = {
 
 static void sdk_OrthancPluginJob_Destructor(PyObject *self)
 {
-  OrthancPlugins::LogInfo("Destroying Python object of class OrthancPluginJob");
+  PythonLock::LogCall("Destroying Python object of class OrthancPluginJob");
 
   sdk_OrthancPluginJob_Object& tmp = *((sdk_OrthancPluginJob_Object*) self);
   
@@ -99,7 +99,7 @@ static void sdk_OrthancPluginJob_Destructor(PyObject *self)
 static PyObject *sdk_OrthancPluginJob_OrthancPluginSubmitJob(
   sdk_OrthancPluginJob_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginSubmitJob() on object of class OrthancPluginJob");
+  PythonLock::LogCall("Calling method OrthancPluginSubmitJob() on object of class OrthancPluginJob");
 
   if (self->object_ == NULL)
   {

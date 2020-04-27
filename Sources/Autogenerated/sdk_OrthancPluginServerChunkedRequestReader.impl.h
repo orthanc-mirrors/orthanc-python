@@ -39,7 +39,7 @@ static PyMethodDef sdk_OrthancPluginServerChunkedRequestReader_Methods[] = {
 static int sdk_OrthancPluginServerChunkedRequestReader_Constructor(
   sdk_OrthancPluginServerChunkedRequestReader_Object *self, PyObject *args, PyObject *kwds)
 {
-  OrthancPlugins::LogInfo("Creating Python object of class OrthancPluginServerChunkedRequestReader");
+  PythonLock::LogCall("Creating Python object of class OrthancPluginServerChunkedRequestReader");
 
   self->object_ = NULL;
   self->borrowed_ = false;

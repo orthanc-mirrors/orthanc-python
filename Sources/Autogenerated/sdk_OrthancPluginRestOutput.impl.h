@@ -104,7 +104,7 @@ static PyMethodDef sdk_OrthancPluginRestOutput_Methods[] = {
 static int sdk_OrthancPluginRestOutput_Constructor(
   sdk_OrthancPluginRestOutput_Object *self, PyObject *args, PyObject *kwds)
 {
-  OrthancPlugins::LogInfo("Creating Python object of class OrthancPluginRestOutput");
+  PythonLock::LogCall("Creating Python object of class OrthancPluginRestOutput");
 
   self->object_ = NULL;
   self->borrowed_ = false;
@@ -144,7 +144,7 @@ static PyTypeObject sdk_OrthancPluginRestOutput_Type = {
 static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginAnswerBuffer(
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginAnswerBuffer() on object of class OrthancPluginRestOutput");
+  PythonLock::LogCall("Calling method OrthancPluginAnswerBuffer() on object of class OrthancPluginRestOutput");
 
   if (self->object_ == NULL)
   {
@@ -173,7 +173,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginAnswerBuffer(
 static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginCompressAndAnswerPngImage(
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginCompressAndAnswerPngImage() on object of class OrthancPluginRestOutput");
+  PythonLock::LogCall("Calling method OrthancPluginCompressAndAnswerPngImage() on object of class OrthancPluginRestOutput");
 
   if (self->object_ == NULL)
   {
@@ -205,7 +205,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginCompressAndAnswerPngIm
 static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginRedirect(
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginRedirect() on object of class OrthancPluginRestOutput");
+  PythonLock::LogCall("Calling method OrthancPluginRedirect() on object of class OrthancPluginRestOutput");
 
   if (self->object_ == NULL)
   {
@@ -233,7 +233,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginRedirect(
 static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendHttpStatusCode(
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginSendHttpStatusCode() on object of class OrthancPluginRestOutput");
+  PythonLock::LogCall("Calling method OrthancPluginSendHttpStatusCode() on object of class OrthancPluginRestOutput");
 
   if (self->object_ == NULL)
   {
@@ -261,7 +261,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendHttpStatusCode(
 static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendUnauthorized(
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginSendUnauthorized() on object of class OrthancPluginRestOutput");
+  PythonLock::LogCall("Calling method OrthancPluginSendUnauthorized() on object of class OrthancPluginRestOutput");
 
   if (self->object_ == NULL)
   {
@@ -289,7 +289,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendUnauthorized(
 static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendMethodNotAllowed(
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginSendMethodNotAllowed() on object of class OrthancPluginRestOutput");
+  PythonLock::LogCall("Calling method OrthancPluginSendMethodNotAllowed() on object of class OrthancPluginRestOutput");
 
   if (self->object_ == NULL)
   {
@@ -317,7 +317,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendMethodNotAllowed(
 static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetCookie(
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginSetCookie() on object of class OrthancPluginRestOutput");
+  PythonLock::LogCall("Calling method OrthancPluginSetCookie() on object of class OrthancPluginRestOutput");
 
   if (self->object_ == NULL)
   {
@@ -346,7 +346,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetCookie(
 static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetHttpHeader(
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginSetHttpHeader() on object of class OrthancPluginRestOutput");
+  PythonLock::LogCall("Calling method OrthancPluginSetHttpHeader() on object of class OrthancPluginRestOutput");
 
   if (self->object_ == NULL)
   {
@@ -375,7 +375,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetHttpHeader(
 static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginStartMultipartAnswer(
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginStartMultipartAnswer() on object of class OrthancPluginRestOutput");
+  PythonLock::LogCall("Calling method OrthancPluginStartMultipartAnswer() on object of class OrthancPluginRestOutput");
 
   if (self->object_ == NULL)
   {
@@ -414,7 +414,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginStartMultipartAnswer(
 static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendMultipartItem(
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginSendMultipartItem() on object of class OrthancPluginRestOutput");
+  PythonLock::LogCall("Calling method OrthancPluginSendMultipartItem() on object of class OrthancPluginRestOutput");
 
   if (self->object_ == NULL)
   {
@@ -453,7 +453,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendMultipartItem(
 static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendHttpStatus(
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginSendHttpStatus() on object of class OrthancPluginRestOutput");
+  PythonLock::LogCall("Calling method OrthancPluginSendHttpStatus() on object of class OrthancPluginRestOutput");
 
   if (self->object_ == NULL)
   {
@@ -483,7 +483,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendHttpStatus(
 static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginCompressAndAnswerJpegImage(
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginCompressAndAnswerJpegImage() on object of class OrthancPluginRestOutput");
+  PythonLock::LogCall("Calling method OrthancPluginCompressAndAnswerJpegImage() on object of class OrthancPluginRestOutput");
 
   if (self->object_ == NULL)
   {
@@ -516,7 +516,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginCompressAndAnswerJpegI
 static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetHttpErrorDetails(
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginSetHttpErrorDetails() on object of class OrthancPluginRestOutput");
+  PythonLock::LogCall("Calling method OrthancPluginSetHttpErrorDetails() on object of class OrthancPluginRestOutput");
 
   if (self->object_ == NULL)
   {

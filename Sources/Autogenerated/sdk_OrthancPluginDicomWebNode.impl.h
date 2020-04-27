@@ -39,7 +39,7 @@ static PyMethodDef sdk_OrthancPluginDicomWebNode_Methods[] = {
 static int sdk_OrthancPluginDicomWebNode_Constructor(
   sdk_OrthancPluginDicomWebNode_Object *self, PyObject *args, PyObject *kwds)
 {
-  OrthancPlugins::LogInfo("Creating Python object of class OrthancPluginDicomWebNode");
+  PythonLock::LogCall("Creating Python object of class OrthancPluginDicomWebNode");
 
   self->object_ = NULL;
   self->borrowed_ = false;

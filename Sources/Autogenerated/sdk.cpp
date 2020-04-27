@@ -19,6 +19,8 @@
 
 #include "sdk.h"
 
+#include "../PythonLock.h"
+
 #include <OrthancPluginCppWrapper.h>
 
 #include "./sdk_OrthancPluginInstanceOrigin.impl.h"

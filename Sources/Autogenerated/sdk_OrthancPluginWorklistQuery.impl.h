@@ -49,7 +49,7 @@ static PyMethodDef sdk_OrthancPluginWorklistQuery_Methods[] = {
 static int sdk_OrthancPluginWorklistQuery_Constructor(
   sdk_OrthancPluginWorklistQuery_Object *self, PyObject *args, PyObject *kwds)
 {
-  OrthancPlugins::LogInfo("Creating Python object of class OrthancPluginWorklistQuery");
+  PythonLock::LogCall("Creating Python object of class OrthancPluginWorklistQuery");
 
   self->object_ = NULL;
   self->borrowed_ = false;
@@ -89,7 +89,7 @@ static PyTypeObject sdk_OrthancPluginWorklistQuery_Type = {
 static PyObject *sdk_OrthancPluginWorklistQuery_OrthancPluginWorklistIsMatch(
   sdk_OrthancPluginWorklistQuery_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginWorklistIsMatch() on object of class OrthancPluginWorklistQuery");
+  PythonLock::LogCall("Calling method OrthancPluginWorklistIsMatch() on object of class OrthancPluginWorklistQuery");
 
   if (self->object_ == NULL)
   {
@@ -115,7 +115,7 @@ static PyObject *sdk_OrthancPluginWorklistQuery_OrthancPluginWorklistIsMatch(
 static PyObject *sdk_OrthancPluginWorklistQuery_OrthancPluginWorklistGetDicomQuery(
   sdk_OrthancPluginWorklistQuery_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginWorklistGetDicomQuery() on object of class OrthancPluginWorklistQuery");
+  PythonLock::LogCall("Calling method OrthancPluginWorklistGetDicomQuery() on object of class OrthancPluginWorklistQuery");
 
   if (self->object_ == NULL)
   {

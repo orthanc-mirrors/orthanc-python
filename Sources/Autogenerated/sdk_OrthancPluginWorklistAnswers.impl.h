@@ -44,7 +44,7 @@ static PyMethodDef sdk_OrthancPluginWorklistAnswers_Methods[] = {
 static int sdk_OrthancPluginWorklistAnswers_Constructor(
   sdk_OrthancPluginWorklistAnswers_Object *self, PyObject *args, PyObject *kwds)
 {
-  OrthancPlugins::LogInfo("Creating Python object of class OrthancPluginWorklistAnswers");
+  PythonLock::LogCall("Creating Python object of class OrthancPluginWorklistAnswers");
 
   self->object_ = NULL;
   self->borrowed_ = false;
@@ -84,7 +84,7 @@ static PyTypeObject sdk_OrthancPluginWorklistAnswers_Type = {
 static PyObject *sdk_OrthancPluginWorklistAnswers_OrthancPluginWorklistMarkIncomplete(
   sdk_OrthancPluginWorklistAnswers_Object* self, PyObject *args)
 {
-  OrthancPlugins::LogInfo("Calling method OrthancPluginWorklistMarkIncomplete() on object of class OrthancPluginWorklistAnswers");
+  PythonLock::LogCall("Calling method OrthancPluginWorklistMarkIncomplete() on object of class OrthancPluginWorklistAnswers");
 
   if (self->object_ == NULL)
   {
