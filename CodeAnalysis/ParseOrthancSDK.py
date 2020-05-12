@@ -398,9 +398,14 @@ for node in tu.cursor.get_children():
                   IsClassType(args[1].type) and
                   CheckOnlySupportedArguments(args[2:])):
                 print('Simple method of class %s, returning bytes: %s' % (
-                    args[0].type.get_pointee().spelling,
+                    args[1].type.get_pointee().spelling,
                     node.spelling))
                
+                className = args[1].type.get_pointee().spelling
+
+                if className.startswith('const '):
+                    className = className[len('const '):]
+
                 method = GenerateFunctionBodyTemplate(node.spelling, args[0].type, args[2:])
                 method['self'] = ', self->object_'
                 classes[className]['methods'].append(method)
