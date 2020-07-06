@@ -25,7 +25,7 @@ cmake /tmp/source-writeable/ \
       -DPYTHON_VERSION=3.8 \
       -DPYTHON_LIBRARY_NAME=${LIBRARY_NAME} \
       -DPYTHON_WINDOWS_ROOT=/tmp/build/python-3.8.3-win64 \
-      -DCMAKE_TOOLCHAIN_FILE=/source/Resources/Orthanc/Resources/MinGW-W64-Toolchain64.cmake \
+      -DCMAKE_TOOLCHAIN_FILE=/source/Resources/Orthanc/Toolchains/MinGW-W64-Toolchain64.cmake \
       -DCMAKE_INSTALL_PREFIX=/target 
 
 make -j`nproc`

@@ -1,6 +1,15 @@
 # This file sets all the compiler-related flags
 
-if (CMAKE_CROSSCOMPILING OR
+
+# Save the current compiler flags to the cache every time cmake configures the project
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}" CACHE STRING "compiler flags" FORCE)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" CACHE STRING "compiler flags" FORCE)
+
+
+include(CheckLibraryExists)
+
+if ((CMAKE_CROSSCOMPILING AND NOT
+      "${CMAKE_SYSTEM_VERSION}" STREQUAL "CrossToolNg") OR    
     "${CMAKE_SYSTEM_VERSION}" STREQUAL "LinuxStandardBase")
   # Cross-compilation necessarily implies standalone and static build
   SET(STATIC_BUILD ON)
@@ -72,7 +81,7 @@ elseif (MSVC)
     # compatibility header.
     # http://stackoverflow.com/a/70630/881731
     # https://en.wikibooks.org/wiki/C_Programming/C_Reference/stdint.h#External_links
-    include_directories(${ORTHANC_ROOT}/Resources/ThirdParty/VisualStudio)
+    include_directories(${CMAKE_CURRENT_LIST_DIR}/../../Resources/ThirdParty/VisualStudio)
   endif()
 
   link_libraries(netapi32)
@@ -102,11 +111,6 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux" OR
     # "environ" global variable in FreeBSD
     set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--no-undefined")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
-  endif()
-
-  if (NOT DEFINED ENABLE_PLUGINS_VERSION_SCRIPT OR 
-      ENABLE_PLUGINS_VERSION_SCRIPT)
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--version-script=${ORTHANC_ROOT}/Plugins/Samples/Common/VersionScript.map")
   endif()
 
   # Remove the "-rdynamic" option
@@ -194,8 +198,6 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
   endif()
 
 elseif (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
-  SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -exported_symbols_list ${ORTHANC_ROOT}/Plugins/Samples/Common/ExportedSymbols.list")
-
   add_definitions(
     -D_XOPEN_SOURCE=1
     )
@@ -203,19 +205,7 @@ elseif (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
 
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
   message("Building using Emscripten (for WebAssembly or asm.js targets)")
-
-  # The BINARYEN_TRAP_MODE specifies what to do when divisions per
-  # zero (and similar conditions like integer overflows) are
-  # encountered: The "clamp" mode avoids throwing errors, as they
-  # cannot be properly catched by "try {} catch (...)" constructions.
-  # Setting this option to "ON" fixes error: "shared:ERROR:
-  # BINARYEN_TRAP_MODE is not supported by the LLVM wasm backend" if
-  # using the "upstream" backend of Emscripten.
-  if (NOT EMSCRIPTEN_SET_LLVM_WASM_BACKEND)
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s BINARYEN_TRAP_MODE='\"clamp\"'")
-  endif()
-
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s EXTRA_EXPORTED_RUNTIME_METHODS='[\"ccall\", \"cwrap\"]'")
+  include(${CMAKE_CURRENT_LIST_DIR}/EmscriptenParameters.cmake)
   
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Android")
 
@@ -250,11 +240,4 @@ if (CMAKE_COMPILER_IS_GNUCXX)
   # objects, and using "r" would overwrite symbols defined in
   # preceding batches. https://cmake.org/Bug/view.php?id=14874
   set(CMAKE_CXX_ARCHIVE_APPEND "<CMAKE_AR> <LINK_FLAGS> q <TARGET> <OBJECTS>")
-endif()
-
-
-if (STATIC_BUILD)
-  add_definitions(-DORTHANC_STATIC=1)
-else()
-  add_definitions(-DORTHANC_STATIC=0)
 endif()

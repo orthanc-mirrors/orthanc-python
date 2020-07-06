@@ -1,5 +1,5 @@
 /**
- * Python plugin for Orthanc
+2 * Python plugin for Orthanc
  * Copyright (C) 2017-2020 Osimis S.A., Belgium
  *
  * This program is free software: you can redistribute it and/or
@@ -19,8 +19,9 @@
 
 #pragma once
 
-#include "../Resources/Orthanc/Core/Compatibility.h"
 #include "PythonObject.h"
+
+#include <Compatibility.h>
 
 #include <memory>
 

@@ -3,14 +3,55 @@ project(OrthancPython)
 
 set(PLUGIN_VERSION "mainline")
 
+if (PLUGIN_VERSION STREQUAL "mainline")
+  set(ORTHANC_FRAMEWORK_DEFAULT_VERSION "mainline")
+  set(ORTHANC_FRAMEWORK_DEFAULT_SOURCE "hg")
+else()
+  set(ORTHANC_FRAMEWORK_DEFAULT_VERSION "1.7.0")
+  set(ORTHANC_FRAMEWORK_DEFAULT_SOURCE "web")
+endif()
+
 
 set(PYTHON_VERSION "3.6" CACHE STRING "Version of Python to be used")
 set(PYTHON_WINDOWS_ROOT "" CACHE STRING "")
 set(PYTHON_LIBRARY_NAME "" CACHE STRING "")
 set(PYTHON_WINDOWS_USE_RELEASE_LIBS ON CACHE BOOL "Use the release Python libraries when building with Microsoft Visual Studio, even when compiling in _DEBUG mode (set it to OFF if you require linking to a Python debug build)")
-set(USE_SYSTEM_BOOST ON CACHE BOOL "Use the system version of Boost")
-set(USE_SYSTEM_JSONCPP ON CACHE BOOL "Use the system version of JsonCpp")
-set(USE_LEGACY_JSONCPP OFF CACHE BOOL "Use the old branch 0.x.y of JsonCpp, that does not require a C++11 compiler (for LSB and old versions of Visual Studio)")
+
+
+# Parameters of the build
+set(STATIC_BUILD OFF CACHE BOOL "Static build of the third-party libraries (necessary for Windows)")
+set(ALLOW_DOWNLOADS OFF CACHE BOOL "Allow CMake to download packages")
+set(ORTHANC_FRAMEWORK_SOURCE "${ORTHANC_FRAMEWORK_DEFAULT_SOURCE}" CACHE STRING "Source of the Orthanc framework (can be \"system\", \"hg\", \"archive\", \"web\" or \"path\")")
+set(ORTHANC_FRAMEWORK_VERSION "${ORTHANC_FRAMEWORK_DEFAULT_VERSION}" CACHE STRING "Version of the Orthanc framework")
+set(ORTHANC_FRAMEWORK_ARCHIVE "" CACHE STRING "Path to the Orthanc archive, if ORTHANC_FRAMEWORK_SOURCE is \"archive\"")
+set(ORTHANC_FRAMEWORK_ROOT "" CACHE STRING "Path to the Orthanc source directory, if ORTHANC_FRAMEWORK_SOURCE is \"path\"")
+
+# Advanced parameters to fine-tune linking against system libraries
+set(USE_SYSTEM_ORTHANC_SDK ON CACHE BOOL "Use the system version of the Orthanc plugin SDK")
+set(ORTHANC_FRAMEWORK_STATIC OFF CACHE BOOL "If linking against the Orthanc framework system library, indicates whether this library was statically linked")
+mark_as_advanced(ORTHANC_FRAMEWORK_STATIC)
+
+
+# Download and setup the Orthanc framework
+include(${CMAKE_SOURCE_DIR}/Resources/Orthanc/CMake/DownloadOrthancFramework.cmake)
+
+if (ORTHANC_FRAMEWORK_SOURCE STREQUAL "system")
+  #link_libraries(${ORTHANC_FRAMEWORK_LIBRARIES})
+
+else()
+  include(${ORTHANC_FRAMEWORK_ROOT}/Resources/CMake/OrthancFrameworkParameters.cmake)
+  
+  #set(ENABLE_MODULE_IMAGES OFF CACHE INTERNAL "")
+  #set(ENABLE_MODULE_JOBS OFF CACHE INTERNAL "")
+  #set(ENABLE_MODULE_DICOM OFF CACHE INTERNAL "")
+  
+  include(${ORTHANC_FRAMEWORK_ROOT}/Resources/CMake/OrthancFrameworkConfiguration.cmake)
+  include_directories(${ORTHANC_FRAMEWORK_ROOT}/Sources)
+endif()
+
+
+include(${CMAKE_SOURCE_DIR}/Resources/Orthanc/Plugins/OrthancPluginsExports.cmake)
+
 
 include(CheckIncludeFile)
 include(CheckIncludeFileCXX)
@@ -66,17 +107,11 @@ else()
   endif()
 endif()
 
-set(ORTHANC_ROOT ${CMAKE_SOURCE_DIR}/Resources/Orthanc)
-include(${ORTHANC_ROOT}/Resources/CMake/Compiler.cmake)
-include(${ORTHANC_ROOT}/Resources/CMake/DownloadPackage.cmake)
-include(${ORTHANC_ROOT}/Resources/CMake/BoostConfiguration.cmake)
-include(${ORTHANC_ROOT}/Resources/CMake/JsonCppConfiguration.cmake)
-
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
   execute_process(
     COMMAND 
-    ${PYTHON_EXECUTABLE} ${ORTHANC_ROOT}/Resources/WindowsResources.py
+    ${PYTHON_EXECUTABLE} ${ORTHANC_FRAMEWORK_ROOT}/Resources/WindowsResources.py
     ${PLUGIN_VERSION} "Python plugin" OrthancPython.dll
     "Plugin to create Orthanc plugins using Python"
     ERROR_VARIABLE Failure
@@ -92,7 +127,7 @@ endif()
 
 
 include_directories(
-  ${ORTHANC_ROOT}/Sdk-1.5.7
+  ${CMAKE_SOURCE_DIR}/Resources/Orthanc/Sdk-1.5.7
   )
 
 add_definitions(
@@ -100,7 +135,6 @@ add_definitions(
   )
 
 include_directories(
-  ${ORTHANC_ROOT}/Plugins/Samples/Common
   ${PYTHON_INCLUDE_DIRS}
   )
 
@@ -117,7 +151,7 @@ add_library(OrthancPython SHARED
   Sources/RestCallbacks.cpp
 
   # Third-party sources
-  ${ORTHANC_ROOT}/Plugins/Samples/Common/OrthancPluginCppWrapper.cpp
+  ${CMAKE_SOURCE_DIR}/Resources/Orthanc/Plugins/OrthancPluginCppWrapper.cpp
   ${BOOST_SOURCES}
   ${JSONCPP_SOURCES}
   ${WINDOWS_RESOURCES}

@@ -21,7 +21,9 @@
 
 #include "PythonObject.h"
 
-#include <OrthancPluginCppWrapper.h>
+#include "../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
+
+#include <Compatibility.h>  // For std::unique_ptr<>
 
 #include <boost/thread.hpp>
 
@@ -116,7 +118,7 @@ public:
       }
     }
 
-    std::auto_ptr<PendingChange> change(queue_.front());
+    std::unique_ptr<PendingChange> change(queue_.front());
     queue_.pop_front();
 
     return change.release();

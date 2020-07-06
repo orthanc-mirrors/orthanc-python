@@ -5,5 +5,5 @@ LABEL Description="Orthanc, free DICOM server" Vendor="The Orthanc project"
 
 RUN apt-get -y clean && apt-get -y update
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install \
-    nano unzip cmake mingw-w64 patch wget bzip2 python && \
+    nano unzip cmake mingw-w64 patch wget bzip2 python mercurial && \
     apt-get clean && rm -rf /var/lib/apt/lists/*

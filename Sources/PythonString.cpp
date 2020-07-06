@@ -19,7 +19,7 @@
 
 #include "PythonString.h"
 
-#include <OrthancPluginCppWrapper.h>
+#include "../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
 
 PythonString::PythonString(PythonLock& lock,
                            const std::string& utf8) :

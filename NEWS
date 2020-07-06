@@ -4,6 +4,7 @@ Pending changes in the mainline
 * Fix compilation using Visual Studio
 * The "Calling Python..." info logs are disabled if "PythonVerbose" is "false"
 * New builders for Windows: Supporting 32 / 64bit with Python 2.7 / 3.7 / 3.8
+* Support of dynamic linking against the system-wide Orthanc framework library
 
 
 Version 1.0 (2020-04-01)

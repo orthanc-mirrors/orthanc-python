@@ -21,7 +21,7 @@
 
 #include "PythonModule.h"
 
-#include <OrthancPluginCppWrapper.h>
+#include "../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
 
 
 PythonObject* PythonFunction::CallUnchecked(PyObject* args)

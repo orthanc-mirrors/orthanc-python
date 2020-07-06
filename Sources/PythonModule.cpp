@@ -21,7 +21,7 @@
 
 #include "PythonString.h"
 
-#include <OrthancPluginCppWrapper.h>
+#include "../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
 
 #include <boost/thread/mutex.hpp>
 #include <set>

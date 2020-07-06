@@ -22,7 +22,9 @@
 #include "PythonFunction.h"
 #include "PythonModule.h"
 
-#include <OrthancPluginCppWrapper.h>
+#include "../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
+
+#include <Compatibility.h>  // For std::unique_ptr<>
 
 #include <boost/thread/mutex.hpp>
 
@@ -137,7 +139,7 @@ bool PythonLock::HasErrorOccurred(std::string& target)
         PythonObject args(*this, PyTuple_New(1));
         PyTuple_SetItem(args.GetPyObject(), 0, traceback);
 
-        std::auto_ptr<PythonObject> value(f.CallUnchecked(args.GetPyObject()));
+        std::unique_ptr<PythonObject> value(f.CallUnchecked(args.GetPyObject()));
 
         if (value->IsValid())
         {

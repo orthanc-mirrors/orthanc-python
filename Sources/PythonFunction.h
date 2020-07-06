@@ -19,8 +19,9 @@
 
 #pragma once
 
-#include "../Resources/Orthanc/Core/Compatibility.h"
 #include "PythonObject.h"
+
+#include <Compatibility.h>
 
 #include <memory>
 

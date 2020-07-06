@@ -22,7 +22,7 @@
 
 #include "PythonLock.h"
 
-#include <OrthancPluginCppWrapper.h>
+#include "../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
 
 
 PythonObject::PythonObject(PythonLock& lock,

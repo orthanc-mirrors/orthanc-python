@@ -21,7 +21,7 @@
 
 #include "../PythonLock.h"
 
-#include <OrthancPluginCppWrapper.h>
+#include "../../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
 
 #include "./sdk_OrthancPluginInstanceOrigin.impl.h"
 #include "./sdk_OrthancPluginJobStepStatus.impl.h"

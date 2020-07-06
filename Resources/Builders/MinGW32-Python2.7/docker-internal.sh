@@ -18,7 +18,7 @@ cmake /tmp/source-writeable/ \
       -DSTATIC_BUILD=ON \
       -DPYTHON_VERSION=2.7 \
       -DPYTHON_WINDOWS_ROOT=/tmp/build/python-2.7.17-win32/ \
-      -DCMAKE_TOOLCHAIN_FILE=/source/Resources/Orthanc/Resources/MinGW-W64-Toolchain32.cmake \
+      -DCMAKE_TOOLCHAIN_FILE=/source/Resources/Orthanc/Toolchains/MinGW-W64-Toolchain32.cmake \
       -DCMAKE_INSTALL_PREFIX=/target 
 
 make -j`nproc`
