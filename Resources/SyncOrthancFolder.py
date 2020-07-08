@@ -12,7 +12,7 @@ import urllib2
 import subprocess
 
 TARGET = os.path.join(os.path.dirname(__file__), 'Orthanc')
-PLUGIN_SDK_VERSION = '1.5.7'
+PLUGIN_SDK_VERSION = '1.7.2'
 REPOSITORY = 'https://hg.orthanc-server.com/orthanc/raw-file'
 
 FILES = [
@@ -66,7 +66,7 @@ for f in FILES:
 for f in SDK:
     commands.append([
         'Orthanc-%s' % PLUGIN_SDK_VERSION, 
-        'Plugins/Include/%s' % f,
+        'OrthancServer/Plugins/Include/%s' % f,
         'Sdk-%s/%s' % (PLUGIN_SDK_VERSION, f) 
     ])
 
@@ -75,10 +75,11 @@ pool = multiprocessing.Pool(10)  # simultaneous downloads
 pool.map(Download, commands)
 
 
-# Patch the SDK
-subprocess.check_call([ 'patch', '-p0', '-i', os.path.join
-                        (os.path.abspath(os.path.dirname(__file__)),
-                         'OrthancCPlugin-%s.patch' % PLUGIN_SDK_VERSION) ],
-                      cwd = os.path.join(os.path.dirname(__file__),
-                                         'Orthanc',
-                                         'Sdk-%s' % PLUGIN_SDK_VERSION, 'orthanc'))
+if False:
+    # Patch the SDK
+    subprocess.check_call([ 'patch', '-p0', '-i', os.path.join
+                            (os.path.abspath(os.path.dirname(__file__)),
+                             'OrthancCPlugin-%s.patch' % PLUGIN_SDK_VERSION) ],
+                          cwd = os.path.join(os.path.dirname(__file__),
+                                             'Orthanc',
+                                             'Sdk-%s' % PLUGIN_SDK_VERSION, 'orthanc'))

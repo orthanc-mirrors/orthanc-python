@@ -127,7 +127,7 @@ endif()
 
 
 include_directories(
-  ${CMAKE_SOURCE_DIR}/Resources/Orthanc/Sdk-1.5.7
+  ${CMAKE_SOURCE_DIR}/Resources/Orthanc/Sdk-1.7.2
   )
 
 add_definitions(

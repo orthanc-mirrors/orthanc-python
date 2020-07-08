@@ -26,6 +26,9 @@
  *    - Possibly register a callback to unserialize jobs using OrthancPluginRegisterJobsUnserializer().
  *    - Possibly register a callback to refresh its metrics using OrthancPluginRegisterRefreshMetricsCallback().
  *    - Possibly register a callback to answer chunked HTTP transfers using ::OrthancPluginRegisterChunkedRestCallback().
+ *    - Possibly register a callback for Storage Commitment SCP using ::OrthancPluginRegisterStorageCommitmentScpCallback().
+ *    - Possibly register a callback to filter incoming DICOM instance using OrthancPluginRegisterIncomingDicomInstanceFilter().
+ *    - Possibly register a custom transcoder for DICOM images using OrthancPluginRegisterTranscoderCallback().
  * -# <tt>void OrthancPluginFinalize()</tt>:
  *    This function is invoked by Orthanc during its shutdown. The plugin
  *    must free all its memory.
@@ -58,10 +61,13 @@
  * @brief Functions to register and manage callbacks by the plugins.
  *
  * @defgroup DicomCallbacks DicomCallbacks
- * @brief Functions to register and manage DICOM callbacks (worklists, C-Find, C-MOVE).
+ * @brief Functions to register and manage DICOM callbacks (worklists, C-FIND, C-MOVE, storage commitment).
  *
  * @defgroup Orthanc Orthanc
  * @brief Functions to access the content of the Orthanc server.
+ *
+ * @defgroup DicomInstance DicomInstance
+ * @brief Functions to access DICOM images that are managed by the Orthanc core.
  **/
 
 
@@ -77,24 +83,12 @@
  * Orthanc - A Lightweight, RESTful DICOM Store
  * Copyright (C) 2012-2016 Sebastien Jodogne, Medical Physics
  * Department, University Hospital of Liege, Belgium
- * Copyright (C) 2017-2019 Osimis S.A., Belgium
+ * Copyright (C) 2017-2020 Osimis S.A., Belgium
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- *
- * In addition, as a special exception, the copyright holders of this
- * program give permission to link the code of its release with the
- * OpenSSL project's "OpenSSL" library (or with modified versions of it
- * that use the same license as the "OpenSSL" library), and distribute
- * the linked executables. You must obey the GNU General Public License
- * in all respects for all of the code used other than "OpenSSL". If you
- * modify file(s) with this exception, you may extend this exception to
- * your version of the file(s), but you are not obligated to do so. If
- * you do not wish to do so, delete this exception statement from your
- * version. If you delete this exception statement from all source files
- * in the program, then also delete it here.
  * 
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -122,16 +116,16 @@
 #endif
 
 #define ORTHANC_PLUGINS_MINIMAL_MAJOR_NUMBER     1
-#define ORTHANC_PLUGINS_MINIMAL_MINOR_NUMBER     5
-#define ORTHANC_PLUGINS_MINIMAL_REVISION_NUMBER  7
+#define ORTHANC_PLUGINS_MINIMAL_MINOR_NUMBER     7
+#define ORTHANC_PLUGINS_MINIMAL_REVISION_NUMBER  2
 
 
 #if !defined(ORTHANC_PLUGINS_VERSION_IS_ABOVE)
-#define ORTHANC_PLUGINS_VERSION_IS_ABOVE(major, minor, revision) \
-  (ORTHANC_PLUGINS_MINIMAL_MAJOR_NUMBER > major ||               \
-   (ORTHANC_PLUGINS_MINIMAL_MAJOR_NUMBER == major &&             \
-    (ORTHANC_PLUGINS_MINIMAL_MINOR_NUMBER > minor ||             \
-     (ORTHANC_PLUGINS_MINIMAL_MINOR_NUMBER == minor &&           \
+#define ORTHANC_PLUGINS_VERSION_IS_ABOVE(major, minor, revision)        \
+  (ORTHANC_PLUGINS_MINIMAL_MAJOR_NUMBER > major ||                      \
+   (ORTHANC_PLUGINS_MINIMAL_MAJOR_NUMBER == major &&                    \
+    (ORTHANC_PLUGINS_MINIMAL_MINOR_NUMBER > minor ||                    \
+     (ORTHANC_PLUGINS_MINIMAL_MINOR_NUMBER == minor &&                  \
       ORTHANC_PLUGINS_MINIMAL_REVISION_NUMBER >= revision))))
 #endif
 
@@ -178,7 +172,7 @@
 /**
  * For Microsoft Visual Studio, a compatibility "stdint.h" can be
  * downloaded at the following URL:
- * https://bitbucket.org/sjodogne/orthanc/raw/default/Resources/ThirdParty/VisualStudio/stdint.h
+ * https://hg.orthanc-server.com/orthanc/raw-file/tip/Resources/ThirdParty/VisualStudio/stdint.h
  **/
 #include <stdint.h>
 
@@ -242,6 +236,7 @@ extern "C"
     OrthancPluginErrorCode_DatabaseUnavailable = 36    /*!< The database is currently not available (probably a transient situation) */,
     OrthancPluginErrorCode_CanceledJob = 37    /*!< This job was canceled */,
     OrthancPluginErrorCode_BadGeometry = 38    /*!< Geometry error encountered in Stone */,
+    OrthancPluginErrorCode_SslInitialization = 39    /*!< Cannot initialize SSL encryption, check out your certificates */,
     OrthancPluginErrorCode_SQLiteNotOpened = 1000    /*!< SQLite: The database is not opened */,
     OrthancPluginErrorCode_SQLiteAlreadyOpened = 1001    /*!< SQLite: Connection is already open */,
     OrthancPluginErrorCode_SQLiteCannotOpen = 1002    /*!< SQLite: Unable to open the database */,
@@ -301,6 +296,8 @@ extern "C"
     OrthancPluginErrorCode_CannotOrderSlices = 2040    /*!< Unable to order the slices of the series */,
     OrthancPluginErrorCode_NoWorklistHandler = 2041    /*!< No request handler factory for DICOM C-Find Modality SCP */,
     OrthancPluginErrorCode_AlreadyExistingTag = 2042    /*!< Cannot override the value of a tag that already exists */,
+    OrthancPluginErrorCode_NoStorageCommitmentHandler = 2043    /*!< No request handler factory for DICOM N-ACTION SCP (storage commitment) */,
+    OrthancPluginErrorCode_NoCGetHandler = 2044    /*!< No request handler factory for DICOM C-GET SCP */,
     OrthancPluginErrorCode_UnsupportedMediaType = 3000    /*!< Unsupported media type */,
 
     _OrthancPluginErrorCode_INTERNAL = 0x7fffffff
@@ -433,8 +430,11 @@ extern "C"
     _OrthancPluginService_SetMetricsValue = 31,
     _OrthancPluginService_EncodeDicomWebJson = 32,
     _OrthancPluginService_EncodeDicomWebXml = 33,
-    _OrthancPluginService_ChunkedHttpClient = 34,   /* New in Orthanc 1.5.7 */
-    _OrthancPluginService_GetTagName = 35,   /* New in Orthanc 1.5.7 */
+    _OrthancPluginService_ChunkedHttpClient = 34,    /* New in Orthanc 1.5.7 */
+    _OrthancPluginService_GetTagName = 35,           /* New in Orthanc 1.5.7 */
+    _OrthancPluginService_EncodeDicomWebJson2 = 36,  /* New in Orthanc 1.7.0 */
+    _OrthancPluginService_EncodeDicomWebXml2 = 37,   /* New in Orthanc 1.7.0 */
+    _OrthancPluginService_CreateMemoryBuffer = 38,   /* New in Orthanc 1.7.0 */
     
     /* Registration of callbacks */
     _OrthancPluginService_RegisterRestCallback = 1000,
@@ -450,7 +450,10 @@ extern "C"
     _OrthancPluginService_RegisterIncomingHttpRequestFilter2 = 1010,
     _OrthancPluginService_RegisterRefreshMetricsCallback = 1011,
     _OrthancPluginService_RegisterChunkedRestCallback = 1012,  /* New in Orthanc 1.5.7 */
-
+    _OrthancPluginService_RegisterStorageCommitmentScpCallback = 1013,
+    _OrthancPluginService_RegisterIncomingDicomInstanceFilter = 1014,
+    _OrthancPluginService_RegisterTranscoderCallback = 1015,   /* New in Orthanc 1.7.0 */
+    
     /* Sending answers to REST calls */
     _OrthancPluginService_AnswerBuffer = 2000,
     _OrthancPluginService_CompressAndAnswerPngImage = 2001,  /* Unused as of Orthanc 0.9.4 */
@@ -494,7 +497,19 @@ extern "C"
     _OrthancPluginService_HasInstanceMetadata = 4005,
     _OrthancPluginService_GetInstanceMetadata = 4006,
     _OrthancPluginService_GetInstanceOrigin = 4007,
-
+    _OrthancPluginService_GetInstanceTransferSyntaxUid = 4008,
+    _OrthancPluginService_HasInstancePixelData = 4009,
+    _OrthancPluginService_CreateDicomInstance = 4010,      /* New in Orthanc 1.7.0 */
+    _OrthancPluginService_FreeDicomInstance = 4011,        /* New in Orthanc 1.7.0 */
+    _OrthancPluginService_GetInstanceFramesCount = 4012,   /* New in Orthanc 1.7.0 */
+    _OrthancPluginService_GetInstanceRawFrame = 4013,      /* New in Orthanc 1.7.0 */
+    _OrthancPluginService_GetInstanceDecodedFrame = 4014,  /* New in Orthanc 1.7.0 */
+    _OrthancPluginService_TranscodeDicomInstance = 4015,   /* New in Orthanc 1.7.0 */
+    _OrthancPluginService_SerializeDicomInstance = 4016,   /* New in Orthanc 1.7.0 */
+    _OrthancPluginService_GetInstanceAdvancedJson = 4017,  /* New in Orthanc 1.7.0 */
+    _OrthancPluginService_GetInstanceDicomWebJson = 4018,  /* New in Orthanc 1.7.0 */
+    _OrthancPluginService_GetInstanceDicomWebXml = 4019,   /* New in Orthanc 1.7.0 */
+    
     /* Services for plugins implementing a database back-end */
     _OrthancPluginService_RegisterDatabaseBackend = 5000,
     _OrthancPluginService_DatabaseAnswer = 5001,
@@ -689,7 +704,7 @@ extern "C"
 
 
   /**
-   * The supported types of changes that can happen to DICOM resources.
+   * The supported types of changes that can be signaled to the change callback.
    * @ingroup Callbacks
    **/
   typedef enum
@@ -710,6 +725,9 @@ extern "C"
     OrthancPluginChangeType_UpdatedMetadata = 13,   /*!< Some user-defined metadata has changed for this resource */
     OrthancPluginChangeType_UpdatedPeers = 14,      /*!< The list of Orthanc peers has changed */
     OrthancPluginChangeType_UpdatedModalities = 15, /*!< The list of DICOM modalities has changed */
+    OrthancPluginChangeType_JobSubmitted = 16,      /*!< New Job submitted */
+    OrthancPluginChangeType_JobSuccess = 17,        /*!< A Job has completed successfully */
+    OrthancPluginChangeType_JobFailure = 18,        /*!< A Job has failed */
 
     _OrthancPluginChangeType_INTERNAL = 0x7fffffff
   } OrthancPluginChangeType;
@@ -931,6 +949,42 @@ extern "C"
     OrthancPluginDicomWebBinaryMode_BulkDataUri = 2    /*!< Use a bulk data URI field */
   } OrthancPluginDicomWebBinaryMode;
 
+
+  /**
+   * The available values for the Failure Reason (0008,1197) during
+   * storage commitment.
+   * http://dicom.nema.org/medical/dicom/2019e/output/chtml/part03/sect_C.14.html#sect_C.14.1.1
+   **/
+  typedef enum
+  {
+    OrthancPluginStorageCommitmentFailureReason_Success = 0,
+    /*!< Success: The DICOM instance is properly stored in the SCP */
+
+    OrthancPluginStorageCommitmentFailureReason_ProcessingFailure = 1,
+    /*!< 0110H: A general failure in processing the operation was encountered */
+
+    OrthancPluginStorageCommitmentFailureReason_NoSuchObjectInstance = 2,
+    /*!< 0112H: One or more of the elements in the Referenced SOP
+      Instance Sequence was not available */
+
+    OrthancPluginStorageCommitmentFailureReason_ResourceLimitation = 3,
+    /*!< 0213H: The SCP does not currently have enough resources to
+      store the requested SOP Instance(s) */
+
+    OrthancPluginStorageCommitmentFailureReason_ReferencedSOPClassNotSupported = 4,
+    /*!< 0122H: Storage Commitment has been requested for a SOP
+      Instance with a SOP Class that is not supported by the SCP */
+
+    OrthancPluginStorageCommitmentFailureReason_ClassInstanceConflict = 5,
+    /*!< 0119H: The SOP Class of an element in the Referenced SOP
+      Instance Sequence did not correspond to the SOP class registered
+      for this SOP Instance at the SCP */
+
+    OrthancPluginStorageCommitmentFailureReason_DuplicateTransactionUID = 6
+    /*!< 0131H: The Transaction UID of the Storage Commitment Request
+      is already in use */
+  } OrthancPluginStorageCommitmentFailureReason;
+
   
 
   /**
@@ -965,7 +1019,8 @@ extern "C"
 
 
   /**
-   * @brief Opaque structure that represents a DICOM instance received by Orthanc.
+   * @brief Opaque structure that represents a DICOM instance that is managed by the Orthanc core.
+   * @ingroup DicomInstance
    **/
   typedef struct _OrthancPluginDicomInstance_t OrthancPluginDicomInstance;
 
@@ -1023,7 +1078,7 @@ extern "C"
    * @brief Opaque structure to an object that can be used to check whether a DICOM instance matches a C-Find query.
    * @ingroup Toolbox
    **/
-  typedef struct _OrthancPluginFindAnswers_t OrthancPluginFindMatcher;
+  typedef struct _OrthancPluginFindMatcher_t OrthancPluginFindMatcher;
 
 
   
@@ -1064,11 +1119,11 @@ extern "C"
 
 
   /**
-   * @brief Signature of a callback function that is triggered when Orthanc receives a DICOM instance.
+   * @brief Signature of a callback function that is triggered when Orthanc stores a new DICOM instance.
    * @ingroup Callbacks
    **/
   typedef OrthancPluginErrorCode (*OrthancPluginOnStoredInstanceCallback) (
-    OrthancPluginDicomInstance* instance,
+    const OrthancPluginDicomInstance* instance,
     const char* instanceId);
 
 
@@ -1148,6 +1203,12 @@ extern "C"
    * @param type The content type corresponding to this file. 
    * @return 0 if success, other value if error.
    * @ingroup Callbacks
+   * 
+   * @warning The "content" buffer *must* have been allocated using
+   * the "malloc()" function of your C standard library (i.e. nor
+   * "new[]", neither a pointer to a buffer). The "free()" function of
+   * your C standard library will automatically be invoked on the
+   * "content" pointer.
    **/
   typedef OrthancPluginErrorCode (*OrthancPluginStorageRead) (
     void** content,
@@ -1539,7 +1600,7 @@ extern "C"
    * "levelTagElement", and "levelIndex" arrays.
    * @param levelTagGroup The group of the parent DICOM tags in the hierarchy.
    * @param levelTagElement The element of the parent DICOM tags in the hierarchy.
-   * @param levelIndex The index of the node in the parent sequences of the hiearchy.
+   * @param levelIndex The index of the node in the parent sequences of the hierarchy.
    * @param tagGroup The group of the DICOM tag of interest.
    * @param tagElement The element of the DICOM tag of interest.
    * @param vr The value representation of the binary DICOM node.
@@ -1555,6 +1616,45 @@ extern "C"
     uint16_t                            tagGroup,
     uint16_t                            tagElement,
     OrthancPluginValueRepresentation    vr);
+
+
+
+  /**
+   * @brief Callback executed to encode a binary tag in DICOMweb.
+   * 
+   * Signature of a callback function that is called by Orthanc
+   * whenever a DICOM tag that contains a binary value must be written
+   * to a JSON or XML node, while a DICOMweb document is being
+   * generated. The value representation (VR) of the DICOM tag can be
+   * OB, OD, OF, OL, OW, or UN.
+   * 
+   * @see OrthancPluginEncodeDicomWebJson() and OrthancPluginEncodeDicomWebXml()
+   * @param node The node being generated, as provided by Orthanc.
+   * @param setter The setter to be used to encode the content of the node. If
+   * the setter is not called, the binary tag is not written to the output document.
+   * @param levelDepth The depth of the node in the DICOM hierarchy of sequences.
+   * This parameter gives the number of elements in the "levelTagGroup", 
+   * "levelTagElement", and "levelIndex" arrays.
+   * @param levelTagGroup The group of the parent DICOM tags in the hierarchy.
+   * @param levelTagElement The element of the parent DICOM tags in the hierarchy.
+   * @param levelIndex The index of the node in the parent sequences of the hierarchy.
+   * @param tagGroup The group of the DICOM tag of interest.
+   * @param tagElement The element of the DICOM tag of interest.
+   * @param vr The value representation of the binary DICOM node.
+   * @param payload The user payload.
+   * @ingroup Callbacks
+   **/
+  typedef void (*OrthancPluginDicomWebBinaryCallback2) (
+    OrthancPluginDicomWebNode*          node,
+    OrthancPluginDicomWebSetBinaryNode  setter,
+    uint32_t                            levelDepth,
+    const uint16_t*                     levelTagGroup,
+    const uint16_t*                     levelTagElement,
+    const uint32_t*                     levelIndex,
+    uint16_t                            tagGroup,
+    uint16_t                            tagElement,
+    OrthancPluginValueRepresentation    vr,
+    void*                               payload);
 
 
 
@@ -1652,7 +1752,8 @@ extern "C"
         sizeof(int32_t) != sizeof(OrthancPluginJobStepStatus) ||
         sizeof(int32_t) != sizeof(OrthancPluginConstraintType) ||
         sizeof(int32_t) != sizeof(OrthancPluginMetricsType) ||
-        sizeof(int32_t) != sizeof(OrthancPluginDicomWebBinaryMode))
+        sizeof(int32_t) != sizeof(OrthancPluginDicomWebBinaryMode) ||
+        sizeof(int32_t) != sizeof(OrthancPluginStorageCommitmentFailureReason))
     {
       /* Mismatch in the size of the enumerations */
       return 0;
@@ -2646,12 +2747,12 @@ extern "C"
 
   typedef struct
   {
-    char**                       resultStringToFree;
-    const char**                 resultString;
-    int64_t*                     resultInt64;
-    const char*                  key;
-    OrthancPluginDicomInstance*  instance;
-    OrthancPluginInstanceOrigin* resultOrigin;   /* New in Orthanc 0.9.5 SDK */
+    char**                             resultStringToFree;
+    const char**                       resultString;
+    int64_t*                           resultInt64;
+    const char*                        key;
+    const OrthancPluginDicomInstance*  instance;
+    OrthancPluginInstanceOrigin*       resultOrigin;   /* New in Orthanc 0.9.5 SDK */
   } _OrthancPluginAccessDicomInstance;
 
 
@@ -2664,11 +2765,11 @@ extern "C"
    * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
    * @param instance The instance of interest.
    * @return The AET if success, NULL if error.
-   * @ingroup Callbacks
+   * @ingroup DicomInstance
    **/
   ORTHANC_PLUGIN_INLINE const char* OrthancPluginGetInstanceRemoteAet(
-    OrthancPluginContext*        context,
-    OrthancPluginDicomInstance*  instance)
+    OrthancPluginContext*              context,
+    const OrthancPluginDicomInstance*  instance)
   {
     const char* result;
 
@@ -2697,11 +2798,11 @@ extern "C"
    * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
    * @param instance The instance of interest.
    * @return The size of the file, -1 in case of error.
-   * @ingroup Callbacks
+   * @ingroup DicomInstance
    **/
   ORTHANC_PLUGIN_INLINE int64_t OrthancPluginGetInstanceSize(
-    OrthancPluginContext*       context,
-    OrthancPluginDicomInstance* instance)
+    OrthancPluginContext*             context,
+    const OrthancPluginDicomInstance* instance)
   {
     int64_t size;
 
@@ -2730,11 +2831,11 @@ extern "C"
    * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
    * @param instance The instance of interest.
    * @return The pointer to the DICOM data, NULL in case of error.
-   * @ingroup Callbacks
+   * @ingroup DicomInstance
    **/
   ORTHANC_PLUGIN_INLINE const void* OrthancPluginGetInstanceData(
-    OrthancPluginContext*        context,
-    OrthancPluginDicomInstance*  instance)
+    OrthancPluginContext*              context,
+    const OrthancPluginDicomInstance*  instance)
   {
     const char* result;
 
@@ -2766,11 +2867,11 @@ extern "C"
    * @param instance The instance of interest.
    * @return The NULL value in case of error, or a string containing the JSON file.
    * This string must be freed by OrthancPluginFreeString().
-   * @ingroup Callbacks
+   * @ingroup DicomInstance
    **/
   ORTHANC_PLUGIN_INLINE char* OrthancPluginGetInstanceJson(
-    OrthancPluginContext*        context,
-    OrthancPluginDicomInstance*  instance)
+    OrthancPluginContext*              context,
+    const OrthancPluginDicomInstance*  instance)
   {
     char* result;
 
@@ -2804,11 +2905,11 @@ extern "C"
    * @param instance The instance of interest.
    * @return The NULL value in case of error, or a string containing the JSON file.
    * This string must be freed by OrthancPluginFreeString().
-   * @ingroup Callbacks
+   * @ingroup DicomInstance
    **/
   ORTHANC_PLUGIN_INLINE char* OrthancPluginGetInstanceSimplifiedJson(
-    OrthancPluginContext*        context,
-    OrthancPluginDicomInstance*  instance)
+    OrthancPluginContext*              context,
+    const OrthancPluginDicomInstance*  instance)
   {
     char* result;
 
@@ -2843,12 +2944,12 @@ extern "C"
    * @param instance The instance of interest.
    * @param metadata The metadata of interest.
    * @return 1 if the metadata is present, 0 if it is absent, -1 in case of error.
-   * @ingroup Callbacks
+   * @ingroup DicomInstance
    **/
   ORTHANC_PLUGIN_INLINE int  OrthancPluginHasInstanceMetadata(
-    OrthancPluginContext*        context,
-    OrthancPluginDicomInstance*  instance,
-    const char*                  metadata)
+    OrthancPluginContext*              context,
+    const OrthancPluginDicomInstance*  instance,
+    const char*                        metadata)
   {
     int64_t result;
 
@@ -2880,13 +2981,16 @@ extern "C"
    * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
    * @param instance The instance of interest.
    * @param metadata The metadata of interest.
-   * @return The metadata value if success, NULL if error.
-   * @ingroup Callbacks
+   * @return The metadata value if success, NULL if error. Please note that the 
+   *         returned string belongs to the instance object and must NOT be 
+   *         deallocated. Please make a copy of the string if you wish to access 
+   *         it later.
+   * @ingroup DicomInstance
    **/
   ORTHANC_PLUGIN_INLINE const char* OrthancPluginGetInstanceMetadata(
-    OrthancPluginContext*        context,
-    OrthancPluginDicomInstance*  instance,
-    const char*                  metadata)
+    OrthancPluginContext*              context,
+    const OrthancPluginDicomInstance*  instance,
+    const char*                        metadata)
   {
     const char* result;
 
@@ -3421,7 +3525,7 @@ extern "C"
   ORTHANC_PLUGIN_INLINE OrthancPluginErrorCode OrthancPluginSendMultipartItem(
     OrthancPluginContext*    context,
     OrthancPluginRestOutput* output,
-    const char*              answer,
+    const void*              answer,
     uint32_t                 answerSize)
   {
     _OrthancPluginAnswerBuffer params;
@@ -5053,11 +5157,11 @@ extern "C"
    * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
    * @param instance The instance of interest.
    * @return The origin of the instance.
-   * @ingroup Callbacks
+   * @ingroup DicomInstance
    **/
   ORTHANC_PLUGIN_INLINE OrthancPluginInstanceOrigin OrthancPluginGetInstanceOrigin(
-    OrthancPluginContext*       context,
-    OrthancPluginDicomInstance* instance)
+    OrthancPluginContext*             context,
+    const OrthancPluginDicomInstance* instance)
   {
     OrthancPluginInstanceOrigin origin;
 
@@ -5129,8 +5233,11 @@ extern "C"
   /**
    * @brief Register a callback to handle the decoding of DICOM images.
    *
-   * This function registers a custom callback to the decoding of
-   * DICOM images, replacing the built-in decoder of Orthanc.
+   * This function registers a custom callback to decode DICOM images,
+   * extending the built-in decoder of Orthanc that uses
+   * DCMTK. Starting with Orthanc 1.7.0, the exact behavior is
+   * affected by the configuration option
+   * "BuiltinDecoderTranscoderOrder" of Orthanc.
    *
    * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
    * @param callback The callback.
@@ -5262,6 +5369,7 @@ extern "C"
    * @param frameIndex The index of the frame of interest in a multi-frame image.
    * @return The uncompressed image. It must be freed with OrthancPluginFreeImage().
    * @ingroup Images
+   * @see OrthancPluginGetInstanceDecodedFrame()
    **/
   ORTHANC_PLUGIN_INLINE OrthancPluginImage* OrthancPluginDecodeDicomImage(
     OrthancPluginContext*  context,
@@ -5407,7 +5515,7 @@ extern "C"
   typedef struct
   {
     OrthancPluginRestOutput* output;
-    const char*              answer;
+    const void*              answer;
     uint32_t                 answerSize;
     uint32_t                 headersCount;
     const char* const*       headersKeys;
@@ -5437,7 +5545,7 @@ extern "C"
   ORTHANC_PLUGIN_INLINE OrthancPluginErrorCode OrthancPluginSendMultipartItem2(
     OrthancPluginContext*    context,
     OrthancPluginRestOutput* output,
-    const char*              answer,
+    const void*              answer,
     uint32_t                 answerSize,
     uint32_t                 headersCount,
     const char* const*       headersKeys,
@@ -6737,6 +6845,7 @@ extern "C"
    * @see OrthancPluginCreateDicom()
    * @return The NULL value in case of error, or the JSON document. This string must
    * be freed by OrthancPluginFreeString().
+   * @deprecated OrthancPluginEncodeDicomWebJson2()
    * @ingroup Toolbox
    **/
   ORTHANC_PLUGIN_INLINE char* OrthancPluginEncodeDicomWebJson(
@@ -6775,9 +6884,10 @@ extern "C"
    * @param dicom Pointer to the DICOM instance.
    * @param dicomSize Size of the DICOM instance.
    * @param callback Callback to set the value of the binary tags.
-   * @return The NULL value in case of error, or the JSON document. This string must
+   * @return The NULL value in case of error, or the XML document. This string must
    * be freed by OrthancPluginFreeString().
    * @see OrthancPluginCreateDicom()
+   * @deprecated OrthancPluginEncodeDicomWebXml2()
    * @ingroup Toolbox
    **/
   ORTHANC_PLUGIN_INLINE char* OrthancPluginEncodeDicomWebXml(
@@ -6795,6 +6905,104 @@ extern "C"
     params.callback = callback;
 
     if (context->InvokeService(context, _OrthancPluginService_EncodeDicomWebXml, &params) != OrthancPluginErrorCode_Success)
+    {
+      /* Error */
+      return NULL;
+    }
+    else
+    {
+      return target;
+    }
+  }
+  
+
+
+  typedef struct
+  {
+    char**                                target;
+    const void*                           dicom;
+    uint32_t                              dicomSize;
+    OrthancPluginDicomWebBinaryCallback2  callback;
+    void*                                 payload;
+  } _OrthancPluginEncodeDicomWeb2;
+
+  /**
+   * @brief Convert a DICOM instance to DICOMweb JSON.
+   *
+   * This function converts a memory buffer containing a DICOM instance,
+   * into its DICOMweb JSON representation.
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param dicom Pointer to the DICOM instance.
+   * @param dicomSize Size of the DICOM instance.
+   * @param callback Callback to set the value of the binary tags.
+   * @param payload User payload.
+   * @return The NULL value in case of error, or the JSON document. This string must
+   * be freed by OrthancPluginFreeString().
+   * @see OrthancPluginCreateDicom()
+   * @ingroup Toolbox
+   **/
+  ORTHANC_PLUGIN_INLINE char* OrthancPluginEncodeDicomWebJson2(
+    OrthancPluginContext*                 context,
+    const void*                           dicom,
+    uint32_t                              dicomSize,
+    OrthancPluginDicomWebBinaryCallback2  callback,
+    void*                                 payload)
+  {
+    char* target = NULL;
+    
+    _OrthancPluginEncodeDicomWeb2 params;
+    params.target = &target;
+    params.dicom = dicom;
+    params.dicomSize = dicomSize;
+    params.callback = callback;
+    params.payload = payload;
+
+    if (context->InvokeService(context, _OrthancPluginService_EncodeDicomWebJson2, &params) != OrthancPluginErrorCode_Success)
+    {
+      /* Error */
+      return NULL;
+    }
+    else
+    {
+      return target;
+    }
+  }
+
+
+  /**
+   * @brief Convert a DICOM instance to DICOMweb XML.
+   *
+   * This function converts a memory buffer containing a DICOM instance,
+   * into its DICOMweb XML representation.
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param dicom Pointer to the DICOM instance.
+   * @param dicomSize Size of the DICOM instance.
+   * @param callback Callback to set the value of the binary tags.
+   * @param payload User payload.
+   * @return The NULL value in case of error, or the XML document. This string must
+   * be freed by OrthancPluginFreeString().
+   * @see OrthancPluginCreateDicom()
+   * @ingroup Toolbox
+   **/
+  ORTHANC_PLUGIN_INLINE char* OrthancPluginEncodeDicomWebXml2(
+    OrthancPluginContext*                 context,
+    const void*                           dicom,
+    uint32_t                              dicomSize,
+    OrthancPluginDicomWebBinaryCallback2  callback,
+    void*                                 payload)
+  {
+    char* target = NULL;
+    
+    _OrthancPluginEncodeDicomWeb2 params;
+    params.target = &target;
+    params.dicom = dicom;
+    params.dicomSize = dicomSize;
+    params.callback = callback;
+    params.payload = payload;
+
+    if (context->InvokeService(context, _OrthancPluginService_EncodeDicomWebXml2, &params) != OrthancPluginErrorCode_Success)
     {
       /* Error */
       return NULL;
@@ -7250,7 +7458,720 @@ extern "C"
   }
 
 
+
+  /**
+   * @brief Callback executed by the storage commitment SCP.
+   *
+   * Signature of a factory function that creates an object to handle
+   * one incoming storage commitment request.
+   *
+   * @remark The factory receives the list of the SOP class/instance
+   * UIDs of interest to the remote storage commitment SCU. This gives
+   * the factory the possibility to start some prefetch process
+   * upfront in the background, before the handler object is actually
+   * queried about the status of these DICOM instances.
+   *
+   * @param handler Output variable where the factory puts the handler object it created.
+   * @param jobId ID of the Orthanc job that is responsible for handling 
+   * the storage commitment request. This job will successively look for the
+   * status of all the individual queried DICOM instances.
+   * @param transactionUid UID of the storage commitment transaction
+   * provided by the storage commitment SCU. It contains the value of the
+   * (0008,1195) DICOM tag.
+   * @param sopClassUids Array of the SOP class UIDs (0008,0016) that are queried by the SCU.
+   * @param sopInstanceUids Array of the SOP instance UIDs (0008,0018) that are queried by the SCU.
+   * @param countInstances Number of DICOM instances that are queried. This is the size
+   * of the `sopClassUids` and `sopInstanceUids` arrays.
+   * @param remoteAet The AET of the storage commitment SCU.
+   * @param calledAet The AET used by the SCU to contact the storage commitment SCP (i.e. Orthanc).
+   * @return 0 if success, other value if error.
+   * @ingroup DicomCallbacks
+   **/
+  typedef OrthancPluginErrorCode (*OrthancPluginStorageCommitmentFactory) (
+    void**              handler /* out */,
+    const char*         jobId,
+    const char*         transactionUid,
+    const char* const*  sopClassUids,
+    const char* const*  sopInstanceUids,
+    uint32_t            countInstances,
+    const char*         remoteAet,
+    const char*         calledAet);
+
   
+  /**
+   * @brief Callback to free one storage commitment SCP handler.
+   * 
+   * Signature of a callback function that releases the resources
+   * allocated by the factory of the storage commitment SCP. The
+   * handler is the return value of a previous call to the
+   * OrthancPluginStorageCommitmentFactory() callback.
+   *
+   * @param handler The handler object to be destructed.
+   * @ingroup DicomCallbacks
+   **/
+  typedef void (*OrthancPluginStorageCommitmentDestructor) (void* handler);
+
+
+  /**
+   * @brief Callback to get the status of one DICOM instance in the
+   * storage commitment SCP.
+   *
+   * Signature of a callback function that is successively invoked for
+   * each DICOM instance that is queried by the remote storage
+   * commitment SCU.  The function must be tought of as a method of
+   * the handler object that was created by a previous call to the
+   * OrthancPluginStorageCommitmentFactory() callback. After each call
+   * to this method, the progress of the associated Orthanc job is
+   * updated.
+   * 
+   * @param target Output variable where to put the status for the queried instance.
+   * @param handler The handler object associated with this storage commitment request.
+   * @param sopClassUid The SOP class UID (0008,0016) of interest.
+   * @param sopInstanceUid The SOP instance UID (0008,0018) of interest.
+   * @ingroup DicomCallbacks
+   **/
+  typedef OrthancPluginErrorCode (*OrthancPluginStorageCommitmentLookup) (
+    OrthancPluginStorageCommitmentFailureReason* target,
+    void* handler,
+    const char* sopClassUid,
+    const char* sopInstanceUid);
+    
+    
+  typedef struct
+  {
+    OrthancPluginStorageCommitmentFactory     factory;
+    OrthancPluginStorageCommitmentDestructor  destructor;
+    OrthancPluginStorageCommitmentLookup      lookup;
+  } _OrthancPluginRegisterStorageCommitmentScpCallback;
+
+  /**
+   * @brief Register a callback to handle incoming requests to the storage commitment SCP.
+   *
+   * This function registers a callback to handle storage commitment SCP requests.
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param factory Factory function that creates the handler object
+   * for incoming storage commitment requests.
+   * @param destructor Destructor function to destroy the handler object.
+   * @param lookup Callback method to get the status of one DICOM instance.
+   * @return 0 if success, other value if error.
+   * @ingroup DicomCallbacks
+   **/
+  ORTHANC_PLUGIN_INLINE OrthancPluginErrorCode OrthancPluginRegisterStorageCommitmentScpCallback(
+    OrthancPluginContext*                     context,
+    OrthancPluginStorageCommitmentFactory     factory,
+    OrthancPluginStorageCommitmentDestructor  destructor,
+    OrthancPluginStorageCommitmentLookup      lookup)
+  {
+    _OrthancPluginRegisterStorageCommitmentScpCallback params;
+    params.factory = factory;
+    params.destructor = destructor;
+    params.lookup = lookup;
+    return context->InvokeService(context, _OrthancPluginService_RegisterStorageCommitmentScpCallback, &params);
+  }
+  
+
+
+  /**
+   * @brief Callback to filter incoming DICOM instances received by Orthanc.
+   *
+   * Signature of a callback function that is triggered whenever
+   * Orthanc receives a new DICOM instance (e.g. through REST API or
+   * DICOM protocol), and that answers whether this DICOM instance
+   * should be accepted or discarded by Orthanc.
+   *
+   * Note that the metadata information is not available
+   * (i.e. GetInstanceMetadata() should not be used on "instance").
+   *
+   * @param instance The received DICOM instance.
+   * @return 0 to discard the instance, 1 to store the instance, -1 if error.
+   * @ingroup Callback
+   **/
+  typedef int32_t (*OrthancPluginIncomingDicomInstanceFilter) (
+    const OrthancPluginDicomInstance* instance);
+
+
+  typedef struct
+  {
+    OrthancPluginIncomingDicomInstanceFilter callback;
+  } _OrthancPluginIncomingDicomInstanceFilter;
+
+  /**
+   * @brief Register a callback to filter incoming DICOM instance.
+   *
+   * This function registers a custom callback to filter incoming
+   * DICOM instances received by Orthanc (either through the REST API
+   * or through the DICOM protocol).
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param callback The callback.
+   * @return 0 if success, other value if error.
+   * @ingroup Callbacks
+   **/
+  ORTHANC_PLUGIN_INLINE OrthancPluginErrorCode OrthancPluginRegisterIncomingDicomInstanceFilter(
+    OrthancPluginContext*                     context,
+    OrthancPluginIncomingDicomInstanceFilter  callback)
+  {
+    _OrthancPluginIncomingDicomInstanceFilter params;
+    params.callback = callback;
+
+    return context->InvokeService(context, _OrthancPluginService_RegisterIncomingDicomInstanceFilter, &params);
+  }
+
+
+  /**
+   * @brief Get the transfer syntax of a DICOM file.
+   *
+   * This function returns a pointer to a newly created string that
+   * contains the transfer syntax UID of the DICOM instance. The empty
+   * string might be returned if this information is unknown.
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param instance The instance of interest.
+   * @return The NULL value in case of error, or a string containing the
+   * transfer syntax UID. This string must be freed by OrthancPluginFreeString().
+   * @ingroup DicomInstance
+   **/
+  ORTHANC_PLUGIN_INLINE char* OrthancPluginGetInstanceTransferSyntaxUid(
+    OrthancPluginContext*              context,
+    const OrthancPluginDicomInstance*  instance)
+  {
+    char* result;
+
+    _OrthancPluginAccessDicomInstance params;
+    memset(&params, 0, sizeof(params));
+    params.resultStringToFree = &result;
+    params.instance = instance;
+
+    if (context->InvokeService(context, _OrthancPluginService_GetInstanceTransferSyntaxUid, &params) != OrthancPluginErrorCode_Success)
+    {
+      /* Error */
+      return NULL;
+    }
+    else
+    {
+      return result;
+    }
+  }
+
+
+  /**
+   * @brief Check whether the DICOM file has pixel data.
+   *
+   * This function returns a Boolean value indicating whether the
+   * DICOM instance contains the pixel data (7FE0,0010) tag.
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param instance The instance of interest.
+   * @return "1" if the DICOM instance contains pixel data, or "0" if
+   * the tag is missing, or "-1" in the case of an error.
+   * @ingroup DicomInstance
+   **/
+  ORTHANC_PLUGIN_INLINE int32_t OrthancPluginHasInstancePixelData(
+    OrthancPluginContext*             context,
+    const OrthancPluginDicomInstance* instance)
+  {
+    int64_t hasPixelData;
+
+    _OrthancPluginAccessDicomInstance params;
+    memset(&params, 0, sizeof(params));
+    params.resultInt64 = &hasPixelData;
+    params.instance = instance;
+
+    if (context->InvokeService(context, _OrthancPluginService_HasInstancePixelData, &params) != OrthancPluginErrorCode_Success ||
+        hasPixelData < 0 ||
+        hasPixelData > 1)
+    {
+      /* Error */
+      return -1;
+    }
+    else
+    {
+      return (hasPixelData != 0);
+    }
+  }
+
+
+
+
+
+
+  typedef struct
+  {
+    OrthancPluginDicomInstance**  target;
+    const void*                   buffer;
+    uint32_t                      size;
+    const char*                   transferSyntax;
+  } _OrthancPluginCreateDicomInstance;
+
+  /**
+   * @brief Parse a DICOM instance.
+   *
+   * This function parses a memory buffer that contains a DICOM
+   * file. The function returns a new pointer to a data structure that
+   * is managed by the Orthanc core.
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param buffer The memory buffer containing the DICOM instance.
+   * @param size The size of the memory buffer.
+   * @return The newly allocated DICOM instance. It must be freed with OrthancPluginFreeDicomInstance().
+   * @ingroup DicomInstance
+   **/
+  ORTHANC_PLUGIN_INLINE OrthancPluginDicomInstance* OrthancPluginCreateDicomInstance(
+    OrthancPluginContext*  context,
+    const void*            buffer,
+    uint32_t               size)
+  {
+    OrthancPluginDicomInstance* target = NULL;
+
+    _OrthancPluginCreateDicomInstance params;
+    params.target = &target;
+    params.buffer = buffer;
+    params.size = size;
+
+    if (context->InvokeService(context, _OrthancPluginService_CreateDicomInstance, &params) != OrthancPluginErrorCode_Success)
+    {
+      /* Error */
+      return NULL;
+    }
+    else
+    {
+      return target;
+    }
+  }
+
+  typedef struct
+  {
+    OrthancPluginDicomInstance*   dicom;
+  } _OrthancPluginFreeDicomInstance;
+
+  /**
+   * @brief Free a DICOM instance.
+   *
+   * This function frees a DICOM instance that was parsed using
+   * OrthancPluginCreateDicomInstance().
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param dicom The DICOM instance.
+   * @ingroup DicomInstance
+   **/
+  ORTHANC_PLUGIN_INLINE void  OrthancPluginFreeDicomInstance(
+    OrthancPluginContext*        context, 
+    OrthancPluginDicomInstance*  dicom)
+  {
+    _OrthancPluginFreeDicomInstance params;
+    params.dicom = dicom;
+
+    context->InvokeService(context, _OrthancPluginService_FreeDicomInstance, &params);
+  }
+
+
+  typedef struct
+  {
+    uint32_t*                             targetUint32;
+    OrthancPluginMemoryBuffer*            targetBuffer;
+    OrthancPluginImage**                  targetImage;
+    char**                                targetStringToFree;
+    const OrthancPluginDicomInstance*     instance;
+    uint32_t                              frameIndex;
+    OrthancPluginDicomToJsonFormat        format;
+    OrthancPluginDicomToJsonFlags         flags;
+    uint32_t                              maxStringLength;
+    OrthancPluginDicomWebBinaryCallback2  dicomWebCallback;
+    void*                                 dicomWebPayload;
+  } _OrthancPluginAccessDicomInstance2;
+
+  /**
+   * @brief Get the number of frames in a DICOM instance.
+   *
+   * This function returns the number of frames that are part of a
+   * DICOM image managed by the Orthanc core.
+   * 
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param instance The instance of interest.
+   * @return The number of frames (will be zero in the case of an error).
+   * @ingroup DicomInstance
+   **/
+  ORTHANC_PLUGIN_INLINE uint32_t OrthancPluginGetInstanceFramesCount(
+    OrthancPluginContext*             context,
+    const OrthancPluginDicomInstance* instance)
+  {
+    uint32_t count;
+
+    _OrthancPluginAccessDicomInstance2 params;
+    memset(&params, 0, sizeof(params));
+    params.targetUint32 = &count;
+    params.instance = instance;
+
+    if (context->InvokeService(context, _OrthancPluginService_GetInstanceFramesCount, &params) != OrthancPluginErrorCode_Success)
+    {
+      /* Error */
+      return 0;
+    }
+    else
+    {
+      return count;
+    }
+  }
+
+
+  /**
+   * @brief Get the raw content of a frame in a DICOM instance.
+   *
+   * This function returns a memory buffer containing the raw content
+   * of a frame in a DICOM instance that is managed by the Orthanc
+   * core. This is notably useful for compressed transfer syntaxes, as
+   * it gives access to the embedded files (such as JPEG, JPEG-LS or
+   * JPEG2k). The Orthanc core transparently reassembles the fragments
+   * to extract the raw frame.
+   * 
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param target The target memory buffer. It must be freed with OrthancPluginFreeMemoryBuffer().
+   * @param instance The instance of interest.
+   * @param frameIndex The index of the frame of interest.
+   * @return 0 if success, or the error code if failure.
+   * @ingroup DicomInstance
+   **/
+  ORTHANC_PLUGIN_INLINE OrthancPluginErrorCode OrthancPluginGetInstanceRawFrame(
+    OrthancPluginContext*             context,
+    OrthancPluginMemoryBuffer*        target,
+    const OrthancPluginDicomInstance* instance,
+    uint32_t                          frameIndex)
+  {
+    _OrthancPluginAccessDicomInstance2 params;
+    memset(&params, 0, sizeof(params));
+    params.targetBuffer = target;
+    params.instance = instance;
+    params.frameIndex = frameIndex;
+
+    return context->InvokeService(context, _OrthancPluginService_GetInstanceRawFrame, &params);
+  }
+
+
+  /**
+   * @brief Decode one frame from a DICOM instance.
+   *
+   * This function decodes one frame of a DICOM image that is managed
+   * by the Orthanc core.
+   * 
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param instance The instance of interest.
+   * @param frameIndex The index of the frame of interest.
+   * @return The uncompressed image. It must be freed with OrthancPluginFreeImage().
+   * @ingroup DicomInstance
+   **/
+  ORTHANC_PLUGIN_INLINE OrthancPluginImage* OrthancPluginGetInstanceDecodedFrame(
+    OrthancPluginContext*             context,
+    const OrthancPluginDicomInstance* instance,
+    uint32_t                          frameIndex)
+  {
+    OrthancPluginImage* target = NULL;
+
+    _OrthancPluginAccessDicomInstance2 params;
+    memset(&params, 0, sizeof(params));
+    params.targetImage = &target;
+    params.instance = instance;
+    params.frameIndex = frameIndex;
+
+    if (context->InvokeService(context, _OrthancPluginService_GetInstanceDecodedFrame, &params) != OrthancPluginErrorCode_Success)
+    {
+      return NULL;
+    }
+    else
+    {
+      return target;
+    }
+  }
+
+  
+  /**
+   * @brief Parse and transcode a DICOM instance.
+   *
+   * This function parses a memory buffer that contains a DICOM file,
+   * then transcodes it to the given transfer syntax. The function
+   * returns a new pointer to a data structure that is managed by the
+   * Orthanc core.
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param buffer The memory buffer containing the DICOM instance.
+   * @param size The size of the memory buffer.
+   * @param transferSyntax The transfer syntax UID for the transcoding.
+   * @return The newly allocated DICOM instance. It must be freed with OrthancPluginFreeDicomInstance().
+   * @ingroup DicomInstance
+   **/
+  ORTHANC_PLUGIN_INLINE OrthancPluginDicomInstance* OrthancPluginTranscodeDicomInstance(
+    OrthancPluginContext*  context,
+    const void*            buffer,
+    uint32_t               size,
+    const char*            transferSyntax)
+  {
+    OrthancPluginDicomInstance* target = NULL;
+
+    _OrthancPluginCreateDicomInstance params;
+    params.target = &target;
+    params.buffer = buffer;
+    params.size = size;
+    params.transferSyntax = transferSyntax;
+
+    if (context->InvokeService(context, _OrthancPluginService_TranscodeDicomInstance, &params) != OrthancPluginErrorCode_Success)
+    {
+      /* Error */
+      return NULL;
+    }
+    else
+    {
+      return target;
+    }
+  }
+
+  /**
+   * @brief Writes a DICOM instance to a memory buffer.
+   *
+   * This function returns a memory buffer containing the
+   * serialization of a DICOM instance that is managed by the Orthanc
+   * core.
+   * 
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param target The target memory buffer. It must be freed with OrthancPluginFreeMemoryBuffer().
+   * @param instance The instance of interest.
+   * @return 0 if success, or the error code if failure.
+   * @ingroup DicomInstance
+   **/
+  ORTHANC_PLUGIN_INLINE OrthancPluginErrorCode OrthancPluginSerializeDicomInstance(
+    OrthancPluginContext*             context,
+    OrthancPluginMemoryBuffer*        target,
+    const OrthancPluginDicomInstance* instance)
+  {
+    _OrthancPluginAccessDicomInstance2 params;
+    memset(&params, 0, sizeof(params));
+    params.targetBuffer = target;
+    params.instance = instance;
+
+    return context->InvokeService(context, _OrthancPluginService_SerializeDicomInstance, &params);
+  }
+  
+
+  /**
+   * @brief Format a DICOM memory buffer as a JSON string.
+   *
+   * This function takes as DICOM instance managed by the Orthanc
+   * core, and outputs a JSON string representing the tags of this
+   * DICOM file.
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param instance The DICOM instance of interest.
+   * @param format The output format.
+   * @param flags Flags governing the output.
+   * @param maxStringLength The maximum length of a field. Too long fields will
+   * be output as "null". The 0 value means no maximum length.
+   * @return The NULL value if the case of an error, or the JSON
+   * string. This string must be freed by OrthancPluginFreeString().
+   * @ingroup DicomInstance
+   * @see OrthancPluginDicomBufferToJson
+   **/
+  ORTHANC_PLUGIN_INLINE char* OrthancPluginGetInstanceAdvancedJson(
+    OrthancPluginContext*              context,
+    const OrthancPluginDicomInstance*  instance,
+    OrthancPluginDicomToJsonFormat     format,
+    OrthancPluginDicomToJsonFlags      flags, 
+    uint32_t                           maxStringLength)
+  {
+    char* result = NULL;
+
+    _OrthancPluginAccessDicomInstance2 params;
+    memset(&params, 0, sizeof(params));
+    params.targetStringToFree = &result;
+    params.instance = instance;
+    params.format = format;
+    params.flags = flags;
+    params.maxStringLength = maxStringLength;
+
+    if (context->InvokeService(context, _OrthancPluginService_GetInstanceAdvancedJson, &params) != OrthancPluginErrorCode_Success)
+    {
+      /* Error */
+      return NULL;
+    }
+    else
+    {
+      return result;
+    }
+  }
+
+
+  /**
+   * @brief Convert a DICOM instance to DICOMweb JSON.
+   *
+   * This function converts a DICOM instance that is managed by the
+   * Orthanc core, into its DICOMweb JSON representation.
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param instance The DICOM instance of interest.
+   * @param callback Callback to set the value of the binary tags.
+   * @param payload User payload.
+   * @return The NULL value in case of error, or the JSON document. This string must
+   * be freed by OrthancPluginFreeString().
+   * @ingroup DicomInstance
+   **/
+  ORTHANC_PLUGIN_INLINE char* OrthancPluginGetInstanceDicomWebJson(
+    OrthancPluginContext*                 context,
+    const OrthancPluginDicomInstance*     instance,
+    OrthancPluginDicomWebBinaryCallback2  callback,
+    void*                                 payload)
+  {
+    char* target = NULL;
+    
+    _OrthancPluginAccessDicomInstance2 params;
+    params.targetStringToFree = &target;
+    params.instance = instance;
+    params.dicomWebCallback = callback;
+    params.dicomWebPayload = payload;
+
+    if (context->InvokeService(context, _OrthancPluginService_GetInstanceDicomWebJson, &params) != OrthancPluginErrorCode_Success)
+    {
+      /* Error */
+      return NULL;
+    }
+    else
+    {
+      return target;
+    }
+  }
+  
+
+  /**
+   * @brief Convert a DICOM instance to DICOMweb XML.
+   *
+   * This function converts a DICOM instance that is managed by the
+   * Orthanc core, into its DICOMweb XML representation.
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param instance The DICOM instance of interest.
+   * @param callback Callback to set the value of the binary tags.
+   * @param payload User payload.
+   * @return The NULL value in case of error, or the XML document. This string must
+   * be freed by OrthancPluginFreeString().
+   * @ingroup DicomInstance
+   **/
+  ORTHANC_PLUGIN_INLINE char* OrthancPluginGetInstanceDicomWebXml(
+    OrthancPluginContext*                 context,
+    const OrthancPluginDicomInstance*     instance,
+    OrthancPluginDicomWebBinaryCallback2  callback,
+    void*                                 payload)
+  {
+    char* target = NULL;
+    
+    _OrthancPluginAccessDicomInstance2 params;
+    params.targetStringToFree = &target;
+    params.instance = instance;
+    params.dicomWebCallback = callback;
+    params.dicomWebPayload = payload;
+
+    if (context->InvokeService(context, _OrthancPluginService_GetInstanceDicomWebXml, &params) != OrthancPluginErrorCode_Success)
+    {
+      /* Error */
+      return NULL;
+    }
+    else
+    {
+      return target;
+    }
+  }
+
+
+
+  /**
+   * @brief Signature of a callback function to transcode a DICOM instance.
+   * @param transcoded Target memory buffer. It must be allocated by the
+   * plugin using OrthancPluginCreateMemoryBuffer().
+   * @param buffer Memory buffer containing the source DICOM instance.
+   * @param size Size of the source memory buffer.
+   * @param allowedSyntaxes A C array of possible transfer syntaxes UIDs for the
+   * result of the transcoding. The plugin must choose by itself the 
+   * transfer syntax that will be used for the resulting DICOM image.
+   * @param countSyntaxes The number of transfer syntaxes that are contained
+   * in the "allowedSyntaxes" array.
+   * @param allowNewSopInstanceUid Whether the transcoding plugin can select
+   * a transfer syntax that will change the SOP instance UID (or, in other 
+   * terms, whether the plugin can transcode using lossy compression).
+   * @return 0 if success (i.e. image successfully transcoded and stored into
+   * "transcoded"), or the error code if failure.
+   * @ingroup Callbacks
+   **/
+  typedef OrthancPluginErrorCode (*OrthancPluginTranscoderCallback) (
+    OrthancPluginMemoryBuffer* transcoded /* out */,
+    const void*                buffer,
+    uint64_t                   size,
+    const char* const*         allowedSyntaxes,
+    uint32_t                   countSyntaxes,
+    uint8_t                    allowNewSopInstanceUid);
+
+
+  typedef struct
+  {
+    OrthancPluginTranscoderCallback callback;
+  } _OrthancPluginTranscoderCallback;
+
+  /**
+   * @brief Register a callback to handle the transcoding of DICOM images.
+   *
+   * This function registers a custom callback to transcode DICOM
+   * images, extending the built-in transcoder of Orthanc that uses
+   * DCMTK. The exact behavior is affected by the configuration option
+   * "BuiltinDecoderTranscoderOrder" of Orthanc.
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param callback The callback.
+   * @return 0 if success, other value if error.
+   * @ingroup Callbacks
+   **/
+  ORTHANC_PLUGIN_INLINE OrthancPluginErrorCode OrthancPluginRegisterTranscoderCallback(
+    OrthancPluginContext*            context,
+    OrthancPluginTranscoderCallback  callback)
+  {
+    _OrthancPluginTranscoderCallback params;
+    params.callback = callback;
+
+    return context->InvokeService(context, _OrthancPluginService_RegisterTranscoderCallback, &params);
+  }
+  
+
+
+  typedef struct
+  {
+    OrthancPluginMemoryBuffer*  target;
+    uint32_t                    size;
+  } _OrthancPluginCreateMemoryBuffer;
+
+  /**
+   * @brief Create a memory buffer.
+   *
+   * This function creates a memory buffer that is managed by the
+   * Orthanc core. The main use case of this function is for plugins
+   * that act as DICOM transcoders.
+   * 
+   * Your plugin should never call "free()" on the resulting memory
+   * buffer, as the C library that is used by the plugin is in general
+   * not the same as the one used by the Orthanc core.
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param target The target memory buffer. It must be freed with OrthancPluginFreeMemoryBuffer().
+   * @param size Size of the memory buffer to be created.
+   * @return 0 if success, or the error code if failure.
+   * @ingroup Toolbox
+   **/
+  ORTHANC_PLUGIN_INLINE OrthancPluginErrorCode OrthancPluginCreateMemoryBuffer(
+    OrthancPluginContext*       context,
+    OrthancPluginMemoryBuffer*  target,
+    uint32_t                    size)
+  {
+    _OrthancPluginCreateMemoryBuffer params;
+    params.target = target;
+    params.size = size;
+
+    return context->InvokeService(context, _OrthancPluginService_CreateMemoryBuffer, &params);
+  }
+  
+
 #ifdef  __cplusplus
 }
 #endif

@@ -1,6 +1,8 @@
 Pending changes in the mainline
 ===============================
 
+=> Minimum SDK version: 1.7.2 <=
+
 * Fix compilation using Visual Studio
 * The "Calling Python..." info logs are disabled if "PythonVerbose" is "false"
 * New builders for Windows: Supporting 32 / 64bit with Python 2.7 / 3.7 / 3.8
@@ -9,5 +11,7 @@ Pending changes in the mainline
 
 Version 1.0 (2020-04-01)
 ========================
+
+=> Minimum SDK version: 1.5.7 <=
 
 * Initial release

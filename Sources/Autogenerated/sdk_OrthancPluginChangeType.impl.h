@@ -79,6 +79,9 @@ void RegisterOrthancPluginChangeTypeEnumeration(PyObject* module)
   PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "UPDATED_METADATA", PyLong_FromLong(13));
   PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "UPDATED_PEERS", PyLong_FromLong(14));
   PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "UPDATED_MODALITIES", PyLong_FromLong(15));
+  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "JOB_SUBMITTED", PyLong_FromLong(16));
+  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "JOB_SUCCESS", PyLong_FromLong(17));
+  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "JOB_FAILURE", PyLong_FromLong(18));
 
   Py_INCREF(&sdk_OrthancPluginChangeType_Type);
   if (PyModule_AddObject(module, "ChangeType", (PyObject *)&sdk_OrthancPluginChangeType_Type) < 0)

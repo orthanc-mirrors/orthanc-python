@@ -103,6 +103,7 @@ void RegisterOrthancPluginErrorCodeEnumeration(PyObject* module)
   PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "DATABASE_UNAVAILABLE", PyLong_FromLong(36));
   PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "CANCELED_JOB", PyLong_FromLong(37));
   PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "BAD_GEOMETRY", PyLong_FromLong(38));
+  PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "SSL_INITIALIZATION", PyLong_FromLong(39));
   PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "SQLITE_NOT_OPENED", PyLong_FromLong(1000));
   PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "SQLITE_ALREADY_OPENED", PyLong_FromLong(1001));
   PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "SQLITE_CANNOT_OPEN", PyLong_FromLong(1002));
@@ -162,6 +163,8 @@ void RegisterOrthancPluginErrorCodeEnumeration(PyObject* module)
   PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "CANNOT_ORDER_SLICES", PyLong_FromLong(2040));
   PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "NO_WORKLIST_HANDLER", PyLong_FromLong(2041));
   PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "ALREADY_EXISTING_TAG", PyLong_FromLong(2042));
+  PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "NO_STORAGE_COMMITMENT_HANDLER", PyLong_FromLong(2043));
+  PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "NO_CGET_HANDLER", PyLong_FromLong(2044));
   PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "UNSUPPORTED_MEDIA_TYPE", PyLong_FromLong(3000));
 
   Py_INCREF(&sdk_OrthancPluginErrorCode_Type);

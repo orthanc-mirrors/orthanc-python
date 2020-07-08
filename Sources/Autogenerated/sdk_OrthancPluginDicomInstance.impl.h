@@ -43,6 +43,20 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceMetadata
   sdk_OrthancPluginDicomInstance_Object* self, PyObject *args);
 static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceOrigin(
   sdk_OrthancPluginDicomInstance_Object* self, PyObject *args);
+static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceTransferSyntaxUid(
+  sdk_OrthancPluginDicomInstance_Object* self, PyObject *args);
+static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginHasInstancePixelData(
+  sdk_OrthancPluginDicomInstance_Object* self, PyObject *args);
+static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceFramesCount(
+  sdk_OrthancPluginDicomInstance_Object* self, PyObject *args);
+static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRawFrame(
+  sdk_OrthancPluginDicomInstance_Object* self, PyObject *args);
+static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceDecodedFrame(
+  sdk_OrthancPluginDicomInstance_Object* self, PyObject *args);
+static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginSerializeDicomInstance(
+  sdk_OrthancPluginDicomInstance_Object* self, PyObject *args);
+static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceAdvancedJson(
+  sdk_OrthancPluginDicomInstance_Object* self, PyObject *args);
 
 
 static PyMethodDef sdk_OrthancPluginDicomInstance_Methods[] = {
@@ -67,6 +81,27 @@ static PyMethodDef sdk_OrthancPluginDicomInstance_Methods[] = {
   { "GetInstanceOrigin",
     (PyCFunction) sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceOrigin, METH_VARARGS,
     "Generated from C function OrthancPluginGetInstanceOrigin()" },
+  { "GetInstanceTransferSyntaxUid",
+    (PyCFunction) sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceTransferSyntaxUid, METH_VARARGS,
+    "Generated from C function OrthancPluginGetInstanceTransferSyntaxUid()" },
+  { "HasInstancePixelData",
+    (PyCFunction) sdk_OrthancPluginDicomInstance_OrthancPluginHasInstancePixelData, METH_VARARGS,
+    "Generated from C function OrthancPluginHasInstancePixelData()" },
+  { "GetInstanceFramesCount",
+    (PyCFunction) sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceFramesCount, METH_VARARGS,
+    "Generated from C function OrthancPluginGetInstanceFramesCount()" },
+  { "GetInstanceRawFrame",
+    (PyCFunction) sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRawFrame, METH_VARARGS,
+    "Generated from C function OrthancPluginGetInstanceRawFrame()" },
+  { "GetInstanceDecodedFrame",
+    (PyCFunction) sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceDecodedFrame, METH_VARARGS,
+    "Generated from C function OrthancPluginGetInstanceDecodedFrame()" },
+  { "SerializeDicomInstance",
+    (PyCFunction) sdk_OrthancPluginDicomInstance_OrthancPluginSerializeDicomInstance, METH_VARARGS,
+    "Generated from C function OrthancPluginSerializeDicomInstance()" },
+  { "GetInstanceAdvancedJson",
+    (PyCFunction) sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceAdvancedJson, METH_VARARGS,
+    "Generated from C function OrthancPluginGetInstanceAdvancedJson()" },
   { NULL }  /* Sentinel */
 };
 
@@ -108,6 +143,21 @@ static PyTypeObject sdk_OrthancPluginDicomInstance_Type = {
 };
 
 
+static void sdk_OrthancPluginDicomInstance_Destructor(PyObject *self)
+{
+  PythonLock::LogCall("Destroying Python object of class OrthancPluginDicomInstance");
+
+  sdk_OrthancPluginDicomInstance_Object& tmp = *((sdk_OrthancPluginDicomInstance_Object*) self);
+  
+  if (tmp.object_ != NULL &&
+      !tmp.borrowed_)
+  {
+    OrthancPluginFreeDicomInstance(OrthancPlugins::GetGlobalContext(), tmp.object_);
+    tmp.object_ = NULL;
+  }
+  
+  Py_TYPE(self)->tp_free((PyObject *)self);
+}
 
 
 // Actual implementation of the methods
@@ -296,6 +346,220 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceOrigin(
   return PyLong_FromLong(value);
 }
 
+static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceTransferSyntaxUid(
+  sdk_OrthancPluginDicomInstance_Object* self, PyObject *args)
+{
+  PythonLock::LogCall("Calling method OrthancPluginGetInstanceTransferSyntaxUid() on object of class OrthancPluginDicomInstance");
+
+  if (self->object_ == NULL)
+  {
+    // TODO: RAISE
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
+    PyErr_SetString(PyExc_ValueError, "Invalid object");
+    return NULL;
+  }
+
+
+  OrthancPlugins::OrthancString s;
+  s.Assign(OrthancPluginGetInstanceTransferSyntaxUid(OrthancPlugins::GetGlobalContext(), self->object_));
+  
+  if (s.GetContent() == NULL)
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
+    PyErr_SetString(PyExc_ValueError, "Internal error");
+    return NULL;
+  }
+  else
+  {
+    return PyUnicode_FromString(s.GetContent());
+  }
+}
+
+static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginHasInstancePixelData(
+  sdk_OrthancPluginDicomInstance_Object* self, PyObject *args)
+{
+  PythonLock::LogCall("Calling method OrthancPluginHasInstancePixelData() on object of class OrthancPluginDicomInstance");
+
+  if (self->object_ == NULL)
+  {
+    // TODO: RAISE
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
+    PyErr_SetString(PyExc_ValueError, "Invalid object");
+    return NULL;
+  }
+
+
+  long value = OrthancPluginHasInstancePixelData(OrthancPlugins::GetGlobalContext(), self->object_);
+  
+  return PyLong_FromLong(value);
+}
+
+static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceFramesCount(
+  sdk_OrthancPluginDicomInstance_Object* self, PyObject *args)
+{
+  PythonLock::LogCall("Calling method OrthancPluginGetInstanceFramesCount() on object of class OrthancPluginDicomInstance");
+
+  if (self->object_ == NULL)
+  {
+    // TODO: RAISE
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
+    PyErr_SetString(PyExc_ValueError, "Invalid object");
+    return NULL;
+  }
+
+
+  long value = OrthancPluginGetInstanceFramesCount(OrthancPlugins::GetGlobalContext(), self->object_);
+  
+  return PyLong_FromLong(value);
+}
+
+static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRawFrame(
+  sdk_OrthancPluginDicomInstance_Object* self, PyObject *args)
+{
+  PythonLock::LogCall("Calling method OrthancPluginGetInstanceRawFrame() on object of class OrthancPluginDicomInstance");
+
+  if (self->object_ == NULL)
+  {
+    // TODO: RAISE
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
+    PyErr_SetString(PyExc_ValueError, "Invalid object");
+    return NULL;
+  }
+
+  unsigned long arg0 = 0;
+
+  if (!PyArg_ParseTuple(args, "k", &arg0))
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
+    return NULL;
+  }
+  OrthancPlugins::MemoryBuffer buffer;
+  OrthancPluginErrorCode code = OrthancPluginGetInstanceRawFrame(OrthancPlugins::GetGlobalContext(), *buffer, self->object_, arg0);
+  
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    return PyBytes_FromStringAndSize(buffer.GetData(), buffer.GetSize());
+  }
+  else
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
+    PyErr_SetString(PyExc_ValueError, "Internal error");
+    return NULL;  
+  }
+}
+
+static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceDecodedFrame(
+  sdk_OrthancPluginDicomInstance_Object* self, PyObject *args)
+{
+  PythonLock::LogCall("Calling method OrthancPluginGetInstanceDecodedFrame() on object of class OrthancPluginDicomInstance");
+
+  if (self->object_ == NULL)
+  {
+    // TODO: RAISE
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
+    PyErr_SetString(PyExc_ValueError, "Invalid object");
+    return NULL;
+  }
+
+  unsigned long arg0 = 0;
+
+  if (!PyArg_ParseTuple(args, "k", &arg0))
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
+    return NULL;
+  }
+  // This is the case of a constructor
+  OrthancPluginImage* obj = OrthancPluginGetInstanceDecodedFrame(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  
+  if (obj == NULL)
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
+    PyErr_SetString(PyExc_ValueError, "Internal error");
+    return NULL;  
+  }
+  else
+  {
+    PyObject *argList = Py_BuildValue("Lb", obj, false /* not borrowed */);
+    PyObject *python = PyObject_CallObject((PyObject *) &sdk_OrthancPluginImage_Type, argList);
+    Py_DECREF(argList);
+    return python;
+  }
+}
+
+static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginSerializeDicomInstance(
+  sdk_OrthancPluginDicomInstance_Object* self, PyObject *args)
+{
+  PythonLock::LogCall("Calling method OrthancPluginSerializeDicomInstance() on object of class OrthancPluginDicomInstance");
+
+  if (self->object_ == NULL)
+  {
+    // TODO: RAISE
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
+    PyErr_SetString(PyExc_ValueError, "Invalid object");
+    return NULL;
+  }
+
+
+  OrthancPlugins::MemoryBuffer buffer;
+  OrthancPluginErrorCode code = OrthancPluginSerializeDicomInstance(OrthancPlugins::GetGlobalContext(), *buffer, self->object_);
+  
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    return PyBytes_FromStringAndSize(buffer.GetData(), buffer.GetSize());
+  }
+  else
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
+    PyErr_SetString(PyExc_ValueError, "Internal error");
+    return NULL;  
+  }
+}
+
+static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceAdvancedJson(
+  sdk_OrthancPluginDicomInstance_Object* self, PyObject *args)
+{
+  PythonLock::LogCall("Calling method OrthancPluginGetInstanceAdvancedJson() on object of class OrthancPluginDicomInstance");
+
+  if (self->object_ == NULL)
+  {
+    // TODO: RAISE
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
+    PyErr_SetString(PyExc_ValueError, "Invalid object");
+    return NULL;
+  }
+
+  long int arg0 = 0;
+  long int arg1 = 0;
+  unsigned long arg2 = 0;
+
+  if (!PyArg_ParseTuple(args, "llk", &arg0, &arg1, &arg2))
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
+    return NULL;
+  }
+  OrthancPlugins::OrthancString s;
+  s.Assign(OrthancPluginGetInstanceAdvancedJson(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginDicomToJsonFormat>(arg0), static_cast<OrthancPluginDicomToJsonFlags>(arg1), arg2));
+  
+  if (s.GetContent() == NULL)
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
+    PyErr_SetString(PyExc_ValueError, "Internal error");
+    return NULL;
+  }
+  else
+  {
+    return PyUnicode_FromString(s.GetContent());
+  }
+}
+
 
 
 static void RegisterOrthancPluginDicomInstanceClass(PyObject* module)
@@ -306,6 +570,14 @@ static void RegisterOrthancPluginDicomInstanceClass(PyObject* module)
   sdk_OrthancPluginDicomInstance_Type.tp_methods = sdk_OrthancPluginDicomInstance_Methods;
   sdk_OrthancPluginDicomInstance_Type.tp_init = (initproc) sdk_OrthancPluginDicomInstance_Constructor;
 
+  /**
+   * "tp_dealloc is called when the reference count of the object goes
+   * down to zero. This is where you destroy the object and its
+   * members. It should then free the memory occupied by the object by
+   * calling tp_free."
+   * https://stackoverflow.com/a/24863227/881731
+   **/
+  sdk_OrthancPluginDicomInstance_Type.tp_dealloc = sdk_OrthancPluginDicomInstance_Destructor;
   
   if (PyType_Ready(&sdk_OrthancPluginDicomInstance_Type) < 0)
   {

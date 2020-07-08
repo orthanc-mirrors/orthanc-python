@@ -28,7 +28,7 @@
 static PyObject*   storedInstanceCallback_ = NULL;
 
 
-static OrthancPluginErrorCode OnStoredInstanceCallback(OrthancPluginDicomInstance *instance,
+static OrthancPluginErrorCode OnStoredInstanceCallback(const OrthancPluginDicomInstance *instance,
                                                        const char *instanceId)
 {
   try

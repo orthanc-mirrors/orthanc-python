@@ -424,17 +424,16 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendMultipartItem(
     return NULL;
   }
 
-  const char* arg0 = NULL;
-  unsigned long arg1 = 0;
+  Py_buffer arg0;
 
-  if (!PyArg_ParseTuple(args, "sk", &arg0, &arg1))
+  if (!PyArg_ParseTuple(args, "s*", &arg0))
   {
     // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
-  OrthancPluginErrorCode code = OrthancPluginSendMultipartItem(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
-  
+  OrthancPluginErrorCode code = OrthancPluginSendMultipartItem(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
+  PyBuffer_Release(&arg0);
 
   if (code == OrthancPluginErrorCode_Success)
   {

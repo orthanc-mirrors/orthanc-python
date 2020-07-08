@@ -1438,6 +1438,37 @@ static PyObject* sdk_OrthancPluginGenerateUuid(PyObject* module, PyObject* args)
   }
 }
 
+static PyObject* sdk_OrthancPluginCreateFindMatcher(PyObject* module, PyObject* args)
+{
+  PythonLock::LogCall("Calling Python global function: OrthancPluginCreateFindMatcher()");
+
+  Py_buffer arg0;
+
+  if (!PyArg_ParseTuple(args, "s*", &arg0))
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
+    return NULL;
+  }
+  // This is the case of a constructor
+  OrthancPluginFindMatcher* obj = OrthancPluginCreateFindMatcher(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len);
+  PyBuffer_Release(&arg0);
+  if (obj == NULL)
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
+    PyErr_SetString(PyExc_ValueError, "Internal error");
+    return NULL;  
+  }
+  else
+  {
+    PyObject *argList = Py_BuildValue("Lb", obj, false /* not borrowed */);
+    PyObject *python = PyObject_CallObject((PyObject *) &sdk_OrthancPluginFindMatcher_Type, argList);
+    Py_DECREF(argList);
+    return python;
+  }
+}
+
 static PyObject* sdk_OrthancPluginGetPeers(PyObject* module, PyObject* args)
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginGetPeers()");
@@ -1535,6 +1566,97 @@ static PyObject* sdk_OrthancPluginGetTagName(PyObject* module, PyObject* args)
   else
   {
     return PyUnicode_FromString(s.GetContent());
+  }
+}
+
+static PyObject* sdk_OrthancPluginCreateDicomInstance(PyObject* module, PyObject* args)
+{
+  PythonLock::LogCall("Calling Python global function: OrthancPluginCreateDicomInstance()");
+
+  Py_buffer arg0;
+
+  if (!PyArg_ParseTuple(args, "s*", &arg0))
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
+    return NULL;
+  }
+  // This is the case of a constructor
+  OrthancPluginDicomInstance* obj = OrthancPluginCreateDicomInstance(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len);
+  PyBuffer_Release(&arg0);
+  if (obj == NULL)
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
+    PyErr_SetString(PyExc_ValueError, "Internal error");
+    return NULL;  
+  }
+  else
+  {
+    PyObject *argList = Py_BuildValue("Lb", obj, false /* not borrowed */);
+    PyObject *python = PyObject_CallObject((PyObject *) &sdk_OrthancPluginDicomInstance_Type, argList);
+    Py_DECREF(argList);
+    return python;
+  }
+}
+
+static PyObject* sdk_OrthancPluginTranscodeDicomInstance(PyObject* module, PyObject* args)
+{
+  PythonLock::LogCall("Calling Python global function: OrthancPluginTranscodeDicomInstance()");
+
+  Py_buffer arg0;
+  const char* arg2 = NULL;
+
+  if (!PyArg_ParseTuple(args, "s*s", &arg0, &arg2))
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
+    return NULL;
+  }
+  // This is the case of a constructor
+  OrthancPluginDicomInstance* obj = OrthancPluginTranscodeDicomInstance(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len, arg2);
+  PyBuffer_Release(&arg0);
+  if (obj == NULL)
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
+    PyErr_SetString(PyExc_ValueError, "Internal error");
+    return NULL;  
+  }
+  else
+  {
+    PyObject *argList = Py_BuildValue("Lb", obj, false /* not borrowed */);
+    PyObject *python = PyObject_CallObject((PyObject *) &sdk_OrthancPluginDicomInstance_Type, argList);
+    Py_DECREF(argList);
+    return python;
+  }
+}
+
+static PyObject* sdk_OrthancPluginCreateMemoryBuffer(PyObject* module, PyObject* args)
+{
+  PythonLock::LogCall("Calling Python global function: OrthancPluginCreateMemoryBuffer()");
+
+  unsigned long arg0 = 0;
+
+  if (!PyArg_ParseTuple(args, "k", &arg0))
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
+    return NULL;
+  }
+  OrthancPlugins::MemoryBuffer buffer;
+  OrthancPluginErrorCode code = OrthancPluginCreateMemoryBuffer(OrthancPlugins::GetGlobalContext(), *buffer, arg0);
+  
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    return PyBytes_FromStringAndSize(buffer.GetData(), buffer.GetSize());
+  }
+  else
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
+    PyErr_SetString(PyExc_ValueError, "Internal error");
+    return NULL;  
   }
 }
 
@@ -1651,6 +1773,8 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Generated from C function OrthancPluginComputeSha1()" },
   { "GenerateUuid", sdk_OrthancPluginGenerateUuid, METH_VARARGS,
     "Generated from C function OrthancPluginGenerateUuid()" },
+  { "CreateFindMatcher", sdk_OrthancPluginCreateFindMatcher, METH_VARARGS,
+    "Generated from C function OrthancPluginCreateFindMatcher()" },
   { "GetPeers", sdk_OrthancPluginGetPeers, METH_VARARGS,
     "Generated from C function OrthancPluginGetPeers()" },
   { "AutodetectMimeType", sdk_OrthancPluginAutodetectMimeType, METH_VARARGS,
@@ -1659,6 +1783,12 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Generated from C function OrthancPluginSetMetricsValue()" },
   { "GetTagName", sdk_OrthancPluginGetTagName, METH_VARARGS,
     "Generated from C function OrthancPluginGetTagName()" },
+  { "CreateDicomInstance", sdk_OrthancPluginCreateDicomInstance, METH_VARARGS,
+    "Generated from C function OrthancPluginCreateDicomInstance()" },
+  { "TranscodeDicomInstance", sdk_OrthancPluginTranscodeDicomInstance, METH_VARARGS,
+    "Generated from C function OrthancPluginTranscodeDicomInstance()" },
+  { "CreateMemoryBuffer", sdk_OrthancPluginCreateMemoryBuffer, METH_VARARGS,
+    "Generated from C function OrthancPluginCreateMemoryBuffer()" },
   { NULL, NULL }
 };
 

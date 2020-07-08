@@ -34,6 +34,7 @@
 #include "./sdk_OrthancPluginJobStopReason.impl.h"
 #include "./sdk_OrthancPluginIdentifierConstraint.impl.h"
 #include "./sdk_OrthancPluginContentType.impl.h"
+#include "./sdk_OrthancPluginStorageCommitmentFailureReason.impl.h"
 #include "./sdk_OrthancPluginDicomToJsonFlags.impl.h"
 #include "./sdk_OrthancPluginErrorCode.impl.h"
 #include "./sdk_OrthancPluginCreateDicomFlags.impl.h"
@@ -46,9 +47,10 @@
 #include "./sdk_OrthancPluginRestOutput.impl.h"
 #include "./sdk_OrthancPluginServerChunkedRequestReader.impl.h"
 #include "./sdk_OrthancPluginImage.impl.h"
+#include "./sdk_OrthancPluginJob.impl.h"
 #include "./sdk_OrthancPluginWorklistQuery.impl.h"
 #include "./sdk_OrthancPluginStorageArea.impl.h"
-#include "./sdk_OrthancPluginJob.impl.h"
+#include "./sdk_OrthancPluginFindMatcher.impl.h"
 #include "./sdk_OrthancPluginDicomWebNode.impl.h"
 #include "./sdk_OrthancPluginWorklistAnswers.impl.h"
 #include "./sdk_OrthancPluginFindAnswers.impl.h"
@@ -71,6 +73,7 @@ void RegisterOrthancSdk(PyObject* module)
   RegisterOrthancPluginJobStopReasonEnumeration(module);
   RegisterOrthancPluginIdentifierConstraintEnumeration(module);
   RegisterOrthancPluginContentTypeEnumeration(module);
+  RegisterOrthancPluginStorageCommitmentFailureReasonEnumeration(module);
   RegisterOrthancPluginDicomToJsonFlagsEnumeration(module);
   RegisterOrthancPluginErrorCodeEnumeration(module);
   RegisterOrthancPluginCreateDicomFlagsEnumeration(module);
@@ -83,9 +86,10 @@ void RegisterOrthancSdk(PyObject* module)
   RegisterOrthancPluginRestOutputClass(module);
   RegisterOrthancPluginServerChunkedRequestReaderClass(module);
   RegisterOrthancPluginImageClass(module);
+  RegisterOrthancPluginJobClass(module);
   RegisterOrthancPluginWorklistQueryClass(module);
   RegisterOrthancPluginStorageAreaClass(module);
-  RegisterOrthancPluginJobClass(module);
+  RegisterOrthancPluginFindMatcherClass(module);
   RegisterOrthancPluginDicomWebNodeClass(module);
   RegisterOrthancPluginWorklistAnswersClass(module);
   RegisterOrthancPluginFindAnswersClass(module);
