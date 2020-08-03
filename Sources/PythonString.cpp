@@ -21,13 +21,35 @@
 
 #include "../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
 
-PythonString::PythonString(PythonLock& lock,
-                           const std::string& utf8) :
-  string_(lock, PyUnicode_FromString(utf8.c_str()))
+
+void PythonString::SanityCheck()
 {
-  if (!string_.IsValid())
+  if (!string_->IsValid())
   {
-    OrthancPlugins::LogError("Cannot create a Python string");
+    OrthancPlugins::LogError("Cannot create a Python string, check that the string is properly encoded using UTF-8");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
+  }
+}
+
+
+PythonString::PythonString(PythonLock& lock,
+                           const std::string& utf8)
+{
+  string_.reset(new PythonObject(lock, PyUnicode_FromString(utf8.c_str())));
+  SanityCheck();
+}
+
+
+PythonString::PythonString(PythonLock& lock,
+                           const char* utf8)
+{
+  if (utf8 == NULL)
+  {
+    ORTHANC_PLUGINS_THROW_EXCEPTION(NullPointer);
+  }
+  else
+  {
+    string_.reset(new PythonObject(lock, PyUnicode_FromString(utf8)));
+    SanityCheck();
   }
 }

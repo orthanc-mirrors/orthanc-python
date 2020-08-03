@@ -1,6 +1,8 @@
 Pending changes in the mainline
 ===============================
 
+* Fix issue #185 (segfaults on non-UTF8 special characters in request URI)
+
 
 Version 2.0 (2020-07-08)
 ========================

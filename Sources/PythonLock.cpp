@@ -21,6 +21,7 @@
 
 #include "PythonFunction.h"
 #include "PythonModule.h"
+#include "PythonString.h"
 
 #include "../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
 
@@ -429,9 +430,8 @@ void PythonLock::AddSysPath(const std::string& path)
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
-  PyObject* pyPath = PyUnicode_FromString(path.c_str());
-  int result = PyList_Insert(sysPath, 0, pyPath);
-  Py_DECREF(pyPath);
+  PythonString pyPath(lock, path);
+  int result = PyList_Insert(sysPath, 0, pyPath.Release());
   
   if (result != 0)
   {

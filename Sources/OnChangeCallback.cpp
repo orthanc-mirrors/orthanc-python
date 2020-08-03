@@ -19,7 +19,7 @@
 
 #include "OnChangeCallback.h"
 
-#include "PythonObject.h"
+#include "PythonString.h"
 
 #include "../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
 
@@ -149,10 +149,14 @@ static void ChangesWorker()
         try
         {
           PythonLock lock;
+
+          PythonString resourceId(lock, change->GetResourceId());
+          
           PythonObject args(lock, PyTuple_New(3));
           PyTuple_SetItem(args.GetPyObject(), 0, PyLong_FromLong(change->GetChangeType()));
           PyTuple_SetItem(args.GetPyObject(), 1, PyLong_FromLong(change->GetResourceType()));
-          PyTuple_SetItem(args.GetPyObject(), 2, PyUnicode_FromString(change->GetResourceId().c_str()));
+          PyTuple_SetItem(args.GetPyObject(), 2, resourceId.Release());
+          
           PythonObject result(lock, PyObject_CallObject(changesCallback_, args.GetPyObject()));
 
           std::string traceback;

@@ -21,18 +21,30 @@
 
 #include "PythonObject.h"
 
+#include <Compatibility.h>  // For std::unique_ptr
+
 // A Python string is always valid, or an exception was thrown on its creation
 class PythonString : public boost::noncopyable
 {
 private:
-  PythonObject  string_;
+  std::unique_ptr<PythonObject>  string_;
+
+  void SanityCheck();
 
 public:
   PythonString(PythonLock& lock,
                const std::string& utf8);
 
+  PythonString(PythonLock& lock,
+               const char* utf8);
+
   PyObject* GetPyObject() const
   {
-    return string_.GetPyObject();
+    return string_->GetPyObject();
+  }
+
+  PyObject* Release()
+  {
+    return string_->Release();
   }
 };
