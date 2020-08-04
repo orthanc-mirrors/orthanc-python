@@ -35,18 +35,19 @@ mark_as_advanced(ORTHANC_FRAMEWORK_STATIC)
 # Download and setup the Orthanc framework
 include(${CMAKE_SOURCE_DIR}/Resources/Orthanc/CMake/DownloadOrthancFramework.cmake)
 
+include_directories(${ORTHANC_FRAMEWORK_ROOT})
+
 if (ORTHANC_FRAMEWORK_SOURCE STREQUAL "system")
   #link_libraries(${ORTHANC_FRAMEWORK_LIBRARIES})
 
 else()
-  include(${ORTHANC_FRAMEWORK_ROOT}/Resources/CMake/OrthancFrameworkParameters.cmake)
+  include(${ORTHANC_FRAMEWORK_ROOT}/../Resources/CMake/OrthancFrameworkParameters.cmake)
   
   #set(ENABLE_MODULE_IMAGES OFF CACHE INTERNAL "")
   #set(ENABLE_MODULE_JOBS OFF CACHE INTERNAL "")
   #set(ENABLE_MODULE_DICOM OFF CACHE INTERNAL "")
   
-  include(${ORTHANC_FRAMEWORK_ROOT}/Resources/CMake/OrthancFrameworkConfiguration.cmake)
-  include_directories(${ORTHANC_FRAMEWORK_ROOT}/Sources)
+  include(${ORTHANC_FRAMEWORK_ROOT}/../Resources/CMake/OrthancFrameworkConfiguration.cmake)
 endif()
 
 
@@ -111,7 +112,7 @@ endif()
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
   execute_process(
     COMMAND 
-    ${PYTHON_EXECUTABLE} ${ORTHANC_FRAMEWORK_ROOT}/Resources/WindowsResources.py
+    ${PYTHON_EXECUTABLE} ${ORTHANC_FRAMEWORK_ROOT}/../Resources/WindowsResources.py
     ${PLUGIN_VERSION} "Python plugin" OrthancPython.dll
     "Plugin to create Orthanc plugins using Python"
     ERROR_VARIABLE Failure
