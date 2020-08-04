@@ -12,10 +12,18 @@ else()
 endif()
 
 
-set(PYTHON_VERSION "3.6" CACHE STRING "Version of Python to be used")
-set(PYTHON_WINDOWS_ROOT "" CACHE STRING "")
-set(PYTHON_LIBRARY_NAME "" CACHE STRING "")
-set(PYTHON_WINDOWS_USE_RELEASE_LIBS ON CACHE BOOL "Use the release Python libraries when building with Microsoft Visual Studio, even when compiling in _DEBUG mode (set it to OFF if you require linking to a Python debug build)")
+if (NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+  # The Python version cannot be controlled on OS X (yet)
+  set(PYTHON_VERSION "3.6" CACHE STRING "Version of Python to be used")
+endif()
+
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+  # Windows-specific options
+  set(PYTHON_WINDOWS_ROOT "" CACHE STRING "")
+  set(PYTHON_LIBRARY_NAME "" CACHE STRING "")
+  set(PYTHON_WINDOWS_USE_RELEASE_LIBS ON CACHE BOOL "Use the release Python libraries when building with Microsoft Visual Studio, even when compiling in _DEBUG mode (set it to OFF if you require linking to a Python debug build)")
+endif()
+
 
 
 # Parameters of the build
@@ -60,70 +68,80 @@ include(CheckIncludeFiles)
 include(CheckLibraryExists)
 include(FindPythonInterp)
 
-string(REGEX REPLACE "^([0-9]*)\\.([0-9]*)$" "\\1" PYTHON_VERSION_MAJOR ${PYTHON_VERSION})
-string(REGEX REPLACE "^([0-9]*)\\.([0-9]*)$" "\\2" PYTHON_VERSION_MINOR ${PYTHON_VERSION})
 
-if (NOT PYTHON_VERSION STREQUAL
-    "${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}")
-  message(FATAL_ERROR "Error in the (x.y) format of the Python version: ${PYTHON_VERSION}")
-endif()
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+  find_package(PythonLibs)
+  if (NOT PYTHONLIBS_FOUND)
+    message(FATAL_ERROR "Cannot find the Python libraries")
+  endif()
 
-if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
-  if ("${PYTHON_LIBRARY_NAME}" STREQUAL "")
-    if (MSVC)
-      set(Prefix "")
-      set(Suffix ".lib")
-      if(PYTHON_WINDOWS_USE_RELEASE_LIBS)
-        add_definitions(-DORTHANC_PYTHON_WINDOWS_USE_RELEASE_LIBS=1)
+  message("Python library - Found version: ${PYTHONLIBS_VERSION_STRING}")
+  message("Python library - Path to include directory: ${PYTHON_INCLUDE_DIRS}")
+  message("Python library - Shared library: ${PYTHON_LIBRARIES}")
+
+else()
+  string(REGEX REPLACE "^([0-9]*)\\.([0-9]*)$" "\\1" PYTHON_VERSION_MAJOR ${PYTHON_VERSION})
+  string(REGEX REPLACE "^([0-9]*)\\.([0-9]*)$" "\\2" PYTHON_VERSION_MINOR ${PYTHON_VERSION})
+
+  if (NOT PYTHON_VERSION STREQUAL
+      "${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}")
+    message(FATAL_ERROR "Error in the (x.y) format of the Python version: ${PYTHON_VERSION}")
+  endif()
+
+  if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+    if ("${PYTHON_LIBRARY_NAME}" STREQUAL "")
+      if (MSVC)
+        set(Prefix "")
+        set(Suffix ".lib")
+        if(PYTHON_WINDOWS_USE_RELEASE_LIBS)
+          add_definitions(-DORTHANC_PYTHON_WINDOWS_USE_RELEASE_LIBS=1)
+        endif()
+      else()
+        list(GET CMAKE_FIND_LIBRARY_PREFIXES 0 Prefix)
+        set(Suffix ".a")
       endif()
-    else()
-      list(GET CMAKE_FIND_LIBRARY_PREFIXES 0 Prefix)
-      set(Suffix ".a")
+      
+      set(PYTHON_LIBRARY_NAME ${Prefix}python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}${Suffix})
     endif()
     
-    set(PYTHON_LIBRARY_NAME ${Prefix}python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}${Suffix})
-  endif()
-  
-  if (CMAKE_COMPILER_IS_GNUCXX AND
-      "${CMAKE_SIZEOF_VOID_P}" STREQUAL "8" AND
-      "${PYTHON_VERSION}" STREQUAL "2.7")
-    # Fix for MinGW 64bit: https://stackoverflow.com/a/19867426/881731
-    add_definitions(-DMS_WIN64)
-  endif()
+    if (CMAKE_COMPILER_IS_GNUCXX AND
+        "${CMAKE_SIZEOF_VOID_P}" STREQUAL "8" AND
+        "${PYTHON_VERSION}" STREQUAL "2.7")
+      # Fix for MinGW 64bit: https://stackoverflow.com/a/19867426/881731
+      add_definitions(-DMS_WIN64)
+    endif()
     
-  set(PYTHON_INCLUDE_DIRS ${PYTHON_WINDOWS_ROOT}/include)
-  set(PYTHON_LIBRARIES ${PYTHON_WINDOWS_ROOT}/libs/${PYTHON_LIBRARY_NAME})
-  
-else()
-  find_package(PkgConfig REQUIRED)
-  pkg_check_modules(PYTHON_1 python-${PYTHON_VERSION}-embed)
+    set(PYTHON_INCLUDE_DIRS ${PYTHON_WINDOWS_ROOT}/include)
+    set(PYTHON_LIBRARIES ${PYTHON_WINDOWS_ROOT}/libs/${PYTHON_LIBRARY_NAME})
+    
+    execute_process(
+      COMMAND 
+      ${PYTHON_EXECUTABLE} ${ORTHANC_FRAMEWORK_ROOT}/../Resources/WindowsResources.py
+      ${PLUGIN_VERSION} "Python plugin" OrthancPython.dll
+      "Plugin to create Orthanc plugins using Python"
+      ERROR_VARIABLE Failure
+      OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/Version.rc
+      )
 
-  if (PYTHON_1_FOUND)
-    set(PYTHON_INCLUDE_DIRS ${PYTHON_1_INCLUDE_DIRS})
-    set(PYTHON_LIBRARIES ${PYTHON_1_LIBRARIES})
+    if (Failure)
+      message(FATAL_ERROR "Error while computing the version information: ${Failure}")
+    endif()
+
+    set(WINDOWS_RESOURCES ${CMAKE_CURRENT_BINARY_DIR}/Version.rc)
+
   else()
-    pkg_check_modules(PYTHON_2 REQUIRED python-${PYTHON_VERSION})
-    set(PYTHON_INCLUDE_DIRS ${PYTHON_2_INCLUDE_DIRS})
-    set(PYTHON_LIBRARIES ${PYTHON_2_LIBRARIES})
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(PYTHON_1 python-${PYTHON_VERSION}-embed)
+
+    if (PYTHON_1_FOUND)
+      set(PYTHON_INCLUDE_DIRS ${PYTHON_1_INCLUDE_DIRS})
+      set(PYTHON_LIBRARIES ${PYTHON_1_LIBRARIES})
+    else()
+      pkg_check_modules(PYTHON_2 REQUIRED python-${PYTHON_VERSION})
+      set(PYTHON_INCLUDE_DIRS ${PYTHON_2_INCLUDE_DIRS})
+      set(PYTHON_LIBRARIES ${PYTHON_2_LIBRARIES})
+    endif()
   endif()
-endif()
-
-
-if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
-  execute_process(
-    COMMAND 
-    ${PYTHON_EXECUTABLE} ${ORTHANC_FRAMEWORK_ROOT}/../Resources/WindowsResources.py
-    ${PLUGIN_VERSION} "Python plugin" OrthancPython.dll
-    "Plugin to create Orthanc plugins using Python"
-    ERROR_VARIABLE Failure
-    OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/Version.rc
-    )
-
-  if (Failure)
-    message(FATAL_ERROR "Error while computing the version information: ${Failure}")
-  endif()
-
-  set(WINDOWS_RESOURCES ${CMAKE_CURRENT_BINARY_DIR}/Version.rc)
 endif()
 
 

@@ -1,6 +1,7 @@
 Pending changes in the mainline
 ===============================
 
+* Support of Apple OS X
 * Fix issue #185 (segfaults on non-UTF8 special characters in request URI)
 
 

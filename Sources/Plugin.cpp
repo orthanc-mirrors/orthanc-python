@@ -36,8 +36,15 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/filesystem.hpp>
 
-#if !defined(_WIN32)
-#  include <dlfcn.h>
+
+// The "dl_iterate_phdr()" function (to walk through shared libraries)
+// is not available on Microsoft Windows and Apple OS X
+#if defined(_WIN32)
+#  define HAS_DL_ITERATE  0
+#elif defined(__APPLE__) && defined(__MACH__)
+#  define HAS_DL_ITERATE  0
+#else
+#  define HAS_DL_ITERATE  1
 #endif
 
 
@@ -120,10 +127,9 @@ static PyMethodDef* GetGlobalFunctions()
 
 
 
+#if HAS_DL_ITERATE == 1
 
-
-#if !defined(_WIN32)
-
+#include <dlfcn.h>
 #include <link.h>  // For dl_phdr_info
 
 static int ForceImportCallback(struct dl_phdr_info *info, size_t size, void *data)
@@ -233,7 +239,7 @@ extern "C"
          * Initialization of Python
          **/
 
-#if !defined(_WIN32)
+#if HAS_DL_ITERATE == 1
         dl_iterate_phdr(ForceImportCallback, NULL);
 #endif
 
