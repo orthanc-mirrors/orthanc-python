@@ -68,6 +68,7 @@ void RegisterOrthancPluginInstanceOriginEnumeration(PyObject* module)
   PyDict_SetItemString(sdk_OrthancPluginInstanceOrigin_Type.tp_dict, "REST_API", PyLong_FromLong(3));
   PyDict_SetItemString(sdk_OrthancPluginInstanceOrigin_Type.tp_dict, "PLUGIN", PyLong_FromLong(4));
   PyDict_SetItemString(sdk_OrthancPluginInstanceOrigin_Type.tp_dict, "LUA", PyLong_FromLong(5));
+  PyDict_SetItemString(sdk_OrthancPluginInstanceOrigin_Type.tp_dict, "WEB_DAV", PyLong_FromLong(6));
 
   Py_INCREF(&sdk_OrthancPluginInstanceOrigin_Type);
   if (PyModule_AddObject(module, "InstanceOrigin", (PyObject *)&sdk_OrthancPluginInstanceOrigin_Type) < 0)

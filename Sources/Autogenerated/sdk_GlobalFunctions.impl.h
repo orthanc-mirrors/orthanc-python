@@ -1660,6 +1660,27 @@ static PyObject* sdk_OrthancPluginCreateMemoryBuffer(PyObject* module, PyObject*
   }
 }
 
+static PyObject* sdk_OrthancPluginGenerateRestApiAuthorizationToken(PyObject* module, PyObject* args)
+{
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGenerateRestApiAuthorizationToken()");
+
+
+  OrthancPlugins::OrthancString s;
+  s.Assign(OrthancPluginGenerateRestApiAuthorizationToken(OrthancPlugins::GetGlobalContext()));
+  
+  if (s.GetContent() == NULL)
+  {
+    // TODO => RAISE : https://stackoverflow.com/questions/60832317
+    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
+    PyErr_SetString(PyExc_ValueError, "Internal error");
+    return NULL;
+  }
+  else
+  {
+    return PyUnicode_FromString(s.GetContent());
+  }
+}
+
 
 static PyMethodDef ORTHANC_SDK_FUNCTIONS[] = 
 {
@@ -1789,6 +1810,8 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Generated from C function OrthancPluginTranscodeDicomInstance()" },
   { "CreateMemoryBuffer", sdk_OrthancPluginCreateMemoryBuffer, METH_VARARGS,
     "Generated from C function OrthancPluginCreateMemoryBuffer()" },
+  { "GenerateRestApiAuthorizationToken", sdk_OrthancPluginGenerateRestApiAuthorizationToken, METH_VARARGS,
+    "Generated from C function OrthancPluginGenerateRestApiAuthorizationToken()" },
   { NULL, NULL }
 };
 

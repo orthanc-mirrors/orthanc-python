@@ -116,8 +116,8 @@
 #endif
 
 #define ORTHANC_PLUGINS_MINIMAL_MAJOR_NUMBER     1
-#define ORTHANC_PLUGINS_MINIMAL_MINOR_NUMBER     7
-#define ORTHANC_PLUGINS_MINIMAL_REVISION_NUMBER  2
+#define ORTHANC_PLUGINS_MINIMAL_MINOR_NUMBER     8
+#define ORTHANC_PLUGINS_MINIMAL_REVISION_NUMBER  1
 
 
 #if !defined(ORTHANC_PLUGINS_VERSION_IS_ABOVE)
@@ -237,6 +237,7 @@ extern "C"
     OrthancPluginErrorCode_CanceledJob = 37    /*!< This job was canceled */,
     OrthancPluginErrorCode_BadGeometry = 38    /*!< Geometry error encountered in Stone */,
     OrthancPluginErrorCode_SslInitialization = 39    /*!< Cannot initialize SSL encryption, check out your certificates */,
+    OrthancPluginErrorCode_DiscontinuedAbi = 40    /*!< Calling a function that has been removed from the Orthanc Framework */,
     OrthancPluginErrorCode_SQLiteNotOpened = 1000    /*!< SQLite: The database is not opened */,
     OrthancPluginErrorCode_SQLiteAlreadyOpened = 1001    /*!< SQLite: Connection is already open */,
     OrthancPluginErrorCode_SQLiteCannotOpen = 1002    /*!< SQLite: Unable to open the database */,
@@ -435,6 +436,7 @@ extern "C"
     _OrthancPluginService_EncodeDicomWebJson2 = 36,  /* New in Orthanc 1.7.0 */
     _OrthancPluginService_EncodeDicomWebXml2 = 37,   /* New in Orthanc 1.7.0 */
     _OrthancPluginService_CreateMemoryBuffer = 38,   /* New in Orthanc 1.7.0 */
+    _OrthancPluginService_GenerateRestApiAuthorizationToken = 39,   /* New in Orthanc 1.8.1 */
     
     /* Registration of callbacks */
     _OrthancPluginService_RegisterRestCallback = 1000,
@@ -891,6 +893,7 @@ extern "C"
     OrthancPluginInstanceOrigin_RestApi = 3,        /*!< Instance received through REST API of Orthanc */
     OrthancPluginInstanceOrigin_Plugin = 4,         /*!< Instance added to Orthanc by a plugin */
     OrthancPluginInstanceOrigin_Lua = 5,            /*!< Instance added to Orthanc by a Lua script */
+    OrthancPluginInstanceOrigin_WebDav = 6,         /*!< Instance received through WebDAV (new in 1.8.0) */
 
     _OrthancPluginInstanceOrigin_INTERNAL = 0x7fffffff
   } OrthancPluginInstanceOrigin;
@@ -1996,6 +1999,16 @@ extern "C"
    *
    * This function registers a callback function that is called
    * whenever a new DICOM instance is stored into the Orthanc core.
+   *
+   * @warning Your callback function will be called synchronously with
+   * the core of Orthanc. This implies that deadlocks might emerge if
+   * you call other core primitives of Orthanc in your callback (such
+   * deadlocks are particular visible in the presence of other plugins
+   * or Lua scripts). It is thus strongly advised to avoid any call to
+   * the REST API of Orthanc in the callback. If you have to call
+   * other primitives of Orthanc, you should make these calls in a
+   * separate thread, passing the pending events to be processed
+   * through a message queue.
    * 
    * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
    * @param callback The callback function.
@@ -3164,11 +3177,15 @@ extern "C"
    * This function registers a callback function that is called
    * whenever a change happens to some DICOM resource.
    *
-   * @warning If your change callback has to call the REST API of
-   * Orthanc, you should make these calls in a separate thread (with
-   * the events passing through a message queue). Otherwise, this
-   * could result in deadlocks in the presence of other plugins or Lua
-   * scripts.
+   * @warning Your callback function will be called synchronously with
+   * the core of Orthanc. This implies that deadlocks might emerge if
+   * you call other core primitives of Orthanc in your callback (such
+   * deadlocks are particular visible in the presence of other plugins
+   * or Lua scripts). It is thus strongly advised to avoid any call to
+   * the REST API of Orthanc in the callback. If you have to call
+   * other primitives of Orthanc, you should make these calls in a
+   * separate thread, passing the pending events to be processed
+   * through a message queue.
    * 
    * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
    * @param callback The callback function.
@@ -7597,12 +7614,22 @@ extern "C"
   } _OrthancPluginIncomingDicomInstanceFilter;
 
   /**
-   * @brief Register a callback to filter incoming DICOM instance.
+   * @brief Register a callback to filter incoming DICOM instances.
    *
    * This function registers a custom callback to filter incoming
    * DICOM instances received by Orthanc (either through the REST API
    * or through the DICOM protocol).
    *
+   * @warning Your callback function will be called synchronously with
+   * the core of Orthanc. This implies that deadlocks might emerge if
+   * you call other core primitives of Orthanc in your callback (such
+   * deadlocks are particular visible in the presence of other plugins
+   * or Lua scripts). It is thus strongly advised to avoid any call to
+   * the REST API of Orthanc in the callback. If you have to call
+   * other primitives of Orthanc, you should make these calls in a
+   * separate thread, passing the pending events to be processed
+   * through a message queue.
+   * 
    * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
    * @param callback The callback.
    * @return 0 if success, other value if error.
@@ -8172,6 +8199,51 @@ extern "C"
   }
   
 
+  /**
+   * @brief Generate a token to grant full access to the REST API of Orthanc
+   *
+   * This function generates a token that can be set in the HTTP
+   * header "Authorization" so as to grant full access to the REST API
+   * of Orthanc using an external HTTP client. Using this function
+   * avoids the need of adding a separate user in the
+   * "RegisteredUsers" configuration of Orthanc, which eases
+   * deployments.
+   *
+   * This feature is notably useful in multiprocess scenarios, where a
+   * subprocess created by a plugin has no access to the
+   * "OrthancPluginContext", and thus cannot call
+   * "OrthancPluginRestApi[Get|Post|Put|Delete]()".
+   *
+   * This situation is frequently encountered in Python plugins, where
+   * the "multiprocessing" package can be used to bypass the Global
+   * Interpreter Lock (GIL) and thus to improve performance and
+   * concurrency.
+   * 
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @return The authorization token, or NULL value in the case of an error.
+   * This string must be freed by OrthancPluginFreeString().
+   * @ingroup Orthanc
+   **/
+  ORTHANC_PLUGIN_INLINE char* OrthancPluginGenerateRestApiAuthorizationToken(
+    OrthancPluginContext*  context)
+  {
+    char* result;
+
+    _OrthancPluginRetrieveDynamicString params;
+    params.result = &result;
+    params.argument = NULL;
+
+    if (context->InvokeService(context, _OrthancPluginService_GenerateRestApiAuthorizationToken,
+                               &params) != OrthancPluginErrorCode_Success)
+    {
+      /* Error */
+      return NULL;
+    }
+    else
+    {
+      return result;
+    }
+  }
 #ifdef  __cplusplus
 }
 #endif

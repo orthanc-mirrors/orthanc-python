@@ -12,7 +12,7 @@ import urllib2
 import subprocess
 
 TARGET = os.path.join(os.path.dirname(__file__), 'Orthanc')
-PLUGIN_SDK_VERSION = '1.7.2'
+PLUGIN_SDK_VERSION = '1.8.1'
 REPOSITORY = 'https://hg.orthanc-server.com/orthanc/raw-file'
 
 FILES = [

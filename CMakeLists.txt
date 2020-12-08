@@ -7,7 +7,7 @@ if (PLUGIN_VERSION STREQUAL "mainline")
   set(ORTHANC_FRAMEWORK_DEFAULT_VERSION "mainline")
   set(ORTHANC_FRAMEWORK_DEFAULT_SOURCE "hg")
 else()
-  set(ORTHANC_FRAMEWORK_DEFAULT_VERSION "1.7.2")
+  set(ORTHANC_FRAMEWORK_DEFAULT_VERSION "1.8.1")
   set(ORTHANC_FRAMEWORK_DEFAULT_SOURCE "web")
 endif()
 
@@ -146,7 +146,7 @@ endif()
 
 
 include_directories(
-  ${CMAKE_SOURCE_DIR}/Resources/Orthanc/Sdk-1.7.2
+  ${CMAKE_SOURCE_DIR}/Resources/Orthanc/Sdk-1.8.1
   )
 
 add_definitions(
