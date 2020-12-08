@@ -24,8 +24,10 @@
 // https://fr.slideshare.net/YiLungTsai/embed-python
 
 
-#include "OnStoredInstanceCallback.h"
+#include "IncomingHttpRequestFilter.h"
 #include "OnChangeCallback.h"
+#include "OnStoredInstanceCallback.h"
+
 #include "RestCallbacks.h"
 #include "PythonModule.h"
 
@@ -86,6 +88,12 @@ static void SetupGlobalFunctions()
   {
     PyMethodDef f = { "RegisterOnStoredInstanceCallback", RegisterOnStoredInstanceCallback,
                       METH_VARARGS, "" };
+    functions.push_back(f);
+  }
+
+  {
+    // New in release 3.0
+    PyMethodDef f = { "RegisterIncomingHttpRequestFilter", RegisterIncomingHttpRequestFilter, METH_VARARGS, "" };
     functions.push_back(f);
   }
   
@@ -289,6 +297,7 @@ extern "C"
       FinalizeOnChangeCallback();
       FinalizeRestCallbacks();
       FinalizeOnStoredInstanceCallback();
+      FinalizeIncomingHttpRequestFilter();
       
       PythonLock::GlobalFinalize();
     }
