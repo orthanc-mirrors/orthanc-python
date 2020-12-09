@@ -1,6 +1,10 @@
 Pending changes in the mainline
 ===============================
 
+
+Version 3.0 (2020-12-09)
+========================
+
 => Minimum SDK version: 1.8.1 <=
 
 * New Python function: "orthanc.RegisterIncomingHttpRequestFilter()"
