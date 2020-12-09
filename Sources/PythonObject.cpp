@@ -65,11 +65,14 @@ PythonObject* PythonObject::GetAttribute(const std::string& name)
 }
 
 
-bool PythonObject::ToUtf8String(std::string& target)
+bool PythonObject::ToUtf8String(std::string& target,
+                                PyObject* value)
 {
-  PyObject* value = GetPyObject();  // Raises an exception if needed
-
-  if (PyUnicode_Check(value))
+  if (value == NULL)
+  {
+    ORTHANC_PLUGINS_THROW_EXCEPTION(NullPointer);
+  }
+  else if (PyUnicode_Check(value))
   {
     PythonObject encoded(lock_, PyUnicode_AsEncodedString(value, "utf-8", "replace"));
     if (encoded.IsValid())
@@ -132,3 +135,105 @@ PyObject* PythonObject::Release()
   }
 }
 
+
+void PythonObject::ConvertToJson(Json::Value& target,
+                                 PyObject* source)
+{
+  // WARNING: The order *is* important!
+  if (source == Py_None)
+  {
+    target = Json::nullValue;
+  }
+  else if (PyBool_Check(source))
+  {
+    target = (PyObject_IsTrue(source) ? true : false);
+  }
+  else if (PyLong_Check(source))
+  {
+    target = static_cast<int32_t>(PyLong_AsLong(source));
+  }
+  else if (PyFloat_Check(source))
+  {
+    target = PyFloat_AsDouble(source);
+  }
+  else if (PyNumber_Check(source))
+  {
+    PythonObject asLong(lock_, PyNumber_Long(source));
+    if (PyLong_Check(asLong.GetPyObject()))
+    {
+      target = static_cast<int32_t>(PyLong_AsLong(asLong.GetPyObject()));
+    }
+    else
+    {
+      ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
+    }
+  }
+  else if (PyUnicode_Check(source))
+  {
+    std::string s;
+    if (ToUtf8String(s, source))
+    {
+      target = s;
+    }
+    else
+    {
+      ORTHANC_PLUGINS_THROW_EXCEPTION(NotImplemented);
+    }
+  }
+#if PY_MAJOR_VERSION == 2
+  else if (PyString_Check(source))
+  {
+    target = PyString_AS_STRING(source);
+  }
+#endif
+  else if (PySequence_Check(source))  // tuples or lists
+  {
+    Py_ssize_t size = PySequence_Size(source);
+
+    if (size < 0)
+    {
+      ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);      
+    }
+
+    target = Json::arrayValue;
+    for (Py_ssize_t i = 0; i < size; i++)
+    {
+      Json::Value item;
+      ConvertToJson(item, PySequence_GetItem(source, i));
+      target.append(item);
+    }
+  }
+  else if (PyMapping_Check(source))  // dictionaries
+  {
+    PythonObject items(lock_, PyMapping_Items(source));
+
+    Py_ssize_t size = PySequence_Size(items.GetPyObject());
+
+    if (size < 0)
+    {
+      ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);      
+    }
+
+    for (Py_ssize_t i = 0; i < size; i++)
+    {
+      PyObject* pair = PySequence_GetItem(items.GetPyObject(), i);
+
+      std::string key;
+      Json::Value value;
+      if (pair != NULL &&
+          ToUtf8String(key, PySequence_GetItem(pair, 0)))
+      {
+        ConvertToJson(value, PySequence_GetItem(pair, 1));
+        target[key] = value;
+      }
+      else
+      {
+        ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);      
+      }
+    }
+  }
+  else
+  {
+    ORTHANC_PLUGINS_THROW_EXCEPTION(NotImplemented);
+  }
+}

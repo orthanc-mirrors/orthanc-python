@@ -21,6 +21,8 @@
 
 #include "PythonLock.h"
 
+#include <json/value.h>
+
 class PythonObject : public boost::noncopyable
 {
 private:
@@ -28,6 +30,12 @@ private:
   PyObject    *object_;
   bool         borrowed_;
 
+  bool ToUtf8String(std::string& target,
+                    PyObject* value);
+
+  void ConvertToJson(Json::Value& target,
+                     PyObject* source);
+  
 public:
   PythonObject(PythonLock& lock,
                PyObject *object,
@@ -44,9 +52,17 @@ public:
 
   PythonObject* GetAttribute(const std::string& name);
 
-  bool ToUtf8String(std::string& target);
+  bool ToUtf8String(std::string& target)
+  {
+    return ToUtf8String(target, GetPyObject());
+  }
 
   void Format(std::ostream& os);
 
   PyObject* Release();
+
+  void ConvertToJson(Json::Value& target)
+  {
+    ConvertToJson(target, GetPyObject());
+  }
 };
