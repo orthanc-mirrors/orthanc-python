@@ -41,11 +41,7 @@ static int32_t IncomingHttpRequestFilter(OrthancPluginHttpMethod method,
   try
   {
     PythonLock lock;
-    /**
-     * Construct an instance object of the "orthanc.RestOutput"
-     * class. This is done by calling the constructor function
-     * "sdk_OrthancPluginRestOutput_Type".
-     **/
+
     PythonObject args(lock, PyTuple_New(1));
 
     {
@@ -85,7 +81,6 @@ static int32_t IncomingHttpRequestFilter(OrthancPluginHttpMethod method,
 
       PyDict_SetItemString(kw.GetPyObject(), "get", getArguments.Release());
     }
-
     
     PythonObject result(lock, PyObject_Call(incomingHttpRequestFilter_,
                                             args.GetPyObject(), kw.GetPyObject()));
