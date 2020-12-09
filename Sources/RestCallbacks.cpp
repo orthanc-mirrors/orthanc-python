@@ -126,8 +126,8 @@ static void RestCallbackHandler(OrthancPluginRestOutput* output,
       PythonObject kw(lock, PyDict_New());
 
       {
-        PythonString str(lock, method);
-        PyDict_SetItemString(kw.GetPyObject(), "method", str.Release());
+        PythonString tmp(lock, method);
+        PyDict_SetItemString(kw.GetPyObject(), "method", tmp.Release());
       }
 
       {
@@ -135,8 +135,8 @@ static void RestCallbackHandler(OrthancPluginRestOutput* output,
 
         for (uint32_t i = 0; i < request->groupsCount; i++)
         {
-          PythonString str(lock, request->groups[i]);
-          PyTuple_SetItem(groups.GetPyObject(), i, str.Release());
+          PythonString tmp(lock, request->groups[i]);
+          PyTuple_SetItem(groups.GetPyObject(), i, tmp.Release());
         }
 
         PyDict_SetItemString(kw.GetPyObject(), "groups", groups.Release());
