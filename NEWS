@@ -1,6 +1,8 @@
 Pending changes in the mainline
 ===============================
 
+* Fix possible deadlock with "orthanc.RegisterOnChangeCallback()"
+
 
 Version 3.0 (2020-12-09)
 ========================

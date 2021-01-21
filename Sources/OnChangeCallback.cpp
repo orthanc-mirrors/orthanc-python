@@ -70,6 +70,8 @@ public:
 
 
 
+// This corresponds to a simplified, standalone version of
+// "Orthanc::SharedMessageQueue" from the Orthanc framework
 class PendingChanges : public boost::noncopyable
 {
 private:
@@ -181,11 +183,7 @@ static OrthancPluginErrorCode OnChangeCallback(OrthancPluginChangeType changeTyp
                                                OrthancPluginResourceType resourceType,
                                                const char* resourceId)
 {
-  {
-    PythonLock lock;
-    pendingChanges_.Enqueue(changeType, resourceType, resourceId);
-  }
-  
+  pendingChanges_.Enqueue(changeType, resourceType, resourceId);
   return OrthancPluginErrorCode_Success;
 }
 
