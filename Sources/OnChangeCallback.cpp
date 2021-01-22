@@ -135,6 +135,17 @@ static boost::thread   changesThread_;
 static PyObject*       changesCallback_ = NULL;
 
 
+static void StopThread()
+{
+  stopping_ = true;
+
+  if (changesThread_.joinable())
+  {
+    changesThread_.join();
+  }
+}
+
+
 static void ChangesWorker()
 {
   while (!stopping_)
@@ -184,6 +195,12 @@ static OrthancPluginErrorCode OnChangeCallback(OrthancPluginChangeType changeTyp
                                                const char* resourceId)
 {
   pendingChanges_.Enqueue(changeType, resourceType, resourceId);
+
+  if (changeType == OrthancPluginChangeType_OrthancStopped)
+  {
+    StopThread();
+  }
+  
   return OrthancPluginErrorCode_Success;
 }
 
@@ -227,12 +244,7 @@ PyObject* RegisterOnChangeCallback(PyObject* module, PyObject* args)
 
 void FinalizeOnChangeCallback()
 {
-  stopping_ = true;
-
-  if (changesThread_.joinable())
-  {
-    changesThread_.join();
-  }
+  StopThread();
 
   {
     PythonLock lock;
