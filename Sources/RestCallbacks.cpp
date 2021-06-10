@@ -84,7 +84,7 @@ static void RestCallbackHandler(OrthancPluginRestOutput* output,
       PythonObject args(lock, PyTuple_New(2));
       PyTuple_SetItem(args.GetPyObject(), 0, PyLong_FromSsize_t((intptr_t) output));
       PyTuple_SetItem(args.GetPyObject(), 1, PyBool_FromLong(true /* borrowed, don't destruct */));
-      PyObject *pInst = PyObject_CallObject(GetOrthancPluginRestOutputType(), args.GetPyObject());
+      PyObject *pInst = PyObject_CallObject((PyObject*) GetOrthancPluginRestOutputType(), args.GetPyObject());
 
 
       /**

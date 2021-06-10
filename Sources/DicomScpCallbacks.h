@@ -19,25 +19,10 @@
 
 #pragma once
 
-#include "../PythonHeaderWrapper.h"
+#include "PythonHeaderWrapper.h"
 
-void RegisterOrthancSdk(PyObject* module);
-PyMethodDef* GetOrthancSdkFunctions();
+PyObject* RegisterFindCallback(PyObject* module, PyObject* args);
 
-{{#classes}}
-PyTypeObject* Get{{class_name}}Type();
-{{/classes}}
+PyObject* RegisterMoveCallback(PyObject* module, PyObject* args);
 
-#include <orthanc/OrthancCPlugin.h>
-
-{{#classes}}
-typedef struct 
-{
-  PyObject_HEAD
-
-  /* Type-specific fields go here. */
-  {{class_name}}* object_;
-  bool borrowed_;
-} sdk_{{class_name}}_Object;
-
-{{/classes}}
+void FinalizeDicomScpCallbacks();

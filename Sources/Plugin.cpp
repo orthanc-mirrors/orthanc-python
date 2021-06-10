@@ -24,6 +24,7 @@
 // https://fr.slideshare.net/YiLungTsai/embed-python
 
 
+#include "DicomScpCallbacks.h"
 #include "IncomingHttpRequestFilter.h"
 #include "OnChangeCallback.h"
 #include "OnStoredInstanceCallback.h"
@@ -48,6 +49,54 @@
 #else
 #  define HAS_DL_ITERATE  1
 #endif
+
+
+
+PyObject* CreateDicom(PyObject* module, PyObject* args)
+{
+  // The GIL is locked at this point (no need to create "PythonLock")
+  const char* json = NULL;
+  PyObject* pixelData = NULL;
+  long int flags = 0;
+  
+  if (!PyArg_ParseTuple(args, "sOl", &json, &pixelData, &flags))
+  {
+    PyErr_SetString(PyExc_TypeError, "Please provide a JSON string, an orthanc.Image object, and a set of orthanc.CreateDicomFlags");
+    return NULL;
+  }
+  else
+  {
+    OrthancPluginImage* image = NULL;
+    
+    if (pixelData == Py_None)
+    {
+      // No pixel data
+    }
+    else if (Py_TYPE(pixelData) == GetOrthancPluginImageType())
+    {
+      image = reinterpret_cast<sdk_OrthancPluginImage_Object*>(pixelData)->object_;
+    }
+    else
+    {
+      PyErr_SetString(PyExc_TypeError, "Second parameter is not a valid orthanc.Image");
+      return NULL;
+    }
+
+    OrthancPlugins::MemoryBuffer buffer;
+    OrthancPluginErrorCode code = OrthancPluginCreateDicom(OrthancPlugins::GetGlobalContext(), *buffer, json, image,
+                                                           static_cast<OrthancPluginCreateDicomFlags>(flags));
+  
+    if (code == OrthancPluginErrorCode_Success)
+    {
+      return PyBytes_FromStringAndSize(buffer.GetData(), buffer.GetSize());
+    }
+    else
+    {
+      PyErr_SetString(PyExc_ValueError, "Cannot create the DICOM instance");
+      return NULL;  
+    }
+  }
+}
 
 
 
@@ -91,11 +140,36 @@ static void SetupGlobalFunctions()
     functions.push_back(f);
   }
 
+  
+  /**
+   * New in release 3.0
+   **/
+  
   {
-    // New in release 3.0
     PyMethodDef f = { "RegisterIncomingHttpRequestFilter", RegisterIncomingHttpRequestFilter, METH_VARARGS, "" };
     functions.push_back(f);
   }
+
+
+  /**
+   * New in release 3.1
+   **/
+  
+  {
+    PyMethodDef f = { "CreateDicom", CreateDicom, METH_VARARGS, "" };
+    functions.push_back(f);
+  }
+  
+  {
+    PyMethodDef f = { "RegisterFindCallback", RegisterFindCallback, METH_VARARGS, "" };
+    functions.push_back(f);
+  }
+  
+  {
+    PyMethodDef f = { "RegisterMoveCallback", RegisterMoveCallback, METH_VARARGS, "" };
+    functions.push_back(f);
+  }
+  
   
   /**
    * Append all the global functions that were automatically generated
@@ -298,6 +372,7 @@ extern "C"
       FinalizeRestCallbacks();
       FinalizeOnStoredInstanceCallback();
       FinalizeIncomingHttpRequestFilter();
+      FinalizeDicomScpCallbacks();
       
       PythonLock::GlobalFinalize();
     }

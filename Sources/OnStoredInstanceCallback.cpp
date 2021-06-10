@@ -43,7 +43,7 @@ static OrthancPluginErrorCode OnStoredInstanceCallback(const OrthancPluginDicomI
     PythonObject args(lock, PyTuple_New(2));
     PyTuple_SetItem(args.GetPyObject(), 0, PyLong_FromSsize_t((intptr_t) instance));
     PyTuple_SetItem(args.GetPyObject(), 1, PyBool_FromLong(true /* borrowed, don't destruct */));
-    PyObject *pInst = PyObject_CallObject(GetOrthancPluginDicomInstanceType(), args.GetPyObject());
+    PyObject *pInst = PyObject_CallObject((PyObject*) GetOrthancPluginDicomInstanceType(), args.GetPyObject());
     
     /**
      * Construct the arguments tuple (output, uri)

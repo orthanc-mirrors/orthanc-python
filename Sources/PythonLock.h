@@ -47,6 +47,8 @@ public:
 
   bool HasErrorOccurred(std::string& traceback);
 
+  OrthancPluginErrorCode CheckCallbackSuccess(const std::string& callbackDetails);
+
   static void GlobalInitialize(const std::string& moduleName,
                                const std::string& exceptionName,
                                ModuleFunctionsInstaller moduleFunctions,

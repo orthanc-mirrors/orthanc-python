@@ -291,6 +291,23 @@ void InitializeModule()
 
 
 
+OrthancPluginErrorCode PythonLock::CheckCallbackSuccess(const std::string& callbackDetails)
+{
+  std::string traceback;
+  
+  if (HasErrorOccurred(traceback))
+  {
+    OrthancPlugins::LogError("Error in the " + callbackDetails + ", traceback:\n" + traceback);
+    return OrthancPluginErrorCode_Plugin;
+  }
+  else
+  {
+    return OrthancPluginErrorCode_Success;
+  }
+}
+
+
+
 void PythonLock::GlobalInitialize(const std::string& moduleName,
                                   const std::string& exceptionName,
                                   ModuleFunctionsInstaller moduleFunctions,

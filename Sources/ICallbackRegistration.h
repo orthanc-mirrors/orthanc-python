@@ -19,25 +19,25 @@
 
 #pragma once
 
-#include "../PythonHeaderWrapper.h"
+#include "PythonHeaderWrapper.h"
 
-void RegisterOrthancSdk(PyObject* module);
-PyMethodDef* GetOrthancSdkFunctions();
+#include <boost/noncopyable.hpp>
+#include <string>
 
-{{#classes}}
-PyTypeObject* Get{{class_name}}Type();
-{{/classes}}
-
-#include <orthanc/OrthancCPlugin.h>
-
-{{#classes}}
-typedef struct 
+class ICallbackRegistration : public boost::noncopyable
 {
-  PyObject_HEAD
+public:
+  virtual ~ICallbackRegistration()
+  {
+  }
 
-  /* Type-specific fields go here. */
-  {{class_name}}* object_;
-  bool borrowed_;
-} sdk_{{class_name}}_Object;
+  virtual void Register() = 0;
 
-{{/classes}}
+  // The GIL must be locked
+  static PyObject *Apply(ICallbackRegistration& registration,
+                         PyObject* args,
+                         PyObject*& singletonCallback,
+                         const std::string& details);
+
+  static void Unregister(PyObject*& singletonCallback);
+};
