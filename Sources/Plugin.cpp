@@ -50,6 +50,49 @@
 #endif
 
 
+#include "PythonString.h"
+
+PyObject* LookupDictionary(PyObject* module, PyObject* args)
+{
+  const char* name = NULL;
+  
+  if (!PyArg_ParseTuple(args, "s", &name))
+  {
+    PyErr_SetString(PyExc_TypeError, "Please provide a string containing the name of the DICOM tag of interest");
+    return NULL;
+  }
+  else
+  {
+    OrthancPluginDictionaryEntry entry;
+    
+    OrthancPluginErrorCode code = OrthancPluginLookupDictionary(OrthancPlugins::GetGlobalContext(), &entry, name);
+    if (code == OrthancPluginErrorCode_Success)
+    {
+      /**
+       * "PyGILState_Ensure()" can be invoked several times from the
+       * same thread, so no problem in creating a PythonLock even if
+       * the GIL is already locked.
+       **/
+      PythonLock lock;
+      
+      PythonObject kw(lock, PyDict_New());
+      PyDict_SetItemString(kw.GetPyObject(), "Group", PyLong_FromUnsignedLong(entry.group));
+      PyDict_SetItemString(kw.GetPyObject(), "Element", PyLong_FromUnsignedLong(entry.element));
+      PyDict_SetItemString(kw.GetPyObject(), "ValueRepresentation", PyLong_FromUnsignedLong(entry.vr));
+      PyDict_SetItemString(kw.GetPyObject(), "MinMultiplicity", PyLong_FromUnsignedLong(entry.minMultiplicity));
+      PyDict_SetItemString(kw.GetPyObject(), "MaxMultiplicity", PyLong_FromUnsignedLong(entry.maxMultiplicity));
+      
+      return kw.Release();
+    }
+    else
+    {
+      std::string message = "Unknown DICOM tag: " + std::string(name);
+      PyErr_SetString(PyExc_TypeError, message.c_str());
+      return NULL;
+    }
+  }
+}
+
 
 PyObject* CreateDicom(PyObject* module, PyObject* args)
 {
@@ -287,6 +330,11 @@ static void SetupGlobalFunctions()
   /**
    * New in release 3.2
    **/
+  
+  {
+    PyMethodDef f = { "LookupDictionary", LookupDictionary, METH_VARARGS, "" };
+    functions.push_back(f);
+  }
   
   {
     PyMethodDef f = { "CreateDicom", CreateDicom, METH_VARARGS, "" };

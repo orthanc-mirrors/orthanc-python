@@ -8,6 +8,7 @@ Pending changes in the mainline
   - orthanc.FindQuery.GetFindQueryTagElement()
   - orthanc.FindQuery.GetFindQueryTagGroup()
   - orthanc.Image.GetImageBuffer()
+  - orthanc.LookupDictionary()
   - orthanc.RegisterFindCallback()
   - orthanc.RegisterMoveCallback()
   - orthanc.RegisterWorklistCallback()

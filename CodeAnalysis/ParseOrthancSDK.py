@@ -40,6 +40,7 @@ CUSTOM_FUNCTIONS = set([
     'OrthancPluginCreateImageAccessor',                # Replaced by "orthanc.CreateImageFromBuffer()"
     'OrthancPluginFreeMemoryBuffer',
     'OrthancPluginFreeString',
+    'OrthancPluginLookupDictionary',
     'OrthancPluginRegisterFindCallback',
     'OrthancPluginRegisterIncomingHttpRequestFilter',  # Implemented through v2
     'OrthancPluginRegisterIncomingHttpRequestFilter2',
