@@ -39,7 +39,6 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/filesystem.hpp>
 
-
 // The "dl_iterate_phdr()" function (to walk through shared libraries)
 // is not available on Microsoft Windows and Apple OS X
 #if defined(_WIN32)
@@ -78,7 +77,7 @@ PyObject* CreateDicom(PyObject* module, PyObject* args)
     }
     else
     {
-      PyErr_SetString(PyExc_TypeError, "Second parameter is not a valid orthanc.Image");
+      PyErr_SetString(PyExc_TypeError, "Second parameter is not a valid orthanc.Image object");
       return NULL;
     }
 
@@ -94,6 +93,140 @@ PyObject* CreateDicom(PyObject* module, PyObject* args)
     {
       PyErr_SetString(PyExc_ValueError, "Cannot create the DICOM instance");
       return NULL;  
+    }
+  }
+}
+
+
+PyObject* GetInstanceData(sdk_OrthancPluginDicomInstance_Object* self, PyObject *args)
+{
+  // The GIL is locked at this point (no need to create "PythonLock")
+
+  if (self->object_ == NULL)
+  {
+    PyErr_SetString(PyExc_ValueError, "Invalid object");
+    return NULL;
+  }
+  else
+  {
+    OrthancPluginDicomInstance* instance = reinterpret_cast<sdk_OrthancPluginDicomInstance_Object*>(self)->object_;
+
+    const void* data = OrthancPluginGetInstanceData(OrthancPlugins::GetGlobalContext(), instance);
+    size_t size = OrthancPluginGetInstanceSize(OrthancPlugins::GetGlobalContext(), instance);
+
+    if (data == NULL &&
+        size != 0)
+    {
+      PyErr_SetString(PyExc_ValueError, "Accessing an invalid orthanc.DicomInstance object");
+      return NULL;  
+    }
+    else
+    {
+      return PyBytes_FromStringAndSize(reinterpret_cast<const char*>(data), size);
+    }
+  }
+}
+
+
+/**
+ * Contrarily to "OrthancPluginGetImageBuffer()" that provides a
+ * read-write pointer, the method "orthanc.Image.GetImageBuffer()"
+ * returns a copy of the image buffer. Use "CreateImageFromBuffer()"
+ * to create an image from a Python buffer.
+ **/
+PyObject* GetImageBuffer(sdk_OrthancPluginImage_Object* self, PyObject *args)
+{
+  // The GIL is locked at this point (no need to create "PythonLock")
+  
+  if (self->object_ == NULL)
+  {
+    PyErr_SetString(PyExc_ValueError, "Invalid object");
+    return NULL;
+  }
+  else
+  {
+    OrthancPluginImage* image = reinterpret_cast<sdk_OrthancPluginImage_Object*>(self)->object_;
+
+    const void* buffer = OrthancPluginGetImageBuffer(OrthancPlugins::GetGlobalContext(), image);
+    size_t size = (OrthancPluginGetImagePitch(OrthancPlugins::GetGlobalContext(), image) *
+                   OrthancPluginGetImageHeight(OrthancPlugins::GetGlobalContext(), image));
+
+    if (buffer == NULL &&
+        size != 0)
+    {
+      PyErr_SetString(PyExc_ValueError, "Accessing an invalid orthanc.Image object");
+      return NULL;  
+    }
+    else
+    {
+      return PyBytes_FromStringAndSize(reinterpret_cast<const char*>(buffer), size);
+    }
+  }
+}
+
+
+/**
+ * This function is the Python alternative for function
+ * "OrthancPluginCreateImageAccessor()". Indeed, it is not possible to
+ * share a memory buffer between Orthanc and Python, so we have to
+ * create a copy of the image.
+ **/
+PyObject* CreateImageFromBuffer(PyObject* module, PyObject* args)
+{
+  // The GIL is locked at this point (no need to create "PythonLock")
+
+  unsigned long format, width, height, sourcePitch;
+  Py_buffer buffer;
+
+  if (!PyArg_ParseTuple(args, "kkkks*", &format, &width, &height, &sourcePitch, &buffer))
+  {
+    PyErr_SetString(PyExc_TypeError, "5 arguments are needed: image.PixelFormat, width, height, pitch and memory buffer");
+    return NULL;
+  }
+  else if (static_cast<Py_ssize_t>(sourcePitch * height) != buffer.len)
+  {
+    PyBuffer_Release(&buffer);
+
+    PyErr_SetString(PyExc_TypeError, "The size of the memory buffer must match the product of height by pitch");
+    return NULL;
+  }
+  else
+  {
+    OrthancPluginImage* image = OrthancPluginCreateImage(
+      OrthancPlugins::GetGlobalContext(), static_cast<OrthancPluginPixelFormat>(format), width, height);
+
+    if (image == NULL)
+    {
+      PyBuffer_Release(&buffer);
+
+      PyErr_SetString(PyExc_ValueError, "Cannot create the image");
+      return NULL;  
+    }
+    else
+    {
+      // Copy the image line by line
+      unsigned long targetPitch = OrthancPluginGetImagePitch(OrthancPlugins::GetGlobalContext(), image);
+
+      const uint8_t* sourcePixels = reinterpret_cast<const uint8_t*>(buffer.buf);
+      uint8_t* targetPixels = reinterpret_cast<uint8_t*>(OrthancPluginGetImageBuffer(OrthancPlugins::GetGlobalContext(), image));
+
+      unsigned long rowSize = std::min(sourcePitch, targetPitch);
+      
+      for (unsigned int y = 0; y < height; y++)
+      {
+        memcpy(targetPixels, sourcePixels, rowSize);
+        targetPixels += targetPitch;
+        sourcePixels += sourcePitch;
+      }
+             
+      PyBuffer_Release(&buffer);
+
+      {
+        PyObject *argList = Py_BuildValue("Lb", image, false /* not borrowed */);
+        PyObject *python = PyObject_CallObject((PyObject *) GetOrthancPluginImageType(), argList);
+        Py_DECREF(argList);
+        return python;
+      }
     }
   }
 }
@@ -157,6 +290,11 @@ static void SetupGlobalFunctions()
   
   {
     PyMethodDef f = { "CreateDicom", CreateDicom, METH_VARARGS, "" };
+    functions.push_back(f);
+  }
+  
+  {
+    PyMethodDef f = { "CreateImageFromBuffer", CreateImageFromBuffer, METH_VARARGS, "" };
     functions.push_back(f);
   }
   

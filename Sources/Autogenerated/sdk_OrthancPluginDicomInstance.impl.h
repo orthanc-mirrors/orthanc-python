@@ -50,6 +50,8 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceAdvanced
 
 
 // Forward declaration of the custom methods
+extern PyObject *GetInstanceData(
+  sdk_OrthancPluginDicomInstance_Object* self, PyObject *args);
 // End of forward declarations
 
 
@@ -96,6 +98,9 @@ static PyMethodDef sdk_OrthancPluginDicomInstance_Methods[] = {
   { "GetInstanceAdvancedJson",
     (PyCFunction) sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceAdvancedJson, METH_VARARGS,
     "Generated from C function OrthancPluginGetInstanceAdvancedJson()" },
+  { "GetInstanceData",
+    (PyCFunction) GetInstanceData, METH_VARARGS,
+    "Generated from C function OrthancPluginGetInstanceData()" },
   { NULL }  /* Sentinel */
 };
 

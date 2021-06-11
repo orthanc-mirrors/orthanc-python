@@ -34,6 +34,8 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginDrawText(
 
 
 // Forward declaration of the custom methods
+extern PyObject *GetImageBuffer(
+  sdk_OrthancPluginImage_Object* self, PyObject *args);
 // End of forward declarations
 
 
@@ -56,6 +58,9 @@ static PyMethodDef sdk_OrthancPluginImage_Methods[] = {
   { "DrawText",
     (PyCFunction) sdk_OrthancPluginImage_OrthancPluginDrawText, METH_VARARGS,
     "Generated from C function OrthancPluginDrawText()" },
+  { "GetImageBuffer",
+    (PyCFunction) GetImageBuffer, METH_VARARGS,
+    "Generated from C function OrthancPluginGetImageBuffer()" },
   { NULL }  /* Sentinel */
 };
 
