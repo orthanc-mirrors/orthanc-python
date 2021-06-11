@@ -1,6 +1,10 @@
 Pending changes in the mainline
 ===============================
 
+
+Version 3.2 (2021-06-11)
+========================
+
 * New functions from the SDK wrapped in Python:
   - orthanc.CreateDicom()
   - orthanc.CreateImageFromBuffer()
