@@ -19,10 +19,8 @@
 
 #include "PythonObject.h"
 
-
-#include "PythonLock.h"
-
 #include "../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
+#include "PythonLock.h"
 
 
 PythonObject::PythonObject(PythonLock& lock,

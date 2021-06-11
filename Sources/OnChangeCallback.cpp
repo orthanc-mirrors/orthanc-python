@@ -19,9 +19,9 @@
 
 #include "OnChangeCallback.h"
 
-#include "PythonString.h"
-
 #include "../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
+#include "ICallbackRegistration.h"
+#include "PythonString.h"
 
 #include <Compatibility.h>  // For std::unique_ptr<>
 
@@ -208,50 +208,27 @@ static OrthancPluginErrorCode OnChangeCallback(OrthancPluginChangeType changeTyp
 PyObject* RegisterOnChangeCallback(PyObject* module, PyObject* args)
 {
   // The GIL is locked at this point (no need to create "PythonLock")
-  
-  // https://docs.python.org/3/extending/extending.html#calling-python-functions-from-c
-  PyObject* callback = NULL;
 
-  if (!PyArg_ParseTuple(args, "O", &callback) ||
-      callback == NULL)
+  class Registration : public ICallbackRegistration
   {
-    PyErr_SetString(PyExc_ValueError, "Expected a callback function");
-    return NULL;
-  }
+  public:
+    virtual void Register() ORTHANC_OVERRIDE
+    {
+      OrthancPluginRegisterOnChangeCallback(OrthancPlugins::GetGlobalContext(), OnChangeCallback);
 
-  if (changesCallback_ != NULL)
-  {
-    PyErr_SetString(PyExc_RuntimeError, "Can only register one Python on-changes callback");
-    return NULL;
-  }
-  
-  OrthancPlugins::LogInfo("Registering a Python on-changes callback");
+      stopping_ = false;
+      changesThread_ = boost::thread(ChangesWorker);
+    }
+  };
 
-  OrthancPluginRegisterOnChangeCallback(OrthancPlugins::GetGlobalContext(), OnChangeCallback);
-
-  stopping_ = false;
-  changesThread_ = boost::thread(ChangesWorker);
-
-  changesCallback_ = callback;
-  Py_XINCREF(changesCallback_);
-  
-  Py_INCREF(Py_None);
-  return Py_None;
+  Registration registration;
+  return ICallbackRegistration::Apply(
+    registration, args, changesCallback_, "Python on-changes callback");
 }
-
-
 
 
 void FinalizeOnChangeCallback()
 {
   StopThread();
-
-  {
-    PythonLock lock;
-    
-    if (changesCallback_ != NULL)
-    {
-      Py_XDECREF(changesCallback_);
-    }
-  }
+  ICallbackRegistration::Unregister(changesCallback_);
 }

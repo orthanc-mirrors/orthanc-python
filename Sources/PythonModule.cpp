@@ -19,9 +19,8 @@
 
 #include "PythonModule.h"
 
-#include "PythonString.h"
-
 #include "../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
+#include "PythonString.h"
 
 #include <boost/thread/mutex.hpp>
 #include <set>
