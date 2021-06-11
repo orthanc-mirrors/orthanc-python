@@ -14,6 +14,8 @@ Pending changes in the mainline
   - orthanc.RegisterWorklistCallback()
   - orthanc.WorklistAnswers.WorklistAddAnswer()
 
+NB: SDK coverage is about 87% (138 functions wrapped in Python vs. 158 in SDK)
+
 
 Version 3.1 (2021-01-22)
 ========================
@@ -42,6 +44,8 @@ Version 2.0 (2020-07-08)
 * The "Calling Python..." info logs are disabled if "PythonVerbose" is "false"
 * New builders for Windows: Supporting 32 / 64bit with Python 2.7 / 3.7 / 3.8
 * Support of dynamic linking against the system-wide Orthanc framework library
+
+NB: SDK coverage is about 75% (119 functions wrapped in Python vs. 157 in SDK)
 
 
 Version 1.0 (2020-04-01)
