@@ -48,6 +48,8 @@ CUSTOM_FUNCTIONS = {
     'OrthancPluginRegisterOnStoredInstanceCallback',
     'OrthancPluginRegisterRestCallback',               # Implemented using OrthancPlugins::RegisterRestCallback
     'OrthancPluginRegisterRestCallbackNoLock',         # Implemented using OrthancPlugins::RegisterRestCallback
+    'OrthancPluginRegisterWorklistCallback',
+    'OrthancPluginWorklistAddAnswer',
 }
 
 CUSTOM_METHODS = [
@@ -62,6 +64,12 @@ CUSTOM_METHODS = [
         'method_name' : 'GetFindQueryTagElement',
         'implementation' : 'GetFindQueryTagElement',
         'sdk_function' : 'OrthancPluginGetFindQueryTag',
+    },
+    {
+        'class_name' : 'OrthancPluginWorklistAnswers',
+        'method_name' : 'WorklistAddAnswer',
+        'implementation' : 'WorklistAddAnswer',
+        'sdk_function' : 'OrthancPluginWorklistAddAnswer',
     },
 ]
 

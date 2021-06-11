@@ -27,6 +27,7 @@
 
 static PyObject* findScpCallback_ = NULL;
 static PyObject* moveScpCallback_ = NULL;
+static PyObject* worklistScpCallback_ = NULL;
 
 
 static PyObject *GetFindQueryTag(sdk_OrthancPluginFindQuery_Object* self,
@@ -70,11 +71,55 @@ PyObject *GetFindQueryTagGroup(sdk_OrthancPluginFindQuery_Object* self, PyObject
   return GetFindQueryTag(self, args, true);
 }
 
-
 PyObject *GetFindQueryTagElement(sdk_OrthancPluginFindQuery_Object* self, PyObject *args)
 {
   return GetFindQueryTag(self, args, false);
 }
+
+PyObject *WorklistAddAnswer(sdk_OrthancPluginWorklistAnswers_Object* self, PyObject *args)
+{
+  PyObject* query = NULL;
+  Py_buffer dicom;
+  
+  if (self->object_ == NULL)
+  {
+    PyErr_SetString(PyExc_ValueError, "Invalid object");
+    return NULL;
+  }
+  else if (!PyArg_ParseTuple(args, "Os*", &query, &dicom))
+  {
+    PyErr_SetString(PyExc_TypeError, "Please provide a orthanc.WorklistQuery object, and a DICOM buffer");
+    return NULL;
+  }
+  else if (query == Py_None ||
+           Py_TYPE(query) != GetOrthancPluginWorklistQueryType())
+  {
+    PyErr_SetString(PyExc_TypeError, "Invalid orthanc.WorklistQuery object");
+    return NULL;
+  }
+  else
+  {
+    OrthancPluginErrorCode code = OrthancPluginWorklistAddAnswer(
+      OrthancPlugins::GetGlobalContext(), self->object_,
+      reinterpret_cast<sdk_OrthancPluginWorklistQuery_Object*>(query)->object_,
+      dicom.buf, dicom.len);
+
+    PyBuffer_Release(&dicom);
+  
+    if (code == OrthancPluginErrorCode_Success)
+    {
+      Py_INCREF(Py_None);
+      return Py_None;
+    }
+    else
+    {
+      PyErr_SetString(PyExc_ValueError, "Internal error");
+      return NULL;  
+    }
+  }
+}
+// End of "CUSTOM_METHODS"
+
 
 
 static OrthancPluginErrorCode FindCallback(OrthancPluginFindAnswers *answers,
@@ -349,6 +394,55 @@ void FreeMove(void *moveDriver)
   delete reinterpret_cast<IMoveDriver*>(moveDriver);
 }
 
+
+
+OrthancPluginErrorCode WorklistCallback(OrthancPluginWorklistAnswers *answers,
+                                        const OrthancPluginWorklistQuery *query,
+                                        const char *issuerAet,
+                                        const char *calledAet)
+{
+  try
+  {
+    PythonLock lock;
+
+    PyObject *pAnswers, *pQuery;
+    
+    {
+      PythonObject args(lock, PyTuple_New(2));
+      PyTuple_SetItem(args.GetPyObject(), 0, PyLong_FromSsize_t((intptr_t) answers));
+      PyTuple_SetItem(args.GetPyObject(), 1, PyBool_FromLong(true /* borrowed, don't destruct */));
+      pAnswers = PyObject_CallObject((PyObject *) GetOrthancPluginWorklistAnswersType(), args.GetPyObject());
+    }
+    
+    {
+      PythonObject args(lock, PyTuple_New(2));
+      PyTuple_SetItem(args.GetPyObject(), 0, PyLong_FromSsize_t((intptr_t) query));
+      PyTuple_SetItem(args.GetPyObject(), 1, PyBool_FromLong(true /* borrowed, don't destruct */));
+      pQuery = PyObject_CallObject((PyObject *) GetOrthancPluginWorklistQueryType(), args.GetPyObject());
+    }
+    
+    PythonString pIssuerAet(lock, issuerAet);
+    PythonString pCalledAet(lock, calledAet);
+
+    {
+      PythonObject args(lock, PyTuple_New(4));
+      PyTuple_SetItem(args.GetPyObject(), 0, pAnswers);
+      PyTuple_SetItem(args.GetPyObject(), 1, pQuery);
+      PyTuple_SetItem(args.GetPyObject(), 2, pIssuerAet.Release());
+      PyTuple_SetItem(args.GetPyObject(), 3, pCalledAet.Release());
+
+      assert(worklistScpCallback_ != NULL);
+      PythonObject result(lock, PyObject_CallObject(worklistScpCallback_, args.GetPyObject()));
+    }
+
+    return lock.CheckCallbackSuccess("Python C-FIND SCP for worklist callback");
+  }
+  catch (OrthancPlugins::PluginException& e)
+  {
+    return e.GetErrorCode();
+  }
+}
+
    
 PyObject* RegisterFindCallback(PyObject* module, PyObject* args)
 {
@@ -389,8 +483,28 @@ PyObject* RegisterMoveCallback(PyObject* module, PyObject* args)
 }
 
 
+PyObject* RegisterWorklistCallback(PyObject* module, PyObject* args)
+{
+  // The GIL is locked at this point (no need to create "PythonLock")
+
+  class Registration : public ICallbackRegistration
+  {
+  public:
+    virtual void Register() ORTHANC_OVERRIDE
+    {
+      OrthancPluginRegisterWorklistCallback(OrthancPlugins::GetGlobalContext(), WorklistCallback);
+    }
+  };
+
+  Registration registration;
+  return ICallbackRegistration::Apply(
+    registration, args, worklistScpCallback_, "Python C-FIND SCP for worklist callback");
+}
+
+
 void FinalizeDicomScpCallbacks()
 {
   ICallbackRegistration::Unregister(findScpCallback_);
   ICallbackRegistration::Unregister(moveScpCallback_);
+  ICallbackRegistration::Unregister(worklistScpCallback_);
 }

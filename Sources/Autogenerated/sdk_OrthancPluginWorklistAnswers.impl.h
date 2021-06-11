@@ -24,6 +24,8 @@ static PyObject *sdk_OrthancPluginWorklistAnswers_OrthancPluginWorklistMarkIncom
 
 
 // Forward declaration of the custom methods
+extern PyObject *WorklistAddAnswer(
+  sdk_OrthancPluginWorklistAnswers_Object* self, PyObject *args);
 // End of forward declarations
 
 
@@ -31,6 +33,9 @@ static PyMethodDef sdk_OrthancPluginWorklistAnswers_Methods[] = {
   { "WorklistMarkIncomplete",
     (PyCFunction) sdk_OrthancPluginWorklistAnswers_OrthancPluginWorklistMarkIncomplete, METH_VARARGS,
     "Generated from C function OrthancPluginWorklistMarkIncomplete()" },
+  { "WorklistAddAnswer",
+    (PyCFunction) WorklistAddAnswer, METH_VARARGS,
+    "Generated from C function OrthancPluginWorklistAddAnswer()" },
   { NULL }  /* Sentinel */
 };
 

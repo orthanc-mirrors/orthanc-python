@@ -3,10 +3,12 @@ Pending changes in the mainline
 
 * New functions from the SDK wrapped in Python:
   - orthanc.CreateDicom()
+  - orthanc.FindQuery.GetFindQueryTagElement()
+  - orthanc.FindQuery.GetFindQueryTagGroup()
   - orthanc.RegisterFindCallback()
   - orthanc.RegisterMoveCallback()
-  - orthanc.FindQuery.GetFindQueryTagGroup()
-  - orthanc.FindQuery.GetFindQueryTagElement()
+  - orthanc.RegisterWorklistCallback()
+  - orthanc.WorklistAnswers.WorklistAddAnswer()
 
 
 Version 3.1 (2021-01-22)

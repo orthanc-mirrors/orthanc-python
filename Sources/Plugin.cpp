@@ -152,7 +152,7 @@ static void SetupGlobalFunctions()
 
 
   /**
-   * New in release 3.1
+   * New in release 3.2
    **/
   
   {
@@ -167,6 +167,11 @@ static void SetupGlobalFunctions()
   
   {
     PyMethodDef f = { "RegisterMoveCallback", RegisterMoveCallback, METH_VARARGS, "" };
+    functions.push_back(f);
+  }
+  
+  {
+    PyMethodDef f = { "RegisterWorklistCallback", RegisterWorklistCallback, METH_VARARGS, "" };
     functions.push_back(f);
   }
   
