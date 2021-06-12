@@ -46,12 +46,15 @@ include(${CMAKE_SOURCE_DIR}/Resources/Orthanc/CMake/DownloadOrthancFramework.cma
 include_directories(${ORTHANC_FRAMEWORK_ROOT})
 
 if (ORTHANC_FRAMEWORK_SOURCE STREQUAL "system")
-  if (NOT ORTHANC_FRAMEWORK_ADDITIONAL_LIBRARIES STREQUAL "")
-    # https://stackoverflow.com/a/5272993/881731
-    string(REPLACE " " ";" tmp ${ORTHANC_FRAMEWORK_ADDITIONAL_LIBRARIES})
-    link_libraries(${tmp})
+  include(FindBoost)
+  find_package(Boost COMPONENTS filesystem regex thread)
+
+  if (NOT Boost_FOUND)
+    message(FATAL_ERROR "Unable to locate Boost on this system")
   endif()
-  
+
+  link_libraries(${Boost_LIBRARIES} jsoncpp)
+
 else()
   include(${ORTHANC_FRAMEWORK_ROOT}/../Resources/CMake/OrthancFrameworkParameters.cmake)
   
