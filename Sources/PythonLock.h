@@ -59,8 +59,7 @@ public:
 
   static void AddSysPath(const std::string& path);
 
-  static void RaiseException(PyObject* module,
-                             OrthancPluginErrorCode code);
+  static void RaiseException(OrthancPluginErrorCode code);
 
   static void LogCall(const std::string& message);
 };

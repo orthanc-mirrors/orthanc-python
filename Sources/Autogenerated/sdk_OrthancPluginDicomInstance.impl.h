@@ -167,8 +167,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRemoteAe
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -194,8 +192,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceSize(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -213,8 +209,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceJson(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -225,9 +219,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceJson(
   
   if (s.GetContent() == NULL)
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
     return NULL;
   }
   else
@@ -243,8 +235,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceSimplifi
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -255,9 +245,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceSimplifi
   
   if (s.GetContent() == NULL)
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
     return NULL;
   }
   else
@@ -273,8 +261,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginHasInstanceMetadata
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -283,7 +269,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginHasInstanceMetadata
 
   if (!PyArg_ParseTuple(args, "s", &arg0))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
@@ -299,8 +284,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceMetadata
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -309,7 +292,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceMetadata
 
   if (!PyArg_ParseTuple(args, "s", &arg0))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
@@ -333,8 +315,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceOrigin(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -352,8 +332,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceTransfer
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -364,9 +342,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceTransfer
   
   if (s.GetContent() == NULL)
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
     return NULL;
   }
   else
@@ -382,8 +358,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginHasInstancePixelDat
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -401,8 +375,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceFramesCo
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -420,8 +392,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRawFrame
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -430,7 +400,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRawFrame
 
   if (!PyArg_ParseTuple(args, "k", &arg0))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
@@ -443,9 +412,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRawFrame
   }
   else
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
     return NULL;  
   }
 }
@@ -457,8 +424,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceDecodedF
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -467,7 +432,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceDecodedF
 
   if (!PyArg_ParseTuple(args, "k", &arg0))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
@@ -476,9 +440,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceDecodedF
   
   if (obj == NULL)
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
     return NULL;  
   }
   else
@@ -497,8 +459,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginSerializeDicomInsta
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -513,9 +473,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginSerializeDicomInsta
   }
   else
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
     return NULL;  
   }
 }
@@ -527,8 +485,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceAdvanced
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -539,7 +495,6 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceAdvanced
 
   if (!PyArg_ParseTuple(args, "llk", &arg0, &arg1, &arg2))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
     return NULL;
   }
@@ -548,9 +503,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceAdvanced
   
   if (s.GetContent() == NULL)
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
     return NULL;
   }
   else

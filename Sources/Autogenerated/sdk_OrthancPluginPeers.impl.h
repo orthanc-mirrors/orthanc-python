@@ -112,8 +112,6 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeersCount(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -131,8 +129,6 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeerName(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -141,7 +137,6 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeerName(
 
   if (!PyArg_ParseTuple(args, "k", &arg0))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
@@ -165,8 +160,6 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeerUrl(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -175,7 +168,6 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeerUrl(
 
   if (!PyArg_ParseTuple(args, "k", &arg0))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
@@ -199,8 +191,6 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeerUserProperty(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -210,7 +200,6 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeerUserProperty(
 
   if (!PyArg_ParseTuple(args, "ks", &arg0, &arg1))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }

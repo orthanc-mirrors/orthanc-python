@@ -113,8 +113,6 @@ static PyObject *sdk_{{class_name}}_{{c_function}}(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }

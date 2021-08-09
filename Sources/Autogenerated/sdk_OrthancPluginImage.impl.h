@@ -127,8 +127,6 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImagePixelFormat(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -146,8 +144,6 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImageWidth(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -165,8 +161,6 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImageHeight(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -184,8 +178,6 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImagePitch(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -203,8 +195,6 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginConvertPixelFormat(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -213,7 +203,6 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginConvertPixelFormat(
 
   if (!PyArg_ParseTuple(args, "l", &arg0))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
@@ -222,9 +211,7 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginConvertPixelFormat(
   
   if (obj == NULL)
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
     return NULL;  
   }
   else
@@ -243,8 +230,6 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginDrawText(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -259,7 +244,6 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginDrawText(
 
   if (!PyArg_ParseTuple(args, "ksllbbb", &arg0, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (7 arguments expected)");
     return NULL;
   }
@@ -273,9 +257,7 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginDrawText(
   }
   else
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, code);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(code);
     return NULL;
   }
 }

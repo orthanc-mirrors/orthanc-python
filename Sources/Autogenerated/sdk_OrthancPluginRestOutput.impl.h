@@ -142,8 +142,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginAnswerBuffer(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -153,7 +151,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginAnswerBuffer(
 
   if (!PyArg_ParseTuple(args, "s*s", &arg0, &arg2))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
@@ -171,8 +168,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginCompressAndAnswerPngIm
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -185,7 +180,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginCompressAndAnswerPngIm
 
   if (!PyArg_ParseTuple(args, "lkkks*", &arg0, &arg1, &arg2, &arg3, &arg4))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (5 arguments expected)");
     return NULL;
   }
@@ -203,8 +197,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginRedirect(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -213,7 +205,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginRedirect(
 
   if (!PyArg_ParseTuple(args, "s", &arg0))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
@@ -231,8 +222,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendHttpStatusCode(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -241,7 +230,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendHttpStatusCode(
 
   if (!PyArg_ParseTuple(args, "H", &arg0))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
@@ -259,8 +247,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendUnauthorized(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -269,7 +255,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendUnauthorized(
 
   if (!PyArg_ParseTuple(args, "s", &arg0))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
@@ -287,8 +272,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendMethodNotAllowed(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -297,7 +280,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendMethodNotAllowed(
 
   if (!PyArg_ParseTuple(args, "s", &arg0))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
@@ -315,8 +297,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetCookie(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -326,7 +306,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetCookie(
 
   if (!PyArg_ParseTuple(args, "ss", &arg0, &arg1))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
@@ -344,8 +323,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetHttpHeader(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -355,7 +332,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetHttpHeader(
 
   if (!PyArg_ParseTuple(args, "ss", &arg0, &arg1))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
@@ -373,8 +349,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginStartMultipartAnswer(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -384,7 +358,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginStartMultipartAnswer(
 
   if (!PyArg_ParseTuple(args, "ss", &arg0, &arg1))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
@@ -398,9 +371,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginStartMultipartAnswer(
   }
   else
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, code);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(code);
     return NULL;
   }
 }
@@ -412,8 +383,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendMultipartItem(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -422,7 +391,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendMultipartItem(
 
   if (!PyArg_ParseTuple(args, "s*", &arg0))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
@@ -436,9 +404,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendMultipartItem(
   }
   else
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, code);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(code);
     return NULL;
   }
 }
@@ -450,8 +416,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendHttpStatus(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -462,7 +426,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendHttpStatus(
 
   if (!PyArg_ParseTuple(args, "Hsk", &arg0, &arg1, &arg2))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
     return NULL;
   }
@@ -480,8 +443,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginCompressAndAnswerJpegI
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -495,7 +456,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginCompressAndAnswerJpegI
 
   if (!PyArg_ParseTuple(args, "lkkks*b", &arg0, &arg1, &arg2, &arg3, &arg4, &arg5))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (6 arguments expected)");
     return NULL;
   }
@@ -513,8 +473,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetHttpErrorDetails(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -524,7 +482,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetHttpErrorDetails(
 
   if (!PyArg_ParseTuple(args, "sb", &arg0, &arg1))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }

@@ -472,11 +472,13 @@ void PythonLock::GlobalFinalize()
 }
 
 
-void PythonLock::RaiseException(PyObject* module,
-                                OrthancPluginErrorCode code)
+void PythonLock::RaiseException(OrthancPluginErrorCode code)
 {
   if (code != OrthancPluginErrorCode_Success)
   {
+    PyErr_SetString(PyExc_ValueError, "Internal error");
+    
+#if 0
     const char* message = OrthancPluginGetErrorDescription(OrthancPlugins::GetGlobalContext(), code);
     
     struct module_state *state = GETSTATE(module);
@@ -488,6 +490,7 @@ void PythonLock::RaiseException(PyObject* module,
     {
       PyErr_SetString(state->exceptionClass_, message);
     }
+#endif
   }
 }
 

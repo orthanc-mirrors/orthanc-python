@@ -87,8 +87,6 @@ static PyObject *sdk_OrthancPluginFindAnswers_OrthancPluginFindAddAnswer(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -97,7 +95,6 @@ static PyObject *sdk_OrthancPluginFindAnswers_OrthancPluginFindAddAnswer(
 
   if (!PyArg_ParseTuple(args, "s*", &arg0))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
@@ -111,9 +108,7 @@ static PyObject *sdk_OrthancPluginFindAnswers_OrthancPluginFindAddAnswer(
   }
   else
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, code);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(code);
     return NULL;
   }
 }
@@ -125,8 +120,6 @@ static PyObject *sdk_OrthancPluginFindAnswers_OrthancPluginFindMarkIncomplete(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -142,9 +135,7 @@ static PyObject *sdk_OrthancPluginFindAnswers_OrthancPluginFindMarkIncomplete(
   }
   else
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, code);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(code);
     return NULL;
   }
 }

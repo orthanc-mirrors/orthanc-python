@@ -102,8 +102,6 @@ static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQuerySize(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -121,8 +119,6 @@ static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQueryTagName(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -131,7 +127,6 @@ static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQueryTagName(
 
   if (!PyArg_ParseTuple(args, "k", &arg0))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
@@ -140,9 +135,7 @@ static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQueryTagName(
   
   if (s.GetContent() == NULL)
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
     return NULL;
   }
   else
@@ -158,8 +151,6 @@ static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQueryValue(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -168,7 +159,6 @@ static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQueryValue(
 
   if (!PyArg_ParseTuple(args, "k", &arg0))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
@@ -177,9 +167,7 @@ static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQueryValue(
   
   if (s.GetContent() == NULL)
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
     return NULL;
   }
   else

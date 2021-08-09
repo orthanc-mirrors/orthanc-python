@@ -97,8 +97,6 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaCreate(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -110,7 +108,6 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaCreate(
 
   if (!PyArg_ParseTuple(args, "ss*Kl", &arg0, &arg1, &arg2, &arg3))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (4 arguments expected)");
     return NULL;
   }
@@ -124,9 +121,7 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaCreate(
   }
   else
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, code);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(code);
     return NULL;
   }
 }
@@ -138,8 +133,6 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaRead(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -149,7 +142,6 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaRead(
 
   if (!PyArg_ParseTuple(args, "sl", &arg0, &arg1))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
@@ -162,9 +154,7 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaRead(
   }
   else
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_InternalError);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
     return NULL;  
   }
 }
@@ -176,8 +166,6 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaRemove(
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -187,7 +175,6 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaRemove(
 
   if (!PyArg_ParseTuple(args, "sl", &arg0, &arg1))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
@@ -201,9 +188,7 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaRemove(
   }
   else
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, code);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(code);
     return NULL;
   }
 }
@@ -215,8 +200,6 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginReconstructMainDicomT
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -225,7 +208,6 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginReconstructMainDicomT
 
   if (!PyArg_ParseTuple(args, "l", &arg0))
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
@@ -239,9 +221,7 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginReconstructMainDicomT
   }
   else
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, code);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(code);
     return NULL;
   }
 }

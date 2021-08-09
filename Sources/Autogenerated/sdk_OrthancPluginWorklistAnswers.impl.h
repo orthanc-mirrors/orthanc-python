@@ -87,8 +87,6 @@ static PyObject *sdk_OrthancPluginWorklistAnswers_OrthancPluginWorklistMarkIncom
 
   if (self->object_ == NULL)
   {
-    // TODO: RAISE
-    //PythonLock::RaiseException(module, OrthancPluginErrorCode_NullPointer);
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
@@ -104,9 +102,7 @@ static PyObject *sdk_OrthancPluginWorklistAnswers_OrthancPluginWorklistMarkIncom
   }
   else
   {
-    // TODO => RAISE : https://stackoverflow.com/questions/60832317
-    //PythonLock::RaiseException(module, code);
-    PyErr_SetString(PyExc_ValueError, "Internal error");
+    PythonLock::RaiseException(code);
     return NULL;
   }
 }
