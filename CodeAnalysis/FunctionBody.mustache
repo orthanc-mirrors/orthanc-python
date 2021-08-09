@@ -90,7 +90,7 @@
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 {{/return_bytes}}

@@ -517,7 +517,7 @@ extern "C"
 #endif
 
         SetupGlobalFunctions();
-        PythonLock::GlobalInitialize("orthanc", "Exception",
+        PythonLock::GlobalInitialize("orthanc", "OrthancException",
                                      GetGlobalFunctions, InstallClasses,
                                      config.GetBooleanValue("PythonVerbose", false));
         PythonLock::AddSysPath(userScriptDirectory.string());

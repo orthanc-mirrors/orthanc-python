@@ -412,7 +412,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRawFrame
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }
@@ -473,7 +473,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginSerializeDicomInsta
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }

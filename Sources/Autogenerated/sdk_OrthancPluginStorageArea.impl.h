@@ -154,7 +154,7 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaRead(
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }

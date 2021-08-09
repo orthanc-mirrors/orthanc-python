@@ -124,7 +124,7 @@ static PyObject *sdk_OrthancPluginWorklistQuery_OrthancPluginWorklistGetDicomQue
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }

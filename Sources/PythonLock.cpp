@@ -40,7 +40,7 @@ static bool verbose_ = false;
 
 struct module_state 
 {
-  PyObject *exceptionClass_ = NULL;
+  PyObject *exceptionObject_ = NULL;
 };
 
 #if PY_MAJOR_VERSION >= 3
@@ -180,32 +180,27 @@ bool PythonLock::HasErrorOccurred(std::string& target)
 
 
 static void RegisterException(PyObject* module,
-                              const std::string& name)
+                              const std::string& fqnName,
+                              const std::string& shortName)
 {
   struct module_state *state = GETSTATE(module);
 
-  state->exceptionClass_ = PyErr_NewException(const_cast<char*>(name.c_str()), NULL, NULL);
-  if (state->exceptionClass_ == NULL) 
+  state->exceptionObject_ = PyErr_NewException(const_cast<char*>(fqnName.c_str()), NULL, NULL);
+  if (state->exceptionObject_ == NULL) 
   {
     Py_DECREF(module);
     OrthancPlugins::LogError("Cannot create the Python exception class");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
-#if 1
-  Py_XINCREF(state->exceptionClass_);
-  if (PyModule_AddObject(module, "Exception", state->exceptionClass_) < 0)
+  Py_XINCREF(state->exceptionObject_);
+  if (PyModule_AddObject(module, shortName.c_str(), state->exceptionObject_) < 0)
   {
-    Py_XDECREF(state->exceptionClass_);
-    Py_CLEAR(state->exceptionClass_);
+    Py_XDECREF(state->exceptionObject_);
+    Py_CLEAR(state->exceptionObject_);
     OrthancPlugins::LogError("Cannot create the Python exception class");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
-#else
-  // Install the exception class
-  PyObject* dict = PyModule_GetDict(module);
-  PyDict_SetItemString(dict, "Exception", state->exceptionClass);
-#endif
 }
 
 
@@ -214,13 +209,13 @@ static void RegisterException(PyObject* module,
 
 static int sdk_traverse(PyObject *module, visitproc visit, void *arg) 
 {
-  Py_VISIT(GETSTATE(module)->exceptionClass_);
+  Py_VISIT(GETSTATE(module)->exceptionObject_);
   return 0;
 }
 
 static int sdk_clear(PyObject *module) 
 {
-  Py_CLEAR(GETSTATE(module)->exceptionClass_);
+  Py_CLEAR(GETSTATE(module)->exceptionObject_);
   return 0;
 }
 
@@ -258,7 +253,7 @@ PyMODINIT_FUNC InitializeModule()
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
-  RegisterException(module, moduleName_ + "." + exceptionName_);
+  RegisterException(module, moduleName_ + "." + exceptionName_, exceptionName_);
   moduleClasses_(module);
 
   return module;
@@ -283,7 +278,7 @@ void InitializeModule()
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
-  RegisterException(module, moduleName_ + "." + exceptionName_);
+  RegisterException(module, moduleName_ + "." + exceptionName_, exceptionName_);
   moduleClasses_(module);
 }
 
@@ -476,21 +471,39 @@ void PythonLock::RaiseException(OrthancPluginErrorCode code)
 {
   if (code != OrthancPluginErrorCode_Success)
   {
-    PyErr_SetString(PyExc_ValueError, "Internal error");
-    
-#if 0
-    const char* message = OrthancPluginGetErrorDescription(OrthancPlugins::GetGlobalContext(), code);
-    
-    struct module_state *state = GETSTATE(module);
-    if (state->exceptionClass_ == NULL)
+    if (0)
     {
-      OrthancPlugins::LogError("No Python exception has been registered");
+      // This was the implementation in versions <= 3.2 of the Python plugin
+      PyErr_SetString(PyExc_ValueError, "Internal error");
     }
     else
     {
-      PyErr_SetString(state->exceptionClass_, message);
-    }
+      // "Python custom exceptions in C(++) extensions"
+      // https://www.pierov.org/2020/03/01/python-custom-exceptions-c-extensions/
+      
+      const char* message = OrthancPluginGetErrorDescription(OrthancPlugins::GetGlobalContext(), code);
+      
+      PythonLock lock;
+      
+#if PY_MAJOR_VERSION >= 3
+      PythonModule module(lock, moduleName_);
 #endif
+      
+      struct module_state *state = GETSTATE(module.GetPyObject());
+      if (state->exceptionObject_ == NULL)
+      {
+        OrthancPlugins::LogError("No Python exception has been registered");
+      }
+      else
+      {
+        PythonString str(lock, message);
+        
+        PyObject *exception = PyTuple_New(2);
+        PyTuple_SetItem(exception, 0, PyLong_FromLong(code));
+        PyTuple_SetItem(exception, 1, str.Release());
+        PyErr_SetObject(state->exceptionObject_, exception);
+      }
+    }
   }
 }
 

@@ -119,7 +119,7 @@ static PyObject* sdk_OrthancPluginGetDicomForInstance(PyObject* module, PyObject
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }
@@ -144,7 +144,7 @@ static PyObject* sdk_OrthancPluginRestApiGet(PyObject* module, PyObject* args)
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }
@@ -169,7 +169,7 @@ static PyObject* sdk_OrthancPluginRestApiGetAfterPlugins(PyObject* module, PyObj
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }
@@ -195,7 +195,7 @@ static PyObject* sdk_OrthancPluginRestApiPost(PyObject* module, PyObject* args)
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }
@@ -221,7 +221,7 @@ static PyObject* sdk_OrthancPluginRestApiPostAfterPlugins(PyObject* module, PyOb
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }
@@ -299,7 +299,7 @@ static PyObject* sdk_OrthancPluginRestApiPut(PyObject* module, PyObject* args)
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }
@@ -325,7 +325,7 @@ static PyObject* sdk_OrthancPluginRestApiPutAfterPlugins(PyObject* module, PyObj
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }
@@ -705,7 +705,7 @@ static PyObject* sdk_OrthancPluginBufferCompression(PyObject* module, PyObject* 
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }
@@ -730,7 +730,7 @@ static PyObject* sdk_OrthancPluginReadFile(PyObject* module, PyObject* args)
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }
@@ -839,7 +839,7 @@ static PyObject* sdk_OrthancPluginCompressPngImage(PyObject* module, PyObject* a
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }
@@ -869,7 +869,7 @@ static PyObject* sdk_OrthancPluginCompressJpegImage(PyObject* module, PyObject* 
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }
@@ -896,7 +896,7 @@ static PyObject* sdk_OrthancPluginHttpGet(PyObject* module, PyObject* args)
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }
@@ -924,7 +924,7 @@ static PyObject* sdk_OrthancPluginHttpPost(PyObject* module, PyObject* args)
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }
@@ -952,7 +952,7 @@ static PyObject* sdk_OrthancPluginHttpPut(PyObject* module, PyObject* args)
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }
@@ -1508,7 +1508,7 @@ static PyObject* sdk_OrthancPluginCreateMemoryBuffer(PyObject* module, PyObject*
   }
   else
   {
-    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    PythonLock::RaiseException(code);
     return NULL;  
   }
 }
