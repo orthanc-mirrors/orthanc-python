@@ -43,8 +43,6 @@ mark_as_advanced(ORTHANC_FRAMEWORK_STATIC)
 # Download and setup the Orthanc framework
 include(${CMAKE_SOURCE_DIR}/Resources/Orthanc/CMake/DownloadOrthancFramework.cmake)
 
-include_directories(${ORTHANC_FRAMEWORK_ROOT})
-
 if (ORTHANC_FRAMEWORK_SOURCE STREQUAL "system")
   include(FindBoost)
   find_package(Boost COMPONENTS filesystem regex thread)
@@ -63,6 +61,7 @@ else()
   #set(ENABLE_MODULE_DICOM OFF CACHE INTERNAL "")
   
   include(${ORTHANC_FRAMEWORK_ROOT}/../Resources/CMake/OrthancFrameworkConfiguration.cmake)
+  include_directories(${ORTHANC_FRAMEWORK_ROOT})
 endif()
 
 
