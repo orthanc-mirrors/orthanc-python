@@ -28,6 +28,7 @@
 #include "IncomingHttpRequestFilter.h"
 #include "OnChangeCallback.h"
 #include "OnStoredInstanceCallback.h"
+#include "StorageArea.h"
 
 #include "RestCallbacks.h"
 #include "PythonModule.h"
@@ -362,6 +363,16 @@ static void SetupGlobalFunctions()
   }
   
   
+  /**
+   * New in release 3.3
+   **/
+  
+  {
+    PyMethodDef f = { "RegisterStorageArea", RegisterStorageArea, METH_VARARGS, "" };
+    functions.push_back(f);
+  }
+
+
   /**
    * Append all the global functions that were automatically generated
    **/
