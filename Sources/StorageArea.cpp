@@ -30,7 +30,7 @@ static PyObject*  removeCallback_ = NULL;
 
 static OrthancPluginErrorCode RunCallback(PythonLock& lock,
                                           PyObject* callback,
-                                          PythonObject& args,
+                                          const PythonObject& args,
                                           const std::string& name)
 {
   PythonObject result(lock, PyObject_CallObject(callback, args.GetPyObject()));
