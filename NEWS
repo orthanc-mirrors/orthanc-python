@@ -1,6 +1,10 @@
 Pending changes in the mainline
 ===============================
 
+
+Version 3.3 (2021-08-12)
+========================
+
 * New Python function: "orthanc.RegisterStorageArea()"
 * Custom exception "orthanc.OrthancException" is raised instead of "ValueError"
 
