@@ -80,6 +80,7 @@ private:
   boost::mutex               mutex_;
   Queue                      queue_;
   boost::condition_variable  elementAvailable_;
+  boost::condition_variable  emptied_;
 
 public:
   ~PendingChanges()
@@ -123,7 +124,22 @@ public:
     std::unique_ptr<PendingChange> change(queue_.front());
     queue_.pop_front();
 
+    if (queue_.empty())
+    {
+      emptied_.notify_all();
+    }
+
     return change.release();
+  }
+
+  void WaitEmpty()
+  {
+    boost::mutex::scoped_lock lock(mutex_);
+
+    while (!queue_.empty())
+    {
+      emptied_.wait(lock);
+    }
   }
 };
 
@@ -198,6 +214,10 @@ static OrthancPluginErrorCode OnChangeCallback(OrthancPluginChangeType changeTyp
 
   if (changeType == OrthancPluginChangeType_OrthancStopped)
   {
+    // If stopping, make sure to have processed all the events that
+    // are pending in the queue before returning (new in 3.4)
+    pendingChanges_.WaitEmpty();
+
     StopThread();
   }
   
