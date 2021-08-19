@@ -12,8 +12,8 @@ groupadd -g ${GROUP_ID} -r orthanc
 useradd -u ${USER_ID} -r -g orthanc orthanc
 
 apt-get update
-apt-get -y install nano build-essential unzip cmake pkg-config libpython3-dev mercurial
-apt-get clean
+DEBIAN_FRONTEND=noninteractive apt-get -y install nano build-essential unzip cmake pkg-config libpython3-dev mercurial
+apt-get -y clean
 rm -rf /var/lib/apt/lists/*
 
 mkdir /tmp/source-writeable
