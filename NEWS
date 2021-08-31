@@ -1,6 +1,10 @@
 Pending changes in the mainline
 ===============================
 
+
+Version 3.4 (2021-08-31)
+========================
+
 * On Orthanc stopping, wait for all the queued events to have been processed
 * Docker-based builder scripts distinguishing Debian buster and bullseye
 
