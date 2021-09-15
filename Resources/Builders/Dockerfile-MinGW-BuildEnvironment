@@ -1,4 +1,6 @@
-FROM debian:stable-slim
+# 2021-09-15: We don't use "debian:bullseye-slim", as the "mercurial" package
+# fails to install on CBlue
+FROM debian:buster-slim
 
 MAINTAINER Sebastien Jodogne <s.jodogne@gmail.com>
 LABEL Description="Orthanc, free DICOM server" Vendor="The Orthanc project"

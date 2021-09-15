@@ -10,7 +10,7 @@ cp -r /source/Resources /tmp/source-writeable/
 mkdir /tmp/build
 cd /tmp/build
 
-wget http://orthanc.osimis.io/ThirdPartyDownloads/Python/python-2.7.17-win32.tar.bz2
+wget https://orthanc.osimis.io/ThirdPartyDownloads/Python/python-2.7.17-win32.tar.bz2
 tar xfj python-2.7.17-win32.tar.bz2
 
 cmake /tmp/source-writeable/ \
