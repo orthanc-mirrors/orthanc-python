@@ -28,6 +28,7 @@
 #include "IncomingHttpRequestFilter.h"
 #include "OnChangeCallback.h"
 #include "OnStoredInstanceCallback.h"
+#include "IncomingInstanceFilter.h"
 #include "StorageArea.h"
 
 #include "RestCallbacks.h"
@@ -372,6 +373,15 @@ static void SetupGlobalFunctions()
     functions.push_back(f);
   }
 
+
+  /**
+   * New in release 3.5
+   **/
+  
+  {
+    PyMethodDef f = { "RegisterIncomingCStoreInstanceFilter", RegisterIncomingCStoreInstanceFilter, METH_VARARGS, "" };
+    functions.push_back(f);
+  }
 
   /**
    * Append all the global functions that were automatically generated

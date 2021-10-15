@@ -36,9 +36,9 @@ static OrthancPluginErrorCode OnStoredInstanceCallback(const OrthancPluginDicomI
     PythonLock lock;
 
     /**
-     * Construct an instance object of the "orthanc.RestOutput"
+     * Construct an instance object of the "orthanc.DicomInstance"
      * class. This is done by calling the constructor function
-     * "sdk_OrthancPluginRestOutput_Type".
+     * "sdk_OrthancPluginDicomInstance_Type".
      **/
     PythonObject args(lock, PyTuple_New(2));
     PyTuple_SetItem(args.GetPyObject(), 0, PyLong_FromSsize_t((intptr_t) instance));
@@ -46,7 +46,7 @@ static OrthancPluginErrorCode OnStoredInstanceCallback(const OrthancPluginDicomI
     PyObject *pInst = PyObject_CallObject((PyObject*) GetOrthancPluginDicomInstanceType(), args.GetPyObject());
     
     /**
-     * Construct the arguments tuple (output, uri)
+     * Construct the arguments tuple (instance, instanceId)
      **/
     PythonString str(lock, instanceId);
     
@@ -59,7 +59,7 @@ static OrthancPluginErrorCode OnStoredInstanceCallback(const OrthancPluginDicomI
     std::string traceback;
     if (lock.HasErrorOccurred(traceback))
     {
-      OrthancPlugins::LogError("Error in the Python on-change callback, "
+      OrthancPlugins::LogError("Error in the Python on-stored-instance callback, "
                                "traceback:\n" + traceback);
       return OrthancPluginErrorCode_Plugin;
     }

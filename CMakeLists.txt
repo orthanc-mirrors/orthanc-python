@@ -152,7 +152,7 @@ endif()
 
 
 include_directories(
-  ${CMAKE_SOURCE_DIR}/Resources/Orthanc/Sdk-1.8.1
+  ${CMAKE_SOURCE_DIR}/Resources/Orthanc/Sdk-1.9.8
   )
 
 add_definitions(
@@ -168,6 +168,7 @@ add_library(OrthancPython SHARED
   Sources/DicomScpCallbacks.cpp
   Sources/ICallbackRegistration.cpp
   Sources/IncomingHttpRequestFilter.cpp
+  Sources/IncomingInstanceFilter.cpp
   Sources/OnChangeCallback.cpp
   Sources/OnStoredInstanceCallback.cpp
   Sources/Plugin.cpp

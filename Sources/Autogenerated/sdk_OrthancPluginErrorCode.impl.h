@@ -105,6 +105,9 @@ void RegisterOrthancPluginErrorCodeEnumeration(PyObject* module)
   PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "BAD_GEOMETRY", PyLong_FromLong(38));
   PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "SSL_INITIALIZATION", PyLong_FromLong(39));
   PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "DISCONTINUED_ABI", PyLong_FromLong(40));
+  PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "BAD_RANGE", PyLong_FromLong(41));
+  PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "DATABASE_CANNOT_SERIALIZE", PyLong_FromLong(42));
+  PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "REVISION", PyLong_FromLong(43));
   PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "SQLITE_NOT_OPENED", PyLong_FromLong(1000));
   PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "SQLITE_ALREADY_OPENED", PyLong_FromLong(1001));
   PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "SQLITE_CANNOT_OPEN", PyLong_FromLong(1002));

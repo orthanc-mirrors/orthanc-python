@@ -1,6 +1,10 @@
 Pending changes in the mainline
 ===============================
 
+=> Minimum SDK version: 1.9.8 <=  That has not been released yet !!!
+
+* New functions from the SDK wrapped in Python:
+  - orthanc.RegisterIncomingCStoreInstanceFilter()
 
 Version 3.4 (2021-08-31)
 ========================

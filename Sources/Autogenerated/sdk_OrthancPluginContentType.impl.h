@@ -66,6 +66,7 @@ void RegisterOrthancPluginContentTypeEnumeration(PyObject* module)
   PyDict_SetItemString(sdk_OrthancPluginContentType_Type.tp_dict, "UNKNOWN", PyLong_FromLong(0));
   PyDict_SetItemString(sdk_OrthancPluginContentType_Type.tp_dict, "DICOM", PyLong_FromLong(1));
   PyDict_SetItemString(sdk_OrthancPluginContentType_Type.tp_dict, "DICOM_AS_JSON", PyLong_FromLong(2));
+  PyDict_SetItemString(sdk_OrthancPluginContentType_Type.tp_dict, "DICOM_UNTIL_PIXEL_DATA", PyLong_FromLong(3));
 
   Py_INCREF(&sdk_OrthancPluginContentType_Type);
   if (PyModule_AddObject(module, "ContentType", (PyObject *)&sdk_OrthancPluginContentType_Type) < 0)

@@ -50,6 +50,7 @@ CUSTOM_FUNCTIONS = set([
     'OrthancPluginRegisterRestCallback',               # Implemented using OrthancPlugins::RegisterRestCallback
     'OrthancPluginRegisterRestCallbackNoLock',         # Implemented using OrthancPlugins::RegisterRestCallback
     'OrthancPluginRegisterWorklistCallback',
+    'OrthancPluginRegisterIncomingCStoreInstanceFilter',
 ])
 
 CUSTOM_METHODS = [
@@ -99,7 +100,7 @@ parser.add_argument('--libclang',
                     help = 'manually provides the path to the libclang shared library')
 parser.add_argument('--source',
                     default = os.path.join(os.path.dirname(__file__),
-                                           '../Resources/Orthanc/Sdk-1.8.1/orthanc/OrthancCPlugin.h'),
+                                           '../Resources/Orthanc/Sdk-1.9.8/orthanc/OrthancCPlugin.h'),
                     help = 'Input C++ file')
 parser.add_argument('--target', 
                     default = os.path.join(os.path.dirname(__file__),
