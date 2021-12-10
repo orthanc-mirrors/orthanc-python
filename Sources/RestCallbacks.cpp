@@ -63,9 +63,9 @@ public:
 static std::list<RestCallback*> restCallbacks_;
 
 
-static void RestCallbackHandler(OrthancPluginRestOutput* output,
-                                const char* uri,
-                                const OrthancPluginHttpRequest* request)
+void RestCallbackHandler(OrthancPluginRestOutput* output,
+                         const char* uri,
+                         const OrthancPluginHttpRequest* request)
 {
   PythonLock lock;
 
