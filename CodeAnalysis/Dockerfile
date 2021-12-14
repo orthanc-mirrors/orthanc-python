@@ -7,7 +7,8 @@ RUN apt-get --assume-yes install python-clang-4.0
 RUN apt-get --assume-yes install python-pip
 RUN apt-get --assume-yes install clang-4.0
 
-RUN pip install pystache
+# force pystache 0.5.0 (last version supported for python 2.7)
+RUN pip install pystache==0.5.0
 
 RUN mkdir /source
 RUN mkdir /target

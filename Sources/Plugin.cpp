@@ -29,6 +29,7 @@
 #include "OnChangeCallback.h"
 #include "OnStoredInstanceCallback.h"
 #include "IncomingInstanceFilter.h"
+#include "ReceivedInstanceCallback.h"
 #include "StorageArea.h"
 
 #include "RestCallbacks.h"
@@ -380,6 +381,11 @@ static void SetupGlobalFunctions()
   
   {
     PyMethodDef f = { "RegisterIncomingCStoreInstanceFilter", RegisterIncomingCStoreInstanceFilter, METH_VARARGS, "" };
+    functions.push_back(f);
+  }
+
+  {
+    PyMethodDef f = { "RegisterReceivedInstanceCallback", RegisterReceivedInstanceCallback, METH_VARARGS, "" };
     functions.push_back(f);
   }
 

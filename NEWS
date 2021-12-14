@@ -5,6 +5,7 @@ Pending changes in the mainline
 
 * New functions from the SDK wrapped in Python:
   - orthanc.RegisterIncomingCStoreInstanceFilter()
+  - orthanc.RegisterReceivedInstanceCallback()
 
 Version 3.4 (2021-08-31)
 ========================
