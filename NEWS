@@ -1,11 +1,10 @@
 Pending changes in the mainline
 ===============================
 
-=> Minimum SDK version: 1.9.8 <=  That has not been released yet !!!
-
-* New functions from the SDK wrapped in Python:
+* New functions from the SDK wrapped in Python (if Orthanc SDK is >= 1.10.0):
   - orthanc.RegisterIncomingCStoreInstanceFilter()
   - orthanc.RegisterReceivedInstanceCallback()
+
 
 Version 3.4 (2021-08-31)
 ========================

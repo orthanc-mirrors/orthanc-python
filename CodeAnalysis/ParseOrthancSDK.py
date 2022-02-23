@@ -2,7 +2,8 @@
 
 ##
 ## Python plugin for Orthanc
-## Copyright (C) 2020-2021 Osimis S.A., Belgium
+## Copyright (C) 2020-2022 Osimis S.A., Belgium
+## Copyright (C) 2021-2022 Sebastien Jodogne, ICTEAM UCLouvain, Belgium
 ##
 ## This program is free software: you can redistribute it and/or
 ## modify it under the terms of the GNU Affero General Public License

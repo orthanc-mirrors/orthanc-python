@@ -5,8 +5,17 @@ Python plugin for Orthanc
 Authors
 -------
 
+* Sebastien Jodogne <s.jodogne@orthanc-labs.com>
+
+  Overall design and lead developer.
+
 * Osimis S.A.
   Quai Banning 6
   4000 Liege
   Belgium
   http://www.osimis.io/
+
+* ICTEAM, UCLouvain
+  Place de l'Universite 1
+  1348 Ottignies-Louvain-la-Neuve
+  Belgium
