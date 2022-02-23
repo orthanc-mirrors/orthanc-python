@@ -71,8 +71,6 @@ void RegisterOrthancPluginDicomToJsonFlagsEnumeration(PyObject* module)
   PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "INCLUDE_PIXEL_DATA", PyLong_FromLong(8));
   PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "CONVERT_BINARY_TO_ASCII", PyLong_FromLong(16));
   PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "CONVERT_BINARY_TO_NULL", PyLong_FromLong(32));
-  PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "STOP_AFTER_PIXEL_DATA", PyLong_FromLong(64));
-  PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "SKIP_GROUP_LENGTHS", PyLong_FromLong(128));
 
   Py_INCREF(&sdk_OrthancPluginDicomToJsonFlags_Type);
   if (PyModule_AddObject(module, "DicomToJsonFlags", (PyObject *)&sdk_OrthancPluginDicomToJsonFlags_Type) < 0)

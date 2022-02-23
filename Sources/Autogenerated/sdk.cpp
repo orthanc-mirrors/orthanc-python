@@ -42,7 +42,6 @@
 #include "./sdk_OrthancPluginDicomToJsonFormat.impl.h"
 #include "./sdk_OrthancPluginMetricsType.impl.h"
 #include "./sdk_OrthancPluginValueRepresentation.impl.h"
-#include "./sdk_OrthancPluginReceivedInstanceCallbackResult.impl.h"
 #include "./sdk_OrthancPluginImageFormat.impl.h"
 #include "./sdk_OrthancPluginChangeType.impl.h"
 
@@ -82,7 +81,6 @@ void RegisterOrthancSdk(PyObject* module)
   RegisterOrthancPluginDicomToJsonFormatEnumeration(module);
   RegisterOrthancPluginMetricsTypeEnumeration(module);
   RegisterOrthancPluginValueRepresentationEnumeration(module);
-  RegisterOrthancPluginReceivedInstanceCallbackResultEnumeration(module);
   RegisterOrthancPluginImageFormatEnumeration(module);
   RegisterOrthancPluginChangeTypeEnumeration(module);
 
