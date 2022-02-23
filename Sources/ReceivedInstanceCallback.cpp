@@ -23,16 +23,18 @@
 #include "ICallbackRegistration.h"
 #include "PythonString.h"
 
+
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 10, 0)
+
 #include <Compatibility.h>  // For std::unique_ptr<>
 
 static PyObject*   receivedInstanceCallback_ = NULL;
 
 
-static OrthancPluginReceivedInstanceCallbackResult ReceivedInstanceCallback(
-    const void* receivedDicomBuffer,
-    uint64_t receivedDicomBufferSize,
-    void** modifiedDicomBuffer,
-    uint64_t* modifiedDicomBufferSize)
+static OrthancPluginReceivedInstanceAction ReceivedInstanceCallback(
+  OrthancPluginMemoryBuffer64* modifiedDicomBuffer /* out */,
+  const void* receivedDicomBuffer,
+  uint64_t receivedDicomBufferSize)
 {
   try
   {
@@ -48,12 +50,12 @@ static OrthancPluginReceivedInstanceCallbackResult ReceivedInstanceCallback(
     if (lock.HasErrorOccurred(traceback))
     {
       OrthancPlugins::LogError("Error in the Python received instance callback, traceback:\n" + traceback);
-      return OrthancPluginReceivedInstanceCallbackResult_KeepAsIs;
+      return OrthancPluginReceivedInstanceAction_KeepAsIs;
     }
     else if (!PyTuple_Check(result.GetPyObject()) || PyTuple_Size(result.GetPyObject()) != 2)
     {
       OrthancPlugins::LogError("The Python received instance callback has not returned a tuple as expected");
-      return OrthancPluginReceivedInstanceCallbackResult_KeepAsIs;
+      return OrthancPluginReceivedInstanceAction_KeepAsIs;
     }
     else
     {
@@ -63,13 +65,13 @@ static OrthancPluginReceivedInstanceCallbackResult ReceivedInstanceCallback(
       if (!PyLong_Check(returnCode))
       {
         OrthancPlugins::LogError("The Python received instance callback has not returned an int as the first element of the return tuple");
-        return OrthancPluginReceivedInstanceCallbackResult_KeepAsIs;
+        return OrthancPluginReceivedInstanceAction_KeepAsIs;
       }
 
-      OrthancPluginReceivedInstanceCallbackResult resultCode = static_cast<OrthancPluginReceivedInstanceCallbackResult>(PyLong_AsLong(returnCode));
+      OrthancPluginReceivedInstanceAction resultCode = static_cast<OrthancPluginReceivedInstanceAction>(PyLong_AsLong(returnCode));
 
-      if (resultCode == OrthancPluginReceivedInstanceCallbackResult_KeepAsIs ||
-        resultCode == OrthancPluginReceivedInstanceCallbackResult_Discard)
+      if (resultCode == OrthancPluginReceivedInstanceAction_KeepAsIs ||
+        resultCode == OrthancPluginReceivedInstanceAction_Discard)
       {
         return resultCode;
       }
@@ -79,38 +81,36 @@ static OrthancPluginReceivedInstanceCallbackResult ReceivedInstanceCallback(
       if (PyBytes_AsStringAndSize(modifiedDicom, &pythonBuffer, &pythonSize) == 1)
       {
         OrthancPlugins::LogError("Cannot access the byte buffer returned by the Python received instance callback");
-        return OrthancPluginReceivedInstanceCallbackResult_KeepAsIs;
+        return OrthancPluginReceivedInstanceAction_KeepAsIs;
       }
       else
       {
-        if (pythonSize == 0)
+        OrthancPluginCreateMemoryBuffer64(OrthancPlugins::GetGlobalContext(), modifiedDicomBuffer, pythonSize);
+        
+        if (pythonSize != 0)
         {
-          *modifiedDicomBuffer = NULL;
-          *modifiedDicomBufferSize = 0;
-          return OrthancPluginReceivedInstanceCallbackResult_KeepAsIs;
-        }
-        else
-        {
-          *modifiedDicomBuffer = malloc(pythonSize);
-          *modifiedDicomBufferSize = pythonSize;
-          if (*modifiedDicomBuffer == NULL)
+          if (modifiedDicomBuffer->data == NULL)
           {
             OrthancPlugins::LogError("Cannot allocate memory in the Python received instance callback");
-            return OrthancPluginReceivedInstanceCallbackResult_KeepAsIs;
+            return OrthancPluginReceivedInstanceAction_KeepAsIs;
           }
-
-          memcpy(*modifiedDicomBuffer, pythonBuffer, pythonSize);
-          return OrthancPluginReceivedInstanceCallbackResult_Modified;
+          else
+          {
+            memcpy(modifiedDicomBuffer->data, pythonBuffer, pythonSize);
+          }
         }
+
+        return OrthancPluginReceivedInstanceAction_Modify;
       }
     }
   }
   catch (OrthancPlugins::PluginException& e)
   {
-    OrthancPlugins::LogError("Error in the Python received instance callback: " + std::string(e.What(OrthancPlugins::GetGlobalContext())));
+    OrthancPlugins::LogError("Error in the Python received instance callback: " +
+                             std::string(e.What(OrthancPlugins::GetGlobalContext())));
   }
 
-  return OrthancPluginReceivedInstanceCallbackResult_KeepAsIs;
+  return OrthancPluginReceivedInstanceAction_KeepAsIs;
 }
 
    
@@ -138,3 +138,20 @@ void FinalizeReceivedInstanceCallback()
 {
   ICallbackRegistration::Unregister(receivedInstanceCallback_);
 }
+
+#else
+
+#warning OrthancPluginRegisterReceivedInstanceCallback() is not supported
+
+PyObject* RegisterReceivedInstanceCallback(PyObject* module, PyObject* args)
+{
+  OrthancPlugins::LogError("The version of your Orthanc SDK doesn't provide OrthancPluginRegisterReceivedInstanceCallback()");
+  Py_INCREF(Py_None);
+  return Py_None;
+}
+
+void FinalizeReceivedInstanceCallback()
+{
+}
+
+#endif

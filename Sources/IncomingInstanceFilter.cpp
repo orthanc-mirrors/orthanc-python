@@ -25,6 +25,8 @@
 #include "PythonString.h"
 
 
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 10, 0)
+
 static PyObject*   incomingCStoreInstanceFilter_ = NULL;
 
 
@@ -103,3 +105,20 @@ void FinalizeIncomingCStoreInstanceFilter()
 {
   ICallbackRegistration::Unregister(incomingCStoreInstanceFilter_);
 }
+
+#else
+
+#warning OrthancPluginRegisterIncomingCStoreInstanceFilter() is not supported
+
+PyObject* RegisterIncomingCStoreInstanceFilter(PyObject* module, PyObject* args)
+{
+  OrthancPlugins::LogError("The version of your Orthanc SDK doesn't provide OrthancPluginRegisterIncomingCStoreInstanceFilter()");
+  Py_INCREF(Py_None);
+  return Py_None;
+}
+
+void FinalizeIncomingCStoreInstanceFilter()
+{
+}
+
+#endif

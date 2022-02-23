@@ -33,9 +33,9 @@ set(ORTHANC_FRAMEWORK_SOURCE "${ORTHANC_FRAMEWORK_DEFAULT_SOURCE}" CACHE STRING 
 set(ORTHANC_FRAMEWORK_VERSION "${ORTHANC_FRAMEWORK_DEFAULT_VERSION}" CACHE STRING "Version of the Orthanc framework")
 set(ORTHANC_FRAMEWORK_ARCHIVE "" CACHE STRING "Path to the Orthanc archive, if ORTHANC_FRAMEWORK_SOURCE is \"archive\"")
 set(ORTHANC_FRAMEWORK_ROOT "" CACHE STRING "Path to the Orthanc source directory, if ORTHANC_FRAMEWORK_SOURCE is \"path\"")
+set(USE_FRAMEWORK_ORTHANC_SDK OFF CACHE BOOL "Whether to use the SDK from the Orthanc sources (for developers only, to support new features of the SDK that are still pending in the mainline)")
 
 # Advanced parameters to fine-tune linking against system libraries
-set(USE_SYSTEM_ORTHANC_SDK ON CACHE BOOL "Use the system version of the Orthanc plugin SDK")
 set(ORTHANC_FRAMEWORK_STATIC OFF CACHE BOOL "If linking against the Orthanc framework system library, indicates whether this library was statically linked")
 mark_as_advanced(ORTHANC_FRAMEWORK_STATIC)
 
@@ -151,9 +151,15 @@ else()
 endif()
 
 
-include_directories(
-  ${CMAKE_SOURCE_DIR}/Resources/Orthanc/Sdk-1.9.8
-  )
+if (USE_FRAMEWORK_ORTHANC_SDK)
+  include_directories(
+    ${ORTHANC_FRAMEWORK_ROOT}/../../OrthancServer/Plugins/Include
+    )
+else()
+  include_directories(
+    ${CMAKE_SOURCE_DIR}/Resources/Orthanc/Sdk-1.8.1
+    )
+endif()
 
 add_definitions(
   -DHAS_ORTHANC_EXCEPTION=0
