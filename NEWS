@@ -1,6 +1,10 @@
 Pending changes in the mainline
 ===============================
 
+
+Version 4.0 (2022-02-23)
+========================
+
 => Minimum SDK version: 1.10.0 <=
 
 * New functions from the SDK wrapped in Python:
