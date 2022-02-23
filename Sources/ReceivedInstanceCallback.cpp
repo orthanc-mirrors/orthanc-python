@@ -72,36 +72,38 @@ static OrthancPluginReceivedInstanceAction ReceivedInstanceCallback(
       OrthancPluginReceivedInstanceAction resultCode = static_cast<OrthancPluginReceivedInstanceAction>(PyLong_AsLong(returnCode));
 
       if (resultCode == OrthancPluginReceivedInstanceAction_KeepAsIs ||
-        resultCode == OrthancPluginReceivedInstanceAction_Discard)
+          resultCode == OrthancPluginReceivedInstanceAction_Discard)
       {
         return resultCode;
       }
-
-      char* pythonBuffer = NULL;
-      Py_ssize_t pythonSize = 0;
-      if (PyBytes_AsStringAndSize(modifiedDicom, &pythonBuffer, &pythonSize) == 1)
-      {
-        OrthancPlugins::LogError("Cannot access the byte buffer returned by the Python received instance callback");
-        return OrthancPluginReceivedInstanceAction_KeepAsIs;
-      }
       else
       {
-        OrthancPluginCreateMemoryBuffer64(OrthancPlugins::GetGlobalContext(), modifiedDicomBuffer, pythonSize);
-        
-        if (pythonSize != 0)
+        char* pythonBuffer = NULL;
+        Py_ssize_t pythonSize = 0;
+        if (PyBytes_AsStringAndSize(modifiedDicom, &pythonBuffer, &pythonSize) == 1)
         {
-          if (modifiedDicomBuffer->data == NULL)
-          {
-            OrthancPlugins::LogError("Cannot allocate memory in the Python received instance callback");
-            return OrthancPluginReceivedInstanceAction_KeepAsIs;
-          }
-          else
-          {
-            memcpy(modifiedDicomBuffer->data, pythonBuffer, pythonSize);
-          }
+          OrthancPlugins::LogError("Cannot access the byte buffer returned by the Python received instance callback");
+          return OrthancPluginReceivedInstanceAction_KeepAsIs;
         }
+        else
+        {
+          OrthancPluginCreateMemoryBuffer64(OrthancPlugins::GetGlobalContext(), modifiedDicomBuffer, pythonSize);
+        
+          if (pythonSize != 0)
+          {
+            if (modifiedDicomBuffer->data == NULL)
+            {
+              OrthancPlugins::LogError("Cannot allocate memory in the Python received instance callback");
+              return OrthancPluginReceivedInstanceAction_KeepAsIs;
+            }
+            else
+            {
+              memcpy(modifiedDicomBuffer->data, pythonBuffer, pythonSize);
+            }
+          }
 
-        return OrthancPluginReceivedInstanceAction_Modify;
+          return OrthancPluginReceivedInstanceAction_Modify;
+        }
       }
     }
   }
@@ -146,9 +148,8 @@ void FinalizeReceivedInstanceCallback()
 
 PyObject* RegisterReceivedInstanceCallback(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogError("The version of your Orthanc SDK doesn't provide OrthancPluginRegisterReceivedInstanceCallback()");
-  Py_INCREF(Py_None);
-  return Py_None;
+  PyErr_SetString(PyExc_RuntimeError, "The version of your Orthanc SDK doesn't provide OrthancPluginRegisterReceivedInstanceCallback()");
+  return NULL;
 }
 
 void FinalizeReceivedInstanceCallback()

@@ -113,9 +113,8 @@ void FinalizeIncomingCStoreInstanceFilter()
 
 PyObject* RegisterIncomingCStoreInstanceFilter(PyObject* module, PyObject* args)
 {
-  OrthancPlugins::LogError("The version of your Orthanc SDK doesn't provide OrthancPluginRegisterIncomingCStoreInstanceFilter()");
-  Py_INCREF(Py_None);
-  return Py_None;
+  PyErr_SetString(PyExc_RuntimeError, "The version of your Orthanc SDK doesn't provide OrthancPluginRegisterIncomingCStoreInstanceFilter()");
+  return NULL;
 }
 
 void FinalizeIncomingCStoreInstanceFilter()
