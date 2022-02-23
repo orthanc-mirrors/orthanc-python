@@ -157,7 +157,7 @@ if (USE_FRAMEWORK_ORTHANC_SDK)
     )
 else()
   include_directories(
-    ${CMAKE_SOURCE_DIR}/Resources/Orthanc/Sdk-1.8.1
+    ${CMAKE_SOURCE_DIR}/Resources/Orthanc/Sdk-1.10.0
     )
 endif()
 

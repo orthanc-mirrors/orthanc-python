@@ -21,7 +21,7 @@
 typedef struct 
 {
   PyObject_HEAD
-} sdk_OrthancPluginContentType_Object;
+} sdk_OrthancPluginReceivedInstanceAction_Object;
 
 
 /**
@@ -29,24 +29,24 @@ typedef struct
  * initialized field are set to zero.
  * https://stackoverflow.com/a/11152199/881731
  **/
-static PyTypeObject sdk_OrthancPluginContentType_Type = {
+static PyTypeObject sdk_OrthancPluginReceivedInstanceAction_Type = {
   PyVarObject_HEAD_INIT(NULL, 0)
-  "orthanc.ContentType",    /* tp_name */
-  sizeof(sdk_OrthancPluginContentType_Object), /* tp_basicsize */
+  "orthanc.ReceivedInstanceAction",    /* tp_name */
+  sizeof(sdk_OrthancPluginReceivedInstanceAction_Object), /* tp_basicsize */
 };
 
 
-void RegisterOrthancPluginContentTypeEnumeration(PyObject* module)
+void RegisterOrthancPluginReceivedInstanceActionEnumeration(PyObject* module)
 {
-  sdk_OrthancPluginContentType_Type.tp_new = PyType_GenericNew;
-  sdk_OrthancPluginContentType_Type.tp_flags = Py_TPFLAGS_DEFAULT;
-  sdk_OrthancPluginContentType_Type.tp_doc = "Generated from C enumeration OrthancPluginOrthancPluginContentType";  
+  sdk_OrthancPluginReceivedInstanceAction_Type.tp_new = PyType_GenericNew;
+  sdk_OrthancPluginReceivedInstanceAction_Type.tp_flags = Py_TPFLAGS_DEFAULT;
+  sdk_OrthancPluginReceivedInstanceAction_Type.tp_doc = "Generated from C enumeration OrthancPluginOrthancPluginReceivedInstanceAction";  
 
-  sdk_OrthancPluginContentType_Type.tp_dict = PyDict_New();
+  sdk_OrthancPluginReceivedInstanceAction_Type.tp_dict = PyDict_New();
   
-  if (PyType_Ready(&sdk_OrthancPluginContentType_Type) < 0)
+  if (PyType_Ready(&sdk_OrthancPluginReceivedInstanceAction_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginContentType");
+    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginReceivedInstanceAction");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -64,16 +64,15 @@ void RegisterOrthancPluginContentTypeEnumeration(PyObject* module)
    * (in your module initialization function)."
    **/
   
-  PyDict_SetItemString(sdk_OrthancPluginContentType_Type.tp_dict, "UNKNOWN", PyLong_FromLong(0));
-  PyDict_SetItemString(sdk_OrthancPluginContentType_Type.tp_dict, "DICOM", PyLong_FromLong(1));
-  PyDict_SetItemString(sdk_OrthancPluginContentType_Type.tp_dict, "DICOM_AS_JSON", PyLong_FromLong(2));
-  PyDict_SetItemString(sdk_OrthancPluginContentType_Type.tp_dict, "DICOM_UNTIL_PIXEL_DATA", PyLong_FromLong(3));
+  PyDict_SetItemString(sdk_OrthancPluginReceivedInstanceAction_Type.tp_dict, "KEEP_AS_IS", PyLong_FromLong(1));
+  PyDict_SetItemString(sdk_OrthancPluginReceivedInstanceAction_Type.tp_dict, "MODIFY", PyLong_FromLong(2));
+  PyDict_SetItemString(sdk_OrthancPluginReceivedInstanceAction_Type.tp_dict, "DISCARD", PyLong_FromLong(3));
 
-  Py_INCREF(&sdk_OrthancPluginContentType_Type);
-  if (PyModule_AddObject(module, "ContentType", (PyObject *)&sdk_OrthancPluginContentType_Type) < 0)
+  Py_INCREF(&sdk_OrthancPluginReceivedInstanceAction_Type);
+  if (PyModule_AddObject(module, "ReceivedInstanceAction", (PyObject *)&sdk_OrthancPluginReceivedInstanceAction_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginContentType");
-    Py_DECREF(&sdk_OrthancPluginContentType_Type);
+    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginReceivedInstanceAction");
+    Py_DECREF(&sdk_OrthancPluginReceivedInstanceAction_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 }

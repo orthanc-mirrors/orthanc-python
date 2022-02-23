@@ -16,8 +16,8 @@
  *    - Register all its REST callbacks using ::OrthancPluginRegisterRestCallback().
  *    - Possibly register its callback for received DICOM instances using ::OrthancPluginRegisterOnStoredInstanceCallback().
  *    - Possibly register its callback for changes to the DICOM store using ::OrthancPluginRegisterOnChangeCallback().
- *    - Possibly register a custom storage area using ::OrthancPluginRegisterStorageArea().
- *    - Possibly register a custom database back-end area using OrthancPluginRegisterDatabaseBackendV2().
+ *    - Possibly register a custom storage area using ::OrthancPluginRegisterStorageArea2().
+ *    - Possibly register a custom database back-end area using OrthancPluginRegisterDatabaseBackendV3().
  *    - Possibly register a handler for C-Find SCP using OrthancPluginRegisterFindCallback().
  *    - Possibly register a handler for C-Find SCP against DICOM worklists using OrthancPluginRegisterWorklistCallback().
  *    - Possibly register a handler for C-Move SCP using OrthancPluginRegisterMoveCallback().
@@ -27,8 +27,9 @@
  *    - Possibly register a callback to refresh its metrics using OrthancPluginRegisterRefreshMetricsCallback().
  *    - Possibly register a callback to answer chunked HTTP transfers using ::OrthancPluginRegisterChunkedRestCallback().
  *    - Possibly register a callback for Storage Commitment SCP using ::OrthancPluginRegisterStorageCommitmentScpCallback().
- *    - Possibly register a callback to filter incoming DICOM instance using OrthancPluginRegisterIncomingDicomInstanceFilter().
+ *    - Possibly register a callback to keep/discard/modify incoming DICOM instances using OrthancPluginRegisterReceivedInstanceCallback().
  *    - Possibly register a custom transcoder for DICOM images using OrthancPluginRegisterTranscoderCallback().
+ *    - Possibly register a callback to discard instances received through DICOM C-STORE using OrthancPluginRegisterIncomingCStoreInstanceFilter().
  * -# <tt>void OrthancPluginFinalize()</tt>:
  *    This function is invoked by Orthanc during its shutdown. The plugin
  *    must free all its memory.
@@ -83,7 +84,8 @@
  * Orthanc - A Lightweight, RESTful DICOM Store
  * Copyright (C) 2012-2016 Sebastien Jodogne, Medical Physics
  * Department, University Hospital of Liege, Belgium
- * Copyright (C) 2017-2020 Osimis S.A., Belgium
+ * Copyright (C) 2017-2022 Osimis S.A., Belgium
+ * Copyright (C) 2021-2022 Sebastien Jodogne, ICTEAM UCLouvain, Belgium
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -116,8 +118,8 @@
 #endif
 
 #define ORTHANC_PLUGINS_MINIMAL_MAJOR_NUMBER     1
-#define ORTHANC_PLUGINS_MINIMAL_MINOR_NUMBER     8
-#define ORTHANC_PLUGINS_MINIMAL_REVISION_NUMBER  1
+#define ORTHANC_PLUGINS_MINIMAL_MINOR_NUMBER     10
+#define ORTHANC_PLUGINS_MINIMAL_REVISION_NUMBER  0
 
 
 #if !defined(ORTHANC_PLUGINS_VERSION_IS_ABOVE)
@@ -238,6 +240,9 @@ extern "C"
     OrthancPluginErrorCode_BadGeometry = 38    /*!< Geometry error encountered in Stone */,
     OrthancPluginErrorCode_SslInitialization = 39    /*!< Cannot initialize SSL encryption, check out your certificates */,
     OrthancPluginErrorCode_DiscontinuedAbi = 40    /*!< Calling a function that has been removed from the Orthanc Framework */,
+    OrthancPluginErrorCode_BadRange = 41    /*!< Incorrect range request */,
+    OrthancPluginErrorCode_DatabaseCannotSerialize = 42    /*!< Database could not serialize access due to concurrent update, the transaction should be retried */,
+    OrthancPluginErrorCode_Revision = 43    /*!< A bad revision number was provided, which might indicate conflict between multiple writers */,
     OrthancPluginErrorCode_SQLiteNotOpened = 1000    /*!< SQLite: The database is not opened */,
     OrthancPluginErrorCode_SQLiteAlreadyOpened = 1001    /*!< SQLite: Connection is already open */,
     OrthancPluginErrorCode_SQLiteCannotOpen = 1002    /*!< SQLite: Unable to open the database */,
@@ -437,6 +442,8 @@ extern "C"
     _OrthancPluginService_EncodeDicomWebXml2 = 37,   /* New in Orthanc 1.7.0 */
     _OrthancPluginService_CreateMemoryBuffer = 38,   /* New in Orthanc 1.7.0 */
     _OrthancPluginService_GenerateRestApiAuthorizationToken = 39,   /* New in Orthanc 1.8.1 */
+    _OrthancPluginService_CreateMemoryBuffer64 = 40, /* New in Orthanc 1.9.0 */
+    _OrthancPluginService_CreateDicom2 = 41,         /* New in Orthanc 1.9.0 */
     
     /* Registration of callbacks */
     _OrthancPluginService_RegisterRestCallback = 1000,
@@ -455,7 +462,10 @@ extern "C"
     _OrthancPluginService_RegisterStorageCommitmentScpCallback = 1013,
     _OrthancPluginService_RegisterIncomingDicomInstanceFilter = 1014,
     _OrthancPluginService_RegisterTranscoderCallback = 1015,   /* New in Orthanc 1.7.0 */
-    
+    _OrthancPluginService_RegisterStorageArea2 = 1016,         /* New in Orthanc 1.9.0 */
+    _OrthancPluginService_RegisterIncomingCStoreInstanceFilter = 1017,  /* New in Orthanc 1.10.0 */
+    _OrthancPluginService_RegisterReceivedInstanceCallback = 1018,  /* New in Orthanc 1.10.0 */
+
     /* Sending answers to REST calls */
     _OrthancPluginService_AnswerBuffer = 2000,
     _OrthancPluginService_CompressAndAnswerPngImage = 2001,  /* Unused as of Orthanc 0.9.4 */
@@ -489,6 +499,7 @@ extern "C"
     _OrthancPluginService_RestApiPutAfterPlugins = 3013,
     _OrthancPluginService_ReconstructMainDicomTags = 3014,
     _OrthancPluginService_RestApiGet2 = 3015,
+    _OrthancPluginService_CallRestApi = 3016,              /* New in Orthanc 1.9.2 */
 
     /* Access to DICOM instances */
     _OrthancPluginService_GetInstanceRemoteAet = 4000,
@@ -513,12 +524,13 @@ extern "C"
     _OrthancPluginService_GetInstanceDicomWebXml = 4019,   /* New in Orthanc 1.7.0 */
     
     /* Services for plugins implementing a database back-end */
-    _OrthancPluginService_RegisterDatabaseBackend = 5000,
+    _OrthancPluginService_RegisterDatabaseBackend = 5000,    /* New in Orthanc 0.8.6 */
     _OrthancPluginService_DatabaseAnswer = 5001,
-    _OrthancPluginService_RegisterDatabaseBackendV2 = 5002,
+    _OrthancPluginService_RegisterDatabaseBackendV2 = 5002,  /* New in Orthanc 0.9.4 */
     _OrthancPluginService_StorageAreaCreate = 5003,
     _OrthancPluginService_StorageAreaRead = 5004,
     _OrthancPluginService_StorageAreaRemove = 5005,
+    _OrthancPluginService_RegisterDatabaseBackendV3 = 5006,  /* New in Orthanc 1.9.2 */
 
     /* Primitives for handling images */
     _OrthancPluginService_GetImagePixelFormat = 6000,
@@ -680,9 +692,10 @@ extern "C"
    **/
   typedef enum
   {
-    OrthancPluginContentType_Unknown = 0,      /*!< Unknown content type */
-    OrthancPluginContentType_Dicom = 1,        /*!< DICOM */
-    OrthancPluginContentType_DicomAsJson = 2,  /*!< JSON summary of a DICOM file */
+    OrthancPluginContentType_Unknown = 0,             /*!< Unknown content type */
+    OrthancPluginContentType_Dicom = 1,               /*!< DICOM */
+    OrthancPluginContentType_DicomAsJson = 2,         /*!< JSON summary of a DICOM file */
+    OrthancPluginContentType_DicomUntilPixelData = 3, /*!< DICOM Header till pixel data */
 
     _OrthancPluginContentType_INTERNAL = 0x7fffffff
   } OrthancPluginContentType;
@@ -831,6 +844,8 @@ extern "C"
     OrthancPluginDicomToJsonFlags_IncludePixelData      = (1 << 3),  /*!< Include the pixel data */
     OrthancPluginDicomToJsonFlags_ConvertBinaryToAscii  = (1 << 4),  /*!< Output binary tags as-is, dropping non-ASCII */
     OrthancPluginDicomToJsonFlags_ConvertBinaryToNull   = (1 << 5),  /*!< Signal binary tags as null values */
+    OrthancPluginDicomToJsonFlags_StopAfterPixelData    = (1 << 6),  /*!< Stop processing after pixel data (new in 1.9.1) */
+    OrthancPluginDicomToJsonFlags_SkipGroupLengths      = (1 << 7),  /*!< Skip tags whose element is zero (new in 1.9.1) */
 
     _OrthancPluginDicomToJsonFlags_INTERNAL = 0x7fffffff
   } OrthancPluginDicomToJsonFlags;
@@ -988,10 +1003,22 @@ extern "C"
       is already in use */
   } OrthancPluginStorageCommitmentFailureReason;
 
-  
 
   /**
-   * @brief A memory buffer allocated by the core system of Orthanc.
+   * The action to be taken after ReceivedInstanceCallback is triggered
+   **/
+  typedef enum
+  {
+    OrthancPluginReceivedInstanceAction_KeepAsIs = 1, /*!< Keep the instance as is */
+    OrthancPluginReceivedInstanceAction_Modify = 2,   /*!< Modify the instance */
+    OrthancPluginReceivedInstanceAction_Discard = 3,  /*!< Discard the instance */
+
+    _OrthancPluginReceivedInstanceAction_INTERNAL = 0x7fffffff
+  } OrthancPluginReceivedInstanceAction;
+
+
+  /**
+   * @brief A 32-bit memory buffer allocated by the core system of Orthanc.
    *
    * A memory buffer allocated by the core system of Orthanc. When the
    * content of the buffer is not useful anymore, it must be free by a
@@ -1009,6 +1036,28 @@ extern "C"
      **/
     uint32_t   size;
   } OrthancPluginMemoryBuffer;
+
+
+
+  /**
+   * @brief A 64-bit memory buffer allocated by the core system of Orthanc.
+   *
+   * A memory buffer allocated by the core system of Orthanc. When the
+   * content of the buffer is not useful anymore, it must be free by a
+   * call to ::OrthancPluginFreeMemoryBuffer64().
+   **/
+  typedef struct
+  {
+    /**
+     * @brief The content of the buffer.
+     **/
+    void*      data;
+
+    /**
+     * @brief The number of bytes in the buffer.
+     **/
+    uint64_t   size;
+  } OrthancPluginMemoryBuffer64;
 
 
 
@@ -1206,6 +1255,7 @@ extern "C"
    * @param type The content type corresponding to this file. 
    * @return 0 if success, other value if error.
    * @ingroup Callbacks
+   * @deprecated New plugins should use OrthancPluginStorageRead2
    * 
    * @warning The "content" buffer *must* have been allocated using
    * the "malloc()" function of your C standard library (i.e. nor
@@ -1218,6 +1268,49 @@ extern "C"
     int64_t* size,
     const char* uuid,
     OrthancPluginContentType type);
+
+
+
+  /**
+   * @brief Callback for reading a whole file from the storage area.
+   *
+   * Signature of a callback function that is triggered when Orthanc
+   * reads a whole file from the storage area.
+   *
+   * @param target Memory buffer where to store the content of the file. It must be allocated by the
+   * plugin using OrthancPluginCreateMemoryBuffer64(). The core of Orthanc will free it.
+   * @param uuid The UUID of the file of interest.
+   * @param type The content type corresponding to this file. 
+   * @ingroup Callbacks
+   **/
+  typedef OrthancPluginErrorCode (*OrthancPluginStorageReadWhole) (
+    OrthancPluginMemoryBuffer64* target,
+    const char* uuid,
+    OrthancPluginContentType type);
+
+
+
+  /**
+   * @brief Callback for reading a range of a file from the storage area.
+   *
+   * Signature of a callback function that is triggered when Orthanc
+   * reads a portion of a file from the storage area. Orthanc
+   * indicates the start position and the length of the range.
+   *
+   * @param target Memory buffer where to store the content of the range.
+   * The memory buffer is allocated and freed by Orthanc. The length of the range
+   * of interest corresponds to the size of this buffer.
+   * @param uuid The UUID of the file of interest.
+   * @param type The content type corresponding to this file. 
+   * @param rangeStart Start position of the requested range in the file.
+   * @return 0 if success, other value if error.
+   * @ingroup Callbacks
+   **/
+  typedef OrthancPluginErrorCode (*OrthancPluginStorageReadRange) (
+    OrthancPluginMemoryBuffer64* target,
+    const char* uuid,
+    OrthancPluginContentType type,
+    uint64_t rangeStart);
 
 
 
@@ -1267,6 +1360,10 @@ extern "C"
    * ("false"), the server answers with HTTP status code 403
    * (Forbidden).
    *
+   * Pay attention to the fact that this function may be invoked
+   * concurrently by different threads of the Web server of
+   * Orthanc. You must implement proper locking if applicable.
+   *
    * @param method The HTTP method used by the request.
    * @param uri The URI of interest.
    * @param ip The IP address of the HTTP client.
@@ -1295,6 +1392,10 @@ extern "C"
    * this request should be allowed. If the callback returns "0"
    * ("false"), the server answers with HTTP status code 403
    * (Forbidden).
+   *
+   * Pay attention to the fact that this function may be invoked
+   * concurrently by different threads of the Web server of
+   * Orthanc. You must implement proper locking if applicable.
    *
    * @param method The HTTP method used by the request.
    * @param uri The URI of interest.
@@ -1756,7 +1857,8 @@ extern "C"
         sizeof(int32_t) != sizeof(OrthancPluginConstraintType) ||
         sizeof(int32_t) != sizeof(OrthancPluginMetricsType) ||
         sizeof(int32_t) != sizeof(OrthancPluginDicomWebBinaryMode) ||
-        sizeof(int32_t) != sizeof(OrthancPluginStorageCommitmentFailureReason))
+        sizeof(int32_t) != sizeof(OrthancPluginStorageCommitmentFailureReason) ||
+        sizeof(int32_t) != sizeof(OrthancPluginReceivedInstanceAction))
     {
       /* Mismatch in the size of the enumerations */
       return 0;
@@ -1855,6 +1957,22 @@ extern "C"
   ORTHANC_PLUGIN_INLINE void  OrthancPluginFreeMemoryBuffer(
     OrthancPluginContext* context, 
     OrthancPluginMemoryBuffer* buffer)
+  {
+    context->Free(buffer->data);
+  }
+
+
+  /**
+   * @brief Free a memory buffer.
+   * 
+   * Free a memory buffer that was allocated by the core system of Orthanc.
+   * 
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param buffer The memory buffer to release.
+   **/
+  ORTHANC_PLUGIN_INLINE void  OrthancPluginFreeMemoryBuffer64(
+    OrthancPluginContext* context, 
+    OrthancPluginMemoryBuffer64* buffer)
   {
     context->Free(buffer->data);
   }
@@ -2003,7 +2121,7 @@ extern "C"
    * @warning Your callback function will be called synchronously with
    * the core of Orthanc. This implies that deadlocks might emerge if
    * you call other core primitives of Orthanc in your callback (such
-   * deadlocks are particular visible in the presence of other plugins
+   * deadlocks are particularly visible in the presence of other plugins
    * or Lua scripts). It is thus strongly advised to avoid any call to
    * the REST API of Orthanc in the callback. If you have to call
    * other primitives of Orthanc, you should make these calls in a
@@ -3047,6 +3165,7 @@ extern "C"
    * @param read The callback function to read a file from the custom storage area.
    * @param remove The callback function to remove a file from the custom storage area.
    * @ingroup Callbacks
+   * @deprecated Please use OrthancPluginRegisterStorageArea2()
    **/
   ORTHANC_PLUGIN_INLINE void OrthancPluginRegisterStorageArea(
     OrthancPluginContext*       context,
@@ -3180,7 +3299,7 @@ extern "C"
    * @warning Your callback function will be called synchronously with
    * the core of Orthanc. This implies that deadlocks might emerge if
    * you call other core primitives of Orthanc in your callback (such
-   * deadlocks are particular visible in the presence of other plugins
+   * deadlocks are particularly visible in the presence of other plugins
    * or Lua scripts). It is thus strongly advised to avoid any call to
    * the REST API of Orthanc in the callback. If you have to call
    * other primitives of Orthanc, you should make these calls in a
@@ -4546,6 +4665,8 @@ extern "C"
    * @param type The type of the file content.
    * @return 0 if success, other value if error.
    * @ingroup Callbacks
+   * @deprecated This function should not be used anymore. Use "OrthancPluginRestApiPut()" on
+   * "/{patients|studies|series|instances}/{id}/attachments/{name}" instead.
    **/
   ORTHANC_PLUGIN_INLINE OrthancPluginErrorCode  OrthancPluginStorageAreaCreate(
     OrthancPluginContext*       context,
@@ -4588,6 +4709,8 @@ extern "C"
    * @param type The type of the file content.
    * @return 0 if success, other value if error.
    * @ingroup Callbacks
+   * @deprecated This function should not be used anymore. Use "OrthancPluginRestApiGet()" on
+   * "/{patients|studies|series|instances}/{id}/attachments/{name}" instead.
    **/
   ORTHANC_PLUGIN_INLINE OrthancPluginErrorCode  OrthancPluginStorageAreaRead(
     OrthancPluginContext*       context,
@@ -4625,6 +4748,8 @@ extern "C"
    * @param type The type of the file content.
    * @return 0 if success, other value if error.
    * @ingroup Callbacks
+   * @deprecated This function should not be used anymore. Use "OrthancPluginRestApiDelete()" on
+   * "/{patients|studies|series|instances}/{id}/attachments/{name}" instead.
    **/
   ORTHANC_PLUGIN_INLINE OrthancPluginErrorCode  OrthancPluginStorageAreaRemove(
     OrthancPluginContext*       context,
@@ -5216,6 +5341,12 @@ extern "C"
    * memory buffer. Additionally, an image to be encoded within the
    * DICOM instance can also be provided.
    *
+   * Private tags will be associated with the private creator whose
+   * value is specified in the "DefaultPrivateCreator" configuration
+   * option of Orthanc. The function OrthancPluginCreateDicom2() can
+   * be used if another private creator must be used to create this
+   * instance.
+   *
    * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
    * @param target The target memory buffer. It must be freed with OrthancPluginFreeMemoryBuffer().
    * @param json The input JSON file.
@@ -5223,6 +5354,7 @@ extern "C"
    * @param flags Flags governing the output.
    * @return 0 if success, other value if error.
    * @ingroup Toolbox
+   * @see OrthancPluginCreateDicom2
    * @see OrthancPluginDicomBufferToJson
    **/
   ORTHANC_PLUGIN_INLINE OrthancPluginErrorCode OrthancPluginCreateDicom(
@@ -5645,6 +5777,7 @@ extern "C"
    * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
    * @param answerBody The target memory buffer (out argument).
    *        It must be freed with OrthancPluginFreeMemoryBuffer().
+   *        The value of this argument is ignored if the HTTP method is DELETE.
    * @param answerHeaders The target memory buffer for the HTTP headers in the answers (out argument). 
    *        The answer headers are formatted as a JSON object (associative array).
    *        The buffer must be freed with OrthancPluginFreeMemoryBuffer().
@@ -6449,6 +6582,7 @@ extern "C"
    * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
    * @param answerBody The target memory buffer (out argument).
    *        It must be freed with OrthancPluginFreeMemoryBuffer().
+   *        The value of this argument is ignored if the HTTP method is DELETE.
    * @param answerHeaders The target memory buffer for the HTTP headers in the answers (out argument). 
    *        The answer headers are formatted as a JSON object (associative array).
    *        The buffer must be freed with OrthancPluginFreeMemoryBuffer().
@@ -7384,9 +7518,9 @@ extern "C"
    * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
    * @param pathRegularExpression Regular expression for the URI. May contain groups. 
    * @param getHandler The callback function to handle REST calls using the GET HTTP method.
-   * @param postHandler The callback function to handle REST calls using the GET POST method.
-   * @param deleteHandler The callback function to handle REST calls using the GET DELETE method.
-   * @param putHandler The callback function to handle REST calls using the GET PUT method.
+   * @param postHandler The callback function to handle REST calls using the POST HTTP method.
+   * @param deleteHandler The callback function to handle REST calls using the DELETE HTTP method.
+   * @param putHandler The callback function to handle REST calls using the PUT HTTP method.
    * @param addChunk The callback invoked when a new chunk is available for the request body of a POST or PUT call.
    * @param execute The callback invoked once the entire body of a POST or PUT call is read.
    * @param finalize The callback invoked to release the resources associated with a POST or PUT call.
@@ -7600,6 +7734,16 @@ extern "C"
    * Note that the metadata information is not available
    * (i.e. GetInstanceMetadata() should not be used on "instance").
    *
+   * @warning Your callback function will be called synchronously with
+   * the core of Orthanc. This implies that deadlocks might emerge if
+   * you call other core primitives of Orthanc in your callback (such
+   * deadlocks are particularly visible in the presence of other plugins
+   * or Lua scripts). It is thus strongly advised to avoid any call to
+   * the REST API of Orthanc in the callback. If you have to call
+   * other primitives of Orthanc, you should make these calls in a
+   * separate thread, passing the pending events to be processed
+   * through a message queue.
+   * 
    * @param instance The received DICOM instance.
    * @return 0 to discard the instance, 1 to store the instance, -1 if error.
    * @ingroup Callback
@@ -7620,16 +7764,6 @@ extern "C"
    * DICOM instances received by Orthanc (either through the REST API
    * or through the DICOM protocol).
    *
-   * @warning Your callback function will be called synchronously with
-   * the core of Orthanc. This implies that deadlocks might emerge if
-   * you call other core primitives of Orthanc in your callback (such
-   * deadlocks are particular visible in the presence of other plugins
-   * or Lua scripts). It is thus strongly advised to avoid any call to
-   * the REST API of Orthanc in the callback. If you have to call
-   * other primitives of Orthanc, you should make these calls in a
-   * separate thread, passing the pending events to be processed
-   * through a message queue.
-   * 
    * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
    * @param callback The callback.
    * @return 0 if success, other value if error.
@@ -7645,6 +7779,145 @@ extern "C"
     return context->InvokeService(context, _OrthancPluginService_RegisterIncomingDicomInstanceFilter, &params);
   }
 
+
+  /**
+   * @brief Callback to filter incoming DICOM instances received by 
+   * Orthanc through C-STORE.
+   *
+   * Signature of a callback function that is triggered whenever
+   * Orthanc receives a new DICOM instance using DICOM C-STORE, and
+   * that answers whether this DICOM instance should be accepted or
+   * discarded by Orthanc. If the instance is discarded, the callback
+   * can specify the DIMSE error code answered by the Orthanc C-STORE
+   * SCP.
+   *
+   * Note that the metadata information is not available
+   * (i.e. GetInstanceMetadata() should not be used on "instance").
+   *
+   * @warning Your callback function will be called synchronously with
+   * the core of Orthanc. This implies that deadlocks might emerge if
+   * you call other core primitives of Orthanc in your callback (such
+   * deadlocks are particularly visible in the presence of other plugins
+   * or Lua scripts). It is thus strongly advised to avoid any call to
+   * the REST API of Orthanc in the callback. If you have to call
+   * other primitives of Orthanc, you should make these calls in a
+   * separate thread, passing the pending events to be processed
+   * through a message queue.
+   *
+   * @param dimseStatus If the DICOM instance is discarded, 
+   * DIMSE status to be sent by the C-STORE SCP of Orthanc
+   * @param instance The received DICOM instance.
+   * @return 0 to discard the instance, 1 to store the instance, -1 if error.
+   * @ingroup Callback
+   **/
+  typedef int32_t (*OrthancPluginIncomingCStoreInstanceFilter) (
+    uint16_t* dimseStatus /* out */,
+    const OrthancPluginDicomInstance* instance);
+
+
+  typedef struct
+  {
+    OrthancPluginIncomingCStoreInstanceFilter callback;
+  } _OrthancPluginIncomingCStoreInstanceFilter;
+
+  /**
+   * @brief Register a callback to filter incoming DICOM instances
+   * received by Orthanc through C-STORE.
+   *
+   * This function registers a custom callback to filter incoming
+   * DICOM instances received by Orthanc through the DICOM protocol.
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param callback The callback.
+   * @return 0 if success, other value if error.
+   * @ingroup Callbacks
+   **/
+  ORTHANC_PLUGIN_INLINE OrthancPluginErrorCode OrthancPluginRegisterIncomingCStoreInstanceFilter(
+    OrthancPluginContext*                      context,
+    OrthancPluginIncomingCStoreInstanceFilter  callback)
+  {
+    _OrthancPluginIncomingCStoreInstanceFilter params;
+    params.callback = callback;
+
+    return context->InvokeService(context, _OrthancPluginService_RegisterIncomingCStoreInstanceFilter, &params);
+  }
+
+  /**
+   * @brief Callback to keep/discard/modify a DICOM instance received
+   * by Orthanc from any source (C-STORE or REST API)
+   *
+   * Signature of a callback function that is triggered whenever
+   * Orthanc receives a new DICOM instance (through DICOM protocol or
+   * REST API), and that specifies an action to be applied to this
+   * newly received instance. The instance can be kept as it is, can
+   * be modified by the plugin, or can be discarded.
+   *
+   * This callback is invoked immediately after reception, i.e. before
+   * transcoding and before filtering
+   * (cf. OrthancPluginRegisterIncomingDicomInstanceFilter()).
+   *
+   * @warning Your callback function will be called synchronously with
+   * the core of Orthanc. This implies that deadlocks might emerge if
+   * you call other core primitives of Orthanc in your callback (such
+   * deadlocks are particularly visible in the presence of other plugins
+   * or Lua scripts). It is thus strongly advised to avoid any call to
+   * the REST API of Orthanc in the callback. If you have to call
+   * other primitives of Orthanc, you should make these calls in a
+   * separate thread, passing the pending events to be processed
+   * through a message queue.
+   *
+   * @param modifiedDicomBuffer A buffer containing the modified DICOM (output).
+   * This buffer must be allocated using OrthancPluginCreateMemoryBuffer64()
+   * and will be freed by the Orthanc core.
+   * @param receivedDicomBuffer A buffer containing the received DICOM (input).
+   * @param receivedDicomBufferSize The size of the received DICOM (input).
+   * @param origin The origin of the DICOM instance (input).
+   * @return `OrthancPluginReceivedInstanceAction_KeepAsIs` to accept the instance as is,<br/>
+   *         `OrthancPluginReceivedInstanceAction_Modify` to store the modified DICOM contained in `modifiedDicomBuffer`,<br/>
+   *         `OrthancPluginReceivedInstanceAction_Discard` to tell Orthanc to discard the instance.
+   * @ingroup Callback
+   **/
+  typedef OrthancPluginReceivedInstanceAction (*OrthancPluginReceivedInstanceCallback) (
+    OrthancPluginMemoryBuffer64* modifiedDicomBuffer,
+    const void* receivedDicomBuffer,
+    uint64_t receivedDicomBufferSize,
+    OrthancPluginInstanceOrigin origin);
+
+
+  typedef struct
+  {
+    OrthancPluginReceivedInstanceCallback callback;
+  } _OrthancPluginReceivedInstanceCallback;
+
+  /**
+   * @brief Register a callback to keep/discard/modify a DICOM instance received
+   * by Orthanc from any source (C-STORE or REST API)
+   *
+   * This function registers a custom callback to keep/discard/modify
+   * incoming DICOM instances received by Orthanc from any source
+   * (C-STORE or REST API).
+   * 
+   * @warning Contrarily to
+   * OrthancPluginRegisterIncomingCStoreInstanceFilter() and
+   * OrthancPluginRegisterIncomingDicomInstanceFilter() that can be
+   * called by multiple plugins,
+   * OrthancPluginRegisterReceivedInstanceCallback() can only be used
+   * by one single plugin.
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param callback The callback.
+   * @return 0 if success, other value if error.
+   * @ingroup Callbacks
+   **/
+  ORTHANC_PLUGIN_INLINE OrthancPluginErrorCode OrthancPluginRegisterReceivedInstanceCallback(
+    OrthancPluginContext*                     context,
+    OrthancPluginReceivedInstanceCallback     callback)
+  {
+    _OrthancPluginReceivedInstanceCallback params;
+    params.callback = callback;
+
+    return context->InvokeService(context, _OrthancPluginService_RegisterReceivedInstanceCallback, &params);
+  }
 
   /**
    * @brief Get the transfer syntax of a DICOM file.
@@ -8170,7 +8443,7 @@ extern "C"
   } _OrthancPluginCreateMemoryBuffer;
 
   /**
-   * @brief Create a memory buffer.
+   * @brief Create a 32-bit memory buffer.
    *
    * This function creates a memory buffer that is managed by the
    * Orthanc core. The main use case of this function is for plugins
@@ -8244,6 +8517,217 @@ extern "C"
       return result;
     }
   }
+
+
+
+  typedef struct
+  {
+    OrthancPluginMemoryBuffer64*  target;
+    uint64_t                      size;
+  } _OrthancPluginCreateMemoryBuffer64;
+
+  /**
+   * @brief Create a 64-bit memory buffer.
+   *
+   * This function creates a 64-bit memory buffer that is managed by
+   * the Orthanc core. The main use case of this function is for
+   * plugins that read files from the storage area.
+   * 
+   * Your plugin should never call "free()" on the resulting memory
+   * buffer, as the C library that is used by the plugin is in general
+   * not the same as the one used by the Orthanc core.
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param target The target memory buffer. It must be freed with OrthancPluginFreeMemoryBuffer().
+   * @param size Size of the memory buffer to be created.
+   * @return 0 if success, or the error code if failure.
+   * @ingroup Toolbox
+   **/
+  ORTHANC_PLUGIN_INLINE OrthancPluginErrorCode OrthancPluginCreateMemoryBuffer64(
+    OrthancPluginContext*         context,
+    OrthancPluginMemoryBuffer64*  target,
+    uint64_t                      size)
+  {
+    _OrthancPluginCreateMemoryBuffer64 params;
+    params.target = target;
+    params.size = size;
+
+    return context->InvokeService(context, _OrthancPluginService_CreateMemoryBuffer64, &params);
+  }
+  
+
+  typedef struct
+  {
+    OrthancPluginStorageCreate    create;
+    OrthancPluginStorageReadWhole readWhole;
+    OrthancPluginStorageReadRange readRange;
+    OrthancPluginStorageRemove    remove;
+  } _OrthancPluginRegisterStorageArea2;
+
+  /**
+   * @brief Register a custom storage area, with support for range request.
+   *
+   * This function registers a custom storage area, to replace the
+   * built-in way Orthanc stores its files on the filesystem. This
+   * function must be called during the initialization of the plugin,
+   * i.e. inside the OrthancPluginInitialize() public function.
+   * 
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param create The callback function to store a file on the custom storage area.
+   * @param readWhole The callback function to read a whole file from the custom storage area.
+   * @param readRange The callback function to read some range of a file from the custom storage area.
+   * If this feature is not supported by the plugin, this value can be set to NULL.
+   * @param remove The callback function to remove a file from the custom storage area.
+   * @ingroup Callbacks
+   **/
+  ORTHANC_PLUGIN_INLINE void OrthancPluginRegisterStorageArea2(
+    OrthancPluginContext*          context,
+    OrthancPluginStorageCreate     create,
+    OrthancPluginStorageReadWhole  readWhole,
+    OrthancPluginStorageReadRange  readRange,
+    OrthancPluginStorageRemove     remove)
+  {
+    _OrthancPluginRegisterStorageArea2 params;
+    params.create = create;
+    params.readWhole = readWhole;
+    params.readRange = readRange;
+    params.remove = remove;
+    context->InvokeService(context, _OrthancPluginService_RegisterStorageArea2, &params);
+  }
+
+
+
+  typedef struct
+  {
+    _OrthancPluginCreateDicom  createDicom;
+    const char*                privateCreator;
+  } _OrthancPluginCreateDicom2;
+
+  /**
+   * @brief Create a DICOM instance from a JSON string and an image, with a private creator.
+   *
+   * This function takes as input a string containing a JSON file
+   * describing the content of a DICOM instance. As an output, it
+   * writes the corresponding DICOM instance to a newly allocated
+   * memory buffer. Additionally, an image to be encoded within the
+   * DICOM instance can also be provided.
+   *
+   * Contrarily to the function OrthancPluginCreateDicom(), this
+   * function can be explicitly provided with a private creator.
+   *
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param target The target memory buffer. It must be freed with OrthancPluginFreeMemoryBuffer().
+   * @param json The input JSON file.
+   * @param pixelData The image. Can be NULL, if the pixel data is encoded inside the JSON with the data URI scheme.
+   * @param flags Flags governing the output.
+   * @param privateCreator The private creator to be used for the private DICOM tags.
+   * Check out the global configuration option "Dictionary" of Orthanc.
+   * @return 0 if success, other value if error.
+   * @ingroup Toolbox
+   * @see OrthancPluginCreateDicom
+   * @see OrthancPluginDicomBufferToJson
+   **/
+  ORTHANC_PLUGIN_INLINE OrthancPluginErrorCode OrthancPluginCreateDicom2(
+    OrthancPluginContext*          context,
+    OrthancPluginMemoryBuffer*     target,
+    const char*                    json,
+    const OrthancPluginImage*      pixelData,
+    OrthancPluginCreateDicomFlags  flags,
+    const char*                    privateCreator)
+  {
+    _OrthancPluginCreateDicom2 params;
+    params.createDicom.target = target;
+    params.createDicom.json = json;
+    params.createDicom.pixelData = pixelData;
+    params.createDicom.flags = flags;
+    params.privateCreator = privateCreator;
+
+    return context->InvokeService(context, _OrthancPluginService_CreateDicom2, &params);
+  }
+
+
+
+
+
+
+  typedef struct
+  {
+    OrthancPluginMemoryBuffer*  answerBody;
+    OrthancPluginMemoryBuffer*  answerHeaders;
+    uint16_t*                   httpStatus;
+    OrthancPluginHttpMethod     method;
+    const char*                 uri;
+    uint32_t                    headersCount;
+    const char* const*          headersKeys;
+    const char* const*          headersValues;
+    const void*                 body;
+    uint32_t                    bodySize;
+    uint8_t                     afterPlugins;
+  } _OrthancPluginCallRestApi;
+
+  /**
+   * @brief Call the REST API of Orthanc with full flexibility.
+   * 
+   * Make a call to the given URI in the REST API of Orthanc. The
+   * result to the query is stored into a newly allocated memory
+   * buffer. This function is always granted full access to the REST
+   * API (no credentials, nor security token is needed).
+   * 
+   * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().
+   * @param answerBody The target memory buffer (out argument).
+   *        It must be freed with OrthancPluginFreeMemoryBuffer().
+   *        The value of this argument is ignored if the HTTP method is DELETE.
+   * @param answerHeaders The target memory buffer for the HTTP headers in the answer (out argument). 
+   *        The answer headers are formatted as a JSON object (associative array).
+   *        The buffer must be freed with OrthancPluginFreeMemoryBuffer().
+   *        This argument can be set to NULL if the plugin has no interest in the answer HTTP headers.
+   * @param httpStatus The HTTP status after the execution of the request (out argument).
+   * @param method HTTP method to be used.
+   * @param uri The URI of interest.
+   * @param headersCount The number of HTTP headers.
+   * @param headersKeys Array containing the keys of the HTTP headers (can be <tt>NULL</tt> if no header).
+   * @param headersValues Array containing the values of the HTTP headers (can be <tt>NULL</tt> if no header).
+   * @param body The HTTP body for a POST or PUT request.
+   * @param bodySize The size of the body.
+   * @param afterPlugins If 0, the built-in API of Orthanc is used.
+   * If 1, the API is tainted by the plugins.
+   * @return 0 if success, or the error code if failure.
+   * @see OrthancPluginRestApiGet2, OrthancPluginRestApiPost, OrthancPluginRestApiPut, OrthancPluginRestApiDelete
+   * @ingroup Orthanc
+   **/
+  ORTHANC_PLUGIN_INLINE OrthancPluginErrorCode  OrthancPluginCallRestApi(
+    OrthancPluginContext*       context,
+    OrthancPluginMemoryBuffer*  answerBody,
+    OrthancPluginMemoryBuffer*  answerHeaders,
+    uint16_t*                   httpStatus,
+    OrthancPluginHttpMethod     method,
+    const char*                 uri,
+    uint32_t                    headersCount,
+    const char* const*          headersKeys,
+    const char* const*          headersValues,
+    const void*                 body,
+    uint32_t                    bodySize,
+    uint8_t                     afterPlugins)
+  {
+    _OrthancPluginCallRestApi params;
+    memset(&params, 0, sizeof(params));
+
+    params.answerBody = answerBody;
+    params.answerHeaders = answerHeaders;
+    params.httpStatus = httpStatus;
+    params.method = method;
+    params.uri = uri;
+    params.headersCount = headersCount;
+    params.headersKeys = headersKeys;
+    params.headersValues = headersValues;
+    params.body = body;
+    params.bodySize = bodySize;
+    params.afterPlugins = afterPlugins;
+
+    return context->InvokeService(context, _OrthancPluginService_CallRestApi, &params);
+  }
+
+
 #ifdef  __cplusplus
 }
 #endif
