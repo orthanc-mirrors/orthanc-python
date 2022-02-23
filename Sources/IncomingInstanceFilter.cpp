@@ -31,8 +31,12 @@
 static PyObject*   incomingCStoreInstanceFilter_ = NULL;
 
 
-static int32_t IncomingCStoreInstanceFilter(const OrthancPluginDicomInstance *instance)
+static int32_t IncomingCStoreInstanceFilter(uint16_t* dimseStatus,
+                                            const OrthancPluginDicomInstance *instance)
 {
+  assert(dimseStatus != NULL &&
+         instance != NULL);
+  
   try
   {
     PythonLock lock;
@@ -64,9 +68,31 @@ static int32_t IncomingCStoreInstanceFilter(const OrthancPluginDicomInstance *in
     }
     else
     {
-      if (PyLong_Check(result.GetPyObject()))
+      if (PyNumber_Check(result.GetPyObject()))
       {
-        return static_cast<int32_t>(PyLong_AsLong(result.GetPyObject()));
+        int32_t code = PyLong_AsLong(result.GetPyObject());
+
+        if (code < 0)
+        {
+          OrthancPlugins::LogError("The Python incoming-cstore-instance filter has returned a negative value");
+          return -1;
+        }
+        else if (code == 0)
+        {
+          return 1;  // The instance is to be stored
+        }
+        else if (code <= 0xffff)
+        {
+          // The instance is to be discarded with a custom DIMSE status
+          *dimseStatus = static_cast<uint16_t>(code);
+          return 0;  // Discard
+        }
+        else
+        {
+          OrthancPlugins::LogError("The Python incoming-cstore-instance filter has returned an out-of-range DIMSE status: " +
+                                   boost::lexical_cast<std::string>(code));
+          return -1;
+        }
       }
       else
       {
