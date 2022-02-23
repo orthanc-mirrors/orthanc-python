@@ -35,15 +35,17 @@ static PyObject*   receivedInstanceCallback_ = NULL;
 static OrthancPluginReceivedInstanceAction ReceivedInstanceCallback(
   OrthancPluginMemoryBuffer64* modifiedDicomBuffer /* out */,
   const void* receivedDicomBuffer,
-  uint64_t receivedDicomBufferSize)
+  uint64_t receivedDicomBufferSize,
+  OrthancPluginInstanceOrigin origin)
 {
   try
   {
     PythonLock lock;
 
-    PythonObject args(lock, PyTuple_New(1));
-
+    PythonObject args(lock, PyTuple_New(2));
+    
     PyTuple_SetItem(args.GetPyObject(), 0, PyBytes_FromStringAndSize(reinterpret_cast<const char*>(receivedDicomBuffer), receivedDicomBufferSize));
+    PyTuple_SetItem(args.GetPyObject(), 1, PyLong_FromLong(origin));
 
     PythonObject result(lock, PyObject_CallObject(receivedInstanceCallback_, args.GetPyObject()));
 
