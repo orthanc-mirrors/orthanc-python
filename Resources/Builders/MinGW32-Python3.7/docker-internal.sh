@@ -10,7 +10,7 @@ cp -r /source/Resources /tmp/source-writeable/
 mkdir /tmp/build
 cd /tmp/build
 
-wget https://orthanc.osimis.io/ThirdPartyDownloads/Python/python-3.7.7-win32.zip
+wget https://orthanc.uclouvain.be/third-party-downloads/Python/python-3.7.7-win32.zip
 unzip python-3.7.7-win32.zip
 
 cmake /tmp/source-writeable/ \
