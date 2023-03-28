@@ -1,6 +1,8 @@
 Pending changes in the mainline
 ===============================
 
+* New builders for Windows: Supporting 32 / 64bit with Python 3.9 / 3.10 / 3.11
+
 
 Version 4.0 (2022-02-23)
 ========================

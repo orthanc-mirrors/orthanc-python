@@ -18,8 +18,10 @@ mkdir -p ${TARGET}
 VERSION=`grep "set(PLUGIN_VERSION" ${DIR}/../../CMakeLists.txt | cut -d '"' -f 2`
 echo "Version of the Python plugin: ${VERSION}"
 
-
 set -x
+
+
+## Windows 32
 
 bash ${DIR}/MinGW32-Python2.7/docker-compile.sh Release
 cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Win32-Python2.7-${VERSION}.dll
@@ -30,6 +32,18 @@ cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Wi
 bash ${DIR}/MinGW32-Python3.8/docker-compile.sh Release
 cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Win32-Python3.8-${VERSION}.dll
 
+bash ${DIR}/MinGW32-Python3.9/docker-compile.sh Release
+cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Win32-Python3.9-${VERSION}.dll
+
+bash ${DIR}/MinGW32-Python3.10/docker-compile.sh Release
+cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Win32-Python3.10-${VERSION}.dll
+
+bash ${DIR}/MinGW32-Python3.11/docker-compile.sh Release
+cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Win32-Python3.11-${VERSION}.dll
+
+
+## Windows 64
+
 bash ${DIR}/MinGW64-Python2.7/docker-compile.sh Release
 cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Win64-Python2.7-${VERSION}.dll
 
@@ -38,3 +52,12 @@ cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Wi
 
 bash ${DIR}/MinGW64-Python3.8/docker-compile.sh Release
 cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Win64-Python3.8-${VERSION}.dll
+
+bash ${DIR}/MinGW64-Python3.9/docker-compile.sh Release
+cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Win64-Python3.9-${VERSION}.dll
+
+bash ${DIR}/MinGW64-Python3.10/docker-compile.sh Release
+cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Win64-Python3.10-${VERSION}.dll
+
+bash ${DIR}/MinGW64-Python3.11/docker-compile.sh Release
+cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Win64-Python3.11-${VERSION}.dll
