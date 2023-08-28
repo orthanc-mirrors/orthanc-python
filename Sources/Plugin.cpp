@@ -32,6 +32,7 @@
 #include "IncomingInstanceFilter.h"
 #include "ReceivedInstanceCallback.h"
 #include "StorageArea.h"
+#include "StorageCommitmentScpCallback.h"
 
 #include "RestCallbacks.h"
 #include "PythonModule.h"
@@ -387,6 +388,15 @@ static void SetupGlobalFunctions()
 
   {
     PyMethodDef f = { "RegisterReceivedInstanceCallback", RegisterReceivedInstanceCallback, METH_VARARGS, "" };
+    functions.push_back(f);
+  }
+
+  /**
+   * New in release 4.1
+   **/
+
+  {
+    PyMethodDef f = { "RegisterStorageCommitmentScpCallback", RegisterStorageCommitmentScpCallback, METH_VARARGS, "" };
     functions.push_back(f);
   }
 

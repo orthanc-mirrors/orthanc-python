@@ -22,30 +22,6 @@
 
 #include "PythonHeaderWrapper.h"
 
-#include <boost/noncopyable.hpp>
-#include <string>
+PyObject* RegisterStorageCommitmentScpCallback(PyObject* module, PyObject* args);
 
-class ICallbackRegistration : public boost::noncopyable
-{
-public:
-  virtual ~ICallbackRegistration()
-  {
-  }
-
-  virtual void Register() = 0;
-
-  // The GIL must be locked
-  static PyObject *Apply(ICallbackRegistration& registration,
-                         PyObject* args,
-                         PyObject*& singletonCallback,
-                         const std::string& details);
-
-  // The GIL must be locked
-  static PyObject *Apply2(ICallbackRegistration& registration,
-                          PyObject* args,
-                          PyObject*& singletonCallback1,
-                          PyObject*& singletonCallback2,
-                          const std::string& details);
-
-  static void Unregister(PyObject*& singletonCallback);
-};
+void FinalizeStorageCommitmentScpCallback();

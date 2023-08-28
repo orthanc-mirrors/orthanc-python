@@ -186,6 +186,7 @@ add_library(OrthancPython SHARED
   Sources/ReceivedInstanceCallback.cpp
   Sources/RestCallbacks.cpp
   Sources/StorageArea.cpp
+  Sources/StorageCommitmentScpCallback.cpp
 
   # Third-party sources
   ${CMAKE_SOURCE_DIR}/Resources/Orthanc/Plugins/OrthancPluginCppWrapper.cpp

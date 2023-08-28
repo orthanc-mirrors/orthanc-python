@@ -58,6 +58,46 @@ PyObject *ICallbackRegistration::Apply(ICallbackRegistration& registration,
 }
 
 
+PyObject *ICallbackRegistration::Apply2(ICallbackRegistration& registration,
+                                        PyObject* args,
+                                        PyObject*& singletonCallback1,
+                                        PyObject*& singletonCallback2,
+                                        const std::string& details)
+{
+  // https://docs.python.org/3/extending/extending.html#calling-python-functions-from-c
+  PyObject* callback1 = NULL;
+  PyObject* callback2 = NULL;
+
+  if (!PyArg_ParseTuple(args, "OO", &callback1, &callback2) ||
+      callback1 == NULL || callback2 == NULL)
+  {
+    const std::string message = "Expected two callback functions to register " + details;
+    PyErr_SetString(PyExc_ValueError, message.c_str());
+    return NULL;
+  }
+  else if (singletonCallback1 != NULL || singletonCallback2 != NULL)
+  {
+    const std::string message = "Can only register once for " + details;
+    PyErr_SetString(PyExc_RuntimeError, message.c_str());
+    return NULL;
+  }
+  else
+  {
+    OrthancPlugins::LogInfo("Registering callbacks " + details);
+    registration.Register();
+
+    singletonCallback1 = callback1;
+    Py_XINCREF(singletonCallback1);
+
+    singletonCallback2 = callback2;
+    Py_XINCREF(singletonCallback2);
+
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
+}
+
+
 void ICallbackRegistration::Unregister(PyObject*& singletonCallback)
 {
   PythonLock lock;
