@@ -133,7 +133,6 @@ void RestCallbackHandler(OrthancPluginRestOutput* output,
       std::unique_ptr<PythonObject> pyHeaders;
       std::vector<boost::shared_ptr<PythonString> > pyHeaderValues;
       std::unique_ptr<PythonObject> pyBody;
-      std::unique_ptr<PythonObject> pyGroups;
 
       PythonString pyMethod(lock, method);
       PyDict_SetItemString(kw.GetPyObject(), "method", pyMethod.GetPyObject());
@@ -142,10 +141,10 @@ void RestCallbackHandler(OrthancPluginRestOutput* output,
       for (uint32_t i = 0; i < request->groupsCount; i++)
       {
         PythonString tmp(lock, request->groups[i]);
-        PyTuple_SetItem(pyGroups->GetPyObject(), i, tmp.Release()); // this PyTuple_SetItem method "steals" a reference -> no need to manage memory by ourselves !
+        PyTuple_SetItem(pyGroups.GetPyObject(), i, tmp.Release()); // this PyTuple_SetItem method "steals" a reference -> no need to manage memory by ourselves !
       }
 
-      PyDict_SetItemString(kw.GetPyObject(), "groups", pyGroups->GetPyObject());
+      PyDict_SetItemString(kw.GetPyObject(), "groups", pyGroups.GetPyObject());
 
       if (request->method == OrthancPluginHttpMethod_Get)
       {
