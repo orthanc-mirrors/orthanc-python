@@ -1,6 +1,12 @@
 Pending changes in the mainline
 ===============================
 
+* New configuration section "Python" to group settings related to the plugin:
+  - "Python.Path" is an alias for global option "PythonScript"
+  - "Python.Verbose" is an alias for global option "PythonVerbose"
+* New configuration option "Python.DisplayMemoryUsage" to periodically
+  display memory allocations that stem from Python plugins
+
 
 Version 4.0 (2022-02-23)
 ========================

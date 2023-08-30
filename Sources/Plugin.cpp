@@ -42,6 +42,7 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/thread.hpp>
 
 // The "dl_iterate_phdr()" function (to walk through shared libraries)
 // is not available on Microsoft Windows and Apple OS X
@@ -283,6 +284,8 @@ PyObject* CreateImageFromBuffer(PyObject* module, PyObject* args)
 static bool pythonEnabled_ = false;
 static std::string userScriptName_;
 static std::vector<PyMethodDef>  globalFunctions_;
+static boost::thread displayMemoryUsageThread_;
+static bool displayMemoryUsageStopping_ = false;
 
 
 static void InstallClasses(PyObject* module)
@@ -461,6 +464,27 @@ static int ForceImportCallback(struct dl_phdr_info *info, size_t size, void *dat
 #endif
 
 
+static void DisplayMemoryUsageThread()
+{
+  {
+    PythonLock lock;
+    lock.ExecuteCommand("import tracemalloc");
+    lock.ExecuteCommand("tracemalloc.start()");
+  }
+
+  while (!displayMemoryUsageStopping_)
+  {
+    {
+      PythonLock lock;
+      lock.ExecuteCommand("print('Python memory usage: %0.03fMB' % "
+                          "(tracemalloc.get_traced_memory() [0] / (1024.0 * 1024.0)))");
+    }
+
+    boost::this_thread::sleep(boost::posix_time::seconds(1));
+  }
+}
+
+
 extern "C"
 {
   ORTHANC_PLUGINS_API int32_t OrthancPluginInitialize(OrthancPluginContext* c)
@@ -490,16 +514,18 @@ extern "C"
        * Detection of the user script
        **/
 
-      OrthancPlugins::OrthancConfiguration config;
+      OrthancPlugins::OrthancConfiguration globalConfig;
 
-      static const char* const OPTION = "PythonScript";
-    
+      OrthancPlugins::OrthancConfiguration pythonConfig;
+      globalConfig.GetSection(pythonConfig, "Python");
+
       std::string script;
-      if (!config.LookupStringValue(script, OPTION))
+      if (!globalConfig.LookupStringValue(script, "PythonScript") &&
+          !pythonConfig.LookupStringValue(script, "Path"))
       {
         pythonEnabled_ = false;
       
-        OrthancPlugins::LogWarning("The option \"" + std::string(OPTION) + "\" is not provided: " +
+        OrthancPlugins::LogWarning("Options \"PythonScript\" and \"Python.Path\" are not provided: "
                                    "Python scripting is disabled");
       }
       else
@@ -540,15 +566,21 @@ extern "C"
          * Initialization of Python
          **/
 
+        const bool isVerbose = (globalConfig.GetBooleanValue("PythonVerbose", false) ||
+                                pythonConfig.GetBooleanValue("Verbose", false));
+
 #if HAS_DL_ITERATE == 1
         dl_iterate_phdr(ForceImportCallback, NULL);
 #endif
 
         SetupGlobalFunctions();
-        PythonLock::GlobalInitialize("orthanc", "OrthancException",
-                                     GetGlobalFunctions, InstallClasses,
-                                     config.GetBooleanValue("PythonVerbose", false));
+        PythonLock::GlobalInitialize("orthanc", "OrthancException", GetGlobalFunctions, InstallClasses, isVerbose);
         PythonLock::AddSysPath(userScriptDirectory.string());
+
+        if (pythonConfig.GetBooleanValue("DisplayMemoryUsage", false))
+        {
+          displayMemoryUsageThread_ = boost::thread(DisplayMemoryUsageThread);
+        }
 
       
         /**
@@ -592,6 +624,13 @@ extern "C"
       FinalizeOnStoredInstanceCallback();
       FinalizeIncomingHttpRequestFilter();
       FinalizeDicomScpCallbacks();
+
+      displayMemoryUsageStopping_ = true;
+
+      if (displayMemoryUsageThread_.joinable())
+      {
+        displayMemoryUsageThread_.join();
+      }
       
       PythonLock::GlobalFinalize();
     }
