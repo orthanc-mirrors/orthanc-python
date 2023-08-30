@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 2.8)
 project(OrthancPython)
 
-set(PLUGIN_VERSION "mainline")
+set(PLUGIN_VERSION "4.1")
 
 if (PLUGIN_VERSION STREQUAL "mainline")
   set(ORTHANC_FRAMEWORK_DEFAULT_VERSION "mainline")
   set(ORTHANC_FRAMEWORK_DEFAULT_SOURCE "hg")
 else()
-  set(ORTHANC_FRAMEWORK_DEFAULT_VERSION "1.10.0")
+  set(ORTHANC_FRAMEWORK_DEFAULT_VERSION "1.12.1")
   set(ORTHANC_FRAMEWORK_DEFAULT_SOURCE "web")
 endif()
 

@@ -1,7 +1,11 @@
 Pending changes in the mainline
 ===============================
 
-* New functions from the SDK wrapped in Python:
+
+Version 4.1 (2023-08-30)
+========================
+
+* New function from the SDK wrapped in Python:
   - orthanc.RegisterStorageCommitmentScpCallback()
 * New configuration section "Python" to group settings related to the plugin:
   - "Python.Path" is an alias for global option "PythonScript"
@@ -12,8 +16,8 @@ Pending changes in the mainline
 Maintenance
 -----------
 
-* Fix memory leaks when a python script calls orthanc.RestApiPost() and sibling methods,
-  in IncomingHttpRequestFilter and in the CMove callback.
+* Fix memory leaks when a python script calls orthanc.RestApiPost() and sibling
+  methods, in IncomingHttpRequestFilter and in the CMove callback.
 * New builders for Windows: Supporting 32 / 64bit with Python 3.9 / 3.10 / 3.11
 
 
