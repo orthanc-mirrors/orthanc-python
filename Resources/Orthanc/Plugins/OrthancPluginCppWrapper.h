@@ -1264,6 +1264,11 @@ namespace OrthancPlugins
 
     ~DicomInstance();
 
+    const OrthancPluginDicomInstance* GetObject() const
+    {
+      return instance_;
+    }
+
     std::string GetRemoteAet() const;
 
     const void* GetBuffer() const
@@ -1317,6 +1322,11 @@ namespace OrthancPlugins
     static DicomInstance* Transcode(const void* buffer,
                                     size_t size,
                                     const std::string& transferSyntax);
+#endif
+
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 1)
+    static DicomInstance* Load(const std::string& instanceId,
+                               OrthancPluginLoadDicomInstanceMode mode);
 #endif
   };
 
