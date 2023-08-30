@@ -293,35 +293,52 @@ static void* CreateMoveCallback(OrthancPluginResourceType resourceType,
           throw OrthancPlugins::PluginException(OrthancPluginErrorCode_ParameterOutOfRange);
       }
 
-      PythonString pyLevel(lock, level);
-      PyDict_SetItemString(kw.GetPyObject(), "Level", pyLevel.GetPyObject());
+      {
+        PythonString tmp(lock, level);
+        PyDict_SetItemString(kw.GetPyObject(), "Level", tmp.Release());
+      }
 
-      PythonString pyPatientId(lock, patientId_);
-      PyDict_SetItemString(kw.GetPyObject(), "PatientID", pyPatientId.GetPyObject());
+      {
+        PythonString tmp(lock, patientId_);
+        PyDict_SetItemString(kw.GetPyObject(), "PatientID", tmp.Release());
+      }
 
-      PythonString pyAccessionNumber(lock, accessionNumber_);
-      PyDict_SetItemString(kw.GetPyObject(), "AccessionNumber", pyAccessionNumber.GetPyObject());
+      {
+        PythonString tmp(lock, accessionNumber_);
+        PyDict_SetItemString(kw.GetPyObject(), "AccessionNumber", tmp.Release());
+      }
 
-      PythonString pyStudyInstanceUid(lock, studyInstanceUid_);
-      PyDict_SetItemString(kw.GetPyObject(), "StudyInstanceUID", pyStudyInstanceUid.GetPyObject());
+      {
+        PythonString tmp(lock, studyInstanceUid_);
+        PyDict_SetItemString(kw.GetPyObject(), "StudyInstanceUID", tmp.Release());
+      }
 
-      PythonString pySeriesInstanceUid(lock, seriesInstanceUid_);
-      PyDict_SetItemString(kw.GetPyObject(), "SeriesInstanceUID", pySeriesInstanceUid.GetPyObject());
+      {
+        PythonString tmp(lock, seriesInstanceUid_);
+        PyDict_SetItemString(kw.GetPyObject(), "SeriesInstanceUID", tmp.Release());
+      }
 
-      PythonString pySopInstanceUid(lock, sopInstanceUid_);
-      PyDict_SetItemString(kw.GetPyObject(), "SOPInstanceUID", pySopInstanceUid.GetPyObject());
+      {
+        PythonString tmp(lock, sopInstanceUid_);
+        PyDict_SetItemString(kw.GetPyObject(), "SOPInstanceUID", tmp.Release());
+      }
 
-      PythonString pyOriginatorAet(lock, originatorAet_);
-      PyDict_SetItemString(kw.GetPyObject(), "OriginatorAET", pyOriginatorAet.GetPyObject());
+      {
+        PythonString tmp(lock, originatorAet_);
+        PyDict_SetItemString(kw.GetPyObject(), "OriginatorAET", tmp.Release());
+      }
 
-      PythonString pySourceAet(lock, sourceAet_);
-      PyDict_SetItemString(kw.GetPyObject(), "SourceAET", pySourceAet.GetPyObject());
+      {
+        PythonString tmp(lock, sourceAet_);
+        PyDict_SetItemString(kw.GetPyObject(), "SourceAET", tmp.Release());
+      }
 
-      PythonString pyTargetAet(lock, targetAet_);
-      PyDict_SetItemString(kw.GetPyObject(), "TargetAET", pyTargetAet.GetPyObject());
+      {
+        PythonString tmp(lock, targetAet_);
+        PyDict_SetItemString(kw.GetPyObject(), "TargetAET", tmp.Release());
+      }
 
-      PythonObject pyOriginatorId(lock, PyLong_FromUnsignedLong(originatorId_));
-      PyDict_SetItemString(kw.GetPyObject(), "OriginatorID", pyOriginatorId.GetPyObject());
+      PyDict_SetItemString(kw.GetPyObject(), "OriginatorID", PyLong_FromUnsignedLong(originatorId_));
 
       PythonObject args(lock, PyTuple_New(0));
 

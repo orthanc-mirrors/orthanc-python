@@ -125,59 +125,53 @@ void RestCallbackHandler(OrthancPluginRestOutput* output,
 
       PythonObject kw(lock, PyDict_New());
 
-      // We must handle memory ourselves for all members of kw that are set through PyDict_SetItem or PyDict_SetItemString.
-      // The Python documentation states that these methods do not steal references to the objects.  
-      // We have indeed observed memory leaks when not handling memory this way.
-      std::unique_ptr<PythonObject> pyGet;
-      std::vector<boost::shared_ptr<PythonString> > pyGetValues;
-      std::unique_ptr<PythonObject> pyHeaders;
-      std::vector<boost::shared_ptr<PythonString> > pyHeaderValues;
-      std::unique_ptr<PythonObject> pyBody;
-
-      PythonString pyMethod(lock, method);
-      PyDict_SetItemString(kw.GetPyObject(), "method", pyMethod.GetPyObject());
-
-      PythonObject pyGroups(lock, PyTuple_New(request->groupsCount));
-      for (uint32_t i = 0; i < request->groupsCount; i++)
       {
-        PythonString tmp(lock, request->groups[i]);
-        PyTuple_SetItem(pyGroups.GetPyObject(), i, tmp.Release()); // this PyTuple_SetItem method "steals" a reference -> no need to manage memory by ourselves !
+        PythonString tmp(lock, method);
+        PyDict_SetItemString(kw.GetPyObject(), "method", tmp.Release());
       }
 
-      PyDict_SetItemString(kw.GetPyObject(), "groups", pyGroups.GetPyObject());
+      {
+        PythonObject groups(lock, PyTuple_New(request->groupsCount));
+
+        for (uint32_t i = 0; i < request->groupsCount; i++)
+        {
+          PythonString tmp(lock, request->groups[i]);
+          PyTuple_SetItem(groups.GetPyObject(), i, tmp.Release());
+        }
+
+        PyDict_SetItemString(kw.GetPyObject(), "groups", groups.Release());
+      }
 
       if (request->method == OrthancPluginHttpMethod_Get)
       {
-        pyGet.reset(new PythonObject(lock, PyDict_New()));
+        PythonObject get(lock, PyDict_New());
+
         for (uint32_t i = 0; i < request->getCount; i++)
         {
-          boost::shared_ptr<PythonString> value(new PythonString(lock, request->getValues[i]));
-          PyDict_SetItemString(pyGet->GetPyObject(), request->getKeys[i], value->GetPyObject());
-          pyGetValues.push_back(value);
+          PythonString value(lock, request->getValues[i]);
+          PyDict_SetItemString(get.GetPyObject(), request->getKeys[i], value.Release());
         }
 
-        PyDict_SetItemString(kw.GetPyObject(), "get", pyGet->GetPyObject());
+        PyDict_SetItemString(kw.GetPyObject(), "get", get.Release());
       }
 
       {
-        pyHeaders.reset(new PythonObject(lock, PyDict_New()));
+        PythonObject headers(lock, PyDict_New());
+
         for (uint32_t i = 0; i < request->headersCount; i++)
         {
-          boost::shared_ptr<PythonString> value(new PythonString(lock, request->headersValues[i]));
-          PyDict_SetItemString(pyHeaders->GetPyObject(), request->headersKeys[i], value->GetPyObject());
-          pyHeaderValues.push_back(value);
+          PythonString value(lock, request->headersValues[i]);
+          PyDict_SetItemString(headers.GetPyObject(), request->headersKeys[i], value.Release());
         }
 
-        PyDict_SetItemString(kw.GetPyObject(), "headers", pyHeaders->GetPyObject());
+        PyDict_SetItemString(kw.GetPyObject(), "headers", headers.Release());
       }
 
       if (request->method == OrthancPluginHttpMethod_Post ||
           request->method == OrthancPluginHttpMethod_Put)
       {
-        pyBody.reset(new PythonObject(lock, PyBytes_FromStringAndSize(
-                                      reinterpret_cast<const char*>(request->body), request->bodySize)));
-
-        PyDict_SetItemString(kw.GetPyObject(), "body", pyBody->GetPyObject());
+        PyDict_SetItemString(kw.GetPyObject(), "body", PyBytes_FromStringAndSize(
+                               reinterpret_cast<const char*>(request->body), request->bodySize));
       }
 
       /**

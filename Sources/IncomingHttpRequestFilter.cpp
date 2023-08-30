@@ -51,40 +51,36 @@ static int32_t IncomingHttpRequestFilter(OrthancPluginHttpMethod method,
     }
 
     PythonObject kw(lock, PyDict_New());
+    PyDict_SetItemString(kw.GetPyObject(), "method", PyLong_FromLong(method));
 
-    PythonObject pyMethod(lock, PyLong_FromUnsignedLong(method));
-    PyDict_SetItemString(kw.GetPyObject(), "method", pyMethod.GetPyObject());
-
-    PythonString str(lock, ip);
-    PyDict_SetItemString(kw.GetPyObject(), "ip", str.GetPyObject());
-
-    PythonObject headers(lock, PyDict_New());
-    std::vector<boost::shared_ptr<PythonString> > pyHeaderValues;
-
-    for (uint32_t i = 0; i < headersCount; i++)
     {
-      boost::shared_ptr<PythonString> value(new PythonString(lock, headersValues[i]));
-      PyDict_SetItemString(headers.GetPyObject(), headersKeys[i], value->GetPyObject());
-      pyHeaderValues.push_back(value);
+      PythonString str(lock, ip);
+      PyDict_SetItemString(kw.GetPyObject(), "ip", str.Release());
     }
 
-    PyDict_SetItemString(kw.GetPyObject(), "headers", headers.GetPyObject());
+    {
+      PythonObject headers(lock, PyDict_New());
 
-    std::unique_ptr<PythonObject> pyGetArguments;
-    std::vector<boost::shared_ptr<PythonString> > pyGetValues;
+      for (uint32_t i = 0; i < headersCount; i++)
+      {
+        PythonString str(lock, headersValues[i]);
+        PyDict_SetItemString(headers.GetPyObject(), headersKeys[i], str.Release());
+      }
+
+      PyDict_SetItemString(kw.GetPyObject(), "headers", headers.Release());
+    }
 
     if (method == OrthancPluginHttpMethod_Get)
     {
-      pyGetArguments.reset(new PythonObject(lock, PyDict_New()));
+      PythonObject getArguments(lock, PyDict_New());
 
       for (uint32_t i = 0; i < getArgumentsCount; i++)
       {
-        boost::shared_ptr<PythonString> value(new PythonString(lock, getArgumentsValues[i]));
-        PyDict_SetItemString(pyGetArguments->GetPyObject(), getArgumentsKeys[i], value->GetPyObject());
-        pyGetValues.push_back(value);
+        PythonString str(lock, getArgumentsValues[i]);
+        PyDict_SetItemString(getArguments.GetPyObject(), getArgumentsKeys[i], str.Release());
       }
 
-      PyDict_SetItemString(kw.GetPyObject(), "get", pyGetArguments->GetPyObject());
+      PyDict_SetItemString(kw.GetPyObject(), "get", getArguments.Release());
     }
     
     PythonObject result(lock, PyObject_Call(incomingHttpRequestFilter_,
