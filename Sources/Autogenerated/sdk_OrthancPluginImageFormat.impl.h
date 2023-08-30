@@ -64,9 +64,24 @@ void RegisterOrthancPluginImageFormatEnumeration(PyObject* module)
    * (in your module initialization function)."
    **/
   
-  PyDict_SetItemString(sdk_OrthancPluginImageFormat_Type.tp_dict, "PNG", PyLong_FromLong(0));
-  PyDict_SetItemString(sdk_OrthancPluginImageFormat_Type.tp_dict, "JPEG", PyLong_FromLong(1));
-  PyDict_SetItemString(sdk_OrthancPluginImageFormat_Type.tp_dict, "DICOM", PyLong_FromLong(2));
+  {
+    PyObject* tmp = PyLong_FromLong(0);
+    PyDict_SetItemString(sdk_OrthancPluginImageFormat_Type.tp_dict, "PNG", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(1);
+    PyDict_SetItemString(sdk_OrthancPluginImageFormat_Type.tp_dict, "JPEG", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(2);
+    PyDict_SetItemString(sdk_OrthancPluginImageFormat_Type.tp_dict, "DICOM", tmp);
+    Py_DECREF(tmp);
+  }
+
 
   Py_INCREF(&sdk_OrthancPluginImageFormat_Type);
   if (PyModule_AddObject(module, "ImageFormat", (PyObject *)&sdk_OrthancPluginImageFormat_Type) < 0)

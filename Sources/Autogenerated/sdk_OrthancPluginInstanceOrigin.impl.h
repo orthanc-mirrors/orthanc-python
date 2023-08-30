@@ -64,12 +64,42 @@ void RegisterOrthancPluginInstanceOriginEnumeration(PyObject* module)
    * (in your module initialization function)."
    **/
   
-  PyDict_SetItemString(sdk_OrthancPluginInstanceOrigin_Type.tp_dict, "UNKNOWN", PyLong_FromLong(1));
-  PyDict_SetItemString(sdk_OrthancPluginInstanceOrigin_Type.tp_dict, "DICOM_PROTOCOL", PyLong_FromLong(2));
-  PyDict_SetItemString(sdk_OrthancPluginInstanceOrigin_Type.tp_dict, "REST_API", PyLong_FromLong(3));
-  PyDict_SetItemString(sdk_OrthancPluginInstanceOrigin_Type.tp_dict, "PLUGIN", PyLong_FromLong(4));
-  PyDict_SetItemString(sdk_OrthancPluginInstanceOrigin_Type.tp_dict, "LUA", PyLong_FromLong(5));
-  PyDict_SetItemString(sdk_OrthancPluginInstanceOrigin_Type.tp_dict, "WEB_DAV", PyLong_FromLong(6));
+  {
+    PyObject* tmp = PyLong_FromLong(1);
+    PyDict_SetItemString(sdk_OrthancPluginInstanceOrigin_Type.tp_dict, "UNKNOWN", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(2);
+    PyDict_SetItemString(sdk_OrthancPluginInstanceOrigin_Type.tp_dict, "DICOM_PROTOCOL", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(3);
+    PyDict_SetItemString(sdk_OrthancPluginInstanceOrigin_Type.tp_dict, "REST_API", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(4);
+    PyDict_SetItemString(sdk_OrthancPluginInstanceOrigin_Type.tp_dict, "PLUGIN", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(5);
+    PyDict_SetItemString(sdk_OrthancPluginInstanceOrigin_Type.tp_dict, "LUA", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(6);
+    PyDict_SetItemString(sdk_OrthancPluginInstanceOrigin_Type.tp_dict, "WEB_DAV", tmp);
+    Py_DECREF(tmp);
+  }
+
 
   Py_INCREF(&sdk_OrthancPluginInstanceOrigin_Type);
   if (PyModule_AddObject(module, "InstanceOrigin", (PyObject *)&sdk_OrthancPluginInstanceOrigin_Type) < 0)

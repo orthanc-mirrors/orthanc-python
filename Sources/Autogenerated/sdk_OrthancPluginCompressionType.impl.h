@@ -64,10 +64,30 @@ void RegisterOrthancPluginCompressionTypeEnumeration(PyObject* module)
    * (in your module initialization function)."
    **/
   
-  PyDict_SetItemString(sdk_OrthancPluginCompressionType_Type.tp_dict, "ZLIB", PyLong_FromLong(0));
-  PyDict_SetItemString(sdk_OrthancPluginCompressionType_Type.tp_dict, "ZLIB_WITH_SIZE", PyLong_FromLong(1));
-  PyDict_SetItemString(sdk_OrthancPluginCompressionType_Type.tp_dict, "GZIP", PyLong_FromLong(2));
-  PyDict_SetItemString(sdk_OrthancPluginCompressionType_Type.tp_dict, "GZIP_WITH_SIZE", PyLong_FromLong(3));
+  {
+    PyObject* tmp = PyLong_FromLong(0);
+    PyDict_SetItemString(sdk_OrthancPluginCompressionType_Type.tp_dict, "ZLIB", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(1);
+    PyDict_SetItemString(sdk_OrthancPluginCompressionType_Type.tp_dict, "ZLIB_WITH_SIZE", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(2);
+    PyDict_SetItemString(sdk_OrthancPluginCompressionType_Type.tp_dict, "GZIP", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(3);
+    PyDict_SetItemString(sdk_OrthancPluginCompressionType_Type.tp_dict, "GZIP_WITH_SIZE", tmp);
+    Py_DECREF(tmp);
+  }
+
 
   Py_INCREF(&sdk_OrthancPluginCompressionType_Type);
   if (PyModule_AddObject(module, "CompressionType", (PyObject *)&sdk_OrthancPluginCompressionType_Type) < 0)

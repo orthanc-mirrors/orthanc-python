@@ -64,25 +64,120 @@ void RegisterOrthancPluginChangeTypeEnumeration(PyObject* module)
    * (in your module initialization function)."
    **/
   
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "COMPLETED_SERIES", PyLong_FromLong(0));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "DELETED", PyLong_FromLong(1));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "NEW_CHILD_INSTANCE", PyLong_FromLong(2));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "NEW_INSTANCE", PyLong_FromLong(3));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "NEW_PATIENT", PyLong_FromLong(4));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "NEW_SERIES", PyLong_FromLong(5));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "NEW_STUDY", PyLong_FromLong(6));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "STABLE_PATIENT", PyLong_FromLong(7));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "STABLE_SERIES", PyLong_FromLong(8));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "STABLE_STUDY", PyLong_FromLong(9));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "ORTHANC_STARTED", PyLong_FromLong(10));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "ORTHANC_STOPPED", PyLong_FromLong(11));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "UPDATED_ATTACHMENT", PyLong_FromLong(12));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "UPDATED_METADATA", PyLong_FromLong(13));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "UPDATED_PEERS", PyLong_FromLong(14));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "UPDATED_MODALITIES", PyLong_FromLong(15));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "JOB_SUBMITTED", PyLong_FromLong(16));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "JOB_SUCCESS", PyLong_FromLong(17));
-  PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "JOB_FAILURE", PyLong_FromLong(18));
+  {
+    PyObject* tmp = PyLong_FromLong(0);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "COMPLETED_SERIES", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(1);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "DELETED", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(2);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "NEW_CHILD_INSTANCE", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(3);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "NEW_INSTANCE", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(4);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "NEW_PATIENT", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(5);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "NEW_SERIES", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(6);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "NEW_STUDY", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(7);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "STABLE_PATIENT", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(8);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "STABLE_SERIES", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(9);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "STABLE_STUDY", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(10);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "ORTHANC_STARTED", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(11);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "ORTHANC_STOPPED", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(12);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "UPDATED_ATTACHMENT", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(13);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "UPDATED_METADATA", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(14);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "UPDATED_PEERS", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(15);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "UPDATED_MODALITIES", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(16);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "JOB_SUBMITTED", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(17);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "JOB_SUCCESS", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(18);
+    PyDict_SetItemString(sdk_OrthancPluginChangeType_Type.tp_dict, "JOB_FAILURE", tmp);
+    Py_DECREF(tmp);
+  }
+
 
   Py_INCREF(&sdk_OrthancPluginChangeType_Type);
   if (PyModule_AddObject(module, "ChangeType", (PyObject *)&sdk_OrthancPluginChangeType_Type) < 0)
