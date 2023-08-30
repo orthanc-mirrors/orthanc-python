@@ -51,7 +51,11 @@ static int32_t IncomingHttpRequestFilter(OrthancPluginHttpMethod method,
     }
 
     PythonObject kw(lock, PyDict_New());
-    PyDict_SetItemString(kw.GetPyObject(), "method", PyLong_FromLong(method));
+
+    {
+      PythonObject tmp(lock, PyLong_FromLong(method));
+      PyDict_SetItemString(kw.GetPyObject(), "method", tmp.GetPyObject());
+    }
 
     {
       PythonString str(lock, ip);

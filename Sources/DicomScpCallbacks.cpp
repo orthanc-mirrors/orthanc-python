@@ -338,7 +338,10 @@ static void* CreateMoveCallback(OrthancPluginResourceType resourceType,
         PyDict_SetItemString(kw.GetPyObject(), "TargetAET", tmp.GetPyObject());
       }
 
-      PyDict_SetItemString(kw.GetPyObject(), "OriginatorID", PyLong_FromUnsignedLong(originatorId_));
+      {
+        PythonObject tmp(lock, PyLong_FromUnsignedLong(originatorId_));
+        PyDict_SetItemString(kw.GetPyObject(), "OriginatorID", tmp.GetPyObject());
+      }
 
       PythonObject args(lock, PyTuple_New(0));
 

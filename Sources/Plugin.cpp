@@ -81,11 +81,31 @@ PyObject* LookupDictionary(PyObject* module, PyObject* args)
       PythonLock lock;
       
       PythonObject kw(lock, PyDict_New());
-      PyDict_SetItemString(kw.GetPyObject(), "Group", PyLong_FromUnsignedLong(entry.group));
-      PyDict_SetItemString(kw.GetPyObject(), "Element", PyLong_FromUnsignedLong(entry.element));
-      PyDict_SetItemString(kw.GetPyObject(), "ValueRepresentation", PyLong_FromUnsignedLong(entry.vr));
-      PyDict_SetItemString(kw.GetPyObject(), "MinMultiplicity", PyLong_FromUnsignedLong(entry.minMultiplicity));
-      PyDict_SetItemString(kw.GetPyObject(), "MaxMultiplicity", PyLong_FromUnsignedLong(entry.maxMultiplicity));
+
+      {
+        PythonObject tmp(lock, PyLong_FromUnsignedLong(entry.group));
+        PyDict_SetItemString(kw.GetPyObject(), "Group", tmp.GetPyObject());
+      }
+
+      {
+        PythonObject tmp(lock, PyLong_FromUnsignedLong(entry.element));
+        PyDict_SetItemString(kw.GetPyObject(), "Element", tmp.GetPyObject());
+      }
+
+      {
+        PythonObject tmp(lock, PyLong_FromUnsignedLong(entry.vr));
+        PyDict_SetItemString(kw.GetPyObject(), "ValueRepresentation", tmp.GetPyObject());
+      }
+
+      {
+        PythonObject tmp(lock, PyLong_FromUnsignedLong(entry.minMultiplicity));
+        PyDict_SetItemString(kw.GetPyObject(), "MinMultiplicity", tmp.GetPyObject());
+      }
+
+      {
+        PythonObject tmp(lock, PyLong_FromUnsignedLong(entry.maxMultiplicity));
+        PyDict_SetItemString(kw.GetPyObject(), "MaxMultiplicity", tmp.GetPyObject());
+      }
       
       return kw.Release();
     }
