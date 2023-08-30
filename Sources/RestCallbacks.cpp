@@ -128,7 +128,7 @@ void RestCallbackHandler(OrthancPluginRestOutput* output,
 
       {
         PythonString tmp(lock, method);
-        PyDict_SetItemString(kw.GetPyObject(), "method", tmp.Release());
+        PyDict_SetItemString(kw.GetPyObject(), "method", tmp.GetPyObject());
       }
 
       {
@@ -140,7 +140,7 @@ void RestCallbackHandler(OrthancPluginRestOutput* output,
           PyTuple_SetItem(groups.GetPyObject(), i, tmp.Release());
         }
 
-        PyDict_SetItemString(kw.GetPyObject(), "groups", groups.Release());
+        PyDict_SetItemString(kw.GetPyObject(), "groups", groups.GetPyObject());
       }
 
       if (request->method == OrthancPluginHttpMethod_Get)
@@ -150,10 +150,10 @@ void RestCallbackHandler(OrthancPluginRestOutput* output,
         for (uint32_t i = 0; i < request->getCount; i++)
         {
           PythonString value(lock, request->getValues[i]);
-          PyDict_SetItemString(get.GetPyObject(), request->getKeys[i], value.Release());
+          PyDict_SetItemString(get.GetPyObject(), request->getKeys[i], value.GetPyObject());
         }
 
-        PyDict_SetItemString(kw.GetPyObject(), "get", get.Release());
+        PyDict_SetItemString(kw.GetPyObject(), "get", get.GetPyObject());
       }
 
       {
@@ -162,10 +162,10 @@ void RestCallbackHandler(OrthancPluginRestOutput* output,
         for (uint32_t i = 0; i < request->headersCount; i++)
         {
           PythonString value(lock, request->headersValues[i]);
-          PyDict_SetItemString(headers.GetPyObject(), request->headersKeys[i], value.Release());
+          PyDict_SetItemString(headers.GetPyObject(), request->headersKeys[i], value.GetPyObject());
         }
 
-        PyDict_SetItemString(kw.GetPyObject(), "headers", headers.Release());
+        PyDict_SetItemString(kw.GetPyObject(), "headers", headers.GetPyObject());
       }
 
       if (request->method == OrthancPluginHttpMethod_Post ||

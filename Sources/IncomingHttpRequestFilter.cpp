@@ -55,7 +55,7 @@ static int32_t IncomingHttpRequestFilter(OrthancPluginHttpMethod method,
 
     {
       PythonString str(lock, ip);
-      PyDict_SetItemString(kw.GetPyObject(), "ip", str.Release());
+      PyDict_SetItemString(kw.GetPyObject(), "ip", str.GetPyObject());
     }
 
     {
@@ -64,10 +64,10 @@ static int32_t IncomingHttpRequestFilter(OrthancPluginHttpMethod method,
       for (uint32_t i = 0; i < headersCount; i++)
       {
         PythonString str(lock, headersValues[i]);
-        PyDict_SetItemString(headers.GetPyObject(), headersKeys[i], str.Release());
+        PyDict_SetItemString(headers.GetPyObject(), headersKeys[i], str.GetPyObject());
       }
 
-      PyDict_SetItemString(kw.GetPyObject(), "headers", headers.Release());
+      PyDict_SetItemString(kw.GetPyObject(), "headers", headers.GetPyObject());
     }
 
     if (method == OrthancPluginHttpMethod_Get)
@@ -77,10 +77,10 @@ static int32_t IncomingHttpRequestFilter(OrthancPluginHttpMethod method,
       for (uint32_t i = 0; i < getArgumentsCount; i++)
       {
         PythonString str(lock, getArgumentsValues[i]);
-        PyDict_SetItemString(getArguments.GetPyObject(), getArgumentsKeys[i], str.Release());
+        PyDict_SetItemString(getArguments.GetPyObject(), getArgumentsKeys[i], str.GetPyObject());
       }
 
-      PyDict_SetItemString(kw.GetPyObject(), "get", getArguments.Release());
+      PyDict_SetItemString(kw.GetPyObject(), "get", getArguments.GetPyObject());
     }
     
     PythonObject result(lock, PyObject_Call(incomingHttpRequestFilter_,

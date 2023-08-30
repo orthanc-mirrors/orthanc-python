@@ -295,47 +295,47 @@ static void* CreateMoveCallback(OrthancPluginResourceType resourceType,
 
       {
         PythonString tmp(lock, level);
-        PyDict_SetItemString(kw.GetPyObject(), "Level", tmp.Release());
+        PyDict_SetItemString(kw.GetPyObject(), "Level", tmp.GetPyObject());
       }
 
       {
         PythonString tmp(lock, patientId_);
-        PyDict_SetItemString(kw.GetPyObject(), "PatientID", tmp.Release());
+        PyDict_SetItemString(kw.GetPyObject(), "PatientID", tmp.GetPyObject());
       }
 
       {
         PythonString tmp(lock, accessionNumber_);
-        PyDict_SetItemString(kw.GetPyObject(), "AccessionNumber", tmp.Release());
+        PyDict_SetItemString(kw.GetPyObject(), "AccessionNumber", tmp.GetPyObject());
       }
 
       {
         PythonString tmp(lock, studyInstanceUid_);
-        PyDict_SetItemString(kw.GetPyObject(), "StudyInstanceUID", tmp.Release());
+        PyDict_SetItemString(kw.GetPyObject(), "StudyInstanceUID", tmp.GetPyObject());
       }
 
       {
         PythonString tmp(lock, seriesInstanceUid_);
-        PyDict_SetItemString(kw.GetPyObject(), "SeriesInstanceUID", tmp.Release());
+        PyDict_SetItemString(kw.GetPyObject(), "SeriesInstanceUID", tmp.GetPyObject());
       }
 
       {
         PythonString tmp(lock, sopInstanceUid_);
-        PyDict_SetItemString(kw.GetPyObject(), "SOPInstanceUID", tmp.Release());
+        PyDict_SetItemString(kw.GetPyObject(), "SOPInstanceUID", tmp.GetPyObject());
       }
 
       {
         PythonString tmp(lock, originatorAet_);
-        PyDict_SetItemString(kw.GetPyObject(), "OriginatorAET", tmp.Release());
+        PyDict_SetItemString(kw.GetPyObject(), "OriginatorAET", tmp.GetPyObject());
       }
 
       {
         PythonString tmp(lock, sourceAet_);
-        PyDict_SetItemString(kw.GetPyObject(), "SourceAET", tmp.Release());
+        PyDict_SetItemString(kw.GetPyObject(), "SourceAET", tmp.GetPyObject());
       }
 
       {
         PythonString tmp(lock, targetAet_);
-        PyDict_SetItemString(kw.GetPyObject(), "TargetAET", tmp.Release());
+        PyDict_SetItemString(kw.GetPyObject(), "TargetAET", tmp.GetPyObject());
       }
 
       PyDict_SetItemString(kw.GetPyObject(), "OriginatorID", PyLong_FromUnsignedLong(originatorId_));
