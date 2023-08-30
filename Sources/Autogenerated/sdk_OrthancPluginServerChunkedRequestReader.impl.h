@@ -70,9 +70,6 @@ static PyTypeObject sdk_OrthancPluginServerChunkedRequestReader_Type = {
 
 
 
-// Actual implementation of the methods
-
-
 static void RegisterOrthancPluginServerChunkedRequestReaderClass(PyObject* module)
 {
   sdk_OrthancPluginServerChunkedRequestReader_Type.tp_new = PyType_GenericNew;

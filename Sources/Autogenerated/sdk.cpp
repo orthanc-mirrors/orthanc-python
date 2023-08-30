@@ -24,79 +24,93 @@
 
 #include "../../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
 
+#include "./sdk_OrthancPluginChangeType.impl.h"
+#include "./sdk_OrthancPluginCompressionType.impl.h"
+#include "./sdk_OrthancPluginConstraintType.impl.h"
+#include "./sdk_OrthancPluginContentType.impl.h"
+#include "./sdk_OrthancPluginCreateDicomFlags.impl.h"
+#include "./sdk_OrthancPluginDicomToJsonFlags.impl.h"
+#include "./sdk_OrthancPluginDicomToJsonFormat.impl.h"
+#include "./sdk_OrthancPluginDicomWebBinaryMode.impl.h"
+#include "./sdk_OrthancPluginErrorCode.impl.h"
+#include "./sdk_OrthancPluginHttpMethod.impl.h"
+#include "./sdk_OrthancPluginIdentifierConstraint.impl.h"
+#include "./sdk_OrthancPluginImageFormat.impl.h"
 #include "./sdk_OrthancPluginInstanceOrigin.impl.h"
 #include "./sdk_OrthancPluginJobStepStatus.impl.h"
-#include "./sdk_OrthancPluginDicomWebBinaryMode.impl.h"
-#include "./sdk_OrthancPluginHttpMethod.impl.h"
-#include "./sdk_OrthancPluginResourceType.impl.h"
-#include "./sdk_OrthancPluginConstraintType.impl.h"
-#include "./sdk_OrthancPluginPixelFormat.impl.h"
-#include "./sdk_OrthancPluginCompressionType.impl.h"
 #include "./sdk_OrthancPluginJobStopReason.impl.h"
-#include "./sdk_OrthancPluginIdentifierConstraint.impl.h"
-#include "./sdk_OrthancPluginContentType.impl.h"
-#include "./sdk_OrthancPluginStorageCommitmentFailureReason.impl.h"
-#include "./sdk_OrthancPluginDicomToJsonFlags.impl.h"
-#include "./sdk_OrthancPluginErrorCode.impl.h"
-#include "./sdk_OrthancPluginCreateDicomFlags.impl.h"
-#include "./sdk_OrthancPluginDicomToJsonFormat.impl.h"
 #include "./sdk_OrthancPluginMetricsType.impl.h"
-#include "./sdk_OrthancPluginValueRepresentation.impl.h"
+#include "./sdk_OrthancPluginPixelFormat.impl.h"
 #include "./sdk_OrthancPluginReceivedInstanceAction.impl.h"
-#include "./sdk_OrthancPluginImageFormat.impl.h"
-#include "./sdk_OrthancPluginChangeType.impl.h"
+#include "./sdk_OrthancPluginResourceType.impl.h"
+#include "./sdk_OrthancPluginStorageCommitmentFailureReason.impl.h"
+#include "./sdk_OrthancPluginValueRepresentation.impl.h"
 
-#include "./sdk_OrthancPluginRestOutput.impl.h"
-#include "./sdk_OrthancPluginServerChunkedRequestReader.impl.h"
+#include "./sdk_OrthancPluginDicomInstance.impl.h"
+#include "./sdk_OrthancPluginDicomWebNode.impl.h"
+#include "./sdk_OrthancPluginFindAnswers.impl.h"
+#include "./sdk_OrthancPluginFindMatcher.impl.h"
+#include "./sdk_OrthancPluginFindQuery.impl.h"
 #include "./sdk_OrthancPluginImage.impl.h"
 #include "./sdk_OrthancPluginJob.impl.h"
-#include "./sdk_OrthancPluginWorklistQuery.impl.h"
-#include "./sdk_OrthancPluginStorageArea.impl.h"
-#include "./sdk_OrthancPluginFindMatcher.impl.h"
-#include "./sdk_OrthancPluginDicomWebNode.impl.h"
-#include "./sdk_OrthancPluginWorklistAnswers.impl.h"
-#include "./sdk_OrthancPluginFindAnswers.impl.h"
 #include "./sdk_OrthancPluginPeers.impl.h"
-#include "./sdk_OrthancPluginDicomInstance.impl.h"
-#include "./sdk_OrthancPluginFindQuery.impl.h"
+#include "./sdk_OrthancPluginRestOutput.impl.h"
+#include "./sdk_OrthancPluginServerChunkedRequestReader.impl.h"
+#include "./sdk_OrthancPluginStorageArea.impl.h"
+#include "./sdk_OrthancPluginWorklistAnswers.impl.h"
+#include "./sdk_OrthancPluginWorklistQuery.impl.h"
 
 #include "./sdk_GlobalFunctions.impl.h"
 
+#include "./sdk_OrthancPluginDicomInstance.methods.h"
+#include "./sdk_OrthancPluginDicomWebNode.methods.h"
+#include "./sdk_OrthancPluginFindAnswers.methods.h"
+#include "./sdk_OrthancPluginFindMatcher.methods.h"
+#include "./sdk_OrthancPluginFindQuery.methods.h"
+#include "./sdk_OrthancPluginImage.methods.h"
+#include "./sdk_OrthancPluginJob.methods.h"
+#include "./sdk_OrthancPluginPeers.methods.h"
+#include "./sdk_OrthancPluginRestOutput.methods.h"
+#include "./sdk_OrthancPluginServerChunkedRequestReader.methods.h"
+#include "./sdk_OrthancPluginStorageArea.methods.h"
+#include "./sdk_OrthancPluginWorklistAnswers.methods.h"
+#include "./sdk_OrthancPluginWorklistQuery.methods.h"
+
 void RegisterOrthancSdk(PyObject* module)
 {
+  RegisterOrthancPluginChangeTypeEnumeration(module);
+  RegisterOrthancPluginCompressionTypeEnumeration(module);
+  RegisterOrthancPluginConstraintTypeEnumeration(module);
+  RegisterOrthancPluginContentTypeEnumeration(module);
+  RegisterOrthancPluginCreateDicomFlagsEnumeration(module);
+  RegisterOrthancPluginDicomToJsonFlagsEnumeration(module);
+  RegisterOrthancPluginDicomToJsonFormatEnumeration(module);
+  RegisterOrthancPluginDicomWebBinaryModeEnumeration(module);
+  RegisterOrthancPluginErrorCodeEnumeration(module);
+  RegisterOrthancPluginHttpMethodEnumeration(module);
+  RegisterOrthancPluginIdentifierConstraintEnumeration(module);
+  RegisterOrthancPluginImageFormatEnumeration(module);
   RegisterOrthancPluginInstanceOriginEnumeration(module);
   RegisterOrthancPluginJobStepStatusEnumeration(module);
-  RegisterOrthancPluginDicomWebBinaryModeEnumeration(module);
-  RegisterOrthancPluginHttpMethodEnumeration(module);
-  RegisterOrthancPluginResourceTypeEnumeration(module);
-  RegisterOrthancPluginConstraintTypeEnumeration(module);
-  RegisterOrthancPluginPixelFormatEnumeration(module);
-  RegisterOrthancPluginCompressionTypeEnumeration(module);
   RegisterOrthancPluginJobStopReasonEnumeration(module);
-  RegisterOrthancPluginIdentifierConstraintEnumeration(module);
-  RegisterOrthancPluginContentTypeEnumeration(module);
-  RegisterOrthancPluginStorageCommitmentFailureReasonEnumeration(module);
-  RegisterOrthancPluginDicomToJsonFlagsEnumeration(module);
-  RegisterOrthancPluginErrorCodeEnumeration(module);
-  RegisterOrthancPluginCreateDicomFlagsEnumeration(module);
-  RegisterOrthancPluginDicomToJsonFormatEnumeration(module);
   RegisterOrthancPluginMetricsTypeEnumeration(module);
-  RegisterOrthancPluginValueRepresentationEnumeration(module);
+  RegisterOrthancPluginPixelFormatEnumeration(module);
   RegisterOrthancPluginReceivedInstanceActionEnumeration(module);
-  RegisterOrthancPluginImageFormatEnumeration(module);
-  RegisterOrthancPluginChangeTypeEnumeration(module);
+  RegisterOrthancPluginResourceTypeEnumeration(module);
+  RegisterOrthancPluginStorageCommitmentFailureReasonEnumeration(module);
+  RegisterOrthancPluginValueRepresentationEnumeration(module);
 
-  RegisterOrthancPluginRestOutputClass(module);
-  RegisterOrthancPluginServerChunkedRequestReaderClass(module);
+  RegisterOrthancPluginDicomInstanceClass(module);
+  RegisterOrthancPluginDicomWebNodeClass(module);
+  RegisterOrthancPluginFindAnswersClass(module);
+  RegisterOrthancPluginFindMatcherClass(module);
+  RegisterOrthancPluginFindQueryClass(module);
   RegisterOrthancPluginImageClass(module);
   RegisterOrthancPluginJobClass(module);
-  RegisterOrthancPluginWorklistQueryClass(module);
-  RegisterOrthancPluginStorageAreaClass(module);
-  RegisterOrthancPluginFindMatcherClass(module);
-  RegisterOrthancPluginDicomWebNodeClass(module);
-  RegisterOrthancPluginWorklistAnswersClass(module);
-  RegisterOrthancPluginFindAnswersClass(module);
   RegisterOrthancPluginPeersClass(module);
-  RegisterOrthancPluginDicomInstanceClass(module);
-  RegisterOrthancPluginFindQueryClass(module);
+  RegisterOrthancPluginRestOutputClass(module);
+  RegisterOrthancPluginServerChunkedRequestReaderClass(module);
+  RegisterOrthancPluginStorageAreaClass(module);
+  RegisterOrthancPluginWorklistAnswersClass(module);
+  RegisterOrthancPluginWorklistQueryClass(module);
 }
