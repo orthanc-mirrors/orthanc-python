@@ -64,17 +64,72 @@ void RegisterOrthancPluginPixelFormatEnumeration(PyObject* module)
    * (in your module initialization function)."
    **/
   
-  PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "GRAYSCALE8", PyLong_FromLong(1));
-  PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "GRAYSCALE16", PyLong_FromLong(2));
-  PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "SIGNED_GRAYSCALE16", PyLong_FromLong(3));
-  PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "RGB24", PyLong_FromLong(4));
-  PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "RGBA32", PyLong_FromLong(5));
-  PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "UNKNOWN", PyLong_FromLong(6));
-  PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "RGB48", PyLong_FromLong(7));
-  PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "GRAYSCALE32", PyLong_FromLong(8));
-  PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "FLOAT32", PyLong_FromLong(9));
-  PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "BGRA32", PyLong_FromLong(10));
-  PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "GRAYSCALE64", PyLong_FromLong(11));
+  {
+    PyObject* tmp = PyLong_FromLong(1);
+    PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "GRAYSCALE8", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(2);
+    PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "GRAYSCALE16", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(3);
+    PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "SIGNED_GRAYSCALE16", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(4);
+    PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "RGB24", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(5);
+    PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "RGBA32", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(6);
+    PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "UNKNOWN", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(7);
+    PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "RGB48", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(8);
+    PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "GRAYSCALE32", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(9);
+    PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "FLOAT32", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(10);
+    PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "BGRA32", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(11);
+    PyDict_SetItemString(sdk_OrthancPluginPixelFormat_Type.tp_dict, "GRAYSCALE64", tmp);
+    Py_DECREF(tmp);
+  }
+
 
   Py_INCREF(&sdk_OrthancPluginPixelFormat_Type);
   if (PyModule_AddObject(module, "PixelFormat", (PyObject *)&sdk_OrthancPluginPixelFormat_Type) < 0)

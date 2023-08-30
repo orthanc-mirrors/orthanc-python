@@ -64,11 +64,36 @@ void RegisterOrthancPluginResourceTypeEnumeration(PyObject* module)
    * (in your module initialization function)."
    **/
   
-  PyDict_SetItemString(sdk_OrthancPluginResourceType_Type.tp_dict, "PATIENT", PyLong_FromLong(0));
-  PyDict_SetItemString(sdk_OrthancPluginResourceType_Type.tp_dict, "STUDY", PyLong_FromLong(1));
-  PyDict_SetItemString(sdk_OrthancPluginResourceType_Type.tp_dict, "SERIES", PyLong_FromLong(2));
-  PyDict_SetItemString(sdk_OrthancPluginResourceType_Type.tp_dict, "INSTANCE", PyLong_FromLong(3));
-  PyDict_SetItemString(sdk_OrthancPluginResourceType_Type.tp_dict, "NONE", PyLong_FromLong(4));
+  {
+    PyObject* tmp = PyLong_FromLong(0);
+    PyDict_SetItemString(sdk_OrthancPluginResourceType_Type.tp_dict, "PATIENT", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(1);
+    PyDict_SetItemString(sdk_OrthancPluginResourceType_Type.tp_dict, "STUDY", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(2);
+    PyDict_SetItemString(sdk_OrthancPluginResourceType_Type.tp_dict, "SERIES", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(3);
+    PyDict_SetItemString(sdk_OrthancPluginResourceType_Type.tp_dict, "INSTANCE", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(4);
+    PyDict_SetItemString(sdk_OrthancPluginResourceType_Type.tp_dict, "NONE", tmp);
+    Py_DECREF(tmp);
+  }
+
 
   Py_INCREF(&sdk_OrthancPluginResourceType_Type);
   if (PyModule_AddObject(module, "ResourceType", (PyObject *)&sdk_OrthancPluginResourceType_Type) < 0)

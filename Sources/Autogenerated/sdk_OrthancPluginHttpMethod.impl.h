@@ -64,10 +64,30 @@ void RegisterOrthancPluginHttpMethodEnumeration(PyObject* module)
    * (in your module initialization function)."
    **/
   
-  PyDict_SetItemString(sdk_OrthancPluginHttpMethod_Type.tp_dict, "GET", PyLong_FromLong(1));
-  PyDict_SetItemString(sdk_OrthancPluginHttpMethod_Type.tp_dict, "POST", PyLong_FromLong(2));
-  PyDict_SetItemString(sdk_OrthancPluginHttpMethod_Type.tp_dict, "PUT", PyLong_FromLong(3));
-  PyDict_SetItemString(sdk_OrthancPluginHttpMethod_Type.tp_dict, "DELETE", PyLong_FromLong(4));
+  {
+    PyObject* tmp = PyLong_FromLong(1);
+    PyDict_SetItemString(sdk_OrthancPluginHttpMethod_Type.tp_dict, "GET", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(2);
+    PyDict_SetItemString(sdk_OrthancPluginHttpMethod_Type.tp_dict, "POST", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(3);
+    PyDict_SetItemString(sdk_OrthancPluginHttpMethod_Type.tp_dict, "PUT", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(4);
+    PyDict_SetItemString(sdk_OrthancPluginHttpMethod_Type.tp_dict, "DELETE", tmp);
+    Py_DECREF(tmp);
+  }
+
 
   Py_INCREF(&sdk_OrthancPluginHttpMethod_Type);
   if (PyModule_AddObject(module, "HttpMethod", (PyObject *)&sdk_OrthancPluginHttpMethod_Type) < 0)

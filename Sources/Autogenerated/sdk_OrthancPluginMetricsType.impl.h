@@ -64,8 +64,18 @@ void RegisterOrthancPluginMetricsTypeEnumeration(PyObject* module)
    * (in your module initialization function)."
    **/
   
-  PyDict_SetItemString(sdk_OrthancPluginMetricsType_Type.tp_dict, "DEFAULT", PyLong_FromLong(0));
-  PyDict_SetItemString(sdk_OrthancPluginMetricsType_Type.tp_dict, "TIMER", PyLong_FromLong(1));
+  {
+    PyObject* tmp = PyLong_FromLong(0);
+    PyDict_SetItemString(sdk_OrthancPluginMetricsType_Type.tp_dict, "DEFAULT", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(1);
+    PyDict_SetItemString(sdk_OrthancPluginMetricsType_Type.tp_dict, "TIMER", tmp);
+    Py_DECREF(tmp);
+  }
+
 
   Py_INCREF(&sdk_OrthancPluginMetricsType_Type);
   if (PyModule_AddObject(module, "MetricsType", (PyObject *)&sdk_OrthancPluginMetricsType_Type) < 0)

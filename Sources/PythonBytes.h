@@ -1,7 +1,7 @@
 /**
  * Python plugin for Orthanc
- * Copyright (C) 2020-2023 Osimis S.A., Belgium
- * Copyright (C) 2021-2023 Sebastien Jodogne, ICTEAM UCLouvain, Belgium
+ * Copyright (C) 2020-2022 Osimis S.A., Belgium
+ * Copyright (C) 2021-2022 Sebastien Jodogne, ICTEAM UCLouvain, Belgium
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -20,25 +20,30 @@
 
 #pragma once
 
-#include "../PythonHeaderWrapper.h"
+#include "PythonObject.h"
 
-void RegisterOrthancSdk(PyObject* module);
-PyMethodDef* GetOrthancSdkFunctions();
+#include <Compatibility.h>  // For std::unique_ptr
 
-{{#classes}}
-PyTypeObject* Get{{class_name}}Type();
-{{/classes}}
-
-#include <orthanc/OrthancCPlugin.h>
-
-{{#classes}}
-typedef struct
+// A Python string is always valid, or an exception was thrown on its creation
+class PythonBytes : public boost::noncopyable
 {
-  PyObject_HEAD
+private:
+  std::unique_ptr<PythonObject>  bytes_;
 
-  /* Type-specific fields go here. */
-  {{class_name}}* object_;
-  bool borrowed_;
-} sdk_{{class_name}}_Object;
+  void SanityCheck();
 
-{{/classes}}
+public:
+  PythonBytes(PythonLock& lock,
+              const void* data,
+              size_t size);
+
+  PyObject* GetPyObject() const
+  {
+    return bytes_->GetPyObject();
+  }
+
+  PyObject* Release()
+  {
+    return bytes_->Release();
+  }
+};

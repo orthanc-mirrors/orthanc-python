@@ -509,14 +509,18 @@ renderer = pystache.Renderer(
 )
 
 with open(os.path.join(ROOT, 'Class.mustache'), 'r') as f:
-    template = f.read()
+    with open(os.path.join(ROOT, 'ClassMethods.mustache'), 'r') as g:
+        classDefinition = f.read()
+        classMethods = g.read()
 
-    for method in CUSTOM_METHODS:
-        classes[method['class_name']]['custom_methods'].append(method)
-    
-    for (key, value) in classes.items():
-        with open(os.path.join(TARGET, 'sdk_%s.impl.h' % value['class_name']), 'w') as h:
-            h.write(renderer.render(template, value))
+        for method in CUSTOM_METHODS:
+            classes[method['class_name']]['custom_methods'].append(method)
+
+        for (key, value) in classes.items():
+            with open(os.path.join(TARGET, 'sdk_%s.impl.h' % value['class_name']), 'w') as h:
+                h.write(renderer.render(classDefinition, value))
+            with open(os.path.join(TARGET, 'sdk_%s.methods.h' % value['class_name']), 'w') as h:
+                h.write(renderer.render(classMethods, value))
         
 
 def FlattenDictionary(source):
@@ -525,7 +529,11 @@ def FlattenDictionary(source):
         result.append(value)
     return result
 
-            
+
+sortedClasses = sorted(FlattenDictionary(classes), key = lambda x: x['class_name'])
+sortedEnumerations = sorted(FlattenDictionary(enumerations), key = lambda x: x['name'])
+sortedGlobalFunctions = sorted(globalFunctions, key = lambda x: x['c_function'])
+
 with open(os.path.join(ROOT, 'GlobalFunctions.mustache'), 'r') as f:
     with open(os.path.join(TARGET, 'sdk_GlobalFunctions.impl.h'), 'w') as h:
         h.write(renderer.render(f.read(), {
@@ -535,15 +543,15 @@ with open(os.path.join(ROOT, 'GlobalFunctions.mustache'), 'r') as f:
 with open(os.path.join(ROOT, 'sdk.cpp.mustache'), 'r') as f:
     with open(os.path.join(TARGET, 'sdk.cpp'), 'w') as h:
         h.write(renderer.render(f.read(), {
-            'classes' : FlattenDictionary(classes),
-            'enumerations' : FlattenDictionary(enumerations),
+            'classes' : sortedClasses,
+            'enumerations' : sortedEnumerations,
             'global_functions' : globalFunctions,
         }))
             
 with open(os.path.join(ROOT, 'sdk.h.mustache'), 'r') as f:
     with open(os.path.join(TARGET, 'sdk.h'), 'w') as h:
         h.write(renderer.render(f.read(), {
-            'classes' : FlattenDictionary(classes),
+            'classes' : sortedClasses,
         }))
 
 

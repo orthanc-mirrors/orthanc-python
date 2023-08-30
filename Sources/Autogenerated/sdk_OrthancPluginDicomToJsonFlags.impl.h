@@ -64,15 +64,60 @@ void RegisterOrthancPluginDicomToJsonFlagsEnumeration(PyObject* module)
    * (in your module initialization function)."
    **/
   
-  PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "NONE", PyLong_FromLong(0));
-  PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "INCLUDE_BINARY", PyLong_FromLong(1));
-  PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "INCLUDE_PRIVATE_TAGS", PyLong_FromLong(2));
-  PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "INCLUDE_UNKNOWN_TAGS", PyLong_FromLong(4));
-  PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "INCLUDE_PIXEL_DATA", PyLong_FromLong(8));
-  PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "CONVERT_BINARY_TO_ASCII", PyLong_FromLong(16));
-  PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "CONVERT_BINARY_TO_NULL", PyLong_FromLong(32));
-  PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "STOP_AFTER_PIXEL_DATA", PyLong_FromLong(64));
-  PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "SKIP_GROUP_LENGTHS", PyLong_FromLong(128));
+  {
+    PyObject* tmp = PyLong_FromLong(0);
+    PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "NONE", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(1);
+    PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "INCLUDE_BINARY", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(2);
+    PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "INCLUDE_PRIVATE_TAGS", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(4);
+    PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "INCLUDE_UNKNOWN_TAGS", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(8);
+    PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "INCLUDE_PIXEL_DATA", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(16);
+    PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "CONVERT_BINARY_TO_ASCII", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(32);
+    PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "CONVERT_BINARY_TO_NULL", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(64);
+    PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "STOP_AFTER_PIXEL_DATA", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(128);
+    PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFlags_Type.tp_dict, "SKIP_GROUP_LENGTHS", tmp);
+    Py_DECREF(tmp);
+  }
+
 
   Py_INCREF(&sdk_OrthancPluginDicomToJsonFlags_Type);
   if (PyModule_AddObject(module, "DicomToJsonFlags", (PyObject *)&sdk_OrthancPluginDicomToJsonFlags_Type) < 0)

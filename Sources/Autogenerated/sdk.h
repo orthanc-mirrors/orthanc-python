@@ -25,122 +25,23 @@
 void RegisterOrthancSdk(PyObject* module);
 PyMethodDef* GetOrthancSdkFunctions();
 
-PyTypeObject* GetOrthancPluginRestOutputType();
-PyTypeObject* GetOrthancPluginServerChunkedRequestReaderType();
+PyTypeObject* GetOrthancPluginDicomInstanceType();
+PyTypeObject* GetOrthancPluginDicomWebNodeType();
+PyTypeObject* GetOrthancPluginFindAnswersType();
+PyTypeObject* GetOrthancPluginFindMatcherType();
+PyTypeObject* GetOrthancPluginFindQueryType();
 PyTypeObject* GetOrthancPluginImageType();
 PyTypeObject* GetOrthancPluginJobType();
-PyTypeObject* GetOrthancPluginWorklistQueryType();
-PyTypeObject* GetOrthancPluginStorageAreaType();
-PyTypeObject* GetOrthancPluginFindMatcherType();
-PyTypeObject* GetOrthancPluginDicomWebNodeType();
-PyTypeObject* GetOrthancPluginWorklistAnswersType();
-PyTypeObject* GetOrthancPluginFindAnswersType();
 PyTypeObject* GetOrthancPluginPeersType();
-PyTypeObject* GetOrthancPluginDicomInstanceType();
-PyTypeObject* GetOrthancPluginFindQueryType();
+PyTypeObject* GetOrthancPluginRestOutputType();
+PyTypeObject* GetOrthancPluginServerChunkedRequestReaderType();
+PyTypeObject* GetOrthancPluginStorageAreaType();
+PyTypeObject* GetOrthancPluginWorklistAnswersType();
+PyTypeObject* GetOrthancPluginWorklistQueryType();
 
 #include <orthanc/OrthancCPlugin.h>
 
-typedef struct 
-{
-  PyObject_HEAD
-
-  /* Type-specific fields go here. */
-  OrthancPluginRestOutput* object_;
-  bool borrowed_;
-} sdk_OrthancPluginRestOutput_Object;
-
-typedef struct 
-{
-  PyObject_HEAD
-
-  /* Type-specific fields go here. */
-  OrthancPluginServerChunkedRequestReader* object_;
-  bool borrowed_;
-} sdk_OrthancPluginServerChunkedRequestReader_Object;
-
-typedef struct 
-{
-  PyObject_HEAD
-
-  /* Type-specific fields go here. */
-  OrthancPluginImage* object_;
-  bool borrowed_;
-} sdk_OrthancPluginImage_Object;
-
-typedef struct 
-{
-  PyObject_HEAD
-
-  /* Type-specific fields go here. */
-  OrthancPluginJob* object_;
-  bool borrowed_;
-} sdk_OrthancPluginJob_Object;
-
-typedef struct 
-{
-  PyObject_HEAD
-
-  /* Type-specific fields go here. */
-  OrthancPluginWorklistQuery* object_;
-  bool borrowed_;
-} sdk_OrthancPluginWorklistQuery_Object;
-
-typedef struct 
-{
-  PyObject_HEAD
-
-  /* Type-specific fields go here. */
-  OrthancPluginStorageArea* object_;
-  bool borrowed_;
-} sdk_OrthancPluginStorageArea_Object;
-
-typedef struct 
-{
-  PyObject_HEAD
-
-  /* Type-specific fields go here. */
-  OrthancPluginFindMatcher* object_;
-  bool borrowed_;
-} sdk_OrthancPluginFindMatcher_Object;
-
-typedef struct 
-{
-  PyObject_HEAD
-
-  /* Type-specific fields go here. */
-  OrthancPluginDicomWebNode* object_;
-  bool borrowed_;
-} sdk_OrthancPluginDicomWebNode_Object;
-
-typedef struct 
-{
-  PyObject_HEAD
-
-  /* Type-specific fields go here. */
-  OrthancPluginWorklistAnswers* object_;
-  bool borrowed_;
-} sdk_OrthancPluginWorklistAnswers_Object;
-
-typedef struct 
-{
-  PyObject_HEAD
-
-  /* Type-specific fields go here. */
-  OrthancPluginFindAnswers* object_;
-  bool borrowed_;
-} sdk_OrthancPluginFindAnswers_Object;
-
-typedef struct 
-{
-  PyObject_HEAD
-
-  /* Type-specific fields go here. */
-  OrthancPluginPeers* object_;
-  bool borrowed_;
-} sdk_OrthancPluginPeers_Object;
-
-typedef struct 
+typedef struct
 {
   PyObject_HEAD
 
@@ -149,7 +50,34 @@ typedef struct
   bool borrowed_;
 } sdk_OrthancPluginDicomInstance_Object;
 
-typedef struct 
+typedef struct
+{
+  PyObject_HEAD
+
+  /* Type-specific fields go here. */
+  OrthancPluginDicomWebNode* object_;
+  bool borrowed_;
+} sdk_OrthancPluginDicomWebNode_Object;
+
+typedef struct
+{
+  PyObject_HEAD
+
+  /* Type-specific fields go here. */
+  OrthancPluginFindAnswers* object_;
+  bool borrowed_;
+} sdk_OrthancPluginFindAnswers_Object;
+
+typedef struct
+{
+  PyObject_HEAD
+
+  /* Type-specific fields go here. */
+  OrthancPluginFindMatcher* object_;
+  bool borrowed_;
+} sdk_OrthancPluginFindMatcher_Object;
+
+typedef struct
 {
   PyObject_HEAD
 
@@ -157,4 +85,76 @@ typedef struct
   OrthancPluginFindQuery* object_;
   bool borrowed_;
 } sdk_OrthancPluginFindQuery_Object;
+
+typedef struct
+{
+  PyObject_HEAD
+
+  /* Type-specific fields go here. */
+  OrthancPluginImage* object_;
+  bool borrowed_;
+} sdk_OrthancPluginImage_Object;
+
+typedef struct
+{
+  PyObject_HEAD
+
+  /* Type-specific fields go here. */
+  OrthancPluginJob* object_;
+  bool borrowed_;
+} sdk_OrthancPluginJob_Object;
+
+typedef struct
+{
+  PyObject_HEAD
+
+  /* Type-specific fields go here. */
+  OrthancPluginPeers* object_;
+  bool borrowed_;
+} sdk_OrthancPluginPeers_Object;
+
+typedef struct
+{
+  PyObject_HEAD
+
+  /* Type-specific fields go here. */
+  OrthancPluginRestOutput* object_;
+  bool borrowed_;
+} sdk_OrthancPluginRestOutput_Object;
+
+typedef struct
+{
+  PyObject_HEAD
+
+  /* Type-specific fields go here. */
+  OrthancPluginServerChunkedRequestReader* object_;
+  bool borrowed_;
+} sdk_OrthancPluginServerChunkedRequestReader_Object;
+
+typedef struct
+{
+  PyObject_HEAD
+
+  /* Type-specific fields go here. */
+  OrthancPluginStorageArea* object_;
+  bool borrowed_;
+} sdk_OrthancPluginStorageArea_Object;
+
+typedef struct
+{
+  PyObject_HEAD
+
+  /* Type-specific fields go here. */
+  OrthancPluginWorklistAnswers* object_;
+  bool borrowed_;
+} sdk_OrthancPluginWorklistAnswers_Object;
+
+typedef struct
+{
+  PyObject_HEAD
+
+  /* Type-specific fields go here. */
+  OrthancPluginWorklistQuery* object_;
+  bool borrowed_;
+} sdk_OrthancPluginWorklistQuery_Object;
 

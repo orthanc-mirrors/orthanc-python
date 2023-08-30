@@ -64,9 +64,24 @@ void RegisterOrthancPluginDicomWebBinaryModeEnumeration(PyObject* module)
    * (in your module initialization function)."
    **/
   
-  PyDict_SetItemString(sdk_OrthancPluginDicomWebBinaryMode_Type.tp_dict, "IGNORE", PyLong_FromLong(0));
-  PyDict_SetItemString(sdk_OrthancPluginDicomWebBinaryMode_Type.tp_dict, "INLINE_BINARY", PyLong_FromLong(1));
-  PyDict_SetItemString(sdk_OrthancPluginDicomWebBinaryMode_Type.tp_dict, "BULK_DATA_URI", PyLong_FromLong(2));
+  {
+    PyObject* tmp = PyLong_FromLong(0);
+    PyDict_SetItemString(sdk_OrthancPluginDicomWebBinaryMode_Type.tp_dict, "IGNORE", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(1);
+    PyDict_SetItemString(sdk_OrthancPluginDicomWebBinaryMode_Type.tp_dict, "INLINE_BINARY", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(2);
+    PyDict_SetItemString(sdk_OrthancPluginDicomWebBinaryMode_Type.tp_dict, "BULK_DATA_URI", tmp);
+    Py_DECREF(tmp);
+  }
+
 
   Py_INCREF(&sdk_OrthancPluginDicomWebBinaryMode_Type);
   if (PyModule_AddObject(module, "DicomWebBinaryMode", (PyObject *)&sdk_OrthancPluginDicomWebBinaryMode_Type) < 0)

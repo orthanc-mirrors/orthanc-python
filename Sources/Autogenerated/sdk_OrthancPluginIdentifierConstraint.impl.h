@@ -64,10 +64,30 @@ void RegisterOrthancPluginIdentifierConstraintEnumeration(PyObject* module)
    * (in your module initialization function)."
    **/
   
-  PyDict_SetItemString(sdk_OrthancPluginIdentifierConstraint_Type.tp_dict, "EQUAL", PyLong_FromLong(1));
-  PyDict_SetItemString(sdk_OrthancPluginIdentifierConstraint_Type.tp_dict, "SMALLER_OR_EQUAL", PyLong_FromLong(2));
-  PyDict_SetItemString(sdk_OrthancPluginIdentifierConstraint_Type.tp_dict, "GREATER_OR_EQUAL", PyLong_FromLong(3));
-  PyDict_SetItemString(sdk_OrthancPluginIdentifierConstraint_Type.tp_dict, "WILDCARD", PyLong_FromLong(4));
+  {
+    PyObject* tmp = PyLong_FromLong(1);
+    PyDict_SetItemString(sdk_OrthancPluginIdentifierConstraint_Type.tp_dict, "EQUAL", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(2);
+    PyDict_SetItemString(sdk_OrthancPluginIdentifierConstraint_Type.tp_dict, "SMALLER_OR_EQUAL", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(3);
+    PyDict_SetItemString(sdk_OrthancPluginIdentifierConstraint_Type.tp_dict, "GREATER_OR_EQUAL", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(4);
+    PyDict_SetItemString(sdk_OrthancPluginIdentifierConstraint_Type.tp_dict, "WILDCARD", tmp);
+    Py_DECREF(tmp);
+  }
+
 
   Py_INCREF(&sdk_OrthancPluginIdentifierConstraint_Type);
   if (PyModule_AddObject(module, "IdentifierConstraint", (PyObject *)&sdk_OrthancPluginIdentifierConstraint_Type) < 0)

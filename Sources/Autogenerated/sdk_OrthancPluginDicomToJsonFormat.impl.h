@@ -64,9 +64,24 @@ void RegisterOrthancPluginDicomToJsonFormatEnumeration(PyObject* module)
    * (in your module initialization function)."
    **/
   
-  PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFormat_Type.tp_dict, "FULL", PyLong_FromLong(1));
-  PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFormat_Type.tp_dict, "SHORT", PyLong_FromLong(2));
-  PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFormat_Type.tp_dict, "HUMAN", PyLong_FromLong(3));
+  {
+    PyObject* tmp = PyLong_FromLong(1);
+    PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFormat_Type.tp_dict, "FULL", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(2);
+    PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFormat_Type.tp_dict, "SHORT", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(3);
+    PyDict_SetItemString(sdk_OrthancPluginDicomToJsonFormat_Type.tp_dict, "HUMAN", tmp);
+    Py_DECREF(tmp);
+  }
+
 
   Py_INCREF(&sdk_OrthancPluginDicomToJsonFormat_Type);
   if (PyModule_AddObject(module, "DicomToJsonFormat", (PyObject *)&sdk_OrthancPluginDicomToJsonFormat_Type) < 0)

@@ -65,7 +65,12 @@ void Register{{name}}Enumeration(PyObject* module)
    **/
   
   {{#values}}
-  PyDict_SetItemString(sdk_{{name}}_Type.tp_dict, "{{key}}", PyLong_FromLong({{value}}));
+  {
+    PyObject* tmp = PyLong_FromLong({{value}});
+    PyDict_SetItemString(sdk_{{name}}_Type.tp_dict, "{{key}}", tmp);
+    Py_DECREF(tmp);
+  }
+
   {{/values}}
 
   Py_INCREF(&sdk_{{name}}_Type);

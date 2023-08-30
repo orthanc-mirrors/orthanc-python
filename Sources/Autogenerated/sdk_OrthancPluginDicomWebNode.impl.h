@@ -70,9 +70,6 @@ static PyTypeObject sdk_OrthancPluginDicomWebNode_Type = {
 
 
 
-// Actual implementation of the methods
-
-
 static void RegisterOrthancPluginDicomWebNodeClass(PyObject* module)
 {
   sdk_OrthancPluginDicomWebNode_Type.tp_new = PyType_GenericNew;

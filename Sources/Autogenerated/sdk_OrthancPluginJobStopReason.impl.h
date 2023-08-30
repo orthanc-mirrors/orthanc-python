@@ -64,10 +64,30 @@ void RegisterOrthancPluginJobStopReasonEnumeration(PyObject* module)
    * (in your module initialization function)."
    **/
   
-  PyDict_SetItemString(sdk_OrthancPluginJobStopReason_Type.tp_dict, "SUCCESS", PyLong_FromLong(1));
-  PyDict_SetItemString(sdk_OrthancPluginJobStopReason_Type.tp_dict, "PAUSED", PyLong_FromLong(2));
-  PyDict_SetItemString(sdk_OrthancPluginJobStopReason_Type.tp_dict, "FAILURE", PyLong_FromLong(3));
-  PyDict_SetItemString(sdk_OrthancPluginJobStopReason_Type.tp_dict, "CANCELED", PyLong_FromLong(4));
+  {
+    PyObject* tmp = PyLong_FromLong(1);
+    PyDict_SetItemString(sdk_OrthancPluginJobStopReason_Type.tp_dict, "SUCCESS", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(2);
+    PyDict_SetItemString(sdk_OrthancPluginJobStopReason_Type.tp_dict, "PAUSED", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(3);
+    PyDict_SetItemString(sdk_OrthancPluginJobStopReason_Type.tp_dict, "FAILURE", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(4);
+    PyDict_SetItemString(sdk_OrthancPluginJobStopReason_Type.tp_dict, "CANCELED", tmp);
+    Py_DECREF(tmp);
+  }
+
 
   Py_INCREF(&sdk_OrthancPluginJobStopReason_Type);
   if (PyModule_AddObject(module, "JobStopReason", (PyObject *)&sdk_OrthancPluginJobStopReason_Type) < 0)

@@ -64,13 +64,48 @@ void RegisterOrthancPluginStorageCommitmentFailureReasonEnumeration(PyObject* mo
    * (in your module initialization function)."
    **/
   
-  PyDict_SetItemString(sdk_OrthancPluginStorageCommitmentFailureReason_Type.tp_dict, "SUCCESS", PyLong_FromLong(0));
-  PyDict_SetItemString(sdk_OrthancPluginStorageCommitmentFailureReason_Type.tp_dict, "PROCESSING_FAILURE", PyLong_FromLong(1));
-  PyDict_SetItemString(sdk_OrthancPluginStorageCommitmentFailureReason_Type.tp_dict, "NO_SUCH_OBJECT_INSTANCE", PyLong_FromLong(2));
-  PyDict_SetItemString(sdk_OrthancPluginStorageCommitmentFailureReason_Type.tp_dict, "RESOURCE_LIMITATION", PyLong_FromLong(3));
-  PyDict_SetItemString(sdk_OrthancPluginStorageCommitmentFailureReason_Type.tp_dict, "REFERENCED_SOPCLASS_NOT_SUPPORTED", PyLong_FromLong(4));
-  PyDict_SetItemString(sdk_OrthancPluginStorageCommitmentFailureReason_Type.tp_dict, "CLASS_INSTANCE_CONFLICT", PyLong_FromLong(5));
-  PyDict_SetItemString(sdk_OrthancPluginStorageCommitmentFailureReason_Type.tp_dict, "DUPLICATE_TRANSACTION_UID", PyLong_FromLong(6));
+  {
+    PyObject* tmp = PyLong_FromLong(0);
+    PyDict_SetItemString(sdk_OrthancPluginStorageCommitmentFailureReason_Type.tp_dict, "SUCCESS", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(1);
+    PyDict_SetItemString(sdk_OrthancPluginStorageCommitmentFailureReason_Type.tp_dict, "PROCESSING_FAILURE", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(2);
+    PyDict_SetItemString(sdk_OrthancPluginStorageCommitmentFailureReason_Type.tp_dict, "NO_SUCH_OBJECT_INSTANCE", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(3);
+    PyDict_SetItemString(sdk_OrthancPluginStorageCommitmentFailureReason_Type.tp_dict, "RESOURCE_LIMITATION", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(4);
+    PyDict_SetItemString(sdk_OrthancPluginStorageCommitmentFailureReason_Type.tp_dict, "REFERENCED_SOPCLASS_NOT_SUPPORTED", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(5);
+    PyDict_SetItemString(sdk_OrthancPluginStorageCommitmentFailureReason_Type.tp_dict, "CLASS_INSTANCE_CONFLICT", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(6);
+    PyDict_SetItemString(sdk_OrthancPluginStorageCommitmentFailureReason_Type.tp_dict, "DUPLICATE_TRANSACTION_UID", tmp);
+    Py_DECREF(tmp);
+  }
+
 
   Py_INCREF(&sdk_OrthancPluginStorageCommitmentFailureReason_Type);
   if (PyModule_AddObject(module, "StorageCommitmentFailureReason", (PyObject *)&sdk_OrthancPluginStorageCommitmentFailureReason_Type) < 0)

@@ -178,6 +178,7 @@ add_library(OrthancPython SHARED
   Sources/OnChangeCallback.cpp
   Sources/OnStoredInstanceCallback.cpp
   Sources/Plugin.cpp
+  Sources/PythonBytes.cpp
   Sources/PythonFunction.cpp
   Sources/PythonLock.cpp
   Sources/PythonModule.cpp

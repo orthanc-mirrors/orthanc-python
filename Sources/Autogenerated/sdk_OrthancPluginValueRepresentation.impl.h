@@ -64,33 +64,168 @@ void RegisterOrthancPluginValueRepresentationEnumeration(PyObject* module)
    * (in your module initialization function)."
    **/
   
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "AE", PyLong_FromLong(1));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "AS", PyLong_FromLong(2));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "AT", PyLong_FromLong(3));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "CS", PyLong_FromLong(4));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "DA", PyLong_FromLong(5));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "DS", PyLong_FromLong(6));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "DT", PyLong_FromLong(7));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "FD", PyLong_FromLong(8));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "FL", PyLong_FromLong(9));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "IS", PyLong_FromLong(10));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "LO", PyLong_FromLong(11));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "LT", PyLong_FromLong(12));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "OB", PyLong_FromLong(13));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "OF", PyLong_FromLong(14));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "OW", PyLong_FromLong(15));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "PN", PyLong_FromLong(16));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "SH", PyLong_FromLong(17));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "SL", PyLong_FromLong(18));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "SQ", PyLong_FromLong(19));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "SS", PyLong_FromLong(20));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "ST", PyLong_FromLong(21));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "TM", PyLong_FromLong(22));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "UI", PyLong_FromLong(23));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "UL", PyLong_FromLong(24));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "UN", PyLong_FromLong(25));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "US", PyLong_FromLong(26));
-  PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "UT", PyLong_FromLong(27));
+  {
+    PyObject* tmp = PyLong_FromLong(1);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "AE", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(2);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "AS", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(3);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "AT", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(4);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "CS", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(5);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "DA", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(6);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "DS", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(7);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "DT", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(8);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "FD", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(9);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "FL", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(10);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "IS", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(11);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "LO", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(12);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "LT", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(13);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "OB", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(14);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "OF", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(15);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "OW", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(16);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "PN", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(17);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "SH", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(18);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "SL", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(19);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "SQ", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(20);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "SS", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(21);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "ST", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(22);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "TM", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(23);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "UI", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(24);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "UL", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(25);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "UN", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(26);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "US", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(27);
+    PyDict_SetItemString(sdk_OrthancPluginValueRepresentation_Type.tp_dict, "UT", tmp);
+    Py_DECREF(tmp);
+  }
+
 
   Py_INCREF(&sdk_OrthancPluginValueRepresentation_Type);
   if (PyModule_AddObject(module, "ValueRepresentation", (PyObject *)&sdk_OrthancPluginValueRepresentation_Type) < 0)

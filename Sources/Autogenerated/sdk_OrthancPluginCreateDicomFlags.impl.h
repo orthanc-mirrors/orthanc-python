@@ -64,9 +64,24 @@ void RegisterOrthancPluginCreateDicomFlagsEnumeration(PyObject* module)
    * (in your module initialization function)."
    **/
   
-  PyDict_SetItemString(sdk_OrthancPluginCreateDicomFlags_Type.tp_dict, "NONE", PyLong_FromLong(0));
-  PyDict_SetItemString(sdk_OrthancPluginCreateDicomFlags_Type.tp_dict, "DECODE_DATA_URI_SCHEME", PyLong_FromLong(1));
-  PyDict_SetItemString(sdk_OrthancPluginCreateDicomFlags_Type.tp_dict, "GENERATE_IDENTIFIERS", PyLong_FromLong(2));
+  {
+    PyObject* tmp = PyLong_FromLong(0);
+    PyDict_SetItemString(sdk_OrthancPluginCreateDicomFlags_Type.tp_dict, "NONE", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(1);
+    PyDict_SetItemString(sdk_OrthancPluginCreateDicomFlags_Type.tp_dict, "DECODE_DATA_URI_SCHEME", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(2);
+    PyDict_SetItemString(sdk_OrthancPluginCreateDicomFlags_Type.tp_dict, "GENERATE_IDENTIFIERS", tmp);
+    Py_DECREF(tmp);
+  }
+
 
   Py_INCREF(&sdk_OrthancPluginCreateDicomFlags_Type);
   if (PyModule_AddObject(module, "CreateDicomFlags", (PyObject *)&sdk_OrthancPluginCreateDicomFlags_Type) < 0)
