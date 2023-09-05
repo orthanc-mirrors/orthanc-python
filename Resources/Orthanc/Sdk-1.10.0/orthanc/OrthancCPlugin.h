@@ -3856,13 +3856,13 @@ extern "C"
     OrthancPluginContext*    context,
     OrthancPluginRestOutput* output,
     uint16_t                 status,
-    const char*              body,
+    const void*              body,
     uint32_t                 bodySize)
   {
     _OrthancPluginSendHttpStatus params;
     params.output = output;
     params.status = status;
-    params.body = body;
+    params.body = reinterpret_cast<const char*>(body);
     params.bodySize = bodySize;
     context->InvokeService(context, _OrthancPluginService_SendHttpStatus, &params);
   }
