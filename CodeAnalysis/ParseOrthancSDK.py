@@ -22,6 +22,7 @@
 
 import argparse
 import clang.cindex
+import json
 import os
 import pprint
 import pystache
@@ -388,6 +389,7 @@ for node in tu.cursor.get_children():
             enumerations[name] = {
                 'name' : name,
                 'path' : path,
+                'values' : values,
             }
 
     elif node.kind == clang.cindex.CursorKind.FUNCTION_DECL:
@@ -553,6 +555,15 @@ with open(os.path.join(ROOT, 'sdk.h.mustache'), 'r') as f:
         h.write(renderer.render(f.read(), {
             'classes' : sortedClasses,
         }))
+
+
+with open(os.path.join(TARGET, 'CodeModel.json'), 'w') as f:
+    f.write(json.dumps({
+        'global_functions' : globalFunctions,
+        'classes' : sortedClasses,
+        'enumerations' : sortedEnumerations,
+        'global_functions' : globalFunctions,
+    }, ensure_ascii = True, indent = 4, sort_keys = True))
 
 
 print('')
