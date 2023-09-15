@@ -1,0 +1,17 @@
+// Actual implementation of the methods
+{{#methods}}
+static PyObject *sdk_{{class_name}}_{{c_function}}(
+  sdk_{{class_name}}_Object* self, PyObject *args)
+{
+  PythonLock::LogCall("Calling method {{c_function}}() on object of class {{class_name}}");
+
+  if (self->object_ == NULL)
+  {
+    PyErr_SetString(PyExc_ValueError, "Invalid object");
+    return NULL;
+  }
+
+{{> function_body}}
+}
+
+{{/methods}}
