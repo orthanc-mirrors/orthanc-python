@@ -56,6 +56,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "metadata",
                             "sdk_type": "const char *"
                         }
                     ],
@@ -77,6 +78,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "metadata",
                             "sdk_type": "const char *"
                         }
                     ],
@@ -94,7 +96,8 @@
                     "args": [],
                     "c_function": "OrthancPluginGetInstanceOrigin",
                     "return_enumeration": "OrthancPluginInstanceOrigin",
-                    "return_sdk_type": "OrthancPluginInstanceOrigin",
+                    "return_sdk_enumeration": "OrthancPluginInstanceOrigin",
+                    "return_sdk_type": "enumeration",
                     "self": ", self->object_",
                     "short_name": "GetInstanceOrigin",
                     "tuple_format": "\"\", "
@@ -134,6 +137,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "k",
                             "python_type": "unsigned long",
+                            "sdk_name": "frameIndex",
                             "sdk_type": "uint32_t"
                         }
                     ],
@@ -155,6 +159,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "k",
                             "python_type": "unsigned long",
+                            "sdk_name": "frameIndex",
                             "sdk_type": "uint32_t"
                         }
                     ],
@@ -163,7 +168,8 @@
                     "count_args": 1,
                     "has_args": true,
                     "return_object": "OrthancPluginImage",
-                    "return_sdk_type": "OrthancPluginImage *",
+                    "return_sdk_class": "OrthancPluginImage",
+                    "return_sdk_type": "object",
                     "self": ", self->object_",
                     "short_name": "GetInstanceDecodedFrame",
                     "tuple_format": "\"k\", &arg0"
@@ -185,7 +191,9 @@
                             "orthanc_cast": "static_cast<OrthancPluginDicomToJsonFormat>(arg0)",
                             "python_format": "l",
                             "python_type": "long int",
-                            "sdk_type": "OrthancPluginDicomToJsonFormat"
+                            "sdk_enumeration": "OrthancPluginDicomToJsonFormat",
+                            "sdk_name": "format",
+                            "sdk_type": "enumeration"
                         },
                         {
                             "initialization": " = 0",
@@ -193,7 +201,9 @@
                             "orthanc_cast": "static_cast<OrthancPluginDicomToJsonFlags>(arg1)",
                             "python_format": "l",
                             "python_type": "long int",
-                            "sdk_type": "OrthancPluginDicomToJsonFlags"
+                            "sdk_enumeration": "OrthancPluginDicomToJsonFlags",
+                            "sdk_name": "flags",
+                            "sdk_type": "enumeration"
                         },
                         {
                             "initialization": " = 0",
@@ -201,6 +211,7 @@
                             "orthanc_cast": "arg2",
                             "python_format": "k",
                             "python_type": "unsigned long",
+                            "sdk_name": "maxStringLength",
                             "sdk_type": "uint32_t"
                         }
                     ],
@@ -235,7 +246,8 @@
                             "python_format": "s*",
                             "python_type": "Py_buffer",
                             "release": "PyBuffer_Release(&arg0);",
-                            "sdk_type": "void_pointer_with_size"
+                            "sdk_name": "dicom",
+                            "sdk_type": "const_void_pointer_with_size"
                         }
                     ],
                     "c_function": "OrthancPluginFindAddAnswer",
@@ -243,7 +255,8 @@
                     "count_args": 1,
                     "has_args": true,
                     "return_error": true,
-                    "return_sdk_type": "OrthancPluginErrorCode",
+                    "return_sdk_enumeration": "OrthancPluginErrorCode",
+                    "return_sdk_type": "enumeration",
                     "self": ", self->object_",
                     "short_name": "FindAddAnswer",
                     "tuple_format": "\"s*\", &arg0"
@@ -252,7 +265,8 @@
                     "args": [],
                     "c_function": "OrthancPluginFindMarkIncomplete",
                     "return_error": true,
-                    "return_sdk_type": "OrthancPluginErrorCode",
+                    "return_sdk_enumeration": "OrthancPluginErrorCode",
+                    "return_sdk_type": "enumeration",
                     "self": ", self->object_",
                     "short_name": "FindMarkIncomplete",
                     "tuple_format": "\"\", "
@@ -273,7 +287,8 @@
                             "python_format": "s*",
                             "python_type": "Py_buffer",
                             "release": "PyBuffer_Release(&arg0);",
-                            "sdk_type": "void_pointer_with_size"
+                            "sdk_name": "dicom",
+                            "sdk_type": "const_void_pointer_with_size"
                         }
                     ],
                     "c_function": "OrthancPluginFindMatcherIsMatch",
@@ -323,6 +338,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "k",
                             "python_type": "unsigned long",
+                            "sdk_name": "index",
                             "sdk_type": "uint32_t"
                         }
                     ],
@@ -344,6 +360,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "k",
                             "python_type": "unsigned long",
+                            "sdk_name": "index",
                             "sdk_type": "uint32_t"
                         }
                     ],
@@ -376,7 +393,8 @@
                     "args": [],
                     "c_function": "OrthancPluginGetImagePixelFormat",
                     "return_enumeration": "OrthancPluginPixelFormat",
-                    "return_sdk_type": "OrthancPluginPixelFormat",
+                    "return_sdk_enumeration": "OrthancPluginPixelFormat",
+                    "return_sdk_type": "enumeration",
                     "self": ", self->object_",
                     "short_name": "GetImagePixelFormat",
                     "tuple_format": "\"\", "
@@ -416,7 +434,9 @@
                             "orthanc_cast": "static_cast<OrthancPluginPixelFormat>(arg0)",
                             "python_format": "l",
                             "python_type": "long int",
-                            "sdk_type": "OrthancPluginPixelFormat"
+                            "sdk_enumeration": "OrthancPluginPixelFormat",
+                            "sdk_name": "targetFormat",
+                            "sdk_type": "enumeration"
                         }
                     ],
                     "c_function": "OrthancPluginConvertPixelFormat",
@@ -424,7 +444,8 @@
                     "count_args": 1,
                     "has_args": true,
                     "return_object": "OrthancPluginImage",
-                    "return_sdk_type": "OrthancPluginImage *",
+                    "return_sdk_class": "OrthancPluginImage",
+                    "return_sdk_type": "object",
                     "self": ", self->object_",
                     "short_name": "ConvertPixelFormat",
                     "tuple_format": "\"l\", &arg0"
@@ -437,6 +458,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "k",
                             "python_type": "unsigned long",
+                            "sdk_name": "fontIndex",
                             "sdk_type": "uint32_t"
                         },
                         {
@@ -445,6 +467,7 @@
                             "orthanc_cast": "arg1",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "utf8Text",
                             "sdk_type": "const char *"
                         },
                         {
@@ -453,6 +476,7 @@
                             "orthanc_cast": "arg2",
                             "python_format": "l",
                             "python_type": "long int",
+                            "sdk_name": "x",
                             "sdk_type": "int32_t"
                         },
                         {
@@ -461,6 +485,7 @@
                             "orthanc_cast": "arg3",
                             "python_format": "l",
                             "python_type": "long int",
+                            "sdk_name": "y",
                             "sdk_type": "int32_t"
                         },
                         {
@@ -469,6 +494,7 @@
                             "orthanc_cast": "arg4",
                             "python_format": "b",
                             "python_type": "unsigned char",
+                            "sdk_name": "r",
                             "sdk_type": "uint8_t"
                         },
                         {
@@ -477,6 +503,7 @@
                             "orthanc_cast": "arg5",
                             "python_format": "b",
                             "python_type": "unsigned char",
+                            "sdk_name": "g",
                             "sdk_type": "uint8_t"
                         },
                         {
@@ -485,6 +512,7 @@
                             "orthanc_cast": "arg6",
                             "python_format": "b",
                             "python_type": "unsigned char",
+                            "sdk_name": "b",
                             "sdk_type": "uint8_t"
                         }
                     ],
@@ -493,7 +521,8 @@
                     "count_args": 7,
                     "has_args": true,
                     "return_error": true,
-                    "return_sdk_type": "OrthancPluginErrorCode",
+                    "return_sdk_enumeration": "OrthancPluginErrorCode",
+                    "return_sdk_type": "enumeration",
                     "self": ", self->object_",
                     "short_name": "DrawText",
                     "tuple_format": "\"ksllbbb\", &arg0, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6"
@@ -514,6 +543,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "i",
                             "python_type": "int",
+                            "sdk_name": "priority",
                             "sdk_type": "int"
                         }
                     ],
@@ -552,6 +582,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "k",
                             "python_type": "unsigned long",
+                            "sdk_name": "peerIndex",
                             "sdk_type": "uint32_t"
                         }
                     ],
@@ -573,6 +604,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "k",
                             "python_type": "unsigned long",
+                            "sdk_name": "peerIndex",
                             "sdk_type": "uint32_t"
                         }
                     ],
@@ -594,6 +626,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "k",
                             "python_type": "unsigned long",
+                            "sdk_name": "peerIndex",
                             "sdk_type": "uint32_t"
                         },
                         {
@@ -602,6 +635,7 @@
                             "orthanc_cast": "arg1",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "userProperty",
                             "sdk_type": "const char *"
                         }
                     ],
@@ -630,7 +664,8 @@
                             "python_format": "s*",
                             "python_type": "Py_buffer",
                             "release": "PyBuffer_Release(&arg0);",
-                            "sdk_type": "void_pointer_with_size"
+                            "sdk_name": "answer",
+                            "sdk_type": "const_void_pointer_with_size"
                         },
                         {
                             "initialization": " = NULL",
@@ -638,6 +673,7 @@
                             "orthanc_cast": "arg2",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "mimeType",
                             "sdk_type": "const char *"
                         }
                     ],
@@ -659,7 +695,9 @@
                             "orthanc_cast": "static_cast<OrthancPluginPixelFormat>(arg0)",
                             "python_format": "l",
                             "python_type": "long int",
-                            "sdk_type": "OrthancPluginPixelFormat"
+                            "sdk_enumeration": "OrthancPluginPixelFormat",
+                            "sdk_name": "format",
+                            "sdk_type": "enumeration"
                         },
                         {
                             "initialization": " = 0",
@@ -667,6 +705,7 @@
                             "orthanc_cast": "arg1",
                             "python_format": "k",
                             "python_type": "unsigned long",
+                            "sdk_name": "width",
                             "sdk_type": "uint32_t"
                         },
                         {
@@ -675,6 +714,7 @@
                             "orthanc_cast": "arg2",
                             "python_format": "k",
                             "python_type": "unsigned long",
+                            "sdk_name": "height",
                             "sdk_type": "uint32_t"
                         },
                         {
@@ -683,6 +723,7 @@
                             "orthanc_cast": "arg3",
                             "python_format": "k",
                             "python_type": "unsigned long",
+                            "sdk_name": "pitch",
                             "sdk_type": "uint32_t"
                         },
                         {
@@ -691,6 +732,7 @@
                             "python_format": "s*",
                             "python_type": "Py_buffer",
                             "release": "PyBuffer_Release(&arg4);",
+                            "sdk_name": "buffer",
                             "sdk_type": "const void *"
                         }
                     ],
@@ -712,6 +754,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "redirection",
                             "sdk_type": "const char *"
                         }
                     ],
@@ -733,6 +776,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "H",
                             "python_type": "unsigned short",
+                            "sdk_name": "status",
                             "sdk_type": "uint16_t"
                         }
                     ],
@@ -754,6 +798,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "realm",
                             "sdk_type": "const char *"
                         }
                     ],
@@ -775,6 +820,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "allowedMethods",
                             "sdk_type": "const char *"
                         }
                     ],
@@ -796,6 +842,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "cookie",
                             "sdk_type": "const char *"
                         },
                         {
@@ -804,6 +851,7 @@
                             "orthanc_cast": "arg1",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "value",
                             "sdk_type": "const char *"
                         }
                     ],
@@ -825,6 +873,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "key",
                             "sdk_type": "const char *"
                         },
                         {
@@ -833,6 +882,7 @@
                             "orthanc_cast": "arg1",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "value",
                             "sdk_type": "const char *"
                         }
                     ],
@@ -854,6 +904,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "subType",
                             "sdk_type": "const char *"
                         },
                         {
@@ -862,6 +913,7 @@
                             "orthanc_cast": "arg1",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "contentType",
                             "sdk_type": "const char *"
                         }
                     ],
@@ -870,7 +922,8 @@
                     "count_args": 2,
                     "has_args": true,
                     "return_error": true,
-                    "return_sdk_type": "OrthancPluginErrorCode",
+                    "return_sdk_enumeration": "OrthancPluginErrorCode",
+                    "return_sdk_type": "enumeration",
                     "self": ", self->object_",
                     "short_name": "StartMultipartAnswer",
                     "tuple_format": "\"ss\", &arg0, &arg1"
@@ -883,7 +936,8 @@
                             "python_format": "s*",
                             "python_type": "Py_buffer",
                             "release": "PyBuffer_Release(&arg0);",
-                            "sdk_type": "void_pointer_with_size"
+                            "sdk_name": "answer",
+                            "sdk_type": "const_void_pointer_with_size"
                         }
                     ],
                     "c_function": "OrthancPluginSendMultipartItem",
@@ -891,7 +945,8 @@
                     "count_args": 1,
                     "has_args": true,
                     "return_error": true,
-                    "return_sdk_type": "OrthancPluginErrorCode",
+                    "return_sdk_enumeration": "OrthancPluginErrorCode",
+                    "return_sdk_type": "enumeration",
                     "self": ", self->object_",
                     "short_name": "SendMultipartItem",
                     "tuple_format": "\"s*\", &arg0"
@@ -904,6 +959,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "H",
                             "python_type": "unsigned short",
+                            "sdk_name": "status",
                             "sdk_type": "uint16_t"
                         },
                         {
@@ -912,7 +968,8 @@
                             "python_format": "s*",
                             "python_type": "Py_buffer",
                             "release": "PyBuffer_Release(&arg1);",
-                            "sdk_type": "void_pointer_with_size"
+                            "sdk_name": "body",
+                            "sdk_type": "const_void_pointer_with_size"
                         }
                     ],
                     "c_function": "OrthancPluginSendHttpStatus",
@@ -933,7 +990,9 @@
                             "orthanc_cast": "static_cast<OrthancPluginPixelFormat>(arg0)",
                             "python_format": "l",
                             "python_type": "long int",
-                            "sdk_type": "OrthancPluginPixelFormat"
+                            "sdk_enumeration": "OrthancPluginPixelFormat",
+                            "sdk_name": "format",
+                            "sdk_type": "enumeration"
                         },
                         {
                             "initialization": " = 0",
@@ -941,6 +1000,7 @@
                             "orthanc_cast": "arg1",
                             "python_format": "k",
                             "python_type": "unsigned long",
+                            "sdk_name": "width",
                             "sdk_type": "uint32_t"
                         },
                         {
@@ -949,6 +1009,7 @@
                             "orthanc_cast": "arg2",
                             "python_format": "k",
                             "python_type": "unsigned long",
+                            "sdk_name": "height",
                             "sdk_type": "uint32_t"
                         },
                         {
@@ -957,6 +1018,7 @@
                             "orthanc_cast": "arg3",
                             "python_format": "k",
                             "python_type": "unsigned long",
+                            "sdk_name": "pitch",
                             "sdk_type": "uint32_t"
                         },
                         {
@@ -965,6 +1027,7 @@
                             "python_format": "s*",
                             "python_type": "Py_buffer",
                             "release": "PyBuffer_Release(&arg4);",
+                            "sdk_name": "buffer",
                             "sdk_type": "const void *"
                         },
                         {
@@ -973,6 +1036,7 @@
                             "orthanc_cast": "arg5",
                             "python_format": "b",
                             "python_type": "unsigned char",
+                            "sdk_name": "quality",
                             "sdk_type": "uint8_t"
                         }
                     ],
@@ -994,6 +1058,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "details",
                             "sdk_type": "const char *"
                         },
                         {
@@ -1002,6 +1067,7 @@
                             "orthanc_cast": "arg1",
                             "python_format": "b",
                             "python_type": "unsigned char",
+                            "sdk_name": "log",
                             "sdk_type": "uint8_t"
                         }
                     ],
@@ -1036,6 +1102,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "uuid",
                             "sdk_type": "const char *"
                         },
                         {
@@ -1044,6 +1111,7 @@
                             "python_format": "s*",
                             "python_type": "Py_buffer",
                             "release": "PyBuffer_Release(&arg1);",
+                            "sdk_name": "content",
                             "sdk_type": "const void *"
                         },
                         {
@@ -1052,6 +1120,7 @@
                             "orthanc_cast": "arg2",
                             "python_format": "K",
                             "python_type": "unsigned long long",
+                            "sdk_name": "size",
                             "sdk_type": "uint64_t"
                         },
                         {
@@ -1060,7 +1129,9 @@
                             "orthanc_cast": "static_cast<OrthancPluginContentType>(arg3)",
                             "python_format": "l",
                             "python_type": "long int",
-                            "sdk_type": "OrthancPluginContentType"
+                            "sdk_enumeration": "OrthancPluginContentType",
+                            "sdk_name": "type",
+                            "sdk_type": "enumeration"
                         }
                     ],
                     "c_function": "OrthancPluginStorageAreaCreate",
@@ -1068,7 +1139,8 @@
                     "count_args": 4,
                     "has_args": true,
                     "return_error": true,
-                    "return_sdk_type": "OrthancPluginErrorCode",
+                    "return_sdk_enumeration": "OrthancPluginErrorCode",
+                    "return_sdk_type": "enumeration",
                     "self": ", self->object_",
                     "short_name": "StorageAreaCreate",
                     "tuple_format": "\"ss*Kl\", &arg0, &arg1, &arg2, &arg3"
@@ -1081,6 +1153,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "uuid",
                             "sdk_type": "const char *"
                         },
                         {
@@ -1089,7 +1162,9 @@
                             "orthanc_cast": "static_cast<OrthancPluginContentType>(arg1)",
                             "python_format": "l",
                             "python_type": "long int",
-                            "sdk_type": "OrthancPluginContentType"
+                            "sdk_enumeration": "OrthancPluginContentType",
+                            "sdk_name": "type",
+                            "sdk_type": "enumeration"
                         }
                     ],
                     "c_function": "OrthancPluginStorageAreaRead",
@@ -1110,6 +1185,7 @@
                             "orthanc_cast": "arg0",
                             "python_format": "s",
                             "python_type": "const char*",
+                            "sdk_name": "uuid",
                             "sdk_type": "const char *"
                         },
                         {
@@ -1118,7 +1194,9 @@
                             "orthanc_cast": "static_cast<OrthancPluginContentType>(arg1)",
                             "python_format": "l",
                             "python_type": "long int",
-                            "sdk_type": "OrthancPluginContentType"
+                            "sdk_enumeration": "OrthancPluginContentType",
+                            "sdk_name": "type",
+                            "sdk_type": "enumeration"
                         }
                     ],
                     "c_function": "OrthancPluginStorageAreaRemove",
@@ -1126,7 +1204,8 @@
                     "count_args": 2,
                     "has_args": true,
                     "return_error": true,
-                    "return_sdk_type": "OrthancPluginErrorCode",
+                    "return_sdk_enumeration": "OrthancPluginErrorCode",
+                    "return_sdk_type": "enumeration",
                     "self": ", self->object_",
                     "short_name": "StorageAreaRemove",
                     "tuple_format": "\"sl\", &arg0, &arg1"
@@ -1139,7 +1218,9 @@
                             "orthanc_cast": "static_cast<OrthancPluginResourceType>(arg0)",
                             "python_format": "l",
                             "python_type": "long int",
-                            "sdk_type": "OrthancPluginResourceType"
+                            "sdk_enumeration": "OrthancPluginResourceType",
+                            "sdk_name": "level",
+                            "sdk_type": "enumeration"
                         }
                     ],
                     "c_function": "OrthancPluginReconstructMainDicomTags",
@@ -1147,7 +1228,8 @@
                     "count_args": 1,
                     "has_args": true,
                     "return_error": true,
-                    "return_sdk_type": "OrthancPluginErrorCode",
+                    "return_sdk_enumeration": "OrthancPluginErrorCode",
+                    "return_sdk_type": "enumeration",
                     "self": ", self->object_",
                     "short_name": "ReconstructMainDicomTags",
                     "tuple_format": "\"l\", &arg0"
@@ -1170,7 +1252,8 @@
                     "args": [],
                     "c_function": "OrthancPluginWorklistMarkIncomplete",
                     "return_error": true,
-                    "return_sdk_type": "OrthancPluginErrorCode",
+                    "return_sdk_enumeration": "OrthancPluginErrorCode",
+                    "return_sdk_type": "enumeration",
                     "self": ", self->object_",
                     "short_name": "WorklistMarkIncomplete",
                     "tuple_format": "\"\", "
@@ -1190,7 +1273,8 @@
                             "python_format": "s*",
                             "python_type": "Py_buffer",
                             "release": "PyBuffer_Release(&arg0);",
-                            "sdk_type": "void_pointer_with_size"
+                            "sdk_name": "dicom",
+                            "sdk_type": "const_void_pointer_with_size"
                         }
                     ],
                     "c_function": "OrthancPluginWorklistIsMatch",
@@ -2297,6 +2381,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "i",
                     "python_type": "int",
+                    "sdk_name": "expectedMajor",
                     "sdk_type": "int"
                 },
                 {
@@ -2305,6 +2390,7 @@
                     "orthanc_cast": "arg1",
                     "python_format": "i",
                     "python_type": "int",
+                    "sdk_name": "expectedMinor",
                     "sdk_type": "int"
                 },
                 {
@@ -2313,6 +2399,7 @@
                     "orthanc_cast": "arg2",
                     "python_format": "i",
                     "python_type": "int",
+                    "sdk_name": "expectedRevision",
                     "sdk_type": "int"
                 }
             ],
@@ -2341,6 +2428,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "message",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2361,6 +2449,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "message",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2381,6 +2470,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "message",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2401,6 +2491,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "instanceId",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2421,6 +2512,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "uri",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2441,6 +2533,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "uri",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2461,6 +2554,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "uri",
                     "sdk_type": "const char *"
                 },
                 {
@@ -2469,7 +2563,8 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg1);",
-                    "sdk_type": "void_pointer_with_size"
+                    "sdk_name": "body",
+                    "sdk_type": "const_void_pointer_with_size"
                 }
             ],
             "c_function": "OrthancPluginRestApiPost",
@@ -2489,6 +2584,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "uri",
                     "sdk_type": "const char *"
                 },
                 {
@@ -2497,7 +2593,8 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg1);",
-                    "sdk_type": "void_pointer_with_size"
+                    "sdk_name": "body",
+                    "sdk_type": "const_void_pointer_with_size"
                 }
             ],
             "c_function": "OrthancPluginRestApiPostAfterPlugins",
@@ -2517,6 +2614,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "uri",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2525,7 +2623,8 @@
             "count_args": 1,
             "has_args": true,
             "return_error": true,
-            "return_sdk_type": "OrthancPluginErrorCode",
+            "return_sdk_enumeration": "OrthancPluginErrorCode",
+            "return_sdk_type": "enumeration",
             "short_name": "RestApiDelete",
             "tuple_format": "\"s\", &arg0"
         },
@@ -2537,6 +2636,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "uri",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2545,7 +2645,8 @@
             "count_args": 1,
             "has_args": true,
             "return_error": true,
-            "return_sdk_type": "OrthancPluginErrorCode",
+            "return_sdk_enumeration": "OrthancPluginErrorCode",
+            "return_sdk_type": "enumeration",
             "short_name": "RestApiDeleteAfterPlugins",
             "tuple_format": "\"s\", &arg0"
         },
@@ -2557,6 +2658,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "uri",
                     "sdk_type": "const char *"
                 },
                 {
@@ -2565,7 +2667,8 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg1);",
-                    "sdk_type": "void_pointer_with_size"
+                    "sdk_name": "body",
+                    "sdk_type": "const_void_pointer_with_size"
                 }
             ],
             "c_function": "OrthancPluginRestApiPut",
@@ -2585,6 +2688,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "uri",
                     "sdk_type": "const char *"
                 },
                 {
@@ -2593,7 +2697,8 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg1);",
-                    "sdk_type": "void_pointer_with_size"
+                    "sdk_name": "body",
+                    "sdk_type": "const_void_pointer_with_size"
                 }
             ],
             "c_function": "OrthancPluginRestApiPutAfterPlugins",
@@ -2613,6 +2718,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "patientID",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2633,6 +2739,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "studyUID",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2653,6 +2760,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "accessionNumber",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2673,6 +2781,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "seriesUID",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2693,6 +2802,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "sopInstanceUID",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2737,6 +2847,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "uri",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2757,6 +2868,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "description",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2777,6 +2889,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "javascript",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2797,6 +2910,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "l",
                     "python_type": "long int",
+                    "sdk_name": "property",
                     "sdk_type": "int32_t"
                 },
                 {
@@ -2805,6 +2919,7 @@
                     "orthanc_cast": "arg1",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "defaultValue",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2825,6 +2940,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "l",
                     "python_type": "long int",
+                    "sdk_name": "property",
                     "sdk_type": "int32_t"
                 },
                 {
@@ -2833,6 +2949,7 @@
                     "orthanc_cast": "arg1",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "value",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2841,7 +2958,8 @@
             "count_args": 2,
             "has_args": true,
             "return_error": true,
-            "return_sdk_type": "OrthancPluginErrorCode",
+            "return_sdk_enumeration": "OrthancPluginErrorCode",
+            "return_sdk_type": "enumeration",
             "short_name": "SetGlobalProperty",
             "tuple_format": "\"ls\", &arg0, &arg1"
         },
@@ -2861,6 +2979,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "argument",
                     "sdk_type": "uint32_t"
                 }
             ],
@@ -2897,7 +3016,8 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg0);",
-                    "sdk_type": "void_pointer_with_size"
+                    "sdk_name": "source",
+                    "sdk_type": "const_void_pointer_with_size"
                 },
                 {
                     "initialization": " = 0",
@@ -2905,7 +3025,9 @@
                     "orthanc_cast": "static_cast<OrthancPluginCompressionType>(arg2)",
                     "python_format": "l",
                     "python_type": "long int",
-                    "sdk_type": "OrthancPluginCompressionType"
+                    "sdk_enumeration": "OrthancPluginCompressionType",
+                    "sdk_name": "compression",
+                    "sdk_type": "enumeration"
                 },
                 {
                     "initialization": " = 0",
@@ -2913,6 +3035,7 @@
                     "orthanc_cast": "arg3",
                     "python_format": "b",
                     "python_type": "unsigned char",
+                    "sdk_name": "uncompress",
                     "sdk_type": "uint8_t"
                 }
             ],
@@ -2933,6 +3056,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "path",
                     "sdk_type": "const char *"
                 }
             ],
@@ -2953,6 +3077,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "path",
                     "sdk_type": "const char *"
                 },
                 {
@@ -2961,7 +3086,8 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg1);",
-                    "sdk_type": "void_pointer_with_size"
+                    "sdk_name": "data",
+                    "sdk_type": "const_void_pointer_with_size"
                 }
             ],
             "c_function": "OrthancPluginWriteFile",
@@ -2969,7 +3095,8 @@
             "count_args": 2,
             "has_args": true,
             "return_error": true,
-            "return_sdk_type": "OrthancPluginErrorCode",
+            "return_sdk_enumeration": "OrthancPluginErrorCode",
+            "return_sdk_type": "enumeration",
             "short_name": "WriteFile",
             "tuple_format": "\"ss*\", &arg0, &arg1"
         },
@@ -2981,7 +3108,9 @@
                     "orthanc_cast": "static_cast<OrthancPluginErrorCode>(arg0)",
                     "python_format": "l",
                     "python_type": "long int",
-                    "sdk_type": "OrthancPluginErrorCode"
+                    "sdk_enumeration": "OrthancPluginErrorCode",
+                    "sdk_name": "error",
+                    "sdk_type": "enumeration"
                 }
             ],
             "c_function": "OrthancPluginGetErrorDescription",
@@ -3001,7 +3130,8 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg0);",
-                    "sdk_type": "void_pointer_with_size"
+                    "sdk_name": "data",
+                    "sdk_type": "const_void_pointer_with_size"
                 },
                 {
                     "initialization": " = 0",
@@ -3009,7 +3139,9 @@
                     "orthanc_cast": "static_cast<OrthancPluginImageFormat>(arg2)",
                     "python_format": "l",
                     "python_type": "long int",
-                    "sdk_type": "OrthancPluginImageFormat"
+                    "sdk_enumeration": "OrthancPluginImageFormat",
+                    "sdk_name": "format",
+                    "sdk_type": "enumeration"
                 }
             ],
             "c_function": "OrthancPluginUncompressImage",
@@ -3017,7 +3149,8 @@
             "count_args": 2,
             "has_args": true,
             "return_object": "OrthancPluginImage",
-            "return_sdk_type": "OrthancPluginImage *",
+            "return_sdk_class": "OrthancPluginImage",
+            "return_sdk_type": "object",
             "short_name": "UncompressImage",
             "tuple_format": "\"s*l\", &arg0, &arg2"
         },
@@ -3029,7 +3162,9 @@
                     "orthanc_cast": "static_cast<OrthancPluginPixelFormat>(arg0)",
                     "python_format": "l",
                     "python_type": "long int",
-                    "sdk_type": "OrthancPluginPixelFormat"
+                    "sdk_enumeration": "OrthancPluginPixelFormat",
+                    "sdk_name": "format",
+                    "sdk_type": "enumeration"
                 },
                 {
                     "initialization": " = 0",
@@ -3037,6 +3172,7 @@
                     "orthanc_cast": "arg1",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "width",
                     "sdk_type": "uint32_t"
                 },
                 {
@@ -3045,6 +3181,7 @@
                     "orthanc_cast": "arg2",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "height",
                     "sdk_type": "uint32_t"
                 },
                 {
@@ -3053,6 +3190,7 @@
                     "orthanc_cast": "arg3",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "pitch",
                     "sdk_type": "uint32_t"
                 },
                 {
@@ -3061,6 +3199,7 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg4);",
+                    "sdk_name": "buffer",
                     "sdk_type": "const void *"
                 }
             ],
@@ -3081,7 +3220,9 @@
                     "orthanc_cast": "static_cast<OrthancPluginPixelFormat>(arg0)",
                     "python_format": "l",
                     "python_type": "long int",
-                    "sdk_type": "OrthancPluginPixelFormat"
+                    "sdk_enumeration": "OrthancPluginPixelFormat",
+                    "sdk_name": "format",
+                    "sdk_type": "enumeration"
                 },
                 {
                     "initialization": " = 0",
@@ -3089,6 +3230,7 @@
                     "orthanc_cast": "arg1",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "width",
                     "sdk_type": "uint32_t"
                 },
                 {
@@ -3097,6 +3239,7 @@
                     "orthanc_cast": "arg2",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "height",
                     "sdk_type": "uint32_t"
                 },
                 {
@@ -3105,6 +3248,7 @@
                     "orthanc_cast": "arg3",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "pitch",
                     "sdk_type": "uint32_t"
                 },
                 {
@@ -3113,6 +3257,7 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg4);",
+                    "sdk_name": "buffer",
                     "sdk_type": "const void *"
                 },
                 {
@@ -3121,6 +3266,7 @@
                     "orthanc_cast": "arg5",
                     "python_format": "b",
                     "python_type": "unsigned char",
+                    "sdk_name": "quality",
                     "sdk_type": "uint8_t"
                 }
             ],
@@ -3141,6 +3287,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "url",
                     "sdk_type": "const char *"
                 },
                 {
@@ -3149,6 +3296,7 @@
                     "orthanc_cast": "arg1",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "username",
                     "sdk_type": "const char *"
                 },
                 {
@@ -3157,6 +3305,7 @@
                     "orthanc_cast": "arg2",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "password",
                     "sdk_type": "const char *"
                 }
             ],
@@ -3177,6 +3326,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "url",
                     "sdk_type": "const char *"
                 },
                 {
@@ -3185,7 +3335,8 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg1);",
-                    "sdk_type": "void_pointer_with_size"
+                    "sdk_name": "body",
+                    "sdk_type": "const_void_pointer_with_size"
                 },
                 {
                     "initialization": " = NULL",
@@ -3193,6 +3344,7 @@
                     "orthanc_cast": "arg3",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "username",
                     "sdk_type": "const char *"
                 },
                 {
@@ -3201,6 +3353,7 @@
                     "orthanc_cast": "arg4",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "password",
                     "sdk_type": "const char *"
                 }
             ],
@@ -3221,6 +3374,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "url",
                     "sdk_type": "const char *"
                 },
                 {
@@ -3229,7 +3383,8 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg1);",
-                    "sdk_type": "void_pointer_with_size"
+                    "sdk_name": "body",
+                    "sdk_type": "const_void_pointer_with_size"
                 },
                 {
                     "initialization": " = NULL",
@@ -3237,6 +3392,7 @@
                     "orthanc_cast": "arg3",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "username",
                     "sdk_type": "const char *"
                 },
                 {
@@ -3245,6 +3401,7 @@
                     "orthanc_cast": "arg4",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "password",
                     "sdk_type": "const char *"
                 }
             ],
@@ -3265,6 +3422,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "url",
                     "sdk_type": "const char *"
                 },
                 {
@@ -3273,6 +3431,7 @@
                     "orthanc_cast": "arg1",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "username",
                     "sdk_type": "const char *"
                 },
                 {
@@ -3281,6 +3440,7 @@
                     "orthanc_cast": "arg2",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "password",
                     "sdk_type": "const char *"
                 }
             ],
@@ -3289,7 +3449,8 @@
             "count_args": 3,
             "has_args": true,
             "return_error": true,
-            "return_sdk_type": "OrthancPluginErrorCode",
+            "return_sdk_enumeration": "OrthancPluginErrorCode",
+            "return_sdk_type": "enumeration",
             "short_name": "HttpDelete",
             "tuple_format": "\"sss\", &arg0, &arg1, &arg2"
         },
@@ -3309,6 +3470,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "fontIndex",
                     "sdk_type": "uint32_t"
                 }
             ],
@@ -3329,6 +3491,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "fontIndex",
                     "sdk_type": "uint32_t"
                 }
             ],
@@ -3349,6 +3512,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "l",
                     "python_type": "long int",
+                    "sdk_name": "code",
                     "sdk_type": "int32_t"
                 },
                 {
@@ -3357,6 +3521,7 @@
                     "orthanc_cast": "arg1",
                     "python_format": "H",
                     "python_type": "unsigned short",
+                    "sdk_name": "httpStatus",
                     "sdk_type": "uint16_t"
                 },
                 {
@@ -3365,6 +3530,7 @@
                     "orthanc_cast": "arg2",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "message",
                     "sdk_type": "const char *"
                 }
             ],
@@ -3373,7 +3539,8 @@
             "count_args": 3,
             "has_args": true,
             "return_error": true,
-            "return_sdk_type": "OrthancPluginErrorCode",
+            "return_sdk_enumeration": "OrthancPluginErrorCode",
+            "return_sdk_type": "enumeration",
             "short_name": "RegisterErrorCode",
             "tuple_format": "\"lHs\", &arg0, &arg1, &arg2"
         },
@@ -3385,6 +3552,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "H",
                     "python_type": "unsigned short",
+                    "sdk_name": "group",
                     "sdk_type": "uint16_t"
                 },
                 {
@@ -3393,6 +3561,7 @@
                     "orthanc_cast": "arg1",
                     "python_format": "H",
                     "python_type": "unsigned short",
+                    "sdk_name": "element",
                     "sdk_type": "uint16_t"
                 },
                 {
@@ -3401,7 +3570,9 @@
                     "orthanc_cast": "static_cast<OrthancPluginValueRepresentation>(arg2)",
                     "python_format": "l",
                     "python_type": "long int",
-                    "sdk_type": "OrthancPluginValueRepresentation"
+                    "sdk_enumeration": "OrthancPluginValueRepresentation",
+                    "sdk_name": "vr",
+                    "sdk_type": "enumeration"
                 },
                 {
                     "initialization": " = NULL",
@@ -3409,6 +3580,7 @@
                     "orthanc_cast": "arg3",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "name",
                     "sdk_type": "const char *"
                 },
                 {
@@ -3417,6 +3589,7 @@
                     "orthanc_cast": "arg4",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "minMultiplicity",
                     "sdk_type": "uint32_t"
                 },
                 {
@@ -3425,6 +3598,7 @@
                     "orthanc_cast": "arg5",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "maxMultiplicity",
                     "sdk_type": "uint32_t"
                 }
             ],
@@ -3433,7 +3607,8 @@
             "count_args": 6,
             "has_args": true,
             "return_error": true,
-            "return_sdk_type": "OrthancPluginErrorCode",
+            "return_sdk_enumeration": "OrthancPluginErrorCode",
+            "return_sdk_type": "enumeration",
             "short_name": "RegisterDictionaryTag",
             "tuple_format": "\"HHlskk\", &arg0, &arg1, &arg2, &arg3, &arg4, &arg5"
         },
@@ -3445,6 +3620,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "H",
                     "python_type": "unsigned short",
+                    "sdk_name": "group",
                     "sdk_type": "uint16_t"
                 },
                 {
@@ -3453,6 +3629,7 @@
                     "orthanc_cast": "arg1",
                     "python_format": "H",
                     "python_type": "unsigned short",
+                    "sdk_name": "element",
                     "sdk_type": "uint16_t"
                 },
                 {
@@ -3461,7 +3638,9 @@
                     "orthanc_cast": "static_cast<OrthancPluginValueRepresentation>(arg2)",
                     "python_format": "l",
                     "python_type": "long int",
-                    "sdk_type": "OrthancPluginValueRepresentation"
+                    "sdk_enumeration": "OrthancPluginValueRepresentation",
+                    "sdk_name": "vr",
+                    "sdk_type": "enumeration"
                 },
                 {
                     "initialization": " = NULL",
@@ -3469,6 +3648,7 @@
                     "orthanc_cast": "arg3",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "name",
                     "sdk_type": "const char *"
                 },
                 {
@@ -3477,6 +3657,7 @@
                     "orthanc_cast": "arg4",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "minMultiplicity",
                     "sdk_type": "uint32_t"
                 },
                 {
@@ -3485,6 +3666,7 @@
                     "orthanc_cast": "arg5",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "maxMultiplicity",
                     "sdk_type": "uint32_t"
                 },
                 {
@@ -3493,6 +3675,7 @@
                     "orthanc_cast": "arg6",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "privateCreator",
                     "sdk_type": "const char *"
                 }
             ],
@@ -3501,7 +3684,8 @@
             "count_args": 7,
             "has_args": true,
             "return_error": true,
-            "return_sdk_type": "OrthancPluginErrorCode",
+            "return_sdk_enumeration": "OrthancPluginErrorCode",
+            "return_sdk_type": "enumeration",
             "short_name": "RegisterPrivateDictionaryTag",
             "tuple_format": "\"HHlskks\", &arg0, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6"
         },
@@ -3513,7 +3697,8 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg0);",
-                    "sdk_type": "void_pointer_with_size"
+                    "sdk_name": "buffer",
+                    "sdk_type": "const_void_pointer_with_size"
                 },
                 {
                     "initialization": " = 0",
@@ -3521,7 +3706,9 @@
                     "orthanc_cast": "static_cast<OrthancPluginDicomToJsonFormat>(arg2)",
                     "python_format": "l",
                     "python_type": "long int",
-                    "sdk_type": "OrthancPluginDicomToJsonFormat"
+                    "sdk_enumeration": "OrthancPluginDicomToJsonFormat",
+                    "sdk_name": "format",
+                    "sdk_type": "enumeration"
                 },
                 {
                     "initialization": " = 0",
@@ -3529,7 +3716,9 @@
                     "orthanc_cast": "static_cast<OrthancPluginDicomToJsonFlags>(arg3)",
                     "python_format": "l",
                     "python_type": "long int",
-                    "sdk_type": "OrthancPluginDicomToJsonFlags"
+                    "sdk_enumeration": "OrthancPluginDicomToJsonFlags",
+                    "sdk_name": "flags",
+                    "sdk_type": "enumeration"
                 },
                 {
                     "initialization": " = 0",
@@ -3537,6 +3726,7 @@
                     "orthanc_cast": "arg4",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "maxStringLength",
                     "sdk_type": "uint32_t"
                 }
             ],
@@ -3557,6 +3747,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "instanceId",
                     "sdk_type": "const char *"
                 },
                 {
@@ -3565,7 +3756,9 @@
                     "orthanc_cast": "static_cast<OrthancPluginDicomToJsonFormat>(arg1)",
                     "python_format": "l",
                     "python_type": "long int",
-                    "sdk_type": "OrthancPluginDicomToJsonFormat"
+                    "sdk_enumeration": "OrthancPluginDicomToJsonFormat",
+                    "sdk_name": "format",
+                    "sdk_type": "enumeration"
                 },
                 {
                     "initialization": " = 0",
@@ -3573,7 +3766,9 @@
                     "orthanc_cast": "static_cast<OrthancPluginDicomToJsonFlags>(arg2)",
                     "python_format": "l",
                     "python_type": "long int",
-                    "sdk_type": "OrthancPluginDicomToJsonFlags"
+                    "sdk_enumeration": "OrthancPluginDicomToJsonFlags",
+                    "sdk_name": "flags",
+                    "sdk_type": "enumeration"
                 },
                 {
                     "initialization": " = 0",
@@ -3581,6 +3776,7 @@
                     "orthanc_cast": "arg3",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "maxStringLength",
                     "sdk_type": "uint32_t"
                 }
             ],
@@ -3601,7 +3797,9 @@
                     "orthanc_cast": "static_cast<OrthancPluginPixelFormat>(arg0)",
                     "python_format": "l",
                     "python_type": "long int",
-                    "sdk_type": "OrthancPluginPixelFormat"
+                    "sdk_enumeration": "OrthancPluginPixelFormat",
+                    "sdk_name": "format",
+                    "sdk_type": "enumeration"
                 },
                 {
                     "initialization": " = 0",
@@ -3609,6 +3807,7 @@
                     "orthanc_cast": "arg1",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "width",
                     "sdk_type": "uint32_t"
                 },
                 {
@@ -3617,6 +3816,7 @@
                     "orthanc_cast": "arg2",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "height",
                     "sdk_type": "uint32_t"
                 }
             ],
@@ -3625,7 +3825,8 @@
             "count_args": 3,
             "has_args": true,
             "return_object": "OrthancPluginImage",
-            "return_sdk_type": "OrthancPluginImage *",
+            "return_sdk_class": "OrthancPluginImage",
+            "return_sdk_type": "object",
             "short_name": "CreateImage",
             "tuple_format": "\"lkk\", &arg0, &arg1, &arg2"
         },
@@ -3637,7 +3838,8 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg0);",
-                    "sdk_type": "void_pointer_with_size"
+                    "sdk_name": "buffer",
+                    "sdk_type": "const_void_pointer_with_size"
                 },
                 {
                     "initialization": " = 0",
@@ -3645,6 +3847,7 @@
                     "orthanc_cast": "arg2",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "frameIndex",
                     "sdk_type": "uint32_t"
                 }
             ],
@@ -3653,7 +3856,8 @@
             "count_args": 2,
             "has_args": true,
             "return_object": "OrthancPluginImage",
-            "return_sdk_type": "OrthancPluginImage *",
+            "return_sdk_class": "OrthancPluginImage",
+            "return_sdk_type": "object",
             "short_name": "DecodeDicomImage",
             "tuple_format": "\"s*k\", &arg0, &arg2"
         },
@@ -3665,7 +3869,8 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg0);",
-                    "sdk_type": "void_pointer_with_size"
+                    "sdk_name": "buffer",
+                    "sdk_type": "const_void_pointer_with_size"
                 }
             ],
             "c_function": "OrthancPluginComputeMd5",
@@ -3685,7 +3890,8 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg0);",
-                    "sdk_type": "void_pointer_with_size"
+                    "sdk_name": "buffer",
+                    "sdk_type": "const_void_pointer_with_size"
                 }
             ],
             "c_function": "OrthancPluginComputeSha1",
@@ -3713,7 +3919,8 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg0);",
-                    "sdk_type": "void_pointer_with_size"
+                    "sdk_name": "query",
+                    "sdk_type": "const_void_pointer_with_size"
                 }
             ],
             "c_function": "OrthancPluginCreateFindMatcher",
@@ -3721,7 +3928,8 @@
             "count_args": 1,
             "has_args": true,
             "return_object": "OrthancPluginFindMatcher",
-            "return_sdk_type": "OrthancPluginFindMatcher *",
+            "return_sdk_class": "OrthancPluginFindMatcher",
+            "return_sdk_type": "object",
             "short_name": "CreateFindMatcher",
             "tuple_format": "\"s*\", &arg0"
         },
@@ -3729,7 +3937,8 @@
             "args": [],
             "c_function": "OrthancPluginGetPeers",
             "return_object": "OrthancPluginPeers",
-            "return_sdk_type": "OrthancPluginPeers *",
+            "return_sdk_class": "OrthancPluginPeers",
+            "return_sdk_type": "object",
             "short_name": "GetPeers",
             "tuple_format": "\"\", "
         },
@@ -3741,6 +3950,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "path",
                     "sdk_type": "const char *"
                 }
             ],
@@ -3761,6 +3971,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "name",
                     "sdk_type": "const char *"
                 },
                 {
@@ -3769,6 +3980,7 @@
                     "orthanc_cast": "arg1",
                     "python_format": "f",
                     "python_type": "float",
+                    "sdk_name": "value",
                     "sdk_type": "float"
                 },
                 {
@@ -3777,7 +3989,9 @@
                     "orthanc_cast": "static_cast<OrthancPluginMetricsType>(arg2)",
                     "python_format": "l",
                     "python_type": "long int",
-                    "sdk_type": "OrthancPluginMetricsType"
+                    "sdk_enumeration": "OrthancPluginMetricsType",
+                    "sdk_name": "type",
+                    "sdk_type": "enumeration"
                 }
             ],
             "c_function": "OrthancPluginSetMetricsValue",
@@ -3797,6 +4011,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "H",
                     "python_type": "unsigned short",
+                    "sdk_name": "group",
                     "sdk_type": "uint16_t"
                 },
                 {
@@ -3805,6 +4020,7 @@
                     "orthanc_cast": "arg1",
                     "python_format": "H",
                     "python_type": "unsigned short",
+                    "sdk_name": "element",
                     "sdk_type": "uint16_t"
                 },
                 {
@@ -3813,6 +4029,7 @@
                     "orthanc_cast": "arg2",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "privateCreator",
                     "sdk_type": "const char *"
                 }
             ],
@@ -3833,7 +4050,8 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg0);",
-                    "sdk_type": "void_pointer_with_size"
+                    "sdk_name": "buffer",
+                    "sdk_type": "const_void_pointer_with_size"
                 }
             ],
             "c_function": "OrthancPluginCreateDicomInstance",
@@ -3841,7 +4059,8 @@
             "count_args": 1,
             "has_args": true,
             "return_object": "OrthancPluginDicomInstance",
-            "return_sdk_type": "OrthancPluginDicomInstance *",
+            "return_sdk_class": "OrthancPluginDicomInstance",
+            "return_sdk_type": "object",
             "short_name": "CreateDicomInstance",
             "tuple_format": "\"s*\", &arg0"
         },
@@ -3853,7 +4072,8 @@
                     "python_format": "s*",
                     "python_type": "Py_buffer",
                     "release": "PyBuffer_Release(&arg0);",
-                    "sdk_type": "void_pointer_with_size"
+                    "sdk_name": "buffer",
+                    "sdk_type": "const_void_pointer_with_size"
                 },
                 {
                     "initialization": " = NULL",
@@ -3861,6 +4081,7 @@
                     "orthanc_cast": "arg2",
                     "python_format": "s",
                     "python_type": "const char*",
+                    "sdk_name": "transferSyntax",
                     "sdk_type": "const char *"
                 }
             ],
@@ -3869,7 +4090,8 @@
             "count_args": 2,
             "has_args": true,
             "return_object": "OrthancPluginDicomInstance",
-            "return_sdk_type": "OrthancPluginDicomInstance *",
+            "return_sdk_class": "OrthancPluginDicomInstance",
+            "return_sdk_type": "object",
             "short_name": "TranscodeDicomInstance",
             "tuple_format": "\"s*s\", &arg0, &arg2"
         },
@@ -3881,6 +4103,7 @@
                     "orthanc_cast": "arg0",
                     "python_format": "k",
                     "python_type": "unsigned long",
+                    "sdk_name": "size",
                     "sdk_type": "uint32_t"
                 }
             ],

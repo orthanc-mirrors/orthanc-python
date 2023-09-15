@@ -295,12 +295,18 @@ def GenerateFunctionBodyTemplate(cFunction, result_type, args):
         func['return_void'] = True
     elif result_type.spelling == 'OrthancPluginErrorCode':
         func['return_error'] = True
+        func['return_sdk_type'] = 'enumeration'
+        func['return_sdk_enumeration'] = result_type.spelling
     elif IsClassType(result_type):
         func['return_object'] = result_type.get_pointee().spelling
+        func['return_sdk_type'] = 'object'
+        func['return_sdk_class'] = result_type.get_pointee().spelling
     elif IsTargetMemoryBufferType(result_type):
         func['return_bytes'] = True
     elif IsEnumerationType(result_type):
         func['return_enumeration'] = result_type.spelling
+        func['return_sdk_type'] = 'enumeration'
+        func['return_sdk_enumeration'] = result_type.spelling
     else:
         raise Exception('Not supported: %s' % result_type.spelling)
 
@@ -309,6 +315,7 @@ def GenerateFunctionBodyTemplate(cFunction, result_type, args):
         a = {
             'name' : 'arg%d' % i,
             'sdk_type' : args[i].type.spelling,
+            'sdk_name' : args[i].spelling,
             }
 
         if (IsIntegerType(args[i].type) or
@@ -330,6 +337,8 @@ def GenerateFunctionBodyTemplate(cFunction, result_type, args):
             a['python_format'] = 'l'
             a['initialization'] = ' = 0'
             a['orthanc_cast'] = 'static_cast<%s>(arg%d)' % (args[i].type.spelling, i)
+            a['sdk_type'] = 'enumeration'
+            a['sdk_enumeration'] = args[i].type.spelling
             func['args'].append(a)
         elif IsBytesArgument(args, i):
             a['python_type'] = 'Py_buffer'
@@ -339,7 +348,7 @@ def GenerateFunctionBodyTemplate(cFunction, result_type, args):
             a['python_format'] = 's*'
             a['orthanc_cast'] = 'arg%d.buf, arg%d.len' % (i, i)
             a['release'] = 'PyBuffer_Release(&arg%d);' % i
-            a['sdk_type'] = 'void_pointer_with_size'
+            a['sdk_type'] = 'const_void_pointer_with_size'
             func['args'].append(a)
             i += 1  # Skip the size argument
         elif IsSourceMemoryBufferType(args[i].type):
