@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 ##
 ## Python plugin for Orthanc
@@ -277,11 +277,12 @@ ORTHANC_TO_PYTHON_NUMERIC_TYPES = {
 def GenerateFunctionBodyTemplate(cFunction, result_type, args):
     if not cFunction.startswith('OrthancPlugin'):
         raise Exception()
-    
+
     func = {
         'c_function' : cFunction,
         'short_name' : cFunction[len('OrthancPlugin'):],
         'args' : [],
+        'return_sdk_type' : result_type.spelling,
     }
     
     if IsIntegerType(result_type):
@@ -307,6 +308,7 @@ def GenerateFunctionBodyTemplate(cFunction, result_type, args):
     while i < len(args):
         a = {
             'name' : 'arg%d' % i,
+            'sdk_type' : args[i].type.spelling,
             }
 
         if (IsIntegerType(args[i].type) or
@@ -337,8 +339,9 @@ def GenerateFunctionBodyTemplate(cFunction, result_type, args):
             a['python_format'] = 's*'
             a['orthanc_cast'] = 'arg%d.buf, arg%d.len' % (i, i)
             a['release'] = 'PyBuffer_Release(&arg%d);' % i
+            a['sdk_type'] = 'void_pointer_with_size'
             func['args'].append(a)
-            i += 1
+            i += 1  # Skip the size argument
         elif IsSourceMemoryBufferType(args[i].type):
             a['python_type'] = 'Py_buffer'
             a['python_format'] = 's*'
@@ -562,7 +565,6 @@ with open(os.path.join(TARGET, 'CodeModel.json'), 'w') as f:
         'global_functions' : globalFunctions,
         'classes' : sortedClasses,
         'enumerations' : sortedEnumerations,
-        'global_functions' : globalFunctions,
     }, ensure_ascii = True, indent = 4, sort_keys = True))
 
 
