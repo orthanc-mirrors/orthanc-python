@@ -65,7 +65,7 @@
                     "count_args": 1,
                     "has_args": true,
                     "return_long": true,
-                    "return_sdk_type": "int",
+                    "return_sdk_type": "int32_t",
                     "self": ", self->object_",
                     "short_name": "HasInstanceMetadata",
                     "tuple_format": "\"s\", &arg0"
@@ -541,10 +541,10 @@
                             "initialization": " = 0",
                             "name": "arg0",
                             "orthanc_cast": "arg0",
-                            "python_format": "i",
-                            "python_type": "int",
+                            "python_format": "l",
+                            "python_type": "long int",
                             "sdk_name": "priority",
-                            "sdk_type": "int"
+                            "sdk_type": "int32_t"
                         }
                     ],
                     "c_function": "OrthancPluginSubmitJob",
@@ -555,7 +555,7 @@
                     "return_sdk_type": "char *",
                     "self": ", self->object_",
                     "short_name": "SubmitJob",
-                    "tuple_format": "\"i\", &arg0"
+                    "tuple_format": "\"l\", &arg0"
                 }
             ],
             "short_name": "Job"
@@ -2379,28 +2379,28 @@
                     "initialization": " = 0",
                     "name": "arg0",
                     "orthanc_cast": "arg0",
-                    "python_format": "i",
-                    "python_type": "int",
+                    "python_format": "l",
+                    "python_type": "long int",
                     "sdk_name": "expectedMajor",
-                    "sdk_type": "int"
+                    "sdk_type": "int32_t"
                 },
                 {
                     "initialization": " = 0",
                     "name": "arg1",
                     "orthanc_cast": "arg1",
-                    "python_format": "i",
-                    "python_type": "int",
+                    "python_format": "l",
+                    "python_type": "long int",
                     "sdk_name": "expectedMinor",
-                    "sdk_type": "int"
+                    "sdk_type": "int32_t"
                 },
                 {
                     "initialization": " = 0",
                     "name": "arg2",
                     "orthanc_cast": "arg2",
-                    "python_format": "i",
-                    "python_type": "int",
+                    "python_format": "l",
+                    "python_type": "long int",
                     "sdk_name": "expectedRevision",
-                    "sdk_type": "int"
+                    "sdk_type": "int32_t"
                 }
             ],
             "c_function": "OrthancPluginCheckVersionAdvanced",
@@ -2408,15 +2408,15 @@
             "count_args": 3,
             "has_args": true,
             "return_long": true,
-            "return_sdk_type": "int",
+            "return_sdk_type": "int32_t",
             "short_name": "CheckVersionAdvanced",
-            "tuple_format": "\"iii\", &arg0, &arg1, &arg2"
+            "tuple_format": "\"lll\", &arg0, &arg1, &arg2"
         },
         {
             "args": [],
             "c_function": "OrthancPluginCheckVersion",
             "return_long": true,
-            "return_sdk_type": "int",
+            "return_sdk_type": "int32_t",
             "short_name": "CheckVersion",
             "tuple_format": "\"\", "
         },

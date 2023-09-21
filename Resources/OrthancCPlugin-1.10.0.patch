@@ -1,0 +1,77 @@
+--- OrthancCPlugin.h.orig	2023-09-21 18:02:41.830746493 +0200
++++ OrthancCPlugin.h	2023-09-21 18:04:07.977591228 +0200
+@@ -1829,15 +1829,16 @@
+    * @see OrthancPluginCheckVersion
+    * @ingroup Callbacks
+    **/
+-  ORTHANC_PLUGIN_INLINE int  OrthancPluginCheckVersionAdvanced(
++  ORTHANC_PLUGIN_INLINE int32_t  OrthancPluginCheckVersionAdvanced(
+     OrthancPluginContext* context,
+-    int expectedMajor,
+-    int expectedMinor,
+-    int expectedRevision)
++    int32_t expectedMajor,
++    int32_t expectedMinor,
++    int32_t expectedRevision)
+   {
+-    int major, minor, revision;
++    int32_t major, minor, revision;
+ 
+-    if (sizeof(int32_t) != sizeof(OrthancPluginErrorCode) ||
++    if (sizeof(int) != sizeof(int32_t) || /* Ensure binary compatibility with Orthanc SDK <= 1.12.1 */
++        sizeof(int32_t) != sizeof(OrthancPluginErrorCode) ||
+         sizeof(int32_t) != sizeof(OrthancPluginHttpMethod) ||
+         sizeof(int32_t) != sizeof(_OrthancPluginService) ||
+         sizeof(int32_t) != sizeof(_OrthancPluginProperty) ||
+@@ -1935,7 +1936,7 @@
+    * @see OrthancPluginCheckVersionAdvanced
+    * @ingroup Callbacks
+    **/
+-  ORTHANC_PLUGIN_INLINE int  OrthancPluginCheckVersion(
++  ORTHANC_PLUGIN_INLINE int32_t  OrthancPluginCheckVersion(
+     OrthancPluginContext* context)
+   {
+     return OrthancPluginCheckVersionAdvanced(
+@@ -3077,7 +3078,7 @@
+    * @return 1 if the metadata is present, 0 if it is absent, -1 in case of error.
+    * @ingroup DicomInstance
+    **/
+-  ORTHANC_PLUGIN_INLINE int  OrthancPluginHasInstanceMetadata(
++  ORTHANC_PLUGIN_INLINE int32_t  OrthancPluginHasInstanceMetadata(
+     OrthancPluginContext*              context,
+     const OrthancPluginDicomInstance*  instance,
+     const char*                        metadata)
+@@ -3856,13 +3857,13 @@
+     OrthancPluginContext*    context,
+     OrthancPluginRestOutput* output,
+     uint16_t                 status,
+-    const char*              body,
++    const void*              body,
+     uint32_t                 bodySize)
+   {
+     _OrthancPluginSendHttpStatus params;
+     params.output = output;
+     params.status = status;
+-    params.body = body;
++    params.body = reinterpret_cast<const char*>(body);
+     params.bodySize = bodySize;
+     context->InvokeService(context, _OrthancPluginService_SendHttpStatus, &params);
+   }
+@@ -6760,7 +6761,7 @@
+   {
+     char**             resultId;
+     OrthancPluginJob  *job;
+-    int                priority;
++    int32_t            priority;
+   } _OrthancPluginSubmitJob;
+ 
+   /**
+@@ -6779,7 +6780,7 @@
+   ORTHANC_PLUGIN_INLINE char *OrthancPluginSubmitJob(
+     OrthancPluginContext   *context,
+     OrthancPluginJob       *job,
+-    int                     priority)
++    int32_t                 priority)
+   {
+     char* resultId = NULL;
+ 
