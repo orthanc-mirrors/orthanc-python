@@ -837,7 +837,7 @@ extern "C"
    **/
   typedef enum
   {
-    OrthancPluginDicomToJsonFlags_None                  = 0,
+    OrthancPluginDicomToJsonFlags_None                  = 0,         /*!< Default formatting */
     OrthancPluginDicomToJsonFlags_IncludeBinary         = (1 << 0),  /*!< Include the binary tags */
     OrthancPluginDicomToJsonFlags_IncludePrivateTags    = (1 << 1),  /*!< Include the private tags */
     OrthancPluginDicomToJsonFlags_IncludeUnknownTags    = (1 << 2),  /*!< Include the tags unknown by the dictionary */
@@ -858,7 +858,7 @@ extern "C"
    **/
   typedef enum
   {
-    OrthancPluginCreateDicomFlags_None                  = 0,
+    OrthancPluginCreateDicomFlags_None                  = 0,         /*!< Default mode */
     OrthancPluginCreateDicomFlags_DecodeDataUriScheme   = (1 << 0),  /*!< Decode fields encoded using data URI scheme */
     OrthancPluginCreateDicomFlags_GenerateIdentifiers   = (1 << 1),  /*!< Automatically generate DICOM identifiers */
 
@@ -975,32 +975,46 @@ extern "C"
    **/
   typedef enum
   {
+    /**
+     * Success: The DICOM instance is properly stored in the SCP
+     **/
     OrthancPluginStorageCommitmentFailureReason_Success = 0,
-    /*!< Success: The DICOM instance is properly stored in the SCP */
 
+    /**
+     * 0110H: A general failure in processing the operation was encountered
+     **/
     OrthancPluginStorageCommitmentFailureReason_ProcessingFailure = 1,
-    /*!< 0110H: A general failure in processing the operation was encountered */
 
+    /**
+     * 0112H: One or more of the elements in the Referenced SOP
+     * Instance Sequence was not available
+     **/
     OrthancPluginStorageCommitmentFailureReason_NoSuchObjectInstance = 2,
-    /*!< 0112H: One or more of the elements in the Referenced SOP
-      Instance Sequence was not available */
 
+    /**
+     * 0213H: The SCP does not currently have enough resources to
+     * store the requested SOP Instance(s)
+     **/
     OrthancPluginStorageCommitmentFailureReason_ResourceLimitation = 3,
-    /*!< 0213H: The SCP does not currently have enough resources to
-      store the requested SOP Instance(s) */
 
+    /**
+     * 0122H: Storage Commitment has been requested for a SOP Instance
+     * with a SOP Class that is not supported by the SCP
+     **/
     OrthancPluginStorageCommitmentFailureReason_ReferencedSOPClassNotSupported = 4,
-    /*!< 0122H: Storage Commitment has been requested for a SOP
-      Instance with a SOP Class that is not supported by the SCP */
 
+    /**
+     * 0119H: The SOP Class of an element in the Referenced SOP
+     * Instance Sequence did not correspond to the SOP class
+     * registered for this SOP Instance at the SCP
+     **/
     OrthancPluginStorageCommitmentFailureReason_ClassInstanceConflict = 5,
-    /*!< 0119H: The SOP Class of an element in the Referenced SOP
-      Instance Sequence did not correspond to the SOP class registered
-      for this SOP Instance at the SCP */
 
+    /**
+     * 0131H: The Transaction UID of the Storage Commitment Request is
+     * already in use
+     **/
     OrthancPluginStorageCommitmentFailureReason_DuplicateTransactionUID = 6
-    /*!< 0131H: The Transaction UID of the Storage Commitment Request
-      is already in use */
   } OrthancPluginStorageCommitmentFailureReason;
 
 
