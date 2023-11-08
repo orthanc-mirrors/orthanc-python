@@ -1,3 +1,16 @@
+Bug:
+===
+
+* The plugin does not support calls to 'curl http://localhost:8042/tools/reset -d ""' 
+  if the script registers the OnChangeCallback. Ex:
+
+    import orthanc
+
+    def OnChange(changeType, level, resource):
+      print("OnChange")
+    orthanc.RegisterOnChangeCallback(OnChange)
+
+
 
 Primitives the Orthanc community is missing
 ===========================================

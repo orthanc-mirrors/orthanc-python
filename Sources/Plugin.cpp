@@ -319,7 +319,8 @@ static void SetupGlobalFunctions()
 {
   if (!globalFunctions_.empty())
   {
-    ORTHANC_PLUGINS_THROW_EXCEPTION(BadSequenceOfCalls);
+    return;
+//    ORTHANC_PLUGINS_THROW_EXCEPTION(BadSequenceOfCalls);
   }
 
   /**
@@ -664,6 +665,8 @@ extern "C"
       
       PythonLock::GlobalFinalize();
     }
+
+    OrthancPlugins::ResetGlobalContext();
   }
 
 
