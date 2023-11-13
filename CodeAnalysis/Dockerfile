@@ -16,5 +16,5 @@ RUN mkdir /CodeAnalysis
 COPY *.mustache /CodeAnalysis/
 COPY *.py /CodeAnalysis/
 
-ENTRYPOINT ["./CodeAnalysis/ParseOrthancSDK.py"]
-CMD ["--libclang=libclang-4.0.so.1", "--source", "source/OrthancCPlugin.h", "--target", "target/"]
+ENTRYPOINT ["python2"]
+CMD ["./CodeAnalysis/ParseOrthancSDK.py", "--libclang=libclang-4.0.so.1", "--source", "source/OrthancCPlugin.h", "--target", "target/"]
