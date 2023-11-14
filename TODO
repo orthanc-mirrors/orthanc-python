@@ -11,6 +11,14 @@ Bug:
     orthanc.RegisterOnChangeCallback(OnChange)
 
 
+Possible improvements:
+=====================
+
+* In ReceivedInstanceFilter: change the orthanc.InstanceOrigin enum for an 
+  object similar to the origin table in lua for the Python Plugin?
+  https://discourse.orthanc-server.org/t/python-plugin-get-origin-information-calledaet-remoteip/4045
+
+
 
 Primitives the Orthanc community is missing
 ===========================================
