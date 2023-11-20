@@ -18,6 +18,7 @@ Possible improvements:
   object similar to the origin table in lua for the Python Plugin?
   https://discourse.orthanc-server.org/t/python-plugin-get-origin-information-calledaet-remoteip/4045
 
+* Allow working with python virtual env (since python 3.11, we must sometimes use --break-system-packages).
 
 
 Primitives the Orthanc community is missing
