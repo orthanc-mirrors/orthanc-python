@@ -10,7 +10,7 @@ cp -r /source/Resources /tmp/source-writeable/
 mkdir /tmp/build
 cd /tmp/build
 
-wget https://orthanc.uclouvain.be/third-party-downloads/Python/python-3.9.13-win64.zip
+wget https://orthanc.uclouvain.be/downloads/third-party-downloads/Python/python-3.9.13-win64.zip
 unzip python-3.9.13-win64.zip
 
 if [ "$1" == "Release" ]; then
