@@ -22,11 +22,11 @@ static PyObject* sdk_OrthancPluginCheckVersionAdvanced(PyObject* module, PyObjec
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginCheckVersionAdvanced()");
 
-  long int arg0 = 0;
-  long int arg1 = 0;
-  long int arg2 = 0;
+  int arg0 = 0;
+  int arg1 = 0;
+  int arg2 = 0;
 
-  if (!PyArg_ParseTuple(args, "lll", &arg0, &arg1, &arg2))
+  if (!PyArg_ParseTuple(args, "iii", &arg0, &arg1, &arg2))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
     return NULL;

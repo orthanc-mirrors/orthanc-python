@@ -10,9 +10,9 @@ static PyObject *sdk_OrthancPluginJob_OrthancPluginSubmitJob(
     return NULL;
   }
 
-  long int arg0 = 0;
+  int arg0 = 0;
 
-  if (!PyArg_ParseTuple(args, "l", &arg0))
+  if (!PyArg_ParseTuple(args, "i", &arg0))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;

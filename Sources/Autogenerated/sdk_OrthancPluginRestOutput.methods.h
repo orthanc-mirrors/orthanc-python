@@ -285,15 +285,16 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendHttpStatus(
   }
 
   unsigned short arg0 = 0;
-  Py_buffer arg1;
+  const char* arg1 = NULL;
+  unsigned long arg2 = 0;
 
-  if (!PyArg_ParseTuple(args, "Hs*", &arg0, &arg1))
+  if (!PyArg_ParseTuple(args, "Hsk", &arg0, &arg1, &arg2))
   {
-    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
     return NULL;
   }
-  OrthancPluginSendHttpStatus(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1.buf, arg1.len);
-  PyBuffer_Release(&arg1);
+  OrthancPluginSendHttpStatus(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1, arg2);
+  
 
   Py_INCREF(Py_None);
   return Py_None;
