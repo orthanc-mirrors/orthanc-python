@@ -24,11 +24,5 @@ Possible improvements:
 Primitives the Orthanc community is missing
 ===========================================
 
-* "OrthancPluginRegisterFindCallback()":
-  https://groups.google.com/d/msg/orthanc-users/eOku4cDu308/k9P6Qa5vBgAJ
-
-* "OrthancPluginRegisterWorklistCallback()":
-  https://groups.google.com/d/msg/orthanc-users/4gvRJQzwh1U/fwFfXGMtAwAJ
-
 * Create Python jobs:
   https://groups.google.com/g/orthanc-users/c/8-OYbc3mnyI/m/Mr9QvLKeAgAJ
