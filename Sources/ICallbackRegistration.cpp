@@ -97,6 +97,55 @@ PyObject *ICallbackRegistration::Apply2(ICallbackRegistration& registration,
   }
 }
 
+PyObject *ICallbackRegistration::Apply4(ICallbackRegistration& registration,
+                                        PyObject* args,
+                                        PyObject*& singletonCallback1,
+                                        PyObject*& singletonCallback2,
+                                        PyObject*& singletonCallback3,
+                                        PyObject*& singletonCallback4,
+                                        const std::string& details)
+{
+  // https://docs.python.org/3/extending/extending.html#calling-python-functions-from-c
+  PyObject* callback1 = NULL;
+  PyObject* callback2 = NULL;
+  PyObject* callback3 = NULL;
+  PyObject* callback4 = NULL;
+
+  if (!PyArg_ParseTuple(args, "OOOO", &callback1, &callback2, &callback3, &callback4) ||
+      callback1 == NULL || callback2 == NULL || callback3 == NULL || callback4 == NULL)
+  {
+    const std::string message = "Expected 4 callback functions to register " + details;
+    PyErr_SetString(PyExc_ValueError, message.c_str());
+    return NULL;
+  }
+  else if (singletonCallback1 != NULL || singletonCallback2 != NULL || singletonCallback3 != NULL || singletonCallback4 != NULL)
+  {
+    const std::string message = "Can only register once for " + details;
+    PyErr_SetString(PyExc_RuntimeError, message.c_str());
+    return NULL;
+  }
+  else
+  {
+    OrthancPlugins::LogInfo("Registering callbacks " + details);
+    registration.Register();
+
+    singletonCallback1 = callback1;
+    Py_XINCREF(singletonCallback1);
+
+    singletonCallback2 = callback2;
+    Py_XINCREF(singletonCallback2);
+
+    singletonCallback3 = callback3;
+    Py_XINCREF(singletonCallback3);
+
+    singletonCallback4 = callback4;
+    Py_XINCREF(singletonCallback4);
+
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
+}
+
 
 void ICallbackRegistration::Unregister(PyObject*& singletonCallback)
 {
