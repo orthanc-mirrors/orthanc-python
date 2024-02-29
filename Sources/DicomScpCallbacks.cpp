@@ -541,8 +541,10 @@ static void* CreateMoveCallback2(OrthancPluginResourceType resourceType,
     PythonObject args(lock, PyTuple_New(0));
 
     // Note: the result is not attached to the PythonLock because we want it to survive after this call since 
-    // the result is the python move driver that will be passed as first argument to GetMoveSize, Apply and Free
-    std::unique_ptr<PyObject> result(PyObject_Call(createMoveScpDriverCallback_, args.GetPyObject(), kw.GetPyObject()));
+    // the result is the python move driver that will be passed as first argument to GetMoveSize, Apply and Free.
+    // After the PyObject_Call, result's ref count is 1 -> no need to add a reference but we need to decref explicitely
+    // to delete the object at the end of the move.
+    PyObject* result = PyObject_Call(createMoveScpDriverCallback_, args.GetPyObject(), kw.GetPyObject());
 
     OrthancPluginErrorCode code = lock.CheckCallbackSuccess("Python C-MOVE SCP callback (Create)");
     if (code != OrthancPluginErrorCode_Success)
@@ -550,10 +552,7 @@ static void* CreateMoveCallback2(OrthancPluginResourceType resourceType,
       throw OrthancPlugins::PluginException(code);
     }
 
-    // make sure it survives after this call
-    Py_INCREF(result.get());
-
-    return result.release();
+    return result;
   }
   catch (OrthancPlugins::PluginException& e)
   {
@@ -623,7 +622,7 @@ void FreeMove2(void *moveDriver)
 
   lock.CheckCallbackSuccess("Python C-MOVE SCP callback (Free)");
 
-  Py_DECREF(moveDriver);
+  Py_DECREF(moveDriver); // remove the initial reference -> this will delete the Python Object when we exit this function
 }
 
 
