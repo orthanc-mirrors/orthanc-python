@@ -537,7 +537,7 @@ extern "C"
       return -1;
     }
     
-    OrthancPluginSetDescription(c, "Run Python scripts as Orthanc plugins");
+    OrthancPlugins::SetDescription(PLUGIN_NAME, "Run Python scripts as Orthanc plugins");
     
     try
     {
@@ -672,7 +672,7 @@ extern "C"
 
   ORTHANC_PLUGINS_API const char* OrthancPluginGetName()
   {
-    return "python";
+    return PLUGIN_NAME;
   }
 
 

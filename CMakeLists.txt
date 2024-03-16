@@ -198,7 +198,10 @@ add_library(OrthancPython SHARED
 
 target_link_libraries(OrthancPython ${PYTHON_LIBRARIES})
 
-add_definitions(-DPLUGIN_VERSION="${PLUGIN_VERSION}")
+add_definitions(
+  -DPLUGIN_NAME="python"
+  -DPLUGIN_VERSION="${PLUGIN_VERSION}"
+  )
 
 set_target_properties(OrthancPython PROPERTIES 
   VERSION ${PLUGIN_VERSION} 
