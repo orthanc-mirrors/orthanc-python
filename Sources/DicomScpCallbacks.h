@@ -26,6 +26,8 @@ PyObject* RegisterFindCallback(PyObject* module, PyObject* args);
 
 PyObject* RegisterMoveCallback(PyObject* module, PyObject* args);
 
+PyObject* RegisterMoveCallback2(PyObject* module, PyObject* args);
+
 PyObject* RegisterWorklistCallback(PyObject* module, PyObject* args);
 
 void FinalizeDicomScpCallbacks();

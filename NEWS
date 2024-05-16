@@ -2,6 +2,13 @@ Pending changes in the mainline
 ===============================
 
 * Fix signature of "orthanc.RestOutput.SendHttpStatus()"
+* Added orthanc.RegisterMoveCallback2() that takes 4 callbacks like the 
+  original C SDK function.  This allows you to implement a correct handling
+  of the C-Move sub-operations count in the GetMoveSize().  The ApplyMove()
+  must now handle a single sub-operation at a time.
+  The legacy orthanc.RegisterMoveCallback() always considers that there is a single
+  sub-operation and we have observed modalities complaining that the number of
+  sub-operations was not matching the number of instances sent.
 
 
 Version 4.1 (2023-08-30)

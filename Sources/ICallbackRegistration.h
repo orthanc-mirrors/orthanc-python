@@ -47,5 +47,14 @@ public:
                           PyObject*& singletonCallback2,
                           const std::string& details);
 
+  // The GIL must be locked
+  static PyObject *Apply4(ICallbackRegistration& registration,
+                          PyObject* args,
+                          PyObject*& singletonCallback1,
+                          PyObject*& singletonCallback2,
+                          PyObject*& singletonCallback3,
+                          PyObject*& singletonCallback4,
+                          const std::string& details);
+
   static void Unregister(PyObject*& singletonCallback);
 };
