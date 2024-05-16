@@ -14,9 +14,9 @@ wget https://orthanc.uclouvain.be/downloads/third-party-downloads/Python/python-
 unzip python-3.12.3-win32.zip
 
 if [ "$1" == "Release" ]; then
-    LIBRARY_NAME=python311.lib
+    LIBRARY_NAME=python312.lib
 else
-    LIBRARY_NAME=python311_d.lib
+    LIBRARY_NAME=python312_d.lib
 fi
 
 cmake /tmp/source-writeable/ \
