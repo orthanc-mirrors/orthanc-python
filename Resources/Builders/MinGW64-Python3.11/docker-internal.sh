@@ -22,6 +22,7 @@ fi
 cmake /tmp/source-writeable/ \
       -DCMAKE_BUILD_TYPE=$1 \
       -DSTATIC_BUILD=ON \
+      -DUSE_LEGACY_BOOST=ON \
       -DPYTHON_VERSION=3.11 \
       -DPYTHON_LIBRARY_NAME=${LIBRARY_NAME} \
       -DPYTHON_WINDOWS_ROOT=/tmp/build/python-3.11.2-win64 \

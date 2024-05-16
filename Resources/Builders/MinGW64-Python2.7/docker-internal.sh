@@ -16,6 +16,7 @@ unzip python-2.7.17-win64.zip
 cmake /tmp/source-writeable/ \
       -DCMAKE_BUILD_TYPE=$1 \
       -DSTATIC_BUILD=ON \
+      -DUSE_LEGACY_BOOST=ON \
       -DPYTHON_VERSION=2.7 \
       -DPYTHON_WINDOWS_ROOT=/tmp/build/Python27/ \
       -DCMAKE_TOOLCHAIN_FILE=/source/Resources/Orthanc/Toolchains/MinGW-W64-Toolchain64.cmake \

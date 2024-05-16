@@ -16,6 +16,7 @@ unzip python-3.7.7-win32.zip
 cmake /tmp/source-writeable/ \
       -DCMAKE_BUILD_TYPE=$1 \
       -DSTATIC_BUILD=ON \
+      -DUSE_LEGACY_BOOST=ON \
       -DPYTHON_VERSION=3.7 \
       -DPYTHON_WINDOWS_ROOT=/tmp/build/python-3.7.7-win32/ \
       -DCMAKE_TOOLCHAIN_FILE=/source/Resources/Orthanc/Toolchains/MinGW-W64-Toolchain32.cmake \
