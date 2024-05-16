@@ -1,5 +1,5 @@
-Pending changes in the mainline
-===============================
+Version 4.2 (2024-05-16)
+========================
 
 * Fix signature of "orthanc.RestOutput.SendHttpStatus()"
 * Added orthanc.RegisterMoveCallback2() that takes 4 callbacks like the 
