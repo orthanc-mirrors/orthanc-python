@@ -22,7 +22,8 @@ fi
 cmake /tmp/source-writeable/ \
       -DCMAKE_BUILD_TYPE=$1 \
       -DSTATIC_BUILD=ON \
-      -DPYTHON_VERSION=3.11 \
+      -DUSE_LEGACY_BOOST=ON \
+      -DPYTHON_VERSION=3.12 \
       -DPYTHON_LIBRARY_NAME=${LIBRARY_NAME} \
       -DPYTHON_WINDOWS_ROOT=/tmp/build/python-3.12.3-win32/ \
       -DCMAKE_TOOLCHAIN_FILE=/source/Resources/Orthanc/Toolchains/MinGW-W64-Toolchain32.cmake \
