@@ -11,6 +11,7 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeersCount(
   }
 
 
+
   long value = OrthancPluginGetPeersCount(OrthancPlugins::GetGlobalContext(), self->object_);
   
   return PyLong_FromLong(value);
@@ -34,6 +35,7 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeerName(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   const char* s = OrthancPluginGetPeerName(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
   
   if (s == NULL)
@@ -65,6 +67,7 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeerUrl(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   const char* s = OrthancPluginGetPeerUrl(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
   
   if (s == NULL)
@@ -97,6 +100,7 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeerUserProperty(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
+
   const char* s = OrthancPluginGetPeerUserProperty(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
   
   if (s == NULL)

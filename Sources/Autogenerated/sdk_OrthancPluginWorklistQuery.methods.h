@@ -17,6 +17,7 @@ static PyObject *sdk_OrthancPluginWorklistQuery_OrthancPluginWorklistIsMatch(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   long value = OrthancPluginWorklistIsMatch(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
   PyBuffer_Release(&arg0);
   return PyLong_FromLong(value);
@@ -32,6 +33,7 @@ static PyObject *sdk_OrthancPluginWorklistQuery_OrthancPluginWorklistGetDicomQue
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
+
 
 
   OrthancPlugins::MemoryBuffer buffer;

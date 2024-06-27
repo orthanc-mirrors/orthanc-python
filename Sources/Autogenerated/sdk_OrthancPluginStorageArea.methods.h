@@ -20,6 +20,7 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaCreate(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (4 arguments expected)");
     return NULL;
   }
+
   OrthancPluginErrorCode code = OrthancPluginStorageAreaCreate(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1.buf, arg2, static_cast<OrthancPluginContentType>(arg3));
   PyBuffer_Release(&arg1);
 
@@ -54,6 +55,7 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaRead(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = OrthancPluginStorageAreaRead(OrthancPlugins::GetGlobalContext(), *buffer, self->object_, arg0, static_cast<OrthancPluginContentType>(arg1));
   
@@ -87,6 +89,7 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaRemove(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
+
   OrthancPluginErrorCode code = OrthancPluginStorageAreaRemove(OrthancPlugins::GetGlobalContext(), self->object_, arg0, static_cast<OrthancPluginContentType>(arg1));
   
 
@@ -120,6 +123,7 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginReconstructMainDicomT
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPluginErrorCode code = OrthancPluginReconstructMainDicomTags(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginResourceType>(arg0));
   
 

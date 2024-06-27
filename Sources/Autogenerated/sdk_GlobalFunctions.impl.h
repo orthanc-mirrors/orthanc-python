@@ -30,6 +30,7 @@ static PyObject* sdk_OrthancPluginAutodetectMimeType(PyObject* module, PyObject*
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   const char* s = OrthancPluginAutodetectMimeType(OrthancPlugins::GetGlobalContext(), arg0);
   
   if (s == NULL)
@@ -56,6 +57,7 @@ static PyObject* sdk_OrthancPluginBufferCompression(PyObject* module, PyObject* 
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = OrthancPluginBufferCompression(OrthancPlugins::GetGlobalContext(), *buffer, arg0.buf, arg0.len, static_cast<OrthancPluginCompressionType>(arg2), arg3);
   PyBuffer_Release(&arg0);
@@ -75,6 +77,7 @@ static PyObject* sdk_OrthancPluginCheckVersion(PyObject* module, PyObject* args)
   PythonLock::LogCall("Calling Python global function: OrthancPluginCheckVersion()");
 
 
+
   long value = OrthancPluginCheckVersion(OrthancPlugins::GetGlobalContext());
   
   return PyLong_FromLong(value);
@@ -84,15 +87,16 @@ static PyObject* sdk_OrthancPluginCheckVersionAdvanced(PyObject* module, PyObjec
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginCheckVersionAdvanced()");
 
-  int arg0 = 0;
-  int arg1 = 0;
-  int arg2 = 0;
+  long int arg0 = 0;
+  long int arg1 = 0;
+  long int arg2 = 0;
 
-  if (!PyArg_ParseTuple(args, "iii", &arg0, &arg1, &arg2))
+  if (!PyArg_ParseTuple(args, "lll", &arg0, &arg1, &arg2))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
     return NULL;
   }
+
   long value = OrthancPluginCheckVersionAdvanced(OrthancPlugins::GetGlobalContext(), arg0, arg1, arg2);
   
   return PyLong_FromLong(value);
@@ -114,6 +118,7 @@ static PyObject* sdk_OrthancPluginCompressJpegImage(PyObject* module, PyObject* 
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (6 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = OrthancPluginCompressJpegImage(OrthancPlugins::GetGlobalContext(), *buffer, static_cast<OrthancPluginPixelFormat>(arg0), arg1, arg2, arg3, arg4.buf, arg5);
   PyBuffer_Release(&arg4);
@@ -143,6 +148,7 @@ static PyObject* sdk_OrthancPluginCompressPngImage(PyObject* module, PyObject* a
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (5 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = OrthancPluginCompressPngImage(OrthancPlugins::GetGlobalContext(), *buffer, static_cast<OrthancPluginPixelFormat>(arg0), arg1, arg2, arg3, arg4.buf);
   PyBuffer_Release(&arg4);
@@ -168,6 +174,7 @@ static PyObject* sdk_OrthancPluginComputeMd5(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::OrthancString s;
   s.Assign(OrthancPluginComputeMd5(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len));
   PyBuffer_Release(&arg0);
@@ -193,6 +200,7 @@ static PyObject* sdk_OrthancPluginComputeSha1(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::OrthancString s;
   s.Assign(OrthancPluginComputeSha1(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len));
   PyBuffer_Release(&arg0);
@@ -207,6 +215,75 @@ static PyObject* sdk_OrthancPluginComputeSha1(PyObject* module, PyObject* args)
   }
 }
 
+static PyObject* sdk_OrthancPluginCreateDicom(PyObject* module, PyObject* args)
+{
+  PythonLock::LogCall("Calling Python global function: OrthancPluginCreateDicom()");
+
+  const char* arg0 = NULL;
+  PyObject* arg1 = NULL;
+  long int arg2 = 0;
+
+  if (!PyArg_ParseTuple(args, "sOl", &arg0, &arg1, &arg2))
+  {
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
+    return NULL;
+  }
+
+  if (arg1 != Py_None && Py_TYPE(arg1) != GetOrthancPluginImageType())
+  {
+    PyErr_SetString(PyExc_TypeError, "Invalid orthanc.OrthancPluginImage object");
+    return NULL;
+  }
+
+  OrthancPlugins::MemoryBuffer buffer;
+  OrthancPluginErrorCode code = OrthancPluginCreateDicom(OrthancPlugins::GetGlobalContext(), *buffer, arg0, arg1 == Py_None ? NULL : reinterpret_cast<sdk_OrthancPluginImage_Object*>(arg1)->object_, static_cast<OrthancPluginCreateDicomFlags>(arg2));
+  
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    return PyBytes_FromStringAndSize(buffer.GetData(), buffer.GetSize());
+  }
+  else
+  {
+    PythonLock::RaiseException(code);
+    return NULL;  
+  }
+}
+
+static PyObject* sdk_OrthancPluginCreateDicom2(PyObject* module, PyObject* args)
+{
+  PythonLock::LogCall("Calling Python global function: OrthancPluginCreateDicom2()");
+
+  const char* arg0 = NULL;
+  PyObject* arg1 = NULL;
+  long int arg2 = 0;
+  const char* arg3 = NULL;
+
+  if (!PyArg_ParseTuple(args, "sOls", &arg0, &arg1, &arg2, &arg3))
+  {
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (4 arguments expected)");
+    return NULL;
+  }
+
+  if (arg1 != Py_None && Py_TYPE(arg1) != GetOrthancPluginImageType())
+  {
+    PyErr_SetString(PyExc_TypeError, "Invalid orthanc.OrthancPluginImage object");
+    return NULL;
+  }
+
+  OrthancPlugins::MemoryBuffer buffer;
+  OrthancPluginErrorCode code = OrthancPluginCreateDicom2(OrthancPlugins::GetGlobalContext(), *buffer, arg0, arg1 == Py_None ? NULL : reinterpret_cast<sdk_OrthancPluginImage_Object*>(arg1)->object_, static_cast<OrthancPluginCreateDicomFlags>(arg2), arg3);
+  
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    return PyBytes_FromStringAndSize(buffer.GetData(), buffer.GetSize());
+  }
+  else
+  {
+    PythonLock::RaiseException(code);
+    return NULL;  
+  }
+}
+
 static PyObject* sdk_OrthancPluginCreateDicomInstance(PyObject* module, PyObject* args)
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginCreateDicomInstance()");
@@ -218,6 +295,7 @@ static PyObject* sdk_OrthancPluginCreateDicomInstance(PyObject* module, PyObject
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   // This is the case of a constructor
   OrthancPluginDicomInstance* obj = OrthancPluginCreateDicomInstance(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len);
   PyBuffer_Release(&arg0);
@@ -246,6 +324,7 @@ static PyObject* sdk_OrthancPluginCreateFindMatcher(PyObject* module, PyObject* 
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   // This is the case of a constructor
   OrthancPluginFindMatcher* obj = OrthancPluginCreateFindMatcher(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len);
   PyBuffer_Release(&arg0);
@@ -276,6 +355,7 @@ static PyObject* sdk_OrthancPluginCreateImage(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
     return NULL;
   }
+
   // This is the case of a constructor
   OrthancPluginImage* obj = OrthancPluginCreateImage(OrthancPlugins::GetGlobalContext(), static_cast<OrthancPluginPixelFormat>(arg0), arg1, arg2);
   
@@ -304,6 +384,7 @@ static PyObject* sdk_OrthancPluginCreateMemoryBuffer(PyObject* module, PyObject*
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = OrthancPluginCreateMemoryBuffer(OrthancPlugins::GetGlobalContext(), *buffer, arg0);
   
@@ -330,6 +411,7 @@ static PyObject* sdk_OrthancPluginDecodeDicomImage(PyObject* module, PyObject* a
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
+
   // This is the case of a constructor
   OrthancPluginImage* obj = OrthancPluginDecodeDicomImage(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len, arg2);
   PyBuffer_Release(&arg0);
@@ -361,6 +443,7 @@ static PyObject* sdk_OrthancPluginDicomBufferToJson(PyObject* module, PyObject* 
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (4 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::OrthancString s;
   s.Assign(OrthancPluginDicomBufferToJson(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len, static_cast<OrthancPluginDicomToJsonFormat>(arg2), static_cast<OrthancPluginDicomToJsonFlags>(arg3), arg4));
   PyBuffer_Release(&arg0);
@@ -389,6 +472,7 @@ static PyObject* sdk_OrthancPluginDicomInstanceToJson(PyObject* module, PyObject
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (4 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::OrthancString s;
   s.Assign(OrthancPluginDicomInstanceToJson(OrthancPlugins::GetGlobalContext(), arg0, static_cast<OrthancPluginDicomToJsonFormat>(arg1), static_cast<OrthancPluginDicomToJsonFlags>(arg2), arg3));
   
@@ -414,6 +498,7 @@ static PyObject* sdk_OrthancPluginExtendOrthancExplorer(PyObject* module, PyObje
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPluginExtendOrthancExplorer(OrthancPlugins::GetGlobalContext(), arg0);
   
 
@@ -424,6 +509,7 @@ static PyObject* sdk_OrthancPluginExtendOrthancExplorer(PyObject* module, PyObje
 static PyObject* sdk_OrthancPluginGenerateRestApiAuthorizationToken(PyObject* module, PyObject* args)
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginGenerateRestApiAuthorizationToken()");
+
 
 
   OrthancPlugins::OrthancString s;
@@ -443,6 +529,7 @@ static PyObject* sdk_OrthancPluginGenerateRestApiAuthorizationToken(PyObject* mo
 static PyObject* sdk_OrthancPluginGenerateUuid(PyObject* module, PyObject* args)
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginGenerateUuid()");
+
 
 
   OrthancPlugins::OrthancString s;
@@ -470,6 +557,7 @@ static PyObject* sdk_OrthancPluginGetCommandLineArgument(PyObject* module, PyObj
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::OrthancString s;
   s.Assign(OrthancPluginGetCommandLineArgument(OrthancPlugins::GetGlobalContext(), arg0));
   
@@ -489,6 +577,7 @@ static PyObject* sdk_OrthancPluginGetCommandLineArgumentsCount(PyObject* module,
   PythonLock::LogCall("Calling Python global function: OrthancPluginGetCommandLineArgumentsCount()");
 
 
+
   long value = OrthancPluginGetCommandLineArgumentsCount(OrthancPlugins::GetGlobalContext());
   
   return PyLong_FromLong(value);
@@ -497,6 +586,7 @@ static PyObject* sdk_OrthancPluginGetCommandLineArgumentsCount(PyObject* module,
 static PyObject* sdk_OrthancPluginGetConfiguration(PyObject* module, PyObject* args)
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginGetConfiguration()");
+
 
 
   OrthancPlugins::OrthancString s;
@@ -516,6 +606,7 @@ static PyObject* sdk_OrthancPluginGetConfiguration(PyObject* module, PyObject* a
 static PyObject* sdk_OrthancPluginGetConfigurationPath(PyObject* module, PyObject* args)
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginGetConfigurationPath()");
+
 
 
   OrthancPlugins::OrthancString s;
@@ -543,6 +634,7 @@ static PyObject* sdk_OrthancPluginGetDicomForInstance(PyObject* module, PyObject
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = OrthancPluginGetDicomForInstance(OrthancPlugins::GetGlobalContext(), *buffer, arg0);
   
@@ -568,6 +660,7 @@ static PyObject* sdk_OrthancPluginGetErrorDescription(PyObject* module, PyObject
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   const char* s = OrthancPluginGetErrorDescription(OrthancPlugins::GetGlobalContext(), static_cast<OrthancPluginErrorCode>(arg0));
   
   if (s == NULL)
@@ -586,6 +679,7 @@ static PyObject* sdk_OrthancPluginGetExpectedDatabaseVersion(PyObject* module, P
   PythonLock::LogCall("Calling Python global function: OrthancPluginGetExpectedDatabaseVersion()");
 
 
+
   long value = OrthancPluginGetExpectedDatabaseVersion(OrthancPlugins::GetGlobalContext());
   
   return PyLong_FromLong(value);
@@ -602,6 +696,7 @@ static PyObject* sdk_OrthancPluginGetFontName(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   const char* s = OrthancPluginGetFontName(OrthancPlugins::GetGlobalContext(), arg0);
   
   if (s == NULL)
@@ -626,6 +721,7 @@ static PyObject* sdk_OrthancPluginGetFontSize(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   long value = OrthancPluginGetFontSize(OrthancPlugins::GetGlobalContext(), arg0);
   
   return PyLong_FromLong(value);
@@ -634,6 +730,7 @@ static PyObject* sdk_OrthancPluginGetFontSize(PyObject* module, PyObject* args)
 static PyObject* sdk_OrthancPluginGetFontsCount(PyObject* module, PyObject* args)
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginGetFontsCount()");
+
 
 
   long value = OrthancPluginGetFontsCount(OrthancPlugins::GetGlobalContext());
@@ -653,6 +750,7 @@ static PyObject* sdk_OrthancPluginGetGlobalProperty(PyObject* module, PyObject* 
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::OrthancString s;
   s.Assign(OrthancPluginGetGlobalProperty(OrthancPlugins::GetGlobalContext(), arg0, arg1));
   
@@ -670,6 +768,7 @@ static PyObject* sdk_OrthancPluginGetGlobalProperty(PyObject* module, PyObject* 
 static PyObject* sdk_OrthancPluginGetOrthancDirectory(PyObject* module, PyObject* args)
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginGetOrthancDirectory()");
+
 
 
   OrthancPlugins::OrthancString s;
@@ -691,6 +790,7 @@ static PyObject* sdk_OrthancPluginGetOrthancPath(PyObject* module, PyObject* arg
   PythonLock::LogCall("Calling Python global function: OrthancPluginGetOrthancPath()");
 
 
+
   OrthancPlugins::OrthancString s;
   s.Assign(OrthancPluginGetOrthancPath(OrthancPlugins::GetGlobalContext()));
   
@@ -708,6 +808,7 @@ static PyObject* sdk_OrthancPluginGetOrthancPath(PyObject* module, PyObject* arg
 static PyObject* sdk_OrthancPluginGetPeers(PyObject* module, PyObject* args)
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginGetPeers()");
+
 
 
   // This is the case of a constructor
@@ -740,6 +841,7 @@ static PyObject* sdk_OrthancPluginGetTagName(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::OrthancString s;
   s.Assign(OrthancPluginGetTagName(OrthancPlugins::GetGlobalContext(), arg0, arg1, arg2));
   
@@ -767,6 +869,7 @@ static PyObject* sdk_OrthancPluginHttpDelete(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
     return NULL;
   }
+
   OrthancPluginErrorCode code = OrthancPluginHttpDelete(OrthancPlugins::GetGlobalContext(), arg0, arg1, arg2);
   
 
@@ -795,6 +898,7 @@ static PyObject* sdk_OrthancPluginHttpGet(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = OrthancPluginHttpGet(OrthancPlugins::GetGlobalContext(), *buffer, arg0, arg1, arg2);
   
@@ -823,6 +927,7 @@ static PyObject* sdk_OrthancPluginHttpPost(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (4 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = OrthancPluginHttpPost(OrthancPlugins::GetGlobalContext(), *buffer, arg0, arg1.buf, arg1.len, arg3, arg4);
   PyBuffer_Release(&arg1);
@@ -851,6 +956,7 @@ static PyObject* sdk_OrthancPluginHttpPut(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (4 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = OrthancPluginHttpPut(OrthancPlugins::GetGlobalContext(), *buffer, arg0, arg1.buf, arg1.len, arg3, arg4);
   PyBuffer_Release(&arg1);
@@ -876,6 +982,7 @@ static PyObject* sdk_OrthancPluginLogError(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPluginLogError(OrthancPlugins::GetGlobalContext(), arg0);
   
 
@@ -894,6 +1001,7 @@ static PyObject* sdk_OrthancPluginLogInfo(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPluginLogInfo(OrthancPlugins::GetGlobalContext(), arg0);
   
 
@@ -912,6 +1020,7 @@ static PyObject* sdk_OrthancPluginLogWarning(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPluginLogWarning(OrthancPlugins::GetGlobalContext(), arg0);
   
 
@@ -930,6 +1039,7 @@ static PyObject* sdk_OrthancPluginLookupInstance(PyObject* module, PyObject* arg
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::OrthancString s;
   s.Assign(OrthancPluginLookupInstance(OrthancPlugins::GetGlobalContext(), arg0));
   
@@ -955,6 +1065,7 @@ static PyObject* sdk_OrthancPluginLookupPatient(PyObject* module, PyObject* args
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::OrthancString s;
   s.Assign(OrthancPluginLookupPatient(OrthancPlugins::GetGlobalContext(), arg0));
   
@@ -980,6 +1091,7 @@ static PyObject* sdk_OrthancPluginLookupSeries(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::OrthancString s;
   s.Assign(OrthancPluginLookupSeries(OrthancPlugins::GetGlobalContext(), arg0));
   
@@ -1005,6 +1117,7 @@ static PyObject* sdk_OrthancPluginLookupStudy(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::OrthancString s;
   s.Assign(OrthancPluginLookupStudy(OrthancPlugins::GetGlobalContext(), arg0));
   
@@ -1030,6 +1143,7 @@ static PyObject* sdk_OrthancPluginLookupStudyWithAccessionNumber(PyObject* modul
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::OrthancString s;
   s.Assign(OrthancPluginLookupStudyWithAccessionNumber(OrthancPlugins::GetGlobalContext(), arg0));
   
@@ -1055,6 +1169,7 @@ static PyObject* sdk_OrthancPluginReadFile(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = OrthancPluginReadFile(OrthancPlugins::GetGlobalContext(), *buffer, arg0);
   
@@ -1085,6 +1200,7 @@ static PyObject* sdk_OrthancPluginRegisterDictionaryTag(PyObject* module, PyObje
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (6 arguments expected)");
     return NULL;
   }
+
   OrthancPluginErrorCode code = OrthancPluginRegisterDictionaryTag(OrthancPlugins::GetGlobalContext(), arg0, arg1, static_cast<OrthancPluginValueRepresentation>(arg2), arg3, arg4, arg5);
   
 
@@ -1113,6 +1229,7 @@ static PyObject* sdk_OrthancPluginRegisterErrorCode(PyObject* module, PyObject* 
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
     return NULL;
   }
+
   OrthancPluginErrorCode code = OrthancPluginRegisterErrorCode(OrthancPlugins::GetGlobalContext(), arg0, arg1, arg2);
   
 
@@ -1145,6 +1262,7 @@ static PyObject* sdk_OrthancPluginRegisterPrivateDictionaryTag(PyObject* module,
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (7 arguments expected)");
     return NULL;
   }
+
   OrthancPluginErrorCode code = OrthancPluginRegisterPrivateDictionaryTag(OrthancPlugins::GetGlobalContext(), arg0, arg1, static_cast<OrthancPluginValueRepresentation>(arg2), arg3, arg4, arg5, arg6);
   
 
@@ -1171,6 +1289,7 @@ static PyObject* sdk_OrthancPluginRestApiDelete(PyObject* module, PyObject* args
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPluginErrorCode code = OrthancPluginRestApiDelete(OrthancPlugins::GetGlobalContext(), arg0);
   
 
@@ -1197,6 +1316,7 @@ static PyObject* sdk_OrthancPluginRestApiDeleteAfterPlugins(PyObject* module, Py
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPluginErrorCode code = OrthancPluginRestApiDeleteAfterPlugins(OrthancPlugins::GetGlobalContext(), arg0);
   
 
@@ -1223,6 +1343,7 @@ static PyObject* sdk_OrthancPluginRestApiGet(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = OrthancPluginRestApiGet(OrthancPlugins::GetGlobalContext(), *buffer, arg0);
   
@@ -1248,6 +1369,7 @@ static PyObject* sdk_OrthancPluginRestApiGetAfterPlugins(PyObject* module, PyObj
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = OrthancPluginRestApiGetAfterPlugins(OrthancPlugins::GetGlobalContext(), *buffer, arg0);
   
@@ -1274,6 +1396,7 @@ static PyObject* sdk_OrthancPluginRestApiPost(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = OrthancPluginRestApiPost(OrthancPlugins::GetGlobalContext(), *buffer, arg0, arg1.buf, arg1.len);
   PyBuffer_Release(&arg1);
@@ -1300,6 +1423,7 @@ static PyObject* sdk_OrthancPluginRestApiPostAfterPlugins(PyObject* module, PyOb
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = OrthancPluginRestApiPostAfterPlugins(OrthancPlugins::GetGlobalContext(), *buffer, arg0, arg1.buf, arg1.len);
   PyBuffer_Release(&arg1);
@@ -1326,6 +1450,7 @@ static PyObject* sdk_OrthancPluginRestApiPut(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = OrthancPluginRestApiPut(OrthancPlugins::GetGlobalContext(), *buffer, arg0, arg1.buf, arg1.len);
   PyBuffer_Release(&arg1);
@@ -1352,6 +1477,7 @@ static PyObject* sdk_OrthancPluginRestApiPutAfterPlugins(PyObject* module, PyObj
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = OrthancPluginRestApiPutAfterPlugins(OrthancPlugins::GetGlobalContext(), *buffer, arg0, arg1.buf, arg1.len);
   PyBuffer_Release(&arg1);
@@ -1377,6 +1503,7 @@ static PyObject* sdk_OrthancPluginSetDescription(PyObject* module, PyObject* arg
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPluginSetDescription(OrthancPlugins::GetGlobalContext(), arg0);
   
 
@@ -1396,6 +1523,7 @@ static PyObject* sdk_OrthancPluginSetGlobalProperty(PyObject* module, PyObject* 
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
+
   OrthancPluginErrorCode code = OrthancPluginSetGlobalProperty(OrthancPlugins::GetGlobalContext(), arg0, arg1);
   
 
@@ -1424,6 +1552,7 @@ static PyObject* sdk_OrthancPluginSetMetricsValue(PyObject* module, PyObject* ar
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
     return NULL;
   }
+
   OrthancPluginSetMetricsValue(OrthancPlugins::GetGlobalContext(), arg0, arg1, static_cast<OrthancPluginMetricsType>(arg2));
   
 
@@ -1442,6 +1571,7 @@ static PyObject* sdk_OrthancPluginSetRootUri(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPluginSetRootUri(OrthancPlugins::GetGlobalContext(), arg0);
   
 
@@ -1461,6 +1591,7 @@ static PyObject* sdk_OrthancPluginTranscodeDicomInstance(PyObject* module, PyObj
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
+
   // This is the case of a constructor
   OrthancPluginDicomInstance* obj = OrthancPluginTranscodeDicomInstance(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len, arg2);
   PyBuffer_Release(&arg0);
@@ -1490,6 +1621,7 @@ static PyObject* sdk_OrthancPluginUncompressImage(PyObject* module, PyObject* ar
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
+
   // This is the case of a constructor
   OrthancPluginImage* obj = OrthancPluginUncompressImage(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len, static_cast<OrthancPluginImageFormat>(arg2));
   PyBuffer_Release(&arg0);
@@ -1519,6 +1651,7 @@ static PyObject* sdk_OrthancPluginWriteFile(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
+
   OrthancPluginErrorCode code = OrthancPluginWriteFile(OrthancPlugins::GetGlobalContext(), arg0, arg1.buf, arg1.len);
   PyBuffer_Release(&arg1);
 
@@ -1553,6 +1686,10 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Generated from C function OrthancPluginComputeMd5()" },
   { "ComputeSha1", sdk_OrthancPluginComputeSha1, METH_VARARGS,
     "Generated from C function OrthancPluginComputeSha1()" },
+  { "CreateDicom", sdk_OrthancPluginCreateDicom, METH_VARARGS,
+    "Generated from C function OrthancPluginCreateDicom()" },
+  { "CreateDicom2", sdk_OrthancPluginCreateDicom2, METH_VARARGS,
+    "Generated from C function OrthancPluginCreateDicom2()" },
   { "CreateDicomInstance", sdk_OrthancPluginCreateDicomInstance, METH_VARARGS,
     "Generated from C function OrthancPluginCreateDicomInstance()" },
   { "CreateFindMatcher", sdk_OrthancPluginCreateFindMatcher, METH_VARARGS,

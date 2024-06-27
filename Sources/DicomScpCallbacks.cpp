@@ -83,49 +83,6 @@ PyObject *GetFindQueryTagElement(sdk_OrthancPluginFindQuery_Object* self, PyObje
 {
   return GetFindQueryTag(self, args, false);
 }
-
-PyObject *WorklistAddAnswer(sdk_OrthancPluginWorklistAnswers_Object* self, PyObject *args)
-{
-  PyObject* query = NULL;
-  Py_buffer dicom;
-  
-  if (self->object_ == NULL)
-  {
-    PyErr_SetString(PyExc_ValueError, "Invalid object");
-    return NULL;
-  }
-  else if (!PyArg_ParseTuple(args, "Os*", &query, &dicom))
-  {
-    PyErr_SetString(PyExc_TypeError, "Please provide a orthanc.WorklistQuery object, and a DICOM buffer");
-    return NULL;
-  }
-  else if (query == Py_None ||
-           Py_TYPE(query) != GetOrthancPluginWorklistQueryType())
-  {
-    PyErr_SetString(PyExc_TypeError, "Invalid orthanc.WorklistQuery object");
-    return NULL;
-  }
-  else
-  {
-    OrthancPluginErrorCode code = OrthancPluginWorklistAddAnswer(
-      OrthancPlugins::GetGlobalContext(), self->object_,
-      reinterpret_cast<sdk_OrthancPluginWorklistQuery_Object*>(query)->object_,
-      dicom.buf, dicom.len);
-
-    PyBuffer_Release(&dicom);
-  
-    if (code == OrthancPluginErrorCode_Success)
-    {
-      Py_INCREF(Py_None);
-      return Py_None;
-    }
-    else
-    {
-      PyErr_SetString(PyExc_ValueError, "Internal error");
-      return NULL;  
-    }
-  }
-}
 // End of "CUSTOM_METHODS"
 
 

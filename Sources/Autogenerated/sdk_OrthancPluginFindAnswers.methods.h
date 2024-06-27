@@ -17,6 +17,7 @@ static PyObject *sdk_OrthancPluginFindAnswers_OrthancPluginFindAddAnswer(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPluginErrorCode code = OrthancPluginFindAddAnswer(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
   PyBuffer_Release(&arg0);
 
@@ -42,6 +43,7 @@ static PyObject *sdk_OrthancPluginFindAnswers_OrthancPluginFindMarkIncomplete(
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
+
 
 
   OrthancPluginErrorCode code = OrthancPluginFindMarkIncomplete(OrthancPlugins::GetGlobalContext(), self->object_);

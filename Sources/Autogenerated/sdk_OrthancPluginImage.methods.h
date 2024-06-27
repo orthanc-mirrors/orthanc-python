@@ -11,6 +11,7 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImagePixelFormat(
   }
 
 
+
   OrthancPluginPixelFormat value = OrthancPluginGetImagePixelFormat(OrthancPlugins::GetGlobalContext(), self->object_);
   
   return PyLong_FromLong(value);
@@ -26,6 +27,7 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImageWidth(
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
+
 
 
   long value = OrthancPluginGetImageWidth(OrthancPlugins::GetGlobalContext(), self->object_);
@@ -45,6 +47,7 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImageHeight(
   }
 
 
+
   long value = OrthancPluginGetImageHeight(OrthancPlugins::GetGlobalContext(), self->object_);
   
   return PyLong_FromLong(value);
@@ -60,6 +63,7 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImagePitch(
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
+
 
 
   long value = OrthancPluginGetImagePitch(OrthancPlugins::GetGlobalContext(), self->object_);
@@ -85,6 +89,7 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginConvertPixelFormat(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   // This is the case of a constructor
   OrthancPluginImage* obj = OrthancPluginConvertPixelFormat(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginPixelFormat>(arg0));
   
@@ -126,6 +131,7 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginDrawText(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (7 arguments expected)");
     return NULL;
   }
+
   OrthancPluginErrorCode code = OrthancPluginDrawText(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1, arg2, arg3, arg4, arg5, arg6);
   
 

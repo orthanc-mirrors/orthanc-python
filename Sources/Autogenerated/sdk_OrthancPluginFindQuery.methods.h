@@ -11,6 +11,7 @@ static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQuerySize(
   }
 
 
+
   long value = OrthancPluginGetFindQuerySize(OrthancPlugins::GetGlobalContext(), self->object_);
   
   return PyLong_FromLong(value);
@@ -34,6 +35,7 @@ static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQueryTagName(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::OrthancString s;
   s.Assign(OrthancPluginGetFindQueryTagName(OrthancPlugins::GetGlobalContext(), self->object_, arg0));
   
@@ -66,6 +68,7 @@ static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQueryValue(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::OrthancString s;
   s.Assign(OrthancPluginGetFindQueryValue(OrthancPlugins::GetGlobalContext(), self->object_, arg0));
   

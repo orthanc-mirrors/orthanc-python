@@ -11,6 +11,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRemoteAe
   }
 
 
+
   const char* s = OrthancPluginGetInstanceRemoteAet(OrthancPlugins::GetGlobalContext(), self->object_);
   
   if (s == NULL)
@@ -36,6 +37,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceSize(
   }
 
 
+
   long value = OrthancPluginGetInstanceSize(OrthancPlugins::GetGlobalContext(), self->object_);
   
   return PyLong_FromLong(value);
@@ -51,6 +53,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceJson(
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
+
 
 
   OrthancPlugins::OrthancString s;
@@ -77,6 +80,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceSimplifi
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
+
 
 
   OrthancPlugins::OrthancString s;
@@ -111,6 +115,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginHasInstanceMetadata
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   long value = OrthancPluginHasInstanceMetadata(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
   
   return PyLong_FromLong(value);
@@ -134,6 +139,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceMetadata
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   const char* s = OrthancPluginGetInstanceMetadata(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
   
   if (s == NULL)
@@ -159,6 +165,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceOrigin(
   }
 
 
+
   OrthancPluginInstanceOrigin value = OrthancPluginGetInstanceOrigin(OrthancPlugins::GetGlobalContext(), self->object_);
   
   return PyLong_FromLong(value);
@@ -174,6 +181,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceTransfer
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
+
 
 
   OrthancPlugins::OrthancString s;
@@ -202,6 +210,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginHasInstancePixelDat
   }
 
 
+
   long value = OrthancPluginHasInstancePixelData(OrthancPlugins::GetGlobalContext(), self->object_);
   
   return PyLong_FromLong(value);
@@ -217,6 +226,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceFramesCo
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
+
 
 
   long value = OrthancPluginGetInstanceFramesCount(OrthancPlugins::GetGlobalContext(), self->object_);
@@ -242,6 +252,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRawFrame
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = OrthancPluginGetInstanceRawFrame(OrthancPlugins::GetGlobalContext(), *buffer, self->object_, arg0);
   
@@ -274,6 +285,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceDecodedF
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   // This is the case of a constructor
   OrthancPluginImage* obj = OrthancPluginGetInstanceDecodedFrame(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
   
@@ -301,6 +313,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginSerializeDicomInsta
     PyErr_SetString(PyExc_ValueError, "Invalid object");
     return NULL;
   }
+
 
 
   OrthancPlugins::MemoryBuffer buffer;
@@ -337,6 +350,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceAdvanced
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::OrthancString s;
   s.Assign(OrthancPluginGetInstanceAdvancedJson(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginDicomToJsonFormat>(arg0), static_cast<OrthancPluginDicomToJsonFlags>(arg1), arg2));
   

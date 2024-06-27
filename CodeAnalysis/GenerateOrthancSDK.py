@@ -81,14 +81,6 @@ CUSTOM_METHODS = {
         },
     ],
 
-    'OrthancPluginWorklistAnswers' : [
-        {
-            'method_name' : 'WorklistAddAnswer',
-            'implementation' : 'WorklistAddAnswer',
-            'sdk_function' : 'OrthancPluginWorklistAddAnswer',
-        },
-    ],
-
     'OrthancPluginDicomInstance' : [
         {
             'method_name' : 'GetInstanceData',

@@ -17,6 +17,7 @@ static PyObject *sdk_OrthancPluginFindMatcher_OrthancPluginFindMatcherIsMatch(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   long value = OrthancPluginFindMatcherIsMatch(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
   PyBuffer_Release(&arg0);
   return PyLong_FromLong(value);

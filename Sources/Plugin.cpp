@@ -121,53 +121,6 @@ PyObject* LookupDictionary(PyObject* module, PyObject* args)
 }
 
 
-PyObject* CreateDicom(PyObject* module, PyObject* args)
-{
-  // The GIL is locked at this point (no need to create "PythonLock")
-  const char* json = NULL;
-  PyObject* pixelData = NULL;
-  long int flags = 0;
-  
-  if (!PyArg_ParseTuple(args, "sOl", &json, &pixelData, &flags))
-  {
-    PyErr_SetString(PyExc_TypeError, "Please provide a JSON string, an orthanc.Image object, and a set of orthanc.CreateDicomFlags");
-    return NULL;
-  }
-  else
-  {
-    OrthancPluginImage* image = NULL;
-    
-    if (pixelData == Py_None)
-    {
-      // No pixel data
-    }
-    else if (Py_TYPE(pixelData) == GetOrthancPluginImageType())
-    {
-      image = reinterpret_cast<sdk_OrthancPluginImage_Object*>(pixelData)->object_;
-    }
-    else
-    {
-      PyErr_SetString(PyExc_TypeError, "Second parameter is not a valid orthanc.Image object");
-      return NULL;
-    }
-
-    OrthancPlugins::MemoryBuffer buffer;
-    OrthancPluginErrorCode code = OrthancPluginCreateDicom(OrthancPlugins::GetGlobalContext(), *buffer, json, image,
-                                                           static_cast<OrthancPluginCreateDicomFlags>(flags));
-  
-    if (code == OrthancPluginErrorCode_Success)
-    {
-      return PyBytes_FromStringAndSize(buffer.GetData(), buffer.GetSize());
-    }
-    else
-    {
-      PyErr_SetString(PyExc_ValueError, "Cannot create the DICOM instance");
-      return NULL;  
-    }
-  }
-}
-
-
 PyObject* GetInstanceData(sdk_OrthancPluginDicomInstance_Object* self, PyObject *args)
 {
   // The GIL is locked at this point (no need to create "PythonLock")
@@ -363,11 +316,6 @@ static void SetupGlobalFunctions()
   
   {
     PyMethodDef f = { "LookupDictionary", LookupDictionary, METH_VARARGS, "" };
-    functions.push_back(f);
-  }
-  
-  {
-    PyMethodDef f = { "CreateDicom", CreateDicom, METH_VARARGS, "" };
     functions.push_back(f);
   }
   
