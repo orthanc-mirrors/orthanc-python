@@ -9,6 +9,13 @@
     return NULL;
   }
 {{/has_args}}
+{{#args}}{{#check_object_type}}
+  if ({{name}} != Py_None && Py_TYPE({{name}}) != Get{{check_object_type}}Type())
+  {
+    PyErr_SetString(PyExc_TypeError, "Invalid orthanc.{{check_object_type}} object");
+    return NULL;
+  }
+{{/check_object_type}}{{/args}}
 {{#return_long}}
   long value = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
   {{#args}}{{release}}{{/args}}
