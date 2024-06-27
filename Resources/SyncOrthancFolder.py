@@ -8,6 +8,7 @@
 import multiprocessing
 import os
 import stat
+import subprocess
 import urllib.request
 
 TARGET = os.path.join(os.path.dirname(__file__), 'Orthanc')
@@ -76,3 +77,12 @@ for f in SDK:
 
 pool = multiprocessing.Pool(10)  # simultaneous downloads
 pool.map(Download, commands)
+
+# Patch the SDK, if need be
+patch = os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                     'OrthancCPlugin-%s.patch' % PLUGIN_SDK_VERSION)
+if os.path.exists(patch):
+    subprocess.check_call([ 'patch', '-p0', '-i', patch ],
+                          cwd = os.path.join(os.path.dirname(__file__),
+                                             'Orthanc',
+                                             'Sdk-%s' % PLUGIN_SDK_VERSION, 'orthanc'))
