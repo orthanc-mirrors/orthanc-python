@@ -17,12 +17,16 @@
   }
 {{/check_object_type}}{{/args}}
 {{#return_long}}
+  {{#allow_threads}}PyThreadState *_save = PyEval_SaveThread();{{/allow_threads}}
   long value = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  {{#allow_threads}}PyEval_RestoreThread(_save);{{/allow_threads}}
   {{#args}}{{release}}{{/args}}
   return PyLong_FromLong(value);
 {{/return_long}}
 {{#return_static_string}}
+  {{#allow_threads}}PyThreadState *_save = PyEval_SaveThread();{{/allow_threads}}
   const char* s = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  {{#allow_threads}}PyEval_RestoreThread(_save);{{/allow_threads}}
   {{#args}}{{release}}{{/args}}
   if (s == NULL)
   {
@@ -35,8 +39,10 @@
   }
 {{/return_static_string}}
 {{#return_dynamic_string}}
+  {{#allow_threads}}PyThreadState *_save = PyEval_SaveThread();{{/allow_threads}}
   OrthancPlugins::OrthancString s;
   s.Assign({{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}}));
+  {{#allow_threads}}PyEval_RestoreThread(_save);{{/allow_threads}}
   {{#args}}{{release}}{{/args}}
   if (s.GetContent() == NULL)
   {
@@ -49,14 +55,18 @@
   }
 {{/return_dynamic_string}}
 {{#return_void}}
+  {{#allow_threads}}PyThreadState *_save = PyEval_SaveThread();{{/allow_threads}}
   {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  {{#allow_threads}}PyEval_RestoreThread(_save);{{/allow_threads}}
   {{#args}}{{release}}{{/args}}
 
   Py_INCREF(Py_None);
   return Py_None;
 {{/return_void}}
 {{#return_error}}
+  {{#allow_threads}}PyThreadState *_save = PyEval_SaveThread();{{/allow_threads}}
   OrthancPluginErrorCode code = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  {{#allow_threads}}PyEval_RestoreThread(_save);{{/allow_threads}}
   {{#args}}{{release}}{{/args}}
 
   if (code == OrthancPluginErrorCode_Success)
@@ -72,7 +82,9 @@
 {{/return_error}}
 {{#return_object}}
   // This is the case of a constructor
+  {{#allow_threads}}PyThreadState *_save = PyEval_SaveThread();{{/allow_threads}}
   {{return_object}}* obj = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  {{#allow_threads}}PyEval_RestoreThread(_save);{{/allow_threads}}
   {{#args}}{{release}}{{/args}}
   if (obj == NULL)
   {
@@ -88,8 +100,10 @@
   }
 {{/return_object}}
 {{#return_bytes}}
+  {{#allow_threads}}PyThreadState *_save = PyEval_SaveThread();{{/allow_threads}}
   OrthancPlugins::MemoryBuffer buffer;
   OrthancPluginErrorCode code = {{c_function}}(OrthancPlugins::GetGlobalContext(), *buffer{{self}}{{call_args}});
+  {{#allow_threads}}PyEval_RestoreThread(_save);{{/allow_threads}}
   {{#args}}{{release}}{{/args}}
   if (code == OrthancPluginErrorCode_Success)
   {
@@ -102,7 +116,9 @@
   }
 {{/return_bytes}}
 {{#return_enumeration}}
+  {{#allow_threads}}PyThreadState *_save = PyEval_SaveThread();{{/allow_threads}}
   {{return_enumeration}} value = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  {{#allow_threads}}PyEval_RestoreThread(_save);{{/allow_threads}}
   {{#args}}{{release}}{{/args}}
   return PyLong_FromLong(value);
 {{/return_enumeration}}
