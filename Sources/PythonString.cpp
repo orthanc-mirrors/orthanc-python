@@ -28,7 +28,7 @@ void PythonString::SanityCheck()
 {
   if (!string_->IsValid())
   {
-    OrthancPlugins::LogError("Cannot create a Python string, check that the string is properly encoded using UTF-8");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot create a Python string, check that the string is properly encoded using UTF-8");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 }

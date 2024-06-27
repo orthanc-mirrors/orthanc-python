@@ -47,7 +47,7 @@ void RegisterOrthancPluginReceivedInstanceActionEnumeration(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginReceivedInstanceAction_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginReceivedInstanceAction");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginReceivedInstanceAction");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -87,7 +87,7 @@ void RegisterOrthancPluginReceivedInstanceActionEnumeration(PyObject* module)
   Py_INCREF(&sdk_OrthancPluginReceivedInstanceAction_Type);
   if (PyModule_AddObject(module, "ReceivedInstanceAction", (PyObject *)&sdk_OrthancPluginReceivedInstanceAction_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginReceivedInstanceAction");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginReceivedInstanceAction");
     Py_DECREF(&sdk_OrthancPluginReceivedInstanceAction_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

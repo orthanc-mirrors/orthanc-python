@@ -47,7 +47,7 @@ void RegisterOrthancPluginJobStopReasonEnumeration(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginJobStopReason_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginJobStopReason");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginJobStopReason");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -93,7 +93,7 @@ void RegisterOrthancPluginJobStopReasonEnumeration(PyObject* module)
   Py_INCREF(&sdk_OrthancPluginJobStopReason_Type);
   if (PyModule_AddObject(module, "JobStopReason", (PyObject *)&sdk_OrthancPluginJobStopReason_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginJobStopReason");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginJobStopReason");
     Py_DECREF(&sdk_OrthancPluginJobStopReason_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

@@ -47,7 +47,7 @@ void RegisterOrthancPluginHttpMethodEnumeration(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginHttpMethod_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginHttpMethod");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginHttpMethod");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -93,7 +93,7 @@ void RegisterOrthancPluginHttpMethodEnumeration(PyObject* module)
   Py_INCREF(&sdk_OrthancPluginHttpMethod_Type);
   if (PyModule_AddObject(module, "HttpMethod", (PyObject *)&sdk_OrthancPluginHttpMethod_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginHttpMethod");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginHttpMethod");
     Py_DECREF(&sdk_OrthancPluginHttpMethod_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

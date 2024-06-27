@@ -63,8 +63,7 @@ static int32_t IncomingCStoreInstanceFilter(uint16_t* dimseStatus,
     std::string traceback;
     if (lock.HasErrorOccurred(traceback))
     {
-      OrthancPlugins::LogError("Error in the Python incoming-cstore-instance callback, "
-                               "traceback:\n" + traceback);
+      ORTHANC_PLUGINS_LOG_ERROR("Error in the Python incoming-cstore-instance callback, traceback:\n" + traceback);
       return -1;
     }
     else
@@ -75,7 +74,7 @@ static int32_t IncomingCStoreInstanceFilter(uint16_t* dimseStatus,
 
         if (code < 0)
         {
-          OrthancPlugins::LogError("The Python incoming-cstore-instance filter has returned a negative value");
+          ORTHANC_PLUGINS_LOG_ERROR("The Python incoming-cstore-instance filter has returned a negative value");
           return -1;
         }
         else if (code == 0)
@@ -90,14 +89,14 @@ static int32_t IncomingCStoreInstanceFilter(uint16_t* dimseStatus,
         }
         else
         {
-          OrthancPlugins::LogError("The Python incoming-cstore-instance filter has returned an out-of-range DIMSE status: " +
-                                   boost::lexical_cast<std::string>(code));
+          ORTHANC_PLUGINS_LOG_ERROR("The Python incoming-cstore-instance filter has returned an out-of-range DIMSE status: " +
+                                    boost::lexical_cast<std::string>(code));
           return -1;
         }
       }
       else
       {
-        OrthancPlugins::LogError("The Python incoming-cstore-instance filter has not returned an integer");
+        ORTHANC_PLUGINS_LOG_ERROR("The Python incoming-cstore-instance filter has not returned an integer");
         return -1;
       }
     }

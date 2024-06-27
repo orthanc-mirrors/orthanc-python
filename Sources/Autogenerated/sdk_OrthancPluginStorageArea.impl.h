@@ -102,14 +102,14 @@ static void RegisterOrthancPluginStorageAreaClass(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginStorageArea_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginStorageArea");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginStorageArea");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
   Py_INCREF(&sdk_OrthancPluginStorageArea_Type);
   if (PyModule_AddObject(module, "StorageArea", (PyObject *)&sdk_OrthancPluginStorageArea_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginStorageArea");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginStorageArea");
     Py_DECREF(&sdk_OrthancPluginStorageArea_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

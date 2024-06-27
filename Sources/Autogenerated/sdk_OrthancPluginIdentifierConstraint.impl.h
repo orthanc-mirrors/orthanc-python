@@ -47,7 +47,7 @@ void RegisterOrthancPluginIdentifierConstraintEnumeration(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginIdentifierConstraint_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginIdentifierConstraint");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginIdentifierConstraint");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -93,7 +93,7 @@ void RegisterOrthancPluginIdentifierConstraintEnumeration(PyObject* module)
   Py_INCREF(&sdk_OrthancPluginIdentifierConstraint_Type);
   if (PyModule_AddObject(module, "IdentifierConstraint", (PyObject *)&sdk_OrthancPluginIdentifierConstraint_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginIdentifierConstraint");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginIdentifierConstraint");
     Py_DECREF(&sdk_OrthancPluginIdentifierConstraint_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

@@ -47,7 +47,7 @@ void RegisterOrthancPluginStorageCommitmentFailureReasonEnumeration(PyObject* mo
   
   if (PyType_Ready(&sdk_OrthancPluginStorageCommitmentFailureReason_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginStorageCommitmentFailureReason");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginStorageCommitmentFailureReason");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -111,7 +111,7 @@ void RegisterOrthancPluginStorageCommitmentFailureReasonEnumeration(PyObject* mo
   Py_INCREF(&sdk_OrthancPluginStorageCommitmentFailureReason_Type);
   if (PyModule_AddObject(module, "StorageCommitmentFailureReason", (PyObject *)&sdk_OrthancPluginStorageCommitmentFailureReason_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginStorageCommitmentFailureReason");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginStorageCommitmentFailureReason");
     Py_DECREF(&sdk_OrthancPluginStorageCommitmentFailureReason_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

@@ -140,14 +140,14 @@ static void RegisterOrthancPluginImageClass(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginImage_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginImage");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginImage");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
   Py_INCREF(&sdk_OrthancPluginImage_Type);
   if (PyModule_AddObject(module, "Image", (PyObject *)&sdk_OrthancPluginImage_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginImage");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginImage");
     Py_DECREF(&sdk_OrthancPluginImage_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

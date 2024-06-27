@@ -47,7 +47,7 @@ void RegisterOrthancPluginDicomWebBinaryModeEnumeration(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginDicomWebBinaryMode_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginDicomWebBinaryMode");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginDicomWebBinaryMode");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -87,7 +87,7 @@ void RegisterOrthancPluginDicomWebBinaryModeEnumeration(PyObject* module)
   Py_INCREF(&sdk_OrthancPluginDicomWebBinaryMode_Type);
   if (PyModule_AddObject(module, "DicomWebBinaryMode", (PyObject *)&sdk_OrthancPluginDicomWebBinaryMode_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginDicomWebBinaryMode");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginDicomWebBinaryMode");
     Py_DECREF(&sdk_OrthancPluginDicomWebBinaryMode_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

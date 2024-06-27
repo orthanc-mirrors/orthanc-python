@@ -82,14 +82,14 @@ static void RegisterOrthancPluginDicomWebNodeClass(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginDicomWebNode_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginDicomWebNode");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginDicomWebNode");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
   Py_INCREF(&sdk_OrthancPluginDicomWebNode_Type);
   if (PyModule_AddObject(module, "DicomWebNode", (PyObject *)&sdk_OrthancPluginDicomWebNode_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginDicomWebNode");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginDicomWebNode");
     Py_DECREF(&sdk_OrthancPluginDicomWebNode_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

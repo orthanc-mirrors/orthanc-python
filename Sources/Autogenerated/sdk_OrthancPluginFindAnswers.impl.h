@@ -92,14 +92,14 @@ static void RegisterOrthancPluginFindAnswersClass(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginFindAnswers_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginFindAnswers");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginFindAnswers");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
   Py_INCREF(&sdk_OrthancPluginFindAnswers_Type);
   if (PyModule_AddObject(module, "FindAnswers", (PyObject *)&sdk_OrthancPluginFindAnswers_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginFindAnswers");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginFindAnswers");
     Py_DECREF(&sdk_OrthancPluginFindAnswers_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

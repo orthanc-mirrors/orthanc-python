@@ -47,7 +47,7 @@ void RegisterOrthancPluginDicomToJsonFlagsEnumeration(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginDicomToJsonFlags_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginDicomToJsonFlags");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginDicomToJsonFlags");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -123,7 +123,7 @@ void RegisterOrthancPluginDicomToJsonFlagsEnumeration(PyObject* module)
   Py_INCREF(&sdk_OrthancPluginDicomToJsonFlags_Type);
   if (PyModule_AddObject(module, "DicomToJsonFlags", (PyObject *)&sdk_OrthancPluginDicomToJsonFlags_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginDicomToJsonFlags");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginDicomToJsonFlags");
     Py_DECREF(&sdk_OrthancPluginDicomToJsonFlags_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

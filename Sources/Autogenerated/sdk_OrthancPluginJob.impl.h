@@ -110,14 +110,14 @@ static void RegisterOrthancPluginJobClass(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginJob_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginJob");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginJob");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
   Py_INCREF(&sdk_OrthancPluginJob_Type);
   if (PyModule_AddObject(module, "Job", (PyObject *)&sdk_OrthancPluginJob_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginJob");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginJob");
     Py_DECREF(&sdk_OrthancPluginJob_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

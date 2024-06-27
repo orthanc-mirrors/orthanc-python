@@ -193,14 +193,13 @@ static void ChangesWorker()
           std::string traceback;
           if (lock.HasErrorOccurred(traceback))
           {
-            OrthancPlugins::LogError("Error in the Python on-change callback, "
-                                     "traceback:\n" + traceback);
+            ORTHANC_PLUGINS_LOG_ERROR("Error in the Python on-change callback, traceback:\n" + traceback);
           }
         }
         catch (OrthancPlugins::PluginException& e)
         {
-          OrthancPlugins::LogError("Error during Python on-change callback: " +
-                                   std::string(e.What(OrthancPlugins::GetGlobalContext())));
+          ORTHANC_PLUGINS_LOG_ERROR("Error during Python on-change callback: " +
+                                    std::string(e.What(OrthancPlugins::GetGlobalContext())));
         }
       }
     }

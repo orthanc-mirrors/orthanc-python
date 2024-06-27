@@ -40,7 +40,7 @@ static OrthancPluginErrorCode RunCallback(PythonLock& lock,
   std::string traceback;
   if (lock.HasErrorOccurred(traceback))
   {
-    OrthancPlugins::LogError("Error in the Python " + name + " callback, traceback:\n" + traceback);
+    ORTHANC_PLUGINS_LOG_ERROR("Error in the Python " + name + " callback, traceback:\n" + traceback);
     return OrthancPluginErrorCode_Plugin;
   }
   else
@@ -105,12 +105,12 @@ static OrthancPluginErrorCode StorageRead(void **content,
     std::string traceback;
     if (lock.HasErrorOccurred(traceback))
     {
-      OrthancPlugins::LogError("Error in the Python StorageRead callback, traceback:\n" + traceback);
+      ORTHANC_PLUGINS_LOG_ERROR("Error in the Python StorageRead callback, traceback:\n" + traceback);
       return OrthancPluginErrorCode_Plugin;
     }
     else if (!PyBytes_Check(result.GetPyObject()))
     {
-      OrthancPlugins::LogError("The Python StorageRead callback has not returned a byte array as expected");
+      ORTHANC_PLUGINS_LOG_ERROR("The Python StorageRead callback has not returned a byte array as expected");
       return OrthancPluginErrorCode_Plugin;
     }
     else
@@ -119,7 +119,7 @@ static OrthancPluginErrorCode StorageRead(void **content,
       Py_ssize_t pythonSize = 0;
       if (PyBytes_AsStringAndSize(result.GetPyObject(), &pythonBuffer, &pythonSize) == 1)
       {
-        OrthancPlugins::LogError("Cannot access the byte buffer returned by the Python StorageRead callback");
+        ORTHANC_PLUGINS_LOG_ERROR("Cannot access the byte buffer returned by the Python StorageRead callback");
         return OrthancPluginErrorCode_Plugin;
       }
       else
@@ -204,7 +204,7 @@ PyObject* RegisterStorageArea(PyObject* module, PyObject* args)
   }
   else
   {
-    OrthancPlugins::LogInfo("Registering a custom storage area in Python");
+    ORTHANC_PLUGINS_LOG_INFO("Registering a custom storage area in Python");
 
     OrthancPluginRegisterStorageArea(OrthancPlugins::GetGlobalContext(),
                                      StorageCreate, StorageRead, StorageRemove);

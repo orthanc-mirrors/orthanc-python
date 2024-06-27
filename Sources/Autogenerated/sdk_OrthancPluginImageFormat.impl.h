@@ -47,7 +47,7 @@ void RegisterOrthancPluginImageFormatEnumeration(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginImageFormat_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginImageFormat");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginImageFormat");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -87,7 +87,7 @@ void RegisterOrthancPluginImageFormatEnumeration(PyObject* module)
   Py_INCREF(&sdk_OrthancPluginImageFormat_Type);
   if (PyModule_AddObject(module, "ImageFormat", (PyObject *)&sdk_OrthancPluginImageFormat_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginImageFormat");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginImageFormat");
     Py_DECREF(&sdk_OrthancPluginImageFormat_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

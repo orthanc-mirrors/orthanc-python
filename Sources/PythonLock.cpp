@@ -56,14 +56,14 @@ static struct module_state _state;
 PythonLock::PythonLock() :
   gstate_(PyGILState_Ensure())
 {
-  //OrthancPlugins::LogInfo("Python lock (GIL) acquired");
+  //ORTHANC_PLUGINS_LOG_INFO("Python lock (GIL) acquired");
 }
 
 
 PythonLock::~PythonLock()
 {
   PyGILState_Release(gstate_);
-  //OrthancPlugins::LogInfo("Python lock (GIL) released");
+  //ORTHANC_PLUGINS_LOG_INFO("Python lock (GIL) released");
 }
 
 
@@ -71,7 +71,7 @@ void PythonLock::ExecuteCommand(const std::string& s)
 {
   if (PyRun_SimpleString(s.c_str()) != 0)
   {
-    OrthancPlugins::LogError("Error while executing a Python command");
+    ORTHANC_PLUGINS_LOG_ERROR("Error while executing a Python command");
     ORTHANC_PLUGINS_THROW_EXCEPTION(Plugin);
   }
 }
@@ -191,7 +191,7 @@ static void RegisterException(PyObject* module,
   if (state->exceptionObject_ == NULL) 
   {
     Py_DECREF(module);
-    OrthancPlugins::LogError("Cannot create the Python exception class");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot create the Python exception class");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -200,7 +200,7 @@ static void RegisterException(PyObject* module,
   {
     Py_XDECREF(state->exceptionObject_);
     Py_CLEAR(state->exceptionObject_);
-    OrthancPlugins::LogError("Cannot create the Python exception class");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot create the Python exception class");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 }
@@ -251,7 +251,7 @@ PyMODINIT_FUNC InitializeModule()
   PyObject *module = PyModule_Create(&moduledef);
   if (module == NULL)
   {
-    OrthancPlugins::LogError("Cannot create a Python module");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot create a Python module");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -276,7 +276,7 @@ void InitializeModule()
   PyObject *module = Py_InitModule(moduleName_.c_str(), moduleFunctions_());
   if (module == NULL)
   {
-    OrthancPlugins::LogError("Cannot create a Python module");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot create a Python module");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -294,7 +294,7 @@ OrthancPluginErrorCode PythonLock::CheckCallbackSuccess(const std::string& callb
   
   if (HasErrorOccurred(traceback))
   {
-    OrthancPlugins::LogError("Error in the " + callbackDetails + ", traceback:\n" + traceback);
+    ORTHANC_PLUGINS_LOG_ERROR("Error in the " + callbackDetails + ", traceback:\n" + traceback);
     return OrthancPluginErrorCode_Plugin;
   }
   else
@@ -315,7 +315,7 @@ void PythonLock::GlobalInitialize(const std::string& moduleName,
   
   if (interpreterState_ != NULL)
   {
-    OrthancPlugins::LogError("Cannot initialize twice the Python interpreter");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot initialize twice the Python interpreter");
     ORTHANC_PLUGINS_THROW_EXCEPTION(BadSequenceOfCalls);
   }
 
@@ -333,8 +333,7 @@ void PythonLock::GlobalInitialize(const std::string& moduleName,
 
   if (exceptionName.find('.') != std::string::npos)
   {
-    OrthancPlugins::LogError("The name of the exception cannot contain \".\", found: " +
-                             exceptionName);
+    ORTHANC_PLUGINS_LOG_ERROR("The name of the exception cannot contain \".\", found: " + exceptionName);
     ORTHANC_PLUGINS_THROW_EXCEPTION(ParameterOutOfRange);
   }
 
@@ -351,7 +350,7 @@ void PythonLock::GlobalInitialize(const std::string& moduleName,
     str.ToString(executable);
   }
   
-  OrthancPlugins::LogWarning("Program name: " + executable);
+  ORTHANC_PLUGINS_LOG_WARNING("Program name: " + executable);
 
 #if PY_MAJOR_VERSION == 2
   Py_SetProgramName(&executable[0]);  /* optional but recommended */
@@ -440,7 +439,7 @@ void PythonLock::AddSysPath(const std::string& path)
   PyObject *sysPath = PySys_GetObject(const_cast<char*>("path"));
   if (sysPath == NULL)
   {
-    OrthancPlugins::LogError("Cannot find sys.path");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot find sys.path");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -449,7 +448,7 @@ void PythonLock::AddSysPath(const std::string& path)
   
   if (result != 0)
   {
-    OrthancPlugins::LogError("Cannot run sys.path.append()");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot run sys.path.append()");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 }
@@ -494,7 +493,7 @@ void PythonLock::RaiseException(OrthancPluginErrorCode code)
       struct module_state *state = GETSTATE(module.GetPyObject());
       if (state->exceptionObject_ == NULL)
       {
-        OrthancPlugins::LogError("No Python exception has been registered");
+        ORTHANC_PLUGINS_LOG_ERROR("No Python exception has been registered");
       }
       else
       {
@@ -520,6 +519,6 @@ void PythonLock::LogCall(const std::string& message)
   
   if (verbose_)
   {
-    OrthancPlugins::LogInfo(message);
+    ORTHANC_PLUGINS_LOG_INFO(message);
   }
 }

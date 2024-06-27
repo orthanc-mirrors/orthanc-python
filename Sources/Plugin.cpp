@@ -491,7 +491,7 @@ static int ForceImportCallback(struct dl_phdr_info *info, size_t size, void *dat
 
   if (module.find("python") != std::string::npos)
   {
-    OrthancPlugins::LogWarning("Force global loading of Python shared library: " + module);
+    ORTHANC_PLUGINS_LOG_WARNING("Force global loading of Python shared library: " + module);
     dlopen(module.c_str(), RTLD_NOW | RTLD_LAZY | RTLD_GLOBAL);
   }
   
@@ -527,7 +527,7 @@ extern "C"
   ORTHANC_PLUGINS_API int32_t OrthancPluginInitialize(OrthancPluginContext* c)
   {
     OrthancPlugins::SetGlobalContext(c);
-    OrthancPlugins::LogWarning("Python plugin is initializing");
+    ORTHANC_PLUGINS_LOG_WARNING("Python plugin is initializing");
     
 
     /* Check the version of the Orthanc core */
@@ -562,8 +562,8 @@ extern "C"
       {
         pythonEnabled_ = false;
       
-        OrthancPlugins::LogWarning("Options \"PythonScript\" and \"Python.Path\" are not provided: "
-                                   "Python scripting is disabled");
+        ORTHANC_PLUGINS_LOG_WARNING("Options \"PythonScript\" and \"Python.Path\" are not provided: "
+                                    "Python scripting is disabled");
       }
       else
       {
@@ -576,15 +576,15 @@ extern "C"
         const boost::filesystem::path path(script);
         if (!boost::iequals(path.extension().string(), ".py"))
         {
-          OrthancPlugins::LogError("Python script must have the \".py\" file extension: " +
-                                   path.string());
+          ORTHANC_PLUGINS_LOG_ERROR("Python script must have the \".py\" file extension: " +
+                                    path.string());
           return -1;
         }
 
         if (!boost::filesystem::is_regular_file(path))
         {
-          OrthancPlugins::LogError("Inexistent directory for the Python script: " +
-                                   path.string());
+          ORTHANC_PLUGINS_LOG_ERROR("Inexistent directory for the Python script: " +
+                                    path.string());
           return -1;
         }
 
@@ -595,8 +595,8 @@ extern "C"
           userScriptName_ = module.string();
         }
 
-        OrthancPlugins::LogWarning("Using Python script \"" + userScriptName_ +
-                                   ".py\" from directory: " + userScriptDirectory.string());
+        ORTHANC_PLUGINS_LOG_WARNING("Using Python script \"" + userScriptName_ +
+                                    ".py\" from directory: " + userScriptDirectory.string());
     
     
         /**
@@ -633,16 +633,16 @@ extern "C"
         std::string traceback;
         if (lock.HasErrorOccurred(traceback))
         {
-          OrthancPlugins::LogError("Error during the installation of the Python script, "
-                                   "traceback:\n" + traceback);
+          ORTHANC_PLUGINS_LOG_ERROR("Error during the installation of the Python script, "
+                                    "traceback:\n" + traceback);
           return -1;
         }
       }
     }
     catch (ORTHANC_PLUGINS_EXCEPTION_CLASS& e)
     {
-      OrthancPlugins::LogError("Exception while starting the Python plugin: " +
-                               std::string(e.What(c)));
+      ORTHANC_PLUGINS_LOG_ERROR("Exception while starting the Python plugin: " +
+                                std::string(e.What(c)));
       return -1;
     }
     
@@ -652,7 +652,7 @@ extern "C"
 
   ORTHANC_PLUGINS_API void OrthancPluginFinalize()
   {
-    OrthancPlugins::LogWarning("Python plugin is finalizing");
+    ORTHANC_PLUGINS_LOG_WARNING("Python plugin is finalizing");
 
     if (pythonEnabled_)
     {

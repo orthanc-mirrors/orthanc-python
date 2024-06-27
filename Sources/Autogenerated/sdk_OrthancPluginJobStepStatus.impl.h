@@ -47,7 +47,7 @@ void RegisterOrthancPluginJobStepStatusEnumeration(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginJobStepStatus_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginJobStepStatus");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginJobStepStatus");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -87,7 +87,7 @@ void RegisterOrthancPluginJobStepStatusEnumeration(PyObject* module)
   Py_INCREF(&sdk_OrthancPluginJobStepStatus_Type);
   if (PyModule_AddObject(module, "JobStepStatus", (PyObject *)&sdk_OrthancPluginJobStepStatus_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginJobStepStatus");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginJobStepStatus");
     Py_DECREF(&sdk_OrthancPluginJobStepStatus_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

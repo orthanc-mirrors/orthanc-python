@@ -53,12 +53,12 @@ static OrthancPluginReceivedInstanceAction ReceivedInstanceCallback(
     std::string traceback;
     if (lock.HasErrorOccurred(traceback))
     {
-      OrthancPlugins::LogError("Error in the Python received instance callback, traceback:\n" + traceback);
+      ORTHANC_PLUGINS_LOG_ERROR("Error in the Python received instance callback, traceback:\n" + traceback);
       return OrthancPluginReceivedInstanceAction_KeepAsIs;
     }
     else if (!PyTuple_Check(result.GetPyObject()) || PyTuple_Size(result.GetPyObject()) != 2)
     {
-      OrthancPlugins::LogError("The Python received instance callback has not returned a tuple as expected");
+      ORTHANC_PLUGINS_LOG_ERROR("The Python received instance callback has not returned a tuple as expected");
       return OrthancPluginReceivedInstanceAction_KeepAsIs;
     }
     else
@@ -68,7 +68,7 @@ static OrthancPluginReceivedInstanceAction ReceivedInstanceCallback(
 
       if (!PyLong_Check(returnCode))
       {
-        OrthancPlugins::LogError("The Python received instance callback has not returned an int as the first element of the return tuple");
+        ORTHANC_PLUGINS_LOG_ERROR("The Python received instance callback has not returned an int as the first element of the return tuple");
         return OrthancPluginReceivedInstanceAction_KeepAsIs;
       }
 
@@ -85,7 +85,7 @@ static OrthancPluginReceivedInstanceAction ReceivedInstanceCallback(
         Py_ssize_t pythonSize = 0;
         if (PyBytes_AsStringAndSize(modifiedDicom, &pythonBuffer, &pythonSize) == 1)
         {
-          OrthancPlugins::LogError("Cannot access the byte buffer returned by the Python received instance callback");
+          ORTHANC_PLUGINS_LOG_ERROR("Cannot access the byte buffer returned by the Python received instance callback");
           return OrthancPluginReceivedInstanceAction_KeepAsIs;
         }
         else
@@ -96,7 +96,7 @@ static OrthancPluginReceivedInstanceAction ReceivedInstanceCallback(
           {
             if (modifiedDicomBuffer->data == NULL)
             {
-              OrthancPlugins::LogError("Cannot allocate memory in the Python received instance callback");
+              ORTHANC_PLUGINS_LOG_ERROR("Cannot allocate memory in the Python received instance callback");
               return OrthancPluginReceivedInstanceAction_KeepAsIs;
             }
             else
@@ -112,8 +112,8 @@ static OrthancPluginReceivedInstanceAction ReceivedInstanceCallback(
   }
   catch (OrthancPlugins::PluginException& e)
   {
-    OrthancPlugins::LogError("Error in the Python received instance callback: " +
-                             std::string(e.What(OrthancPlugins::GetGlobalContext())));
+    ORTHANC_PLUGINS_LOG_ERROR("Error in the Python received instance callback: " +
+                              std::string(e.What(OrthancPlugins::GetGlobalContext())));
   }
 
   return OrthancPluginReceivedInstanceAction_KeepAsIs;

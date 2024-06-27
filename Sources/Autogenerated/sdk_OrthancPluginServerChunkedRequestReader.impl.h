@@ -82,14 +82,14 @@ static void RegisterOrthancPluginServerChunkedRequestReaderClass(PyObject* modul
   
   if (PyType_Ready(&sdk_OrthancPluginServerChunkedRequestReader_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginServerChunkedRequestReader");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginServerChunkedRequestReader");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
   Py_INCREF(&sdk_OrthancPluginServerChunkedRequestReader_Type);
   if (PyModule_AddObject(module, "ServerChunkedRequestReader", (PyObject *)&sdk_OrthancPluginServerChunkedRequestReader_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginServerChunkedRequestReader");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginServerChunkedRequestReader");
     Py_DECREF(&sdk_OrthancPluginServerChunkedRequestReader_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

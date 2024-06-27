@@ -47,7 +47,7 @@ void RegisterOrthancPluginContentTypeEnumeration(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginContentType_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginContentType");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginContentType");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -93,7 +93,7 @@ void RegisterOrthancPluginContentTypeEnumeration(PyObject* module)
   Py_INCREF(&sdk_OrthancPluginContentType_Type);
   if (PyModule_AddObject(module, "ContentType", (PyObject *)&sdk_OrthancPluginContentType_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginContentType");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginContentType");
     Py_DECREF(&sdk_OrthancPluginContentType_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

@@ -110,14 +110,14 @@ static void RegisterOrthancPluginFindMatcherClass(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginFindMatcher_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginFindMatcher");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginFindMatcher");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
   Py_INCREF(&sdk_OrthancPluginFindMatcher_Type);
   if (PyModule_AddObject(module, "FindMatcher", (PyObject *)&sdk_OrthancPluginFindMatcher_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginFindMatcher");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginFindMatcher");
     Py_DECREF(&sdk_OrthancPluginFindMatcher_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

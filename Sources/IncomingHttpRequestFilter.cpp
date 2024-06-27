@@ -94,8 +94,7 @@ static int32_t IncomingHttpRequestFilter(OrthancPluginHttpMethod method,
     std::string traceback;
     if (lock.HasErrorOccurred(traceback))
     {
-      OrthancPlugins::LogError("Error in the Python incoming-http-request filter, "
-                               "traceback:\n" + traceback);
+      ORTHANC_PLUGINS_LOG_ERROR("Error in the Python incoming-http-request filter, traceback:\n" + traceback);
       return -1;
     }
     else
@@ -106,15 +105,15 @@ static int32_t IncomingHttpRequestFilter(OrthancPluginHttpMethod method,
       }
       else
       {
-        OrthancPlugins::LogError("The Python incoming-http-request filter has not returned a Boolean");
+        ORTHANC_PLUGINS_LOG_ERROR("The Python incoming-http-request filter has not returned a Boolean");
         return -1;
       }
     }
   }
   catch (OrthancPlugins::PluginException& e)
   {
-    OrthancPlugins::LogError("Exception in the Python incoming-http-request filter: " +
-                             std::string(e.What(OrthancPlugins::GetGlobalContext())));
+    ORTHANC_PLUGINS_LOG_ERROR("Exception in the Python incoming-http-request filter: " +
+                              std::string(e.What(OrthancPlugins::GetGlobalContext())));
     return e.GetErrorCode();
   }
 }

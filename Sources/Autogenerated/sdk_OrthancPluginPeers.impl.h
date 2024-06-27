@@ -125,14 +125,14 @@ static void RegisterOrthancPluginPeersClass(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginPeers_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginPeers");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginPeers");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
   Py_INCREF(&sdk_OrthancPluginPeers_Type);
   if (PyModule_AddObject(module, "Peers", (PyObject *)&sdk_OrthancPluginPeers_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginPeers");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginPeers");
     Py_DECREF(&sdk_OrthancPluginPeers_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

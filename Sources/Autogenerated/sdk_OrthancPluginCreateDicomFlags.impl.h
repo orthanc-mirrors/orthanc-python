@@ -47,7 +47,7 @@ void RegisterOrthancPluginCreateDicomFlagsEnumeration(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginCreateDicomFlags_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginCreateDicomFlags");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginCreateDicomFlags");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -87,7 +87,7 @@ void RegisterOrthancPluginCreateDicomFlagsEnumeration(PyObject* module)
   Py_INCREF(&sdk_OrthancPluginCreateDicomFlags_Type);
   if (PyModule_AddObject(module, "CreateDicomFlags", (PyObject *)&sdk_OrthancPluginCreateDicomFlags_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginCreateDicomFlags");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginCreateDicomFlags");
     Py_DECREF(&sdk_OrthancPluginCreateDicomFlags_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

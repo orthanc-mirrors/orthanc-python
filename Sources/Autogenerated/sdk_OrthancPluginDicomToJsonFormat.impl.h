@@ -47,7 +47,7 @@ void RegisterOrthancPluginDicomToJsonFormatEnumeration(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginDicomToJsonFormat_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginDicomToJsonFormat");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginDicomToJsonFormat");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -87,7 +87,7 @@ void RegisterOrthancPluginDicomToJsonFormatEnumeration(PyObject* module)
   Py_INCREF(&sdk_OrthancPluginDicomToJsonFormat_Type);
   if (PyModule_AddObject(module, "DicomToJsonFormat", (PyObject *)&sdk_OrthancPluginDicomToJsonFormat_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginDicomToJsonFormat");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginDicomToJsonFormat");
     Py_DECREF(&sdk_OrthancPluginDicomToJsonFormat_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

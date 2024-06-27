@@ -55,8 +55,7 @@ PythonFunction::PythonFunction(PythonLock& lock,
         !PyCallable_Check(func_->GetPyObject()))
     {
       func_.reset();  // Not such a function
-      OrthancPlugins::LogWarning("Missing Python function: " + module.GetName() +
-                                 "." + name + "()");
+      ORTHANC_PLUGINS_LOG_WARNING("Missing Python function: " + module.GetName() + "." + name + "()");
     }
   }
 }
@@ -69,7 +68,7 @@ PythonObject* PythonFunction::Call()
   std::string error;
   if (lock_.HasErrorOccurred(error))
   {
-    OrthancPlugins::LogError("Python exception has occurred, traceback:\n" + error);
+    ORTHANC_PLUGINS_LOG_ERROR("Python exception has occurred, traceback:\n" + error);
     ORTHANC_PLUGINS_THROW_EXCEPTION(Plugin);
   }
   else
@@ -86,7 +85,7 @@ PythonObject* PythonFunction::Call(const PythonObject& args)
   std::string error;
   if (lock_.HasErrorOccurred(error))
   {
-    OrthancPlugins::LogError("Python exception has occurred, traceback:\n" + error);
+    ORTHANC_PLUGINS_LOG_ERROR("Python exception has occurred, traceback:\n" + error);
     ORTHANC_PLUGINS_THROW_EXCEPTION(Plugin);
   }
   else

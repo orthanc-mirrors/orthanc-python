@@ -47,7 +47,7 @@ void RegisterOrthancPluginPixelFormatEnumeration(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginPixelFormat_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginPixelFormat");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginPixelFormat");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -135,7 +135,7 @@ void RegisterOrthancPluginPixelFormatEnumeration(PyObject* module)
   Py_INCREF(&sdk_OrthancPluginPixelFormat_Type);
   if (PyModule_AddObject(module, "PixelFormat", (PyObject *)&sdk_OrthancPluginPixelFormat_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginPixelFormat");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginPixelFormat");
     Py_DECREF(&sdk_OrthancPluginPixelFormat_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

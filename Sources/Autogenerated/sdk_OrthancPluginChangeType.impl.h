@@ -47,7 +47,7 @@ void RegisterOrthancPluginChangeTypeEnumeration(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginChangeType_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginChangeType");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginChangeType");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -183,7 +183,7 @@ void RegisterOrthancPluginChangeTypeEnumeration(PyObject* module)
   Py_INCREF(&sdk_OrthancPluginChangeType_Type);
   if (PyModule_AddObject(module, "ChangeType", (PyObject *)&sdk_OrthancPluginChangeType_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginChangeType");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginChangeType");
     Py_DECREF(&sdk_OrthancPluginChangeType_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

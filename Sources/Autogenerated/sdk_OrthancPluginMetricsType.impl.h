@@ -47,7 +47,7 @@ void RegisterOrthancPluginMetricsTypeEnumeration(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginMetricsType_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginMetricsType");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginMetricsType");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -81,7 +81,7 @@ void RegisterOrthancPluginMetricsTypeEnumeration(PyObject* module)
   Py_INCREF(&sdk_OrthancPluginMetricsType_Type);
   if (PyModule_AddObject(module, "MetricsType", (PyObject *)&sdk_OrthancPluginMetricsType_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginMetricsType");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginMetricsType");
     Py_DECREF(&sdk_OrthancPluginMetricsType_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

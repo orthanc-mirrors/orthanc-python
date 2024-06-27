@@ -61,8 +61,7 @@ static OrthancPluginErrorCode OnStoredInstanceCallback(const OrthancPluginDicomI
     std::string traceback;
     if (lock.HasErrorOccurred(traceback))
     {
-      OrthancPlugins::LogError("Error in the Python on-stored-instance callback, "
-                               "traceback:\n" + traceback);
+      ORTHANC_PLUGINS_LOG_ERROR("Error in the Python on-stored-instance callback, traceback:\n" + traceback);
       return OrthancPluginErrorCode_Plugin;
     }
     else

@@ -47,7 +47,7 @@ void RegisterOrthancPluginInstanceOriginEnumeration(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginInstanceOrigin_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginInstanceOrigin");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginInstanceOrigin");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -105,7 +105,7 @@ void RegisterOrthancPluginInstanceOriginEnumeration(PyObject* module)
   Py_INCREF(&sdk_OrthancPluginInstanceOrigin_Type);
   if (PyModule_AddObject(module, "InstanceOrigin", (PyObject *)&sdk_OrthancPluginInstanceOrigin_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginInstanceOrigin");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginInstanceOrigin");
     Py_DECREF(&sdk_OrthancPluginInstanceOrigin_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

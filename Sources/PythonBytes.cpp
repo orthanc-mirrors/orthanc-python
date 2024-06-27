@@ -28,7 +28,7 @@ void PythonBytes::SanityCheck()
 {
   if (!bytes_->IsValid())
   {
-    OrthancPlugins::LogError("Cannot create Python bytes");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot create Python bytes");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 }

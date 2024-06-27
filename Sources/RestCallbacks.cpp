@@ -185,7 +185,7 @@ void RestCallbackHandler(OrthancPluginRestOutput* output,
       std::string traceback;
       if (lock.HasErrorOccurred(traceback))
       {
-        OrthancPlugins::LogError("Error in the REST callback, traceback:\n" + traceback);
+        ORTHANC_PLUGINS_LOG_ERROR("Error in the REST callback, traceback:\n" + traceback);
         ORTHANC_PLUGINS_THROW_EXCEPTION(Plugin);
       }
 
@@ -194,7 +194,7 @@ void RestCallbackHandler(OrthancPluginRestOutput* output,
   }
 
   // Should never happen
-  OrthancPlugins::LogError("Unable to find the Python handler for URI: " + std::string(uri));
+  ORTHANC_PLUGINS_LOG_ERROR("Unable to find the Python handler for URI: " + std::string(uri));
   ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
 }
 
@@ -216,7 +216,7 @@ PyObject* RegisterRestCallback(PyObject* module, PyObject* args)
     return NULL;
   }
   
-  OrthancPlugins::LogInfo("Registering a Python REST callback on URI: " + std::string(uri));
+  ORTHANC_PLUGINS_LOG_INFO("Registering a Python REST callback on URI: " + std::string(uri));
   OrthancPlugins::RegisterRestCallback<RestCallbackHandler>(uri, true /* thread safe */);
   
   restCallbacks_.push_back(new RestCallback(uri, callback));

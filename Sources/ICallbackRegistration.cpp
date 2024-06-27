@@ -47,7 +47,7 @@ PyObject *ICallbackRegistration::Apply(ICallbackRegistration& registration,
   }
   else
   {
-    OrthancPlugins::LogInfo("Registering one " + details);
+    ORTHANC_PLUGINS_LOG_INFO("Registering one " + details);
     registration.Register();
     
     singletonCallback = callback;
@@ -84,7 +84,7 @@ PyObject *ICallbackRegistration::Apply2(ICallbackRegistration& registration,
   }
   else
   {
-    OrthancPlugins::LogInfo("Registering callbacks " + details);
+    ORTHANC_PLUGINS_LOG_INFO("Registering callbacks " + details);
     registration.Register();
 
     singletonCallback1 = callback1;
@@ -127,7 +127,7 @@ PyObject *ICallbackRegistration::Apply4(ICallbackRegistration& registration,
   }
   else
   {
-    OrthancPlugins::LogInfo("Registering callbacks " + details);
+    ORTHANC_PLUGINS_LOG_INFO("Registering callbacks " + details);
     registration.Register();
 
     singletonCallback1 = callback1;

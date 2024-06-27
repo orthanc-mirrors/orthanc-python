@@ -92,14 +92,14 @@ static void RegisterOrthancPluginWorklistQueryClass(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginWorklistQuery_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginWorklistQuery");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginWorklistQuery");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
   Py_INCREF(&sdk_OrthancPluginWorklistQuery_Type);
   if (PyModule_AddObject(module, "WorklistQuery", (PyObject *)&sdk_OrthancPluginWorklistQuery_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginWorklistQuery");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginWorklistQuery");
     Py_DECREF(&sdk_OrthancPluginWorklistQuery_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

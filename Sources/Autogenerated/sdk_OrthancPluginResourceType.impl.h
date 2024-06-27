@@ -47,7 +47,7 @@ void RegisterOrthancPluginResourceTypeEnumeration(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginResourceType_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginResourceType");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginResourceType");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -99,7 +99,7 @@ void RegisterOrthancPluginResourceTypeEnumeration(PyObject* module)
   Py_INCREF(&sdk_OrthancPluginResourceType_Type);
   if (PyModule_AddObject(module, "ResourceType", (PyObject *)&sdk_OrthancPluginResourceType_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: OrthancPluginResourceType");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: OrthancPluginResourceType");
     Py_DECREF(&sdk_OrthancPluginResourceType_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

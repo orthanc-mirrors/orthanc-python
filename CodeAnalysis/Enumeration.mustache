@@ -47,7 +47,7 @@ void Register{{name}}Enumeration(PyObject* module)
   
   if (PyType_Ready(&sdk_{{name}}_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: {{name}}");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: {{name}}");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
@@ -77,7 +77,7 @@ void Register{{name}}Enumeration(PyObject* module)
   Py_INCREF(&sdk_{{name}}_Type);
   if (PyModule_AddObject(module, "{{short_name}}", (PyObject *)&sdk_{{name}}_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python enumeration: {{name}}");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python enumeration: {{name}}");
     Py_DECREF(&sdk_{{name}}_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

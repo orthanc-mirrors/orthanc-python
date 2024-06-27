@@ -130,7 +130,7 @@ PyObject* PythonObject::Release()
   }
   else
   {
-    OrthancPlugins::LogError("Cannot release a NULL or borrowed reference");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot release a NULL or borrowed reference");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 }

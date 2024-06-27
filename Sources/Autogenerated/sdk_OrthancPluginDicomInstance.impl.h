@@ -180,14 +180,14 @@ static void RegisterOrthancPluginDicomInstanceClass(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginDicomInstance_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginDicomInstance");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginDicomInstance");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
   Py_INCREF(&sdk_OrthancPluginDicomInstance_Type);
   if (PyModule_AddObject(module, "DicomInstance", (PyObject *)&sdk_OrthancPluginDicomInstance_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginDicomInstance");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginDicomInstance");
     Py_DECREF(&sdk_OrthancPluginDicomInstance_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

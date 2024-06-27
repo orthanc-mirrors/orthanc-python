@@ -107,14 +107,14 @@ static void RegisterOrthancPluginFindQueryClass(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginFindQuery_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginFindQuery");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginFindQuery");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
   Py_INCREF(&sdk_OrthancPluginFindQuery_Type);
   if (PyModule_AddObject(module, "FindQuery", (PyObject *)&sdk_OrthancPluginFindQuery_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginFindQuery");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginFindQuery");
     Py_DECREF(&sdk_OrthancPluginFindQuery_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

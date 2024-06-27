@@ -84,15 +84,14 @@ static OrthancPluginErrorCode StorageCommitmentSCPCallback(
     std::string traceback;
     if (lock.HasErrorOccurred(traceback))
     {
-      OrthancPlugins::LogError("Error in the Python storage commitment SCP callback, "
-                               "traceback:\n" + traceback);
+      ORTHANC_PLUGINS_LOG_ERROR("Error in the Python storage commitment SCP callback, traceback:\n" + traceback);
       return OrthancPluginErrorCode_Plugin;
     }
   }
   catch (OrthancPlugins::PluginException& e)
   {
-    OrthancPlugins::LogError("Error in the Python storage commitment SCP callback: " +
-                             std::string(e.What(OrthancPlugins::GetGlobalContext())));
+    ORTHANC_PLUGINS_LOG_ERROR("Error in the Python storage commitment SCP callback: " +
+                              std::string(e.What(OrthancPlugins::GetGlobalContext())));
   }
   return OrthancPluginErrorCode_Success;
 }
@@ -126,7 +125,7 @@ static OrthancPluginErrorCode StorageCommitmentLookupCallback(
 
     if (!PyLong_Check(result.GetPyObject()))
     {
-      OrthancPlugins::LogError("The Python storage commitment Lookup callback has not returned an int as the return value");
+      ORTHANC_PLUGINS_LOG_ERROR("The Python storage commitment Lookup callback has not returned an int as the return value");
       return OrthancPluginErrorCode_Plugin;
     }
 
@@ -135,15 +134,14 @@ static OrthancPluginErrorCode StorageCommitmentLookupCallback(
     std::string traceback;
     if (lock.HasErrorOccurred(traceback))
     {
-      OrthancPlugins::LogError("Error in the Python storage commitment Lookup callback, "
-                               "traceback:\n" + traceback);
+      ORTHANC_PLUGINS_LOG_ERROR("Error in the Python storage commitment Lookup callback, traceback:\n" + traceback);
       return OrthancPluginErrorCode_Plugin;
     }
   }
   catch (OrthancPlugins::PluginException& e)
   {
-    OrthancPlugins::LogError("Error in the Python storage commitment Lookup callback: " +
-                             std::string(e.What(OrthancPlugins::GetGlobalContext())));
+    ORTHANC_PLUGINS_LOG_ERROR("Error in the Python storage commitment Lookup callback: " +
+                              std::string(e.What(OrthancPlugins::GetGlobalContext())));
   }
   return OrthancPluginErrorCode_Success;
 }

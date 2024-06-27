@@ -92,14 +92,14 @@ static void RegisterOrthancPluginWorklistAnswersClass(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginWorklistAnswers_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginWorklistAnswers");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginWorklistAnswers");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
   Py_INCREF(&sdk_OrthancPluginWorklistAnswers_Type);
   if (PyModule_AddObject(module, "WorklistAnswers", (PyObject *)&sdk_OrthancPluginWorklistAnswers_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginWorklistAnswers");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginWorklistAnswers");
     Py_DECREF(&sdk_OrthancPluginWorklistAnswers_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }

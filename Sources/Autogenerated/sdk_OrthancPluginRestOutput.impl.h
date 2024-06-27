@@ -147,14 +147,14 @@ static void RegisterOrthancPluginRestOutputClass(PyObject* module)
   
   if (PyType_Ready(&sdk_OrthancPluginRestOutput_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginRestOutput");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginRestOutput");
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
 
   Py_INCREF(&sdk_OrthancPluginRestOutput_Type);
   if (PyModule_AddObject(module, "RestOutput", (PyObject *)&sdk_OrthancPluginRestOutput_Type) < 0)
   {
-    OrthancPlugins::LogError("Cannot register Python class: OrthancPluginRestOutput");
+    ORTHANC_PLUGINS_LOG_ERROR("Cannot register Python class: OrthancPluginRestOutput");
     Py_DECREF(&sdk_OrthancPluginRestOutput_Type);
     ORTHANC_PLUGINS_THROW_EXCEPTION(InternalError);
   }
