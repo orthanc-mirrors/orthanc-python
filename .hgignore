@@ -2,3 +2,7 @@ syntax: glob
 ThirdPartyDownloads/
 *~
 .vscode/
+i/
+*.h.orig
+*.cpp.orig
+*.py.orig

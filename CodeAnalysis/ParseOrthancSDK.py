@@ -552,7 +552,7 @@ sortedGlobalFunctions = sorted(globalFunctions, key = lambda x: x['c_function'])
 with open(os.path.join(ROOT, 'GlobalFunctions.mustache'), 'r') as f:
     with open(os.path.join(TARGET, 'sdk_GlobalFunctions.impl.h'), 'w') as h:
         h.write(renderer.render(f.read(), {
-            'global_functions' : globalFunctions,
+            'global_functions' : sortedGlobalFunctions,
         }))
             
 with open(os.path.join(ROOT, 'sdk.cpp.mustache'), 'r') as f:
@@ -560,7 +560,7 @@ with open(os.path.join(ROOT, 'sdk.cpp.mustache'), 'r') as f:
         h.write(renderer.render(f.read(), {
             'classes' : sortedClasses,
             'enumerations' : sortedEnumerations,
-            'global_functions' : globalFunctions,
+            'global_functions' : sortedGlobalFunctions,
         }))
             
 with open(os.path.join(ROOT, 'sdk.h.mustache'), 'r') as f:
@@ -568,14 +568,6 @@ with open(os.path.join(ROOT, 'sdk.h.mustache'), 'r') as f:
         h.write(renderer.render(f.read(), {
             'classes' : sortedClasses,
         }))
-
-
-with open(os.path.join(TARGET, 'CodeModel.json'), 'w') as f:
-    f.write(json.dumps({
-        'global_functions' : globalFunctions,
-        'classes' : sortedClasses,
-        'enumerations' : sortedEnumerations,
-    }, ensure_ascii = True, indent = 4, sort_keys = True))
 
 
 print('')
