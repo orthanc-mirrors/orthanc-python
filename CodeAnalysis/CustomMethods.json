@@ -3,7 +3,6 @@
     {
       "short_name" : "GetFindQueryTagGroup",
       "implementation" : "GetFindQueryTagGroup",
-      "sdk_function" : "OrthancPluginGetFindQueryTag",
       "documentation" : {
         "description" : [ "This function returns the group of one DICOM tag in the given C-Find query." ],
         "args" : {
@@ -23,7 +22,6 @@
     {
       "short_name" : "GetFindQueryTagElement",
       "implementation" : "GetFindQueryTagElement",
-      "sdk_function" : "OrthancPluginGetFindQueryTag",
       "documentation" : {
         "description" : [ "This function returns the element of one DICOM tag in the given C-Find query." ],
         "args" : {
@@ -45,7 +43,6 @@
     {
       "short_name" : "GetInstanceData",
       "implementation" : "GetInstanceData",
-      "sdk_function" : "OrthancPluginGetInstanceData",
       "documentation" : {
         "description" : [ "Get the content of the DICOM instance." ],
         "return" : "The DICOM data."
@@ -60,7 +57,6 @@
     {
       "short_name" : "GetImageBuffer",
       "implementation" : "GetImageBuffer",
-      "sdk_function" : "OrthancPluginGetImageBuffer",
       "documentation" : {
         "description" : [ "This function returns a pointer to the memory buffer that contains the pixels of the image." ],
         "return" : "The pixel data."

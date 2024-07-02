@@ -32,8 +32,7 @@ static PyObject *sdk_{{class_name}}_{{c_function}}(
 
 // Forward declaration of the custom methods
 {{#custom_methods}}
-extern PyObject *{{implementation}}(
-  sdk_{{class_name}}_Object* self, PyObject *args);
+extern PyObject *{{implementation}}(sdk_{{class_name}}_Object* self, PyObject *args);
 {{/custom_methods}}
 // End of forward declarations
 
@@ -47,7 +46,7 @@ static PyMethodDef sdk_{{class_name}}_Methods[] = {
 {{#custom_methods}}
   { "{{short_name}}",
     (PyCFunction) {{implementation}}, METH_VARARGS,
-    "Generated from C function {{sdk_function}}()" },
+    "Implemented in C++ function {{implementation}}()" },
 {{/custom_methods}}
   { NULL }  /* Sentinel */
 };

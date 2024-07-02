@@ -2334,18 +2334,6 @@ class FindQuery:
         """
         ...
 
-    # This function returns the group of one DICOM tag in the given C-Find query
-    def GetFindQueryTagGroup(self, index: int) -> int:
-        """
-        This function returns the group of one DICOM tag in the given C-Find query.
-
-        Args:
-          index (int): The index of the tag of interest.
-
-        Returns:
-          int: The value of the group.
-        """
-        ...
     # This function returns the element of one DICOM tag in the given C-Find query
     def GetFindQueryTagElement(self, index: int) -> int:
         """
@@ -2356,6 +2344,18 @@ class FindQuery:
 
         Returns:
           int: The value of the element.
+        """
+        ...
+    # This function returns the group of one DICOM tag in the given C-Find query
+    def GetFindQueryTagGroup(self, index: int) -> int:
+        """
+        This function returns the group of one DICOM tag in the given C-Find query.
+
+        Args:
+          index (int): The index of the tag of interest.
+
+        Returns:
+          int: The value of the group.
         """
         ...
 class Image:

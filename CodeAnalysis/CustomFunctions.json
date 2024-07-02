@@ -2,6 +2,13 @@
   {
     "short_name" : "RegisterRestCallback",
     "implementation" : "RegisterRestCallback",
+    "documentation" : {
+      "description" : [ "Register a REST callback." ],
+      "args" : {
+        "pathRegularExpression" : "Regular expression for the URI. May contain groups.",
+        "callback" : "The callback function to handle the REST call."
+      }
+    },
     "args" : [
       {
         "sdk_name" : "pathRegularExpression",
@@ -13,13 +20,6 @@
         "callable_type" : "typing.Callable[[RestOutput, str], None]"
       }
     ],
-    "documentation" : {
-      "args" : {
-        "pathRegularExpression" : "Regular expression for the URI. May contain groups.",
-        "callback" : "The callback function to handle the REST call."
-      },
-      "description" : [ "Register a REST callback." ]
-    },
     "return_sdk_type" : "void"
   }
 ]

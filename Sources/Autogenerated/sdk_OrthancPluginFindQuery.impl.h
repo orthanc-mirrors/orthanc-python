@@ -33,10 +33,8 @@ static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQueryValue(
 
 
 // Forward declaration of the custom methods
-extern PyObject *GetFindQueryTagGroup(
-  sdk_OrthancPluginFindQuery_Object* self, PyObject *args);
-extern PyObject *GetFindQueryTagElement(
-  sdk_OrthancPluginFindQuery_Object* self, PyObject *args);
+extern PyObject *GetFindQueryTagElement(sdk_OrthancPluginFindQuery_Object* self, PyObject *args);
+extern PyObject *GetFindQueryTagGroup(sdk_OrthancPluginFindQuery_Object* self, PyObject *args);
 // End of forward declarations
 
 
@@ -50,12 +48,12 @@ static PyMethodDef sdk_OrthancPluginFindQuery_Methods[] = {
   { "GetFindQueryValue",
     (PyCFunction) sdk_OrthancPluginFindQuery_OrthancPluginGetFindQueryValue, METH_VARARGS,
     "Generated from C function OrthancPluginGetFindQueryValue()" },
-  { "GetFindQueryTagGroup",
-    (PyCFunction) GetFindQueryTagGroup, METH_VARARGS,
-    "Generated from C function OrthancPluginGetFindQueryTag()" },
   { "GetFindQueryTagElement",
     (PyCFunction) GetFindQueryTagElement, METH_VARARGS,
-    "Generated from C function OrthancPluginGetFindQueryTag()" },
+    "Implemented in C++ function GetFindQueryTagElement()" },
+  { "GetFindQueryTagGroup",
+    (PyCFunction) GetFindQueryTagGroup, METH_VARARGS,
+    "Implemented in C++ function GetFindQueryTagGroup()" },
   { NULL }  /* Sentinel */
 };
 

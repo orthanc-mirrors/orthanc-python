@@ -394,7 +394,7 @@ for c in model['classes']:
         'class_name' : c['name'],
         'short_name' : GetShortName(c['name']),
         'methods' : methods,
-        'custom_methods' : custom_methods,
+        'custom_methods' : sorted(custom_methods, key = lambda x: x['short_name']),
     })
 
     if 'destructor' in c:
