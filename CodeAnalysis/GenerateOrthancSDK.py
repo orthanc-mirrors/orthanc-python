@@ -78,36 +78,54 @@ CUSTOM_FUNCTIONS = [
 CUSTOM_METHODS = {
     'OrthancPluginFindQuery' : [
         {
-            'method_name' : 'GetFindQueryTagGroup',
+            'short_name' : 'GetFindQueryTagGroup',
             'implementation' : 'GetFindQueryTagGroup',
             'sdk_function' : 'OrthancPluginGetFindQueryTag',
             'documentation' : {
-                'description' : [ ],
+                'description' : [ 'This function returns the group of one DICOM tag in the given C-Find query.' ],
+                'args' : {
+                    'index' : 'The index of the tag of interest.',
+                },
+                'return' : 'The value of the group.',
             },
             'args' : [
+                {
+                    'sdk_name' : 'index',
+                    'sdk_type' : 'uint32_t',
+                }
             ],
-            'return_sdk_type' : 'void',
+            'return_sdk_type' : 'uint16_t',
         },
+
         {
-            'method_name' : 'GetFindQueryTagElement',
+            'short_name' : 'GetFindQueryTagElement',
             'implementation' : 'GetFindQueryTagElement',
             'sdk_function' : 'OrthancPluginGetFindQueryTag',
             'documentation' : {
-                'description' : [ ],
+                'description' : [ 'This function returns the element of one DICOM tag in the given C-Find query.' ],
+                'args' : {
+                    'index' : 'The index of the tag of interest.',
+                },
+                'return' : 'The value of the element.',
             },
             'args' : [
+                {
+                    'sdk_name' : 'index',
+                    'sdk_type' : 'uint32_t',
+                }
             ],
-            'return_sdk_type' : 'void',
+            'return_sdk_type' : 'uint16_t',
         },
     ],
 
     'OrthancPluginDicomInstance' : [
         {
-            'method_name' : 'GetInstanceData',
+            'short_name' : 'GetInstanceData',
             'implementation' : 'GetInstanceData',
             'sdk_function' : 'OrthancPluginGetInstanceData',
             'documentation' : {
-                'description' : [ ]
+                'description' : [ 'Get the content of the DICOM instance.' ],
+                'return' : 'The DICOM data.',
             },
             'args' : [
             ],
@@ -117,15 +135,16 @@ CUSTOM_METHODS = {
 
     'OrthancPluginImage' : [
         {
-            'method_name' : 'GetImageBuffer',
+            'short_name' : 'GetImageBuffer',
             'implementation' : 'GetImageBuffer',
             'sdk_function' : 'OrthancPluginGetImageBuffer',
             'documentation' : {
-                'description' : [ ],
+                'description' : [ 'This function returns a pointer to the memory buffer that contains the pixels of the image.' ],
+                'return' : 'The pixel data.',
             },
             'args' : [
             ],
-            'return_sdk_type' : 'void',
+            'return_sdk_type' : 'OrthancPluginMemoryBuffer *',
         }
     ],
 }
@@ -257,7 +276,6 @@ def DocumentFunction(f):
     documentation['args'] = args_documentation
     documentation['has_args'] = len(args_documentation) > 0
     documentation['has_return'] = True
-    documentation['return_text'] = f['documentation'].get('return', None)
 
     if f['return_sdk_type'] == 'enumeration':
         if f['return_sdk_enumeration'] == 'OrthancPluginErrorCode':
@@ -274,10 +292,13 @@ def DocumentFunction(f):
         documentation['return_type'] = 'bytes'
     elif f['return_sdk_type'] in [ 'char *', 'const char *' ]:
         documentation['return_type'] = 'str'
-    elif f['return_sdk_type'] in [ 'int32_t', 'uint32_t', 'int64_t' ]:
+    elif f['return_sdk_type'] in [ 'int32_t', 'uint32_t', 'uint16_t', 'int64_t' ]:
         documentation['return_type'] = 'int'
     else:
         raise Exception('Return type not implemented: %s' % f['return_sdk_type'])
+
+    if documentation['has_return']:
+        documentation['return_text'] = f['documentation']['return']
 
     return documentation
 
@@ -455,14 +476,20 @@ for c in model['classes']:
             g['is_method'] = True
             methods.append(g)
 
+    custom_methods = []
+
+    if c['name'] in CUSTOM_METHODS:
+        for custom_method in CUSTOM_METHODS[c['name']]:
+            custom_method['is_method'] = True
+            custom_method['documentation'] = DocumentFunction(custom_method)
+            custom_methods.append(custom_method)
+
     classes.append({
         'class_name' : c['name'],
         'short_name' : GetShortName(c['name']),
         'methods' : methods,
+        'custom_methods' : custom_methods,
     })
-
-    if c['name'] in CUSTOM_METHODS:
-        classes[-1]['custom_methods'] = CUSTOM_METHODS[c['name']]
 
     if 'destructor' in c:
         classes[-1]['destructor'] = c['destructor']

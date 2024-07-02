@@ -42,7 +42,7 @@ static PyMethodDef sdk_{{class_name}}_Methods[] = {
     "Generated from C function {{c_function}}()" },
 {{/methods}}
 {{#custom_methods}}
-  { "{{method_name}}",
+  { "{{short_name}}",
     (PyCFunction) {{implementation}}, METH_VARARGS,
     "Generated from C function {{sdk_function}}()" },
 {{/custom_methods}}
