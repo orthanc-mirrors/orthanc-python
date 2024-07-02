@@ -1,0 +1,73 @@
+{
+  "OrthancPluginFindQuery" : [
+    {
+      "short_name" : "GetFindQueryTagGroup",
+      "implementation" : "GetFindQueryTagGroup",
+      "sdk_function" : "OrthancPluginGetFindQueryTag",
+      "documentation" : {
+        "description" : [ "This function returns the group of one DICOM tag in the given C-Find query." ],
+        "args" : {
+          "index" : "The index of the tag of interest."
+        },
+        "return" : "The value of the group."
+      },
+      "args" : [
+        {
+          "sdk_name" : "index",
+          "sdk_type" : "uint32_t"
+        }
+      ],
+      "return_sdk_type" : "uint16_t"
+    },
+
+    {
+      "short_name" : "GetFindQueryTagElement",
+      "implementation" : "GetFindQueryTagElement",
+      "sdk_function" : "OrthancPluginGetFindQueryTag",
+      "documentation" : {
+        "description" : [ "This function returns the element of one DICOM tag in the given C-Find query." ],
+        "args" : {
+          "index" : "The index of the tag of interest."
+        },
+        "return" : "The value of the element."
+      },
+      "args" : [
+        {
+          "sdk_name" : "index",
+          "sdk_type" : "uint32_t"
+        }
+      ],
+      "return_sdk_type" : "uint16_t"
+    }
+  ],
+
+  "OrthancPluginDicomInstance" : [
+    {
+      "short_name" : "GetInstanceData",
+      "implementation" : "GetInstanceData",
+      "sdk_function" : "OrthancPluginGetInstanceData",
+      "documentation" : {
+        "description" : [ "Get the content of the DICOM instance." ],
+        "return" : "The DICOM data."
+      },
+      "args" : [
+      ],
+      "return_sdk_type" : "OrthancPluginMemoryBuffer *"
+    }
+  ],
+
+  "OrthancPluginImage" : [
+    {
+      "short_name" : "GetImageBuffer",
+      "implementation" : "GetImageBuffer",
+      "sdk_function" : "OrthancPluginGetImageBuffer",
+      "documentation" : {
+        "description" : [ "This function returns a pointer to the memory buffer that contains the pixels of the image." ],
+        "return" : "The pixel data."
+      },
+      "args" : [
+      ],
+      "return_sdk_type" : "OrthancPluginMemoryBuffer *"
+    }
+  ]
+}

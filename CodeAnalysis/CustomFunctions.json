@@ -1,0 +1,20 @@
+[
+  {
+    "c_function" : "OrthancPluginCreateMemoryBuffer",
+    "args" : [
+      {
+        "name" : "arg0",
+        "sdk_name" : "size",
+        "sdk_type" : "uint32_t"
+      }
+    ],
+    "documentation" : {
+      "args" : {
+        "size" : "Size of the memory buffer to be created"
+      },
+      "return" : "The newly allocated memory buffer",
+      "description" : [ "Create a new memory buffer managed by the Orthanc core" ]
+    },
+    "return_sdk_type" : "OrthancPluginMemoryBuffer *"
+  }
+]
