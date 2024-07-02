@@ -372,14 +372,13 @@ for c in model['classes']:
         g = FormatFunction(m)
         if g != None:
             g['self'] = ', self->object_'
-            g['is_method'] = True
             methods.append(g)
 
     custom_methods = []
 
     if c['name'] in CUSTOM_METHODS:
         for custom_method in CUSTOM_METHODS[c['name']]:
-            custom_method['is_method'] = True
+            custom_method['self'] = True   # Indicates that this is a method
             custom_method['documentation'] = DocumentFunction(custom_method)
             custom_methods.append(custom_method)
 
