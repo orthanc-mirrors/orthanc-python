@@ -81,11 +81,23 @@ CUSTOM_METHODS = {
             'method_name' : 'GetFindQueryTagGroup',
             'implementation' : 'GetFindQueryTagGroup',
             'sdk_function' : 'OrthancPluginGetFindQueryTag',
+            'documentation' : {
+                'description' : [ ],
+            },
+            'args' : [
+            ],
+            'return_sdk_type' : 'void',
         },
         {
             'method_name' : 'GetFindQueryTagElement',
             'implementation' : 'GetFindQueryTagElement',
             'sdk_function' : 'OrthancPluginGetFindQueryTag',
+            'documentation' : {
+                'description' : [ ],
+            },
+            'args' : [
+            ],
+            'return_sdk_type' : 'void',
         },
     ],
 
@@ -94,6 +106,12 @@ CUSTOM_METHODS = {
             'method_name' : 'GetInstanceData',
             'implementation' : 'GetInstanceData',
             'sdk_function' : 'OrthancPluginGetInstanceData',
+            'documentation' : {
+                'description' : [ ]
+            },
+            'args' : [
+            ],
+            'return_sdk_type' : 'OrthancPluginMemoryBuffer *',
         },
     ],
 
@@ -102,6 +120,12 @@ CUSTOM_METHODS = {
             'method_name' : 'GetImageBuffer',
             'implementation' : 'GetImageBuffer',
             'sdk_function' : 'OrthancPluginGetImageBuffer',
+            'documentation' : {
+                'description' : [ ],
+            },
+            'args' : [
+            ],
+            'return_sdk_type' : 'void',
         }
     ],
 }
@@ -115,6 +139,9 @@ partials = {}
 
 with open(os.path.join(ROOT, 'FunctionBody.mustache'), 'r') as f:
     partials['function_body'] = f.read()
+
+with open(os.path.join(ROOT, 'FunctionDocumentation.mustache'), 'r') as f:
+    partials['function_documentation'] = f.read()
 
 renderer = pystache.Renderer(
     escape = lambda u: u,  # No escaping
@@ -192,6 +219,67 @@ ORTHANC_TO_PYTHON_NUMERIC_TYPES = {
         'format' : 'f',
         }
     }
+
+
+def DocumentFunction(f):
+    documentation = {}
+    description = f['documentation'].get('description', [])
+    if len(description) > 0:
+        documentation['short_description'] = description[0].split('.') [0]
+    documentation['description'] = map(lambda x: { 'text' : x }, description)
+
+    args_declaration = []
+    args_documentation = []
+    for a in f['args']:
+        arg_name = ToLowerCase(a['sdk_name'])
+        if a['sdk_type'] == 'const char *':
+            arg_type = 'str'
+        elif a['sdk_type'] == 'float':
+            arg_type = 'float'
+        elif a['sdk_type'] in [ 'const_void_pointer_with_size', 'const void *' ]:
+            arg_type = 'bytes'
+        elif a['sdk_type'] == 'enumeration':
+            arg_type = GetShortName(a['sdk_enumeration'])
+        elif a['sdk_type'] == 'const_object':
+            arg_type = GetShortName(a['sdk_class'])
+        elif a['sdk_type'] in [ 'int32_t', 'uint32_t', 'uint8_t', 'uint16_t', 'uint64_t' ]:
+            arg_type = 'int'
+        else:
+            raise Exception('Argument type not implemented: %s' % a['sdk_type'])
+        args_declaration.append('%s: %s' % (arg_name, arg_type))
+        args_documentation.append({
+            'name' : arg_name,
+            'type' : arg_type,
+            'text' : f['documentation']['args'] [a['sdk_name']],
+        })
+
+    documentation['args_declaration'] = ', '.join(args_declaration)
+    documentation['args'] = args_documentation
+    documentation['has_args'] = len(args_documentation) > 0
+    documentation['has_return'] = True
+    documentation['return_text'] = f['documentation'].get('return', None)
+
+    if f['return_sdk_type'] == 'enumeration':
+        if f['return_sdk_enumeration'] == 'OrthancPluginErrorCode':
+            documentation['has_return'] = False
+            documentation['return_type'] = 'None'
+        else:
+            documentation['return_type'] = GetShortName(f['return_sdk_enumeration'])
+    elif f['return_sdk_type'] == 'object':
+        documentation['return_type'] = GetShortName(f['return_sdk_class'])
+    elif f['return_sdk_type'] == 'void':
+        documentation['has_return'] = False
+        documentation['return_type'] = 'None'
+    elif f['return_sdk_type'] == 'OrthancPluginMemoryBuffer *':
+        documentation['return_type'] = 'bytes'
+    elif f['return_sdk_type'] in [ 'char *', 'const char *' ]:
+        documentation['return_type'] = 'str'
+    elif f['return_sdk_type'] in [ 'int32_t', 'uint32_t', 'int64_t' ]:
+        documentation['return_type'] = 'int'
+    else:
+        raise Exception('Return type not implemented: %s' % f['return_sdk_type'])
+
+    return documentation
 
 
 def FormatFunction(f):
@@ -298,64 +386,7 @@ def FormatFunction(f):
     answer['allow_threads'] = allow_threads
 
     if 'documentation' in f:
-        documentation = {}
-        description = f['documentation'].get('description', [])
-        if len(description) > 0:
-            documentation['short_description'] = description[0].split('.') [0]
-        documentation['description'] = map(lambda x: { 'text' : x }, description)
-
-        args_declaration = []
-        args_documentation = []
-        for a in f['args']:
-            arg_name = ToLowerCase(a['sdk_name'])
-            if a['sdk_type'] == 'const char *':
-                arg_type = 'str'
-            elif a['sdk_type'] == 'float':
-                arg_type = 'float'
-            elif a['sdk_type'] in [ 'const_void_pointer_with_size', 'const void *' ]:
-                arg_type = 'bytes'
-            elif a['sdk_type'] == 'enumeration':
-                arg_type = GetShortName(a['sdk_enumeration'])
-            elif a['sdk_type'] == 'const_object':
-                arg_type = GetShortName(a['sdk_class'])
-            elif a['sdk_type'] in [ 'int32_t', 'uint32_t', 'uint8_t', 'uint16_t', 'uint64_t' ]:
-                arg_type = 'int'
-            else:
-                raise Exception('Argument type not implemented: %s' % a['sdk_type'])
-            args_declaration.append('%s: %s' % (arg_name, arg_type))
-            args_documentation.append({
-                'name' : arg_name,
-                'type' : arg_type,
-                'text' : f['documentation']['args'] [a['sdk_name']],
-            })
-
-        documentation['args_declaration'] = ', '.join(args_declaration)
-        documentation['args'] = args_documentation
-        documentation['has_args'] = len(args_documentation) > 0
-        documentation['has_return'] = True
-        documentation['return_text'] = f['documentation'].get('return', None)
-
-        if f['return_sdk_type'] == 'enumeration':
-            if f['return_sdk_enumeration'] == 'OrthancPluginErrorCode':
-                documentation['has_return'] = False
-                documentation['return_type'] = 'None'
-            else:
-                documentation['return_type'] = GetShortName(f['return_sdk_enumeration'])
-        elif f['return_sdk_type'] == 'object':
-            documentation['return_type'] = GetShortName(f['return_sdk_class'])
-        elif f['return_sdk_type'] == 'void':
-            documentation['has_return'] = False
-            documentation['return_type'] = 'None'
-        elif f['return_sdk_type'] == 'OrthancPluginMemoryBuffer *':
-            documentation['return_type'] = 'bytes'
-        elif f['return_sdk_type'] in [ 'char *', 'const char *' ]:
-            documentation['return_type'] = 'str'
-        elif f['return_sdk_type'] in [ 'int32_t', 'uint32_t', 'int64_t' ]:
-            documentation['return_type'] = 'int'
-        else:
-            raise Exception('Return type not implemented: %s' % f['return_sdk_type'])
-
-        answer['documentation'] = documentation
+        answer['documentation'] = DocumentFunction(f)
 
     if len(call_args) > 0:
         answer['call_args'] = ', ' + ', '.join(call_args)
@@ -421,6 +452,7 @@ for c in model['classes']:
         g = FormatFunction(m)
         if g != None:
             g['self'] = ', self->object_'
+            g['is_method'] = True
             methods.append(g)
 
     classes.append({
