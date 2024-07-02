@@ -2103,6 +2103,9 @@ def RegisterRestCallback(path_regular_expression: str, callback: typing.Callable
 
 
 class DicomInstance:
+    """
+    DICOM instance managed by the Orthanc core
+    """
     ...
 
     # This function returns the Application Entity Title (AET) of the DICOM modality from which a DICOM instance originates
@@ -2259,10 +2262,16 @@ class DicomInstance:
         """
         ...
 class DicomWebNode:
+    """
+    Node visited by DICOMweb conversion
+    """
     ...
 
 
 class FindAnswers:
+    """
+    Answers to a DICOM C-FIND query
+    """
     ...
 
     # This function adds one answer (encoded as a DICOM file) to the set of answers corresponding to some C-Find SCP request that is not related to modality worklists
@@ -2282,6 +2291,9 @@ class FindAnswers:
         ...
 
 class FindMatcher:
+    """
+    Matcher for DICOM C-FIND query
+    """
     ...
 
     # This function checks whether one DICOM instance matches C-Find matcher that was previously allocated using OrthancPluginCreateFindMatcher()
@@ -2298,6 +2310,9 @@ class FindMatcher:
         ...
 
 class FindQuery:
+    """
+    DICOM C-FIND query
+    """
     ...
 
     # This function returns the number of tags that are contained in the given C-Find query
@@ -2359,6 +2374,9 @@ class FindQuery:
         """
         ...
 class Image:
+    """
+    2D image managed by the Orthanc core
+    """
     ...
 
     # This function returns the type of memory layout for the pixels of the given image
@@ -2435,6 +2453,9 @@ class Image:
         """
         ...
 class Job:
+    """
+    Orthanc job
+    """
     ...
 
     # This function adds the given job to the pending jobs of Orthanc
@@ -2451,6 +2472,9 @@ class Job:
         ...
 
 class Peers:
+    """
+    Orthanc peer
+    """
     ...
 
     # This function returns the number of Orthanc peers
@@ -2505,6 +2529,9 @@ class Peers:
         ...
 
 class RestOutput:
+    """
+    Output for a call to the REST API of Orthanc
+    """
     ...
 
     # This function answers to a REST request with the content of a memory buffer
@@ -2642,10 +2669,16 @@ class RestOutput:
         ...
 
 class ServerChunkedRequestReader:
+    """
+    Read for a chunked HTTP request
+    """
     ...
 
 
 class StorageArea:
+    """
+    Storage area plugin
+    """
     ...
 
     # This function creates a new file inside the storage area that is currently used by Orthanc
@@ -2694,6 +2727,9 @@ class StorageArea:
         ...
 
 class WorklistAnswers:
+    """
+    Answers to a DICOM C-FIND worklist query
+    """
     ...
 
     # This function adds one worklist (encoded as a DICOM file) to the set of answers corresponding to some C-Find SCP request against modality worklists
@@ -2714,6 +2750,9 @@ class WorklistAnswers:
         ...
 
 class WorklistQuery:
+    """
+    DICOM C-FIND worklist query
+    """
     ...
 
     # This function checks whether one worklist (encoded as a DICOM file) matches the C-Find SCP query against modality worklists
