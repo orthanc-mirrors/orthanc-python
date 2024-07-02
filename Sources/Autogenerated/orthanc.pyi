@@ -1486,18 +1486,6 @@ def CreateImage(format: PixelFormat, width: int, height: int) -> Image:
       Image: The newly allocated image. It must be freed with OrthancPluginFreeImage().
     """
     ...
-# Create a new memory buffer managed by the Orthanc core
-def CreateMemoryBuffer(size: int) -> bytes:
-    """
-    Create a new memory buffer managed by the Orthanc core
-
-    Args:
-      size (int): Size of the memory buffer to be created
-
-    Returns:
-      bytes: The newly allocated memory buffer
-    """
-    ...
 # This function decodes one frame of a DICOM image that is stored in a memory buffer
 def DecodeDicomImage(buffer: bytes, frame_index: int) -> Image:
     """

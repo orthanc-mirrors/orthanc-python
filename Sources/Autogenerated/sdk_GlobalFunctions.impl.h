@@ -426,36 +426,6 @@ static PyObject* sdk_OrthancPluginCreateImage(PyObject* module, PyObject* args)
   }
 }
 
-static PyObject* sdk_OrthancPluginCreateMemoryBuffer(PyObject* module, PyObject* args)
-{
-  PythonLock::LogCall("Calling Python global function: OrthancPluginCreateMemoryBuffer()");
-
-  unsigned long arg0 = 0;
-
-  if (!PyArg_ParseTuple(args, "k", &arg0))
-  {
-    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
-    return NULL;
-  }
-
-  OrthancPlugins::MemoryBuffer buffer;
-  OrthancPluginErrorCode code;
-  {
-    PythonThreadsAllower allower;
-    code = OrthancPluginCreateMemoryBuffer(OrthancPlugins::GetGlobalContext(), *buffer, arg0);
-  }
-  
-  if (code == OrthancPluginErrorCode_Success)
-  {
-    return PyBytes_FromStringAndSize(buffer.GetData(), buffer.GetSize());
-  }
-  else
-  {
-    PythonLock::RaiseException(code);
-    return NULL;  
-  }
-}
-
 static PyObject* sdk_OrthancPluginDecodeDicomImage(PyObject* module, PyObject* args)
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginDecodeDicomImage()");
@@ -1938,8 +1908,6 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Generated from C function OrthancPluginCreateFindMatcher()" },
   { "CreateImage", sdk_OrthancPluginCreateImage, METH_VARARGS,
     "Generated from C function OrthancPluginCreateImage()" },
-  { "CreateMemoryBuffer", sdk_OrthancPluginCreateMemoryBuffer, METH_VARARGS,
-    "Generated from C function OrthancPluginCreateMemoryBuffer()" },
   { "DecodeDicomImage", sdk_OrthancPluginDecodeDicomImage, METH_VARARGS,
     "Generated from C function OrthancPluginDecodeDicomImage()" },
   { "DicomBufferToJson", sdk_OrthancPluginDicomBufferToJson, METH_VARARGS,
