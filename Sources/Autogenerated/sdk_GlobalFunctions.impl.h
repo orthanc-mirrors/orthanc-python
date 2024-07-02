@@ -22,6 +22,11 @@
 // WARNING: Auto-generated file. Do not modify it by hand.
 
 
+// Forward declaration of the custom global functions
+extern PyObject *RegisterRestCallback(PyObject* module, PyObject *args);
+// End of forward declarations
+
+
 static PyObject* sdk_OrthancPluginAutodetectMimeType(PyObject* module, PyObject* args)
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginAutodetectMimeType()");
@@ -2012,6 +2017,8 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Generated from C function OrthancPluginUncompressImage()" },
   { "WriteFile", sdk_OrthancPluginWriteFile, METH_VARARGS,
     "Generated from C function OrthancPluginWriteFile()" },
+  { "RegisterRestCallback", RegisterRestCallback, METH_VARARGS,
+    "Implemented in C++ function RegisterRestCallback()" },
   { NULL, NULL }
 };
 

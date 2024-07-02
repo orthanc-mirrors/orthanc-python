@@ -172,6 +172,8 @@ def DocumentFunction(f):
             arg_type = GetShortName(a['sdk_class'])
         elif a['sdk_type'] in [ 'int32_t', 'uint32_t', 'uint8_t', 'uint16_t', 'uint64_t' ]:
             arg_type = 'int'
+        elif a['sdk_type'] == 'Callable':
+            arg_type = a['callable_type']
         else:
             raise Exception('Argument type not implemented: %s' % a['sdk_type'])
         args_declaration.append('%s: %s' % (arg_name, arg_type))
@@ -264,6 +266,12 @@ def FormatFunction(f):
                 'initialization' : ' = 0',
             })
             tuple_format += t['format']
+        elif arg['sdk_type'] == 'Callable':
+            # This is only used to generate the documentation file "orthanc.pyi"
+            args.append({
+                'name' : arg['name'],
+            })
+            tuple_format += 'O'
         else:
             print('Ignoring function with unsupported argument type: %s(), type = %s' % (f['c_function'], arg['sdk_type']))
             return None
@@ -319,6 +327,7 @@ def FormatFunction(f):
 
 
 globalFunctions = []
+customFunctions = []
 
 for f in model['global_functions']:
     g = FormatFunction(f)
@@ -326,9 +335,8 @@ for f in model['global_functions']:
         globalFunctions.append(g)
 
 for f in CUSTOM_FUNCTIONS:
-    g = FormatFunction(f)
-    if g != None:
-        globalFunctions.append(g)
+    f['documentation'] = DocumentFunction(f)
+    customFunctions.append(f)
 
 
 enumerations = []
@@ -410,11 +418,13 @@ with open(os.path.join(ROOT, 'Class.mustache'), 'r') as f:
 sortedClasses = sorted(classes, key = lambda x: x['class_name'])
 sortedEnumerations = sorted(enumerations, key = lambda x: x['name'])
 sortedGlobalFunctions = sorted(globalFunctions, key = lambda x: x['c_function'])
+sortedCustomFunctions = sorted(customFunctions, key = lambda x: x['short_name'])
 
 with open(os.path.join(ROOT, 'GlobalFunctions.mustache'), 'r') as f:
     with open(os.path.join(TARGET, 'sdk_GlobalFunctions.impl.h'), 'w') as h:
         h.write(renderer.render(f.read(), {
             'global_functions' : sortedGlobalFunctions,
+            'custom_functions' : sortedCustomFunctions,
         }))
 
 with open(os.path.join(ROOT, 'sdk.cpp.mustache'), 'r') as f:
@@ -423,6 +433,7 @@ with open(os.path.join(ROOT, 'sdk.cpp.mustache'), 'r') as f:
             'classes' : sortedClasses,
             'enumerations' : sortedEnumerations,
             'global_functions' : sortedGlobalFunctions,
+            'custom_functions' : sortedCustomFunctions,
         }))
 
 with open(os.path.join(ROOT, 'sdk.h.mustache'), 'r') as f:
@@ -437,6 +448,7 @@ with open(os.path.join(ROOT, 'PythonDocumentation.mustache'), 'r') as f:
             'classes' : sortedClasses,
             'enumerations' : sortedEnumerations,
             'global_functions' : sortedGlobalFunctions,
+            'custom_functions' : sortedCustomFunctions,
         }))
 
 
@@ -444,6 +456,6 @@ countMethods = 0
 for c in sortedClasses:
     countMethods += len(c['methods'])
 
-print('\nNumber of wrapped global functions: %d' % len(sortedGlobalFunctions))
+print('\nNumber of wrapped global functions: %d' % len(sortedGlobalFunctions + sortedCustomFunctions))
 print('Number of wrapped methods: %d\n' % countMethods)
-print('Total number of wrapped global functions or methods: %d\n' % (len(sortedGlobalFunctions) + countMethods))
+print('Total number of wrapped global functions or methods: %d\n' % (len(sortedGlobalFunctions + sortedCustomFunctions) + countMethods))

@@ -284,11 +284,6 @@ static void SetupGlobalFunctions()
   std::list<PyMethodDef> functions;
 
   {
-    PyMethodDef f = { "RegisterRestCallback", RegisterRestCallback, METH_VARARGS, "" };
-    functions.push_back(f);
-  }
-
-  {
     PyMethodDef f = { "RegisterOnChangeCallback", RegisterOnChangeCallback, METH_VARARGS, "" };
     functions.push_back(f);
   }

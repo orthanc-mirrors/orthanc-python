@@ -23,6 +23,8 @@
 
 
 import enum
+import typing
+
 
 
 class ChangeType(enum.Enum):
@@ -2086,6 +2088,16 @@ def WriteFile(path: str, data: bytes) -> None:
     Args:
       path (str): The path of the file to be written.
       data (bytes): The content of the memory buffer.
+    """
+    ...
+# Register a REST callback
+def RegisterRestCallback(path_regular_expression: str, callback: typing.Callable[[RestOutput, str], None]) -> None:
+    """
+    Register a REST callback.
+
+    Args:
+      path_regular_expression (str): Regular expression for the URI. May contain groups.
+      callback (typing.Callable[[RestOutput, str], None]): The callback function to handle the REST call.
     """
     ...
 

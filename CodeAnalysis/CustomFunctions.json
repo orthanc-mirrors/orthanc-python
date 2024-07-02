@@ -1,2 +1,25 @@
 [
+  {
+    "short_name" : "RegisterRestCallback",
+    "implementation" : "RegisterRestCallback",
+    "args" : [
+      {
+        "sdk_name" : "pathRegularExpression",
+        "sdk_type" : "const char *"
+      },
+      {
+        "sdk_name" : "callback",
+        "sdk_type" : "Callable",
+        "callable_type" : "typing.Callable[[RestOutput, str], None]"
+      }
+    ],
+    "documentation" : {
+      "args" : {
+        "pathRegularExpression" : "Regular expression for the URI. May contain groups.",
+        "callback" : "The callback function to handle the REST call."
+      },
+      "description" : [ "Register a REST callback." ]
+    },
+    "return_sdk_type" : "void"
+  }
 ]

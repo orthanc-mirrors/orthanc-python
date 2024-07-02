@@ -23,6 +23,8 @@
 
 
 import enum
+import typing
+
 
 {{#enumerations}}
 
@@ -43,6 +45,9 @@ class {{short_name}}(enum.Enum):
 {{#global_functions}}
 {{> function_documentation}}
 {{/global_functions}}
+{{#custom_functions}}
+{{> function_documentation}}
+{{/custom_functions}}
 
 
 {{#classes}}
