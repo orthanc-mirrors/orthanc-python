@@ -19,6 +19,9 @@
  **/
 
 
+// WARNING: Auto-generated file. Do not modify it by hand.
+
+
 static PyObject* sdk_OrthancPluginAutodetectMimeType(PyObject* module, PyObject* args)
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginAutodetectMimeType()");

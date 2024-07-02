@@ -19,6 +19,9 @@
  **/
 
 
+// WARNING: Auto-generated file. Do not modify it by hand.
+
+
 #include "sdk.h"
 
 #include "../PythonLock.h"
