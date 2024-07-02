@@ -2090,6 +2090,15 @@ def WriteFile(path: str, data: bytes) -> None:
       data (bytes): The content of the memory buffer.
     """
     ...
+# Register a callback to monitor changes
+def RegisterOnChangeCallback(callback: typing.Callable[[ChangeType, ResourceType, str], None]) -> None:
+    """
+    Register a callback to monitor changes.
+
+    Args:
+      callback (typing.Callable[[ChangeType, ResourceType, str], None]): The callback function.
+    """
+    ...
 # Register a REST callback
 def RegisterRestCallback(path_regular_expression: str, callback: typing.Callable[[RestOutput, str], None]) -> None:
     """

@@ -21,5 +21,24 @@
       }
     ],
     "return_sdk_type" : "void"
+  },
+
+  {
+    "short_name" : "RegisterOnChangeCallback",
+    "implementation" : "RegisterOnChangeCallback",
+    "documentation" : {
+      "description" : [ "Register a callback to monitor changes." ],
+      "args" : {
+        "callback" : "The callback function."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "callback",
+        "sdk_type" : "Callable",
+        "callable_type" : "typing.Callable[[ChangeType, ResourceType, str], None]"
+      }
+    ],
+    "return_sdk_type" : "void"
   }
 ]
