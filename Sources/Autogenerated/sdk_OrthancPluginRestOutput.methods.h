@@ -19,7 +19,10 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginAnswerBuffer(
     return NULL;
   }
 
-  OrthancPluginAnswerBuffer(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len, arg2);
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginAnswerBuffer(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len, arg2);
+  }
   PyBuffer_Release(&arg0);
 
   Py_INCREF(Py_None);
@@ -49,7 +52,10 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginCompressAndAnswerPngIm
     return NULL;
   }
 
-  OrthancPluginCompressAndAnswerPngImage(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginPixelFormat>(arg0), arg1, arg2, arg3, arg4.buf);
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginCompressAndAnswerPngImage(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginPixelFormat>(arg0), arg1, arg2, arg3, arg4.buf);
+  }
   PyBuffer_Release(&arg4);
 
   Py_INCREF(Py_None);
@@ -75,7 +81,10 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginRedirect(
     return NULL;
   }
 
-  OrthancPluginRedirect(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginRedirect(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  }
   
 
   Py_INCREF(Py_None);
@@ -101,7 +110,10 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendHttpStatusCode(
     return NULL;
   }
 
-  OrthancPluginSendHttpStatusCode(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginSendHttpStatusCode(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  }
   
 
   Py_INCREF(Py_None);
@@ -127,7 +139,10 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendUnauthorized(
     return NULL;
   }
 
-  OrthancPluginSendUnauthorized(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginSendUnauthorized(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  }
   
 
   Py_INCREF(Py_None);
@@ -153,7 +168,10 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendMethodNotAllowed(
     return NULL;
   }
 
-  OrthancPluginSendMethodNotAllowed(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginSendMethodNotAllowed(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  }
   
 
   Py_INCREF(Py_None);
@@ -180,7 +198,10 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetCookie(
     return NULL;
   }
 
-  OrthancPluginSetCookie(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginSetCookie(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+  }
   
 
   Py_INCREF(Py_None);
@@ -207,7 +228,10 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetHttpHeader(
     return NULL;
   }
 
-  OrthancPluginSetHttpHeader(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginSetHttpHeader(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+  }
   
 
   Py_INCREF(Py_None);
@@ -234,7 +258,11 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginStartMultipartAnswer(
     return NULL;
   }
 
-  OrthancPluginErrorCode code = OrthancPluginStartMultipartAnswer(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginStartMultipartAnswer(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+  }
   
 
   if (code == OrthancPluginErrorCode_Success)
@@ -268,7 +296,11 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendMultipartItem(
     return NULL;
   }
 
-  OrthancPluginErrorCode code = OrthancPluginSendMultipartItem(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginSendMultipartItem(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
+  }
   PyBuffer_Release(&arg0);
 
   if (code == OrthancPluginErrorCode_Success)
@@ -303,7 +335,10 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendHttpStatus(
     return NULL;
   }
 
-  OrthancPluginSendHttpStatus(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1.buf, arg1.len);
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginSendHttpStatus(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1.buf, arg1.len);
+  }
   PyBuffer_Release(&arg1);
 
   Py_INCREF(Py_None);
@@ -334,7 +369,10 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginCompressAndAnswerJpegI
     return NULL;
   }
 
-  OrthancPluginCompressAndAnswerJpegImage(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginPixelFormat>(arg0), arg1, arg2, arg3, arg4.buf, arg5);
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginCompressAndAnswerJpegImage(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginPixelFormat>(arg0), arg1, arg2, arg3, arg4.buf, arg5);
+  }
   PyBuffer_Release(&arg4);
 
   Py_INCREF(Py_None);
@@ -361,7 +399,10 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetHttpErrorDetails(
     return NULL;
   }
 
-  OrthancPluginSetHttpErrorDetails(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginSetHttpErrorDetails(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+  }
   
 
   Py_INCREF(Py_None);

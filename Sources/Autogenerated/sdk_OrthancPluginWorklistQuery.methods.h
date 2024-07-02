@@ -18,7 +18,11 @@ static PyObject *sdk_OrthancPluginWorklistQuery_OrthancPluginWorklistIsMatch(
     return NULL;
   }
 
-  long value = OrthancPluginWorklistIsMatch(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
+  long value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginWorklistIsMatch(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
+  }
   PyBuffer_Release(&arg0);
   return PyLong_FromLong(value);
 }
@@ -37,7 +41,11 @@ static PyObject *sdk_OrthancPluginWorklistQuery_OrthancPluginWorklistGetDicomQue
 
 
   OrthancPlugins::MemoryBuffer buffer;
-  OrthancPluginErrorCode code = OrthancPluginWorklistGetDicomQuery(OrthancPlugins::GetGlobalContext(), *buffer, self->object_);
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginWorklistGetDicomQuery(OrthancPlugins::GetGlobalContext(), *buffer, self->object_);
+  }
   
   if (code == OrthancPluginErrorCode_Success)
   {

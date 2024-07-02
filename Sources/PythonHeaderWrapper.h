@@ -18,6 +18,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
+
+#define PY_SSIZE_T_CLEAN  /* Make "s#" use Py_ssize_t rather than int. */
+
 #if defined(_MSC_VER) && (ORTHANC_PYTHON_WINDOWS_USE_RELEASE_LIBS == 1) && defined(_DEBUG)
 #  undef _DEBUG
 #    include <Python.h>
@@ -25,4 +28,3 @@
 #else
 #  include <Python.h>
 #endif
-

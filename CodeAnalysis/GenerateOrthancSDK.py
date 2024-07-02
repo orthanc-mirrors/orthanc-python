@@ -220,7 +220,6 @@ def FormatFunction(f):
         'count_args' : len(f['args']),
     }
 
-    allow_threads = True
     tuple_format = ''
     tuple_target = []
     call_args = []
@@ -235,7 +234,6 @@ def FormatFunction(f):
                 'release' : 'PyBuffer_Release(&%s);' % arg['name'],
             })
             tuple_format += 's*'
-            allow_threads = False
         elif arg['sdk_type'] == 'const char *':
             args.append({
                 'name' : arg['name'],
@@ -243,7 +241,6 @@ def FormatFunction(f):
                 'initialization' : ' = NULL',
             })
             tuple_format += 's'
-            allow_threads = False
         elif arg['sdk_type'] == 'enumeration':
             args.append({
                 'name' : arg['name'],
@@ -259,7 +256,6 @@ def FormatFunction(f):
                 'check_object_type' : arg['sdk_class'],
             })
             tuple_format += 'O'
-            allow_threads = False
         elif arg['sdk_type'] in ORTHANC_TO_PYTHON_NUMERIC_TYPES:
             t = ORTHANC_TO_PYTHON_NUMERIC_TYPES[arg['sdk_type']]
             args.append({
@@ -310,19 +306,13 @@ def FormatFunction(f):
         print('Ignoring function with unsupported return type: %s(), type = %s' % (f['c_function'], f['return_sdk_type']))
         return None
 
-    allow_threads = False   # TODO
-
     answer['tuple_format'] = ', '.join([ '"' + tuple_format + '"' ] + tuple_target)
-    answer['allow_threads'] = allow_threads
 
     if 'documentation' in f:
         answer['documentation'] = DocumentFunction(f)
 
     if len(call_args) > 0:
         answer['call_args'] = ', ' + ', '.join(call_args)
-
-    if not allow_threads:
-        print('Threads are not allowed in function: %s()' % f['c_function'])
 
     return answer
 

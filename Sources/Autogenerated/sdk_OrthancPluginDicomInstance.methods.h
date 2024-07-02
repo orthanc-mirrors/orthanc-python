@@ -12,7 +12,11 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRemoteAe
 
 
 
-  const char* s = OrthancPluginGetInstanceRemoteAet(OrthancPlugins::GetGlobalContext(), self->object_);
+  const char* s;
+  {
+    PythonThreadsAllower allower;
+    s = OrthancPluginGetInstanceRemoteAet(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
   if (s == NULL)
   {
@@ -38,7 +42,11 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceSize(
 
 
 
-  long value = OrthancPluginGetInstanceSize(OrthancPlugins::GetGlobalContext(), self->object_);
+  long value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginGetInstanceSize(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
   return PyLong_FromLong(value);
 }
@@ -57,7 +65,10 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceJson(
 
 
   OrthancPlugins::OrthancString s;
-  s.Assign(OrthancPluginGetInstanceJson(OrthancPlugins::GetGlobalContext(), self->object_));
+  {
+    PythonThreadsAllower allower;
+    s.Assign(OrthancPluginGetInstanceJson(OrthancPlugins::GetGlobalContext(), self->object_));
+  }
   
   if (s.GetContent() == NULL)
   {
@@ -84,7 +95,10 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceSimplifi
 
 
   OrthancPlugins::OrthancString s;
-  s.Assign(OrthancPluginGetInstanceSimplifiedJson(OrthancPlugins::GetGlobalContext(), self->object_));
+  {
+    PythonThreadsAllower allower;
+    s.Assign(OrthancPluginGetInstanceSimplifiedJson(OrthancPlugins::GetGlobalContext(), self->object_));
+  }
   
   if (s.GetContent() == NULL)
   {
@@ -116,7 +130,11 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginHasInstanceMetadata
     return NULL;
   }
 
-  long value = OrthancPluginHasInstanceMetadata(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  long value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginHasInstanceMetadata(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  }
   
   return PyLong_FromLong(value);
 }
@@ -140,7 +158,11 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceMetadata
     return NULL;
   }
 
-  const char* s = OrthancPluginGetInstanceMetadata(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  const char* s;
+  {
+    PythonThreadsAllower allower;
+    s = OrthancPluginGetInstanceMetadata(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  }
   
   if (s == NULL)
   {
@@ -166,7 +188,11 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceOrigin(
 
 
 
-  OrthancPluginInstanceOrigin value = OrthancPluginGetInstanceOrigin(OrthancPlugins::GetGlobalContext(), self->object_);
+  OrthancPluginInstanceOrigin value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginGetInstanceOrigin(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
   return PyLong_FromLong(value);
 }
@@ -185,7 +211,10 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceTransfer
 
 
   OrthancPlugins::OrthancString s;
-  s.Assign(OrthancPluginGetInstanceTransferSyntaxUid(OrthancPlugins::GetGlobalContext(), self->object_));
+  {
+    PythonThreadsAllower allower;
+    s.Assign(OrthancPluginGetInstanceTransferSyntaxUid(OrthancPlugins::GetGlobalContext(), self->object_));
+  }
   
   if (s.GetContent() == NULL)
   {
@@ -211,7 +240,11 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginHasInstancePixelDat
 
 
 
-  long value = OrthancPluginHasInstancePixelData(OrthancPlugins::GetGlobalContext(), self->object_);
+  long value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginHasInstancePixelData(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
   return PyLong_FromLong(value);
 }
@@ -229,7 +262,11 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceFramesCo
 
 
 
-  long value = OrthancPluginGetInstanceFramesCount(OrthancPlugins::GetGlobalContext(), self->object_);
+  long value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginGetInstanceFramesCount(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
   return PyLong_FromLong(value);
 }
@@ -254,7 +291,11 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRawFrame
   }
 
   OrthancPlugins::MemoryBuffer buffer;
-  OrthancPluginErrorCode code = OrthancPluginGetInstanceRawFrame(OrthancPlugins::GetGlobalContext(), *buffer, self->object_, arg0);
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginGetInstanceRawFrame(OrthancPlugins::GetGlobalContext(), *buffer, self->object_, arg0);
+  }
   
   if (code == OrthancPluginErrorCode_Success)
   {
@@ -287,7 +328,11 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceDecodedF
   }
 
   // This is the case of a constructor
-  OrthancPluginImage* obj = OrthancPluginGetInstanceDecodedFrame(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  OrthancPluginImage* obj;
+  {
+    PythonThreadsAllower allower;
+    obj = OrthancPluginGetInstanceDecodedFrame(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  }
   
   if (obj == NULL)
   {
@@ -317,7 +362,11 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginSerializeDicomInsta
 
 
   OrthancPlugins::MemoryBuffer buffer;
-  OrthancPluginErrorCode code = OrthancPluginSerializeDicomInstance(OrthancPlugins::GetGlobalContext(), *buffer, self->object_);
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginSerializeDicomInstance(OrthancPlugins::GetGlobalContext(), *buffer, self->object_);
+  }
   
   if (code == OrthancPluginErrorCode_Success)
   {
@@ -352,7 +401,10 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceAdvanced
   }
 
   OrthancPlugins::OrthancString s;
-  s.Assign(OrthancPluginGetInstanceAdvancedJson(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginDicomToJsonFormat>(arg0), static_cast<OrthancPluginDicomToJsonFlags>(arg1), arg2));
+  {
+    PythonThreadsAllower allower;
+    s.Assign(OrthancPluginGetInstanceAdvancedJson(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginDicomToJsonFormat>(arg0), static_cast<OrthancPluginDicomToJsonFlags>(arg1), arg2));
+  }
   
   if (s.GetContent() == NULL)
   {

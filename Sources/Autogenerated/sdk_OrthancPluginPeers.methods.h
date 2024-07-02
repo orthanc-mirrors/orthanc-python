@@ -12,7 +12,11 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeersCount(
 
 
 
-  long value = OrthancPluginGetPeersCount(OrthancPlugins::GetGlobalContext(), self->object_);
+  long value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginGetPeersCount(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
   return PyLong_FromLong(value);
 }
@@ -36,7 +40,11 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeerName(
     return NULL;
   }
 
-  const char* s = OrthancPluginGetPeerName(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  const char* s;
+  {
+    PythonThreadsAllower allower;
+    s = OrthancPluginGetPeerName(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  }
   
   if (s == NULL)
   {
@@ -68,7 +76,11 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeerUrl(
     return NULL;
   }
 
-  const char* s = OrthancPluginGetPeerUrl(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  const char* s;
+  {
+    PythonThreadsAllower allower;
+    s = OrthancPluginGetPeerUrl(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  }
   
   if (s == NULL)
   {
@@ -101,7 +113,11 @@ static PyObject *sdk_OrthancPluginPeers_OrthancPluginGetPeerUserProperty(
     return NULL;
   }
 
-  const char* s = OrthancPluginGetPeerUserProperty(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+  const char* s;
+  {
+    PythonThreadsAllower allower;
+    s = OrthancPluginGetPeerUserProperty(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+  }
   
   if (s == NULL)
   {

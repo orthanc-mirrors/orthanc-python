@@ -12,7 +12,11 @@ static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQuerySize(
 
 
 
-  long value = OrthancPluginGetFindQuerySize(OrthancPlugins::GetGlobalContext(), self->object_);
+  long value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginGetFindQuerySize(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
   return PyLong_FromLong(value);
 }
@@ -37,7 +41,10 @@ static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQueryTagName(
   }
 
   OrthancPlugins::OrthancString s;
-  s.Assign(OrthancPluginGetFindQueryTagName(OrthancPlugins::GetGlobalContext(), self->object_, arg0));
+  {
+    PythonThreadsAllower allower;
+    s.Assign(OrthancPluginGetFindQueryTagName(OrthancPlugins::GetGlobalContext(), self->object_, arg0));
+  }
   
   if (s.GetContent() == NULL)
   {
@@ -70,7 +77,10 @@ static PyObject *sdk_OrthancPluginFindQuery_OrthancPluginGetFindQueryValue(
   }
 
   OrthancPlugins::OrthancString s;
-  s.Assign(OrthancPluginGetFindQueryValue(OrthancPlugins::GetGlobalContext(), self->object_, arg0));
+  {
+    PythonThreadsAllower allower;
+    s.Assign(OrthancPluginGetFindQueryValue(OrthancPlugins::GetGlobalContext(), self->object_, arg0));
+  }
   
   if (s.GetContent() == NULL)
   {

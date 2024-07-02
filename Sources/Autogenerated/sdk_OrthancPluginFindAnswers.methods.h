@@ -18,7 +18,11 @@ static PyObject *sdk_OrthancPluginFindAnswers_OrthancPluginFindAddAnswer(
     return NULL;
   }
 
-  OrthancPluginErrorCode code = OrthancPluginFindAddAnswer(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginFindAddAnswer(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
+  }
   PyBuffer_Release(&arg0);
 
   if (code == OrthancPluginErrorCode_Success)
@@ -46,7 +50,11 @@ static PyObject *sdk_OrthancPluginFindAnswers_OrthancPluginFindMarkIncomplete(
 
 
 
-  OrthancPluginErrorCode code = OrthancPluginFindMarkIncomplete(OrthancPlugins::GetGlobalContext(), self->object_);
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginFindMarkIncomplete(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
 
   if (code == OrthancPluginErrorCode_Success)

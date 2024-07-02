@@ -19,7 +19,10 @@ static PyObject *sdk_OrthancPluginJob_OrthancPluginSubmitJob(
   }
 
   OrthancPlugins::OrthancString s;
-  s.Assign(OrthancPluginSubmitJob(OrthancPlugins::GetGlobalContext(), self->object_, arg0));
+  {
+    PythonThreadsAllower allower;
+    s.Assign(OrthancPluginSubmitJob(OrthancPlugins::GetGlobalContext(), self->object_, arg0));
+  }
   
   if (s.GetContent() == NULL)
   {

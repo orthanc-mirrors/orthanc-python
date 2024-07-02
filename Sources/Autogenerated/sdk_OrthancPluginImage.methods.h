@@ -12,7 +12,11 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImagePixelFormat(
 
 
 
-  OrthancPluginPixelFormat value = OrthancPluginGetImagePixelFormat(OrthancPlugins::GetGlobalContext(), self->object_);
+  OrthancPluginPixelFormat value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginGetImagePixelFormat(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
   return PyLong_FromLong(value);
 }
@@ -30,7 +34,11 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImageWidth(
 
 
 
-  long value = OrthancPluginGetImageWidth(OrthancPlugins::GetGlobalContext(), self->object_);
+  long value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginGetImageWidth(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
   return PyLong_FromLong(value);
 }
@@ -48,7 +56,11 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImageHeight(
 
 
 
-  long value = OrthancPluginGetImageHeight(OrthancPlugins::GetGlobalContext(), self->object_);
+  long value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginGetImageHeight(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
   return PyLong_FromLong(value);
 }
@@ -66,7 +78,11 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginGetImagePitch(
 
 
 
-  long value = OrthancPluginGetImagePitch(OrthancPlugins::GetGlobalContext(), self->object_);
+  long value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginGetImagePitch(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
   return PyLong_FromLong(value);
 }
@@ -91,7 +107,11 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginConvertPixelFormat(
   }
 
   // This is the case of a constructor
-  OrthancPluginImage* obj = OrthancPluginConvertPixelFormat(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginPixelFormat>(arg0));
+  OrthancPluginImage* obj;
+  {
+    PythonThreadsAllower allower;
+    obj = OrthancPluginConvertPixelFormat(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginPixelFormat>(arg0));
+  }
   
   if (obj == NULL)
   {
@@ -132,7 +152,11 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginDrawText(
     return NULL;
   }
 
-  OrthancPluginErrorCode code = OrthancPluginDrawText(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginDrawText(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+  }
   
 
   if (code == OrthancPluginErrorCode_Success)

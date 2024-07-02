@@ -13,40 +13,43 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
 
-#include "sdk.h"
+#include "PythonThreadsAllower.h"
 
-#include "../PythonLock.h"
-#include "../PythonThreadsAllower.h"
 
-#include "../../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
+static bool allowThreads_ = false;
 
-{{#enumerations}}
-#include "./sdk_{{name}}.impl.h"
-{{/enumerations}}
 
-{{#classes}}
-#include "./sdk_{{class_name}}.impl.h"
-{{/classes}}
-
-#include "./sdk_GlobalFunctions.impl.h"
-
-{{#classes}}
-#include "./sdk_{{class_name}}.methods.h"
-{{/classes}}
-
-void RegisterOrthancSdk(PyObject* module)
+PythonThreadsAllower::PythonThreadsAllower()
 {
-{{#enumerations}}
-  Register{{name}}Enumeration(module);
-{{/enumerations}}
-
-{{#classes}}
-  Register{{class_name}}Class(module);
-{{/classes}}
+  if (allowThreads_)
+  {
+    state_ = PyEval_SaveThread();
+  }
+  else
+  {
+    state_ = NULL;
+  }
 }
+
+
+PythonThreadsAllower::~PythonThreadsAllower()
+{
+  if (state_ != NULL)
+  {
+    PyEval_RestoreThread(state_);
+    state_ = NULL;
+  }
+}
+
+
+void PythonThreadsAllower::SetAllowThreads(bool allow)
+{
+  allowThreads_ = allow;
+}
+

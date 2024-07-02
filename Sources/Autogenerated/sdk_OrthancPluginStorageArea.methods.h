@@ -21,7 +21,11 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaCreate(
     return NULL;
   }
 
-  OrthancPluginErrorCode code = OrthancPluginStorageAreaCreate(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1.buf, arg2, static_cast<OrthancPluginContentType>(arg3));
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginStorageAreaCreate(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1.buf, arg2, static_cast<OrthancPluginContentType>(arg3));
+  }
   PyBuffer_Release(&arg1);
 
   if (code == OrthancPluginErrorCode_Success)
@@ -57,7 +61,11 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaRead(
   }
 
   OrthancPlugins::MemoryBuffer buffer;
-  OrthancPluginErrorCode code = OrthancPluginStorageAreaRead(OrthancPlugins::GetGlobalContext(), *buffer, self->object_, arg0, static_cast<OrthancPluginContentType>(arg1));
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginStorageAreaRead(OrthancPlugins::GetGlobalContext(), *buffer, self->object_, arg0, static_cast<OrthancPluginContentType>(arg1));
+  }
   
   if (code == OrthancPluginErrorCode_Success)
   {
@@ -90,7 +98,11 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaRemove(
     return NULL;
   }
 
-  OrthancPluginErrorCode code = OrthancPluginStorageAreaRemove(OrthancPlugins::GetGlobalContext(), self->object_, arg0, static_cast<OrthancPluginContentType>(arg1));
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginStorageAreaRemove(OrthancPlugins::GetGlobalContext(), self->object_, arg0, static_cast<OrthancPluginContentType>(arg1));
+  }
   
 
   if (code == OrthancPluginErrorCode_Success)
@@ -124,7 +136,11 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginReconstructMainDicomT
     return NULL;
   }
 
-  OrthancPluginErrorCode code = OrthancPluginReconstructMainDicomTags(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginResourceType>(arg0));
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginReconstructMainDicomTags(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginResourceType>(arg0));
+  }
   
 
   if (code == OrthancPluginErrorCode_Success)

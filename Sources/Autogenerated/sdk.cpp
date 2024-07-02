@@ -22,6 +22,7 @@
 #include "sdk.h"
 
 #include "../PythonLock.h"
+#include "../PythonThreadsAllower.h"
 
 #include "../../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
 

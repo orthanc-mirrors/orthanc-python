@@ -184,6 +184,7 @@ add_library(OrthancPython SHARED
   Sources/PythonModule.cpp
   Sources/PythonObject.cpp
   Sources/PythonString.cpp
+  Sources/PythonThreadsAllower.cpp
   Sources/ReceivedInstanceCallback.cpp
   Sources/RestCallbacks.cpp
   Sources/StorageArea.cpp

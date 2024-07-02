@@ -18,7 +18,11 @@ static PyObject *sdk_OrthancPluginFindMatcher_OrthancPluginFindMatcherIsMatch(
     return NULL;
   }
 
-  long value = OrthancPluginFindMatcherIsMatch(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
+  long value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginFindMatcherIsMatch(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
+  }
   PyBuffer_Release(&arg0);
   return PyLong_FromLong(value);
 }

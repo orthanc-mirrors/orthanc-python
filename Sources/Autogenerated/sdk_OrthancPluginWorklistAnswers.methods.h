@@ -25,7 +25,11 @@ static PyObject *sdk_OrthancPluginWorklistAnswers_OrthancPluginWorklistAddAnswer
     return NULL;
   }
 
-  OrthancPluginErrorCode code = OrthancPluginWorklistAddAnswer(OrthancPlugins::GetGlobalContext(), self->object_, arg0 == Py_None ? NULL : reinterpret_cast<sdk_OrthancPluginWorklistQuery_Object*>(arg0)->object_, arg1.buf, arg1.len);
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginWorklistAddAnswer(OrthancPlugins::GetGlobalContext(), self->object_, arg0 == Py_None ? NULL : reinterpret_cast<sdk_OrthancPluginWorklistQuery_Object*>(arg0)->object_, arg1.buf, arg1.len);
+  }
   PyBuffer_Release(&arg1);
 
   if (code == OrthancPluginErrorCode_Success)
@@ -53,7 +57,11 @@ static PyObject *sdk_OrthancPluginWorklistAnswers_OrthancPluginWorklistMarkIncom
 
 
 
-  OrthancPluginErrorCode code = OrthancPluginWorklistMarkIncomplete(OrthancPlugins::GetGlobalContext(), self->object_);
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginWorklistMarkIncomplete(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
 
   if (code == OrthancPluginErrorCode_Success)
