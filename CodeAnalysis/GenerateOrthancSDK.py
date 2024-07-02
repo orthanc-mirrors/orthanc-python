@@ -59,9 +59,17 @@ CUSTOM_FUNCTIONS = [
         'args' : [
             {
                 'name' : 'arg0',
+                'sdk_name' : 'size',
                 'sdk_type' : 'uint32_t',
             }
         ],
+        'documentation' : {
+            'args' : {
+                'size' : 'Size of the memory buffer to be created',
+            },
+            'return' : 'The newly allocated memory buffer',
+            'description' : [ 'Create a new memory buffer managed by the Orthanc core' ],
+        },
         'return_sdk_type' : 'OrthancPluginMemoryBuffer *',
     }
 ]
@@ -135,6 +143,16 @@ def ToUpperCase(name):
                 s += name[i]
         else:
             s += name[i].upper()
+    return s
+
+
+def ToLowerCase(name):
+    s = ''
+    for i in range(len(name)):
+        if (name[i].isupper() and
+            len(s) != 0):
+            s += '_'
+        s += name[i].lower()
     return s
 
 
@@ -279,6 +297,66 @@ def FormatFunction(f):
     answer['tuple_format'] = ', '.join([ '"' + tuple_format + '"' ] + tuple_target)
     answer['allow_threads'] = allow_threads
 
+    if 'documentation' in f:
+        documentation = {}
+        description = f['documentation'].get('description', [])
+        if len(description) > 0:
+            documentation['short_description'] = description[0].split('.') [0]
+        documentation['description'] = map(lambda x: { 'text' : x }, description)
+
+        args_declaration = []
+        args_documentation = []
+        for a in f['args']:
+            arg_name = ToLowerCase(a['sdk_name'])
+            if a['sdk_type'] == 'const char *':
+                arg_type = 'str'
+            elif a['sdk_type'] == 'float':
+                arg_type = 'float'
+            elif a['sdk_type'] in [ 'const_void_pointer_with_size', 'const void *' ]:
+                arg_type = 'bytes'
+            elif a['sdk_type'] == 'enumeration':
+                arg_type = GetShortName(a['sdk_enumeration'])
+            elif a['sdk_type'] == 'const_object':
+                arg_type = GetShortName(a['sdk_class'])
+            elif a['sdk_type'] in [ 'int32_t', 'uint32_t', 'uint8_t', 'uint16_t', 'uint64_t' ]:
+                arg_type = 'int'
+            else:
+                raise Exception('Argument type not implemented: %s' % a['sdk_type'])
+            args_declaration.append('%s: %s' % (arg_name, arg_type))
+            args_documentation.append({
+                'name' : arg_name,
+                'type' : arg_type,
+                'text' : f['documentation']['args'] [a['sdk_name']],
+            })
+
+        documentation['args_declaration'] = ', '.join(args_declaration)
+        documentation['args'] = args_documentation
+        documentation['has_args'] = len(args_documentation) > 0
+        documentation['has_return'] = True
+        documentation['return_text'] = f['documentation'].get('return', None)
+
+        if f['return_sdk_type'] == 'enumeration':
+            if f['return_sdk_enumeration'] == 'OrthancPluginErrorCode':
+                documentation['has_return'] = False
+                documentation['return_type'] = 'None'
+            else:
+                documentation['return_type'] = GetShortName(f['return_sdk_enumeration'])
+        elif f['return_sdk_type'] == 'object':
+            documentation['return_type'] = GetShortName(f['return_sdk_class'])
+        elif f['return_sdk_type'] == 'void':
+            documentation['has_return'] = False
+            documentation['return_type'] = 'None'
+        elif f['return_sdk_type'] == 'OrthancPluginMemoryBuffer *':
+            documentation['return_type'] = 'bytes'
+        elif f['return_sdk_type'] in [ 'char *', 'const char *' ]:
+            documentation['return_type'] = 'str'
+        elif f['return_sdk_type'] in [ 'int32_t', 'uint32_t', 'int64_t' ]:
+            documentation['return_type'] = 'int'
+        else:
+            raise Exception('Return type not implemented: %s' % f['return_sdk_type'])
+
+        answer['documentation'] = documentation
+
     if len(call_args) > 0:
         answer['call_args'] = ', ' + ', '.join(call_args)
 
@@ -313,12 +391,15 @@ for e in model['enumerations']:
         values.append({
             'key' : ToUpperCase(value['key']),
             'value' : value['value'],
+            'documentation' : value['documentation'],
         })
 
     enumerations.append({
         'name' : e['name'],
+        'short_name' : GetShortName(e['name']),
         'path' : 'sdk_%s.impl.h' % e['name'],
         'values' : values,
+        'documentation' : e['documentation'],
     })
 
     path = 'sdk_%s.impl.h' % e['name']
@@ -391,4 +472,12 @@ with open(os.path.join(ROOT, 'sdk.h.mustache'), 'r') as f:
     with open(os.path.join(TARGET, 'sdk.h'), 'w') as h:
         h.write(renderer.render(f.read(), {
             'classes' : sortedClasses,
+        }))
+
+with open(os.path.join(ROOT, 'PythonDocumentation.mustache'), 'r') as f:
+    with open(os.path.join(TARGET, 'orthanc.pyi'), 'w') as h:
+        h.write(renderer.render(f.read(), {
+            'classes' : sortedClasses,
+            'enumerations' : sortedEnumerations,
+            'global_functions' : sortedGlobalFunctions,
         }))
