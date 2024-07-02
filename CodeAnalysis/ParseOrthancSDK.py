@@ -39,6 +39,7 @@ ROOT = os.path.dirname(os.path.realpath(sys.argv[0]))
 ##
 
 CUSTOM_FUNCTIONS = set([
+    'OrthancPluginCreateMemoryBuffer',
     'OrthancPluginCreateDicom',
     'OrthancPluginCreateImageAccessor',                # Replaced by "orthanc.CreateImageFromBuffer()"
     'OrthancPluginFreeMemoryBuffer',
