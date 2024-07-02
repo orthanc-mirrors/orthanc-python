@@ -438,3 +438,12 @@ with open(os.path.join(ROOT, 'PythonDocumentation.mustache'), 'r') as f:
             'enumerations' : sortedEnumerations,
             'global_functions' : sortedGlobalFunctions,
         }))
+
+
+countMethods = 0
+for c in sortedClasses:
+    countMethods += len(c['methods'])
+
+print('\nNumber of wrapped global functions: %d' % len(sortedGlobalFunctions))
+print('Number of wrapped methods: %d\n' % countMethods)
+print('Total number of wrapped global functions or methods: %d\n' % (len(sortedGlobalFunctions) + countMethods))
