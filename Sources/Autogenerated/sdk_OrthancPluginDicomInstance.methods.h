@@ -1,3 +1,27 @@
+/**
+ * Python plugin for Orthanc
+ * Copyright (C) 2020-2023 Osimis S.A., Belgium
+ * Copyright (C) 2024-2024 Orthanc Team SRL, Belgium
+ * Copyright (C) 2021-2024 Sebastien Jodogne, ICTEAM UCLouvain, Belgium
+ *
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ **/
+
+
+// WARNING: Auto-generated file. Do not modify it by hand.
+
+
 // Actual implementation of the methods
 static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRemoteAet(
   sdk_OrthancPluginDicomInstance_Object* self, PyObject *args)
@@ -11,7 +35,12 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRemoteAe
   }
 
 
-  const char* s = OrthancPluginGetInstanceRemoteAet(OrthancPlugins::GetGlobalContext(), self->object_);
+
+  const char* s;
+  {
+    PythonThreadsAllower allower;
+    s = OrthancPluginGetInstanceRemoteAet(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
   if (s == NULL)
   {
@@ -36,7 +65,12 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceSize(
   }
 
 
-  long value = OrthancPluginGetInstanceSize(OrthancPlugins::GetGlobalContext(), self->object_);
+
+  long value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginGetInstanceSize(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
   return PyLong_FromLong(value);
 }
@@ -53,8 +87,12 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceJson(
   }
 
 
+
   OrthancPlugins::OrthancString s;
-  s.Assign(OrthancPluginGetInstanceJson(OrthancPlugins::GetGlobalContext(), self->object_));
+  {
+    PythonThreadsAllower allower;
+    s.Assign(OrthancPluginGetInstanceJson(OrthancPlugins::GetGlobalContext(), self->object_));
+  }
   
   if (s.GetContent() == NULL)
   {
@@ -79,8 +117,12 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceSimplifi
   }
 
 
+
   OrthancPlugins::OrthancString s;
-  s.Assign(OrthancPluginGetInstanceSimplifiedJson(OrthancPlugins::GetGlobalContext(), self->object_));
+  {
+    PythonThreadsAllower allower;
+    s.Assign(OrthancPluginGetInstanceSimplifiedJson(OrthancPlugins::GetGlobalContext(), self->object_));
+  }
   
   if (s.GetContent() == NULL)
   {
@@ -111,7 +153,12 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginHasInstanceMetadata
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
-  long value = OrthancPluginHasInstanceMetadata(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+
+  long value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginHasInstanceMetadata(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  }
   
   return PyLong_FromLong(value);
 }
@@ -134,7 +181,12 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceMetadata
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
-  const char* s = OrthancPluginGetInstanceMetadata(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+
+  const char* s;
+  {
+    PythonThreadsAllower allower;
+    s = OrthancPluginGetInstanceMetadata(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  }
   
   if (s == NULL)
   {
@@ -159,7 +211,12 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceOrigin(
   }
 
 
-  OrthancPluginInstanceOrigin value = OrthancPluginGetInstanceOrigin(OrthancPlugins::GetGlobalContext(), self->object_);
+
+  OrthancPluginInstanceOrigin value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginGetInstanceOrigin(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
   return PyLong_FromLong(value);
 }
@@ -176,8 +233,12 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceTransfer
   }
 
 
+
   OrthancPlugins::OrthancString s;
-  s.Assign(OrthancPluginGetInstanceTransferSyntaxUid(OrthancPlugins::GetGlobalContext(), self->object_));
+  {
+    PythonThreadsAllower allower;
+    s.Assign(OrthancPluginGetInstanceTransferSyntaxUid(OrthancPlugins::GetGlobalContext(), self->object_));
+  }
   
   if (s.GetContent() == NULL)
   {
@@ -202,7 +263,12 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginHasInstancePixelDat
   }
 
 
-  long value = OrthancPluginHasInstancePixelData(OrthancPlugins::GetGlobalContext(), self->object_);
+
+  long value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginHasInstancePixelData(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
   return PyLong_FromLong(value);
 }
@@ -219,7 +285,12 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceFramesCo
   }
 
 
-  long value = OrthancPluginGetInstanceFramesCount(OrthancPlugins::GetGlobalContext(), self->object_);
+
+  long value;
+  {
+    PythonThreadsAllower allower;
+    value = OrthancPluginGetInstanceFramesCount(OrthancPlugins::GetGlobalContext(), self->object_);
+  }
   
   return PyLong_FromLong(value);
 }
@@ -242,8 +313,13 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRawFrame
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::MemoryBuffer buffer;
-  OrthancPluginErrorCode code = OrthancPluginGetInstanceRawFrame(OrthancPlugins::GetGlobalContext(), *buffer, self->object_, arg0);
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginGetInstanceRawFrame(OrthancPlugins::GetGlobalContext(), *buffer, self->object_, arg0);
+  }
   
   if (code == OrthancPluginErrorCode_Success)
   {
@@ -274,8 +350,13 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceDecodedF
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
+
   // This is the case of a constructor
-  OrthancPluginImage* obj = OrthancPluginGetInstanceDecodedFrame(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  OrthancPluginImage* obj;
+  {
+    PythonThreadsAllower allower;
+    obj = OrthancPluginGetInstanceDecodedFrame(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  }
   
   if (obj == NULL)
   {
@@ -303,8 +384,13 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginSerializeDicomInsta
   }
 
 
+
   OrthancPlugins::MemoryBuffer buffer;
-  OrthancPluginErrorCode code = OrthancPluginSerializeDicomInstance(OrthancPlugins::GetGlobalContext(), *buffer, self->object_);
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginSerializeDicomInstance(OrthancPlugins::GetGlobalContext(), *buffer, self->object_);
+  }
   
   if (code == OrthancPluginErrorCode_Success)
   {
@@ -337,8 +423,12 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceAdvanced
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
     return NULL;
   }
+
   OrthancPlugins::OrthancString s;
-  s.Assign(OrthancPluginGetInstanceAdvancedJson(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginDicomToJsonFormat>(arg0), static_cast<OrthancPluginDicomToJsonFlags>(arg1), arg2));
+  {
+    PythonThreadsAllower allower;
+    s.Assign(OrthancPluginGetInstanceAdvancedJson(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginDicomToJsonFormat>(arg0), static_cast<OrthancPluginDicomToJsonFlags>(arg1), arg2));
+  }
   
   if (s.GetContent() == NULL)
   {

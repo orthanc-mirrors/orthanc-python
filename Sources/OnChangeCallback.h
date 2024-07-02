@@ -21,8 +21,4 @@
 
 #pragma once
 
-#include "PythonHeaderWrapper.h"
-
 void FinalizeOnChangeCallback();
-
-PyObject* RegisterOnChangeCallback(PyObject* module, PyObject* args);

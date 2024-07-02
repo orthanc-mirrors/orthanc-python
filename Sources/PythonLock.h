@@ -23,7 +23,6 @@
 
 #include <orthanc/OrthancCPlugin.h>
 
-#define PY_SSIZE_T_CLEAN  /* Make "s#" use Py_ssize_t rather than int. */
 #include "PythonHeaderWrapper.h"
 
 #include <boost/noncopyable.hpp>

@@ -1,0 +1,22 @@
+{{#documentation.short_description}}
+# {{documentation.short_description}}
+{{/documentation.short_description}}
+def {{short_name}}({{#self}}self{{#documentation.has_args}}, {{/documentation.has_args}}{{/self}}{{documentation.args_declaration}}) -> {{documentation.return_type}}:
+    """
+{{#documentation.description}}
+    {{text}}
+{{/documentation.description}}
+{{#documentation.has_args}}
+
+    Args:
+      {{#documentation.args}}
+      {{name}} ({{type}}): {{text}}
+      {{/documentation.args}}
+{{/documentation.has_args}}
+{{#documentation.has_return}}
+
+    Returns:
+      {{documentation.return_type}}: {{documentation.return_text}}
+{{/documentation.has_return}}
+    """
+    ...

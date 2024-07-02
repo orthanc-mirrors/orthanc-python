@@ -19,6 +19,16 @@
  **/
 
 
+// WARNING: Auto-generated file. Do not modify it by hand.
+
+
+// Forward declaration of the custom global functions
+{{#custom_functions}}
+extern PyObject *{{implementation}}(PyObject* module, PyObject *args);
+{{/custom_functions}}
+// End of forward declarations
+
+
 {{#global_functions}}
 static PyObject* sdk_{{c_function}}(PyObject* module, PyObject* args)
 {
@@ -35,6 +45,10 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
   { "{{short_name}}", sdk_{{c_function}}, METH_VARARGS,
     "Generated from C function {{c_function}}()" },
 {{/global_functions}}
+{{#custom_functions}}
+  { "{{short_name}}", {{implementation}}, METH_VARARGS,
+    "Implemented in C++ function {{implementation}}()" },
+{{/custom_functions}}
   { NULL, NULL }
 };
 

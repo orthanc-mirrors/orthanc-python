@@ -1,0 +1,44 @@
+[
+  {
+    "short_name" : "RegisterRestCallback",
+    "implementation" : "RegisterRestCallback",
+    "documentation" : {
+      "description" : [ "Register a REST callback." ],
+      "args" : {
+        "pathRegularExpression" : "Regular expression for the URI. May contain groups.",
+        "callback" : "The callback function to handle the REST call."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "pathRegularExpression",
+        "sdk_type" : "const char *"
+      },
+      {
+        "sdk_name" : "callback",
+        "sdk_type" : "Callable",
+        "callable_type" : "typing.Callable[[RestOutput, str], None]"
+      }
+    ],
+    "return_sdk_type" : "void"
+  },
+
+  {
+    "short_name" : "RegisterOnChangeCallback",
+    "implementation" : "RegisterOnChangeCallback",
+    "documentation" : {
+      "description" : [ "Register a callback to monitor changes." ],
+      "args" : {
+        "callback" : "The callback function."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "callback",
+        "sdk_type" : "Callable",
+        "callable_type" : "typing.Callable[[ChangeType, ResourceType, str], None]"
+      }
+    ],
+    "return_sdk_type" : "void"
+  }
+]

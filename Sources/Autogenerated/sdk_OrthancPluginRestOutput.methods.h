@@ -1,3 +1,27 @@
+/**
+ * Python plugin for Orthanc
+ * Copyright (C) 2020-2023 Osimis S.A., Belgium
+ * Copyright (C) 2024-2024 Orthanc Team SRL, Belgium
+ * Copyright (C) 2021-2024 Sebastien Jodogne, ICTEAM UCLouvain, Belgium
+ *
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ **/
+
+
+// WARNING: Auto-generated file. Do not modify it by hand.
+
+
 // Actual implementation of the methods
 static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginAnswerBuffer(
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
@@ -18,7 +42,11 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginAnswerBuffer(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
-  OrthancPluginAnswerBuffer(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len, arg2);
+
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginAnswerBuffer(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len, arg2);
+  }
   PyBuffer_Release(&arg0);
 
   Py_INCREF(Py_None);
@@ -47,7 +75,11 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginCompressAndAnswerPngIm
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (5 arguments expected)");
     return NULL;
   }
-  OrthancPluginCompressAndAnswerPngImage(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginPixelFormat>(arg0), arg1, arg2, arg3, arg4.buf);
+
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginCompressAndAnswerPngImage(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginPixelFormat>(arg0), arg1, arg2, arg3, arg4.buf);
+  }
   PyBuffer_Release(&arg4);
 
   Py_INCREF(Py_None);
@@ -72,7 +104,11 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginRedirect(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
-  OrthancPluginRedirect(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginRedirect(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  }
   
 
   Py_INCREF(Py_None);
@@ -97,7 +133,11 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendHttpStatusCode(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
-  OrthancPluginSendHttpStatusCode(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginSendHttpStatusCode(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  }
   
 
   Py_INCREF(Py_None);
@@ -122,7 +162,11 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendUnauthorized(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
-  OrthancPluginSendUnauthorized(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginSendUnauthorized(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  }
   
 
   Py_INCREF(Py_None);
@@ -147,7 +191,11 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendMethodNotAllowed(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
-  OrthancPluginSendMethodNotAllowed(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginSendMethodNotAllowed(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  }
   
 
   Py_INCREF(Py_None);
@@ -173,7 +221,11 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetCookie(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
-  OrthancPluginSetCookie(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginSetCookie(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+  }
   
 
   Py_INCREF(Py_None);
@@ -199,7 +251,11 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetHttpHeader(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
-  OrthancPluginSetHttpHeader(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginSetHttpHeader(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+  }
   
 
   Py_INCREF(Py_None);
@@ -225,7 +281,12 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginStartMultipartAnswer(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
-  OrthancPluginErrorCode code = OrthancPluginStartMultipartAnswer(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginStartMultipartAnswer(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+  }
   
 
   if (code == OrthancPluginErrorCode_Success)
@@ -258,7 +319,12 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendMultipartItem(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
   }
-  OrthancPluginErrorCode code = OrthancPluginSendMultipartItem(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
+
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginSendMultipartItem(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
+  }
   PyBuffer_Release(&arg0);
 
   if (code == OrthancPluginErrorCode_Success)
@@ -292,7 +358,11 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendHttpStatus(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
-  OrthancPluginSendHttpStatus(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1.buf, arg1.len);
+
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginSendHttpStatus(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1.buf, arg1.len);
+  }
   PyBuffer_Release(&arg1);
 
   Py_INCREF(Py_None);
@@ -322,7 +392,11 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginCompressAndAnswerJpegI
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (6 arguments expected)");
     return NULL;
   }
-  OrthancPluginCompressAndAnswerJpegImage(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginPixelFormat>(arg0), arg1, arg2, arg3, arg4.buf, arg5);
+
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginCompressAndAnswerJpegImage(OrthancPlugins::GetGlobalContext(), self->object_, static_cast<OrthancPluginPixelFormat>(arg0), arg1, arg2, arg3, arg4.buf, arg5);
+  }
   PyBuffer_Release(&arg4);
 
   Py_INCREF(Py_None);
@@ -348,7 +422,11 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetHttpErrorDetails(
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
   }
-  OrthancPluginSetHttpErrorDetails(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginSetHttpErrorDetails(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1);
+  }
   
 
   Py_INCREF(Py_None);

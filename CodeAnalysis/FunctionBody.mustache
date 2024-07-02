@@ -9,13 +9,28 @@
     return NULL;
   }
 {{/has_args}}
+{{#args}}{{#check_object_type}}
+  if ({{name}} != Py_None && Py_TYPE({{name}}) != Get{{check_object_type}}Type())
+  {
+    PyErr_SetString(PyExc_TypeError, "Invalid orthanc.{{check_object_type}} object");
+    return NULL;
+  }
+{{/check_object_type}}{{/args}}
 {{#return_long}}
-  long value = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  long value;
+  {
+    PythonThreadsAllower allower;
+    value = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  }
   {{#args}}{{release}}{{/args}}
   return PyLong_FromLong(value);
 {{/return_long}}
 {{#return_static_string}}
-  const char* s = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  const char* s;
+  {
+    PythonThreadsAllower allower;
+    s = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  }
   {{#args}}{{release}}{{/args}}
   if (s == NULL)
   {
@@ -29,7 +44,10 @@
 {{/return_static_string}}
 {{#return_dynamic_string}}
   OrthancPlugins::OrthancString s;
-  s.Assign({{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}}));
+  {
+    PythonThreadsAllower allower;
+    s.Assign({{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}}));
+  }
   {{#args}}{{release}}{{/args}}
   if (s.GetContent() == NULL)
   {
@@ -42,14 +60,21 @@
   }
 {{/return_dynamic_string}}
 {{#return_void}}
-  {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  {
+    PythonThreadsAllower allower;
+    {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  }
   {{#args}}{{release}}{{/args}}
 
   Py_INCREF(Py_None);
   return Py_None;
 {{/return_void}}
 {{#return_error}}
-  OrthancPluginErrorCode code = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  }
   {{#args}}{{release}}{{/args}}
 
   if (code == OrthancPluginErrorCode_Success)
@@ -65,7 +90,11 @@
 {{/return_error}}
 {{#return_object}}
   // This is the case of a constructor
-  {{return_object}}* obj = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  {{return_object}}* obj;
+  {
+    PythonThreadsAllower allower;
+    obj = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  }
   {{#args}}{{release}}{{/args}}
   if (obj == NULL)
   {
@@ -82,7 +111,11 @@
 {{/return_object}}
 {{#return_bytes}}
   OrthancPlugins::MemoryBuffer buffer;
-  OrthancPluginErrorCode code = {{c_function}}(OrthancPlugins::GetGlobalContext(), *buffer{{self}}{{call_args}});
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = {{c_function}}(OrthancPlugins::GetGlobalContext(), *buffer{{self}}{{call_args}});
+  }
   {{#args}}{{release}}{{/args}}
   if (code == OrthancPluginErrorCode_Success)
   {
@@ -95,7 +128,11 @@
   }
 {{/return_bytes}}
 {{#return_enumeration}}
-  {{return_enumeration}} value = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  {{return_enumeration}} value;
+  {
+    PythonThreadsAllower allower;
+    value = {{c_function}}(OrthancPlugins::GetGlobalContext(){{self}}{{call_args}});
+  }
   {{#args}}{{release}}{{/args}}
   return PyLong_FromLong(value);
 {{/return_enumeration}}

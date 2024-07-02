@@ -19,7 +19,37 @@
  **/
 
 
-// WARNING: Auto-generated file. Do not modify it by hand.
+#include "PythonThreadsAllower.h"
 
 
-// Actual implementation of the methods
+static bool allowThreads_ = false;
+
+
+PythonThreadsAllower::PythonThreadsAllower()
+{
+  if (allowThreads_)
+  {
+    state_ = PyEval_SaveThread();
+  }
+  else
+  {
+    state_ = NULL;
+  }
+}
+
+
+PythonThreadsAllower::~PythonThreadsAllower()
+{
+  if (state_ != NULL)
+  {
+    PyEval_RestoreThread(state_);
+    state_ = NULL;
+  }
+}
+
+
+void PythonThreadsAllower::SetAllowThreads(bool allow)
+{
+  allowThreads_ = allow;
+}
+

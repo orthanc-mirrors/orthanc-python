@@ -21,8 +21,4 @@
 
 #pragma once
 
-#include "PythonHeaderWrapper.h"
-
-PyObject* RegisterRestCallback(PyObject* module, PyObject* args);
-
 void FinalizeRestCallbacks();

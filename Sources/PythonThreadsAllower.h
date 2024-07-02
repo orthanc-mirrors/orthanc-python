@@ -19,7 +19,27 @@
  **/
 
 
-// WARNING: Auto-generated file. Do not modify it by hand.
+#pragma once
+
+#include "PythonHeaderWrapper.h"
+
+#include <boost/noncopyable.hpp>
 
 
-// Actual implementation of the methods
+/**
+ * This class implements the RAII pattern for Py_BEGIN_ALLOW_THREADS /
+ * Py_END_ALLOW_THREADS:
+ * https://docs.python.org/3/c-api/init.html#releasing-the-gil-from-extension-code
+ **/
+class PythonThreadsAllower : public boost::noncopyable
+{
+private:
+  PyThreadState* state_;
+
+public:
+  PythonThreadsAllower();
+
+  ~PythonThreadsAllower();
+
+  static void SetAllowThreads(bool allow);
+};
