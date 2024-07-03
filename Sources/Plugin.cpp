@@ -263,12 +263,6 @@ static boost::thread displayMemoryUsageThread_;
 static bool displayMemoryUsageStopping_ = false;
 
 
-static void InstallClasses(PyObject* module)
-{
-  RegisterOrthancSdk(module);
-}
-
-
 static void SetupGlobalFunctions()
 {
   if (!globalFunctions_.empty())
@@ -523,7 +517,7 @@ extern "C"
 #endif
 
         SetupGlobalFunctions();
-        PythonLock::GlobalInitialize("orthanc", "OrthancException", GetGlobalFunctions, InstallClasses, isVerbose);
+        PythonLock::GlobalInitialize("orthanc", "OrthancException", GetGlobalFunctions, RegisterOrthancSdk, isVerbose);
         PythonLock::AddSysPath(userScriptDirectory.string());
 
         if (pythonConfig.GetBooleanValue("DisplayMemoryUsage", false))
