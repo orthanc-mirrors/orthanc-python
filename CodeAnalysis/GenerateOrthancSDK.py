@@ -277,12 +277,6 @@ def FormatFunction(f):
                 'initialization' : ' = 0',
             })
             tuple_format += t['format']
-        elif arg['sdk_type'] == 'Callable':
-            # This is only used to generate the documentation file "orthanc.pyi"
-            args.append({
-                'name' : arg['name'],
-            })
-            tuple_format += 'O'
         else:
             print('Ignoring function with unsupported argument type: %s(), type = %s' % (f['c_function'], arg['sdk_type']))
             return None
