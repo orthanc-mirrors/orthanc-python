@@ -29,6 +29,7 @@
 #include "PythonString.h"
 
 #include <boost/regex.hpp>
+#include <boost/thread/shared_mutex.hpp>
 
 
 class RestCallback : public boost::noncopyable
@@ -63,8 +64,7 @@ public:
 };
 
 
-// Concurrent accesses to the callbacks are protected by the
-// "PythonLock" (GIL mutex)
+static boost::shared_mutex      restCallbacksMutex_;
 static std::list<RestCallback*> restCallbacks_;
 
 
@@ -72,14 +72,16 @@ void RestCallbackHandler(OrthancPluginRestOutput* output,
                          const char* uri,
                          const OrthancPluginHttpRequest* request)
 {
-  PythonLock lock;
-
+  boost::shared_lock<boost::shared_mutex> restCallbacksLock(restCallbacksMutex_);
+  
   for (std::list<RestCallback*>::const_iterator it = restCallbacks_.begin();
        it != restCallbacks_.end(); ++it)
   {
     assert(*it != NULL);
     if ((*it)->IsMatch(uri))
     {
+      PythonLock lock;
+
       /**
        * Construct an instance object of the "orthanc.RestOutput"
        * class. This is done by calling the constructor function
@@ -217,11 +219,15 @@ PyObject* RegisterRestCallback(PyObject* module, PyObject* args)
     PyErr_SetString(PyExc_ValueError, "Expected a string (URI) and a callback function");
     return NULL;
   }
+
+  {
+    boost::unique_lock<boost::shared_mutex> restCallbacksLock(restCallbacksMutex_);
+
+    ORTHANC_PLUGINS_LOG_INFO("Registering a Python REST callback on URI: " + std::string(uri));
+    OrthancPlugins::RegisterRestCallback<RestCallbackHandler>(uri, true /* thread safe */);
   
-  ORTHANC_PLUGINS_LOG_INFO("Registering a Python REST callback on URI: " + std::string(uri));
-  OrthancPlugins::RegisterRestCallback<RestCallbackHandler>(uri, true /* thread safe */);
-  
-  restCallbacks_.push_back(new RestCallback(uri, callback));
+    restCallbacks_.push_back(new RestCallback(uri, callback));
+  }
 
   Py_INCREF(Py_None);
   return Py_None;
@@ -231,8 +237,8 @@ PyObject* RegisterRestCallback(PyObject* module, PyObject* args)
 
 void FinalizeRestCallbacks()
 {
-  PythonLock lock;
-        
+  boost::unique_lock<boost::shared_mutex> restCallbacksLock(restCallbacksMutex_);
+
   for (std::list<RestCallback*>::iterator it = restCallbacks_.begin();
        it != restCallbacks_.end(); ++it)
   {
