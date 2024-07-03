@@ -380,6 +380,8 @@ for e in model['enumerations']:
 
 classes = []
 
+countDestructors = 0
+
 for c in model['classes']:
     methods = []
 
@@ -406,6 +408,7 @@ for c in model['classes']:
     })
 
     if 'destructor' in c:
+        countDestructors += 1
         classes[-1]['destructor'] = c['destructor']
 
 
@@ -460,10 +463,26 @@ with open(os.path.join(ROOT, 'PythonDocumentation.mustache'), 'r') as f:
         }))
 
 
-countMethods = 0
-for c in sortedClasses:
-    countMethods += len(c['methods'])
 
-print('\nNumber of wrapped global functions: %d' % len(sortedGlobalFunctions + sortedCustomFunctions))
-print('Number of wrapped methods: %d\n' % countMethods)
-print('Total number of wrapped global functions or methods: %d\n' % (len(sortedGlobalFunctions + sortedCustomFunctions) + countMethods))
+##
+## Print statistics
+##
+
+countWrappedMethods = 0
+countCustomMethods = 0
+for c in sortedClasses:
+    countWrappedMethods += len(c['methods'])
+    countCustomMethods += len(c['custom_methods'])
+
+print('\nNumber of automatically wrapped global functions: %d' % len(sortedGlobalFunctions))
+print('Number of automatically wrapped methods: %d' % countWrappedMethods)
+print('Number of automatically wrapped destructors: %d' % countDestructors)
+print('Number of manually implemented (custom) global functions: %d' % len(sortedCustomFunctions))
+print('Number of manually implemented (custom) methods: %d' % countCustomMethods)
+
+totalWrapped = (len(sortedGlobalFunctions) + countWrappedMethods + countDestructors)
+print('\nTotal number of automatically wrapped functions (including destructors): %d' % totalWrapped)
+print('NB: This number must correspond to "ParseOrthancSDK.py" in "orthanc-java"')
+
+total = totalWrapped + len(sortedCustomFunctions) + countCustomMethods
+print('\n=> Total number of functions or methods in the Python SDK: %d\n' % total)
