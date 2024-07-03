@@ -29,7 +29,7 @@
 #include "PythonString.h"
 
 #include <boost/regex.hpp>
-#include <boost/thread/shared_mutex.hpp>
+#include <boost/thread.hpp>
 
 
 class RestCallback : public boost::noncopyable
@@ -224,7 +224,8 @@ PyObject* RegisterRestCallback(PyObject* module, PyObject* args)
     boost::unique_lock<boost::shared_mutex> restCallbacksLock(restCallbacksMutex_);
 
     ORTHANC_PLUGINS_LOG_INFO("Registering a Python REST callback on URI: " + std::string(uri));
-    OrthancPlugins::RegisterRestCallback<RestCallbackHandler>(uri, true /* thread safe */);
+    OrthancPlugins::RegisterRestCallback<RestCallbackHandler>(
+      uri, true /* thread safe, thus OrthancPluginRegisterRestCallbackNoLock() is used internally */);
   
     restCallbacks_.push_back(new RestCallback(uri, callback));
   }
