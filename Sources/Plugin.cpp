@@ -424,6 +424,8 @@ extern "C"
          * Initialization of Python
          **/
 
+        PythonThreadsAllower::SetAllowThreads(pythonConfig.GetBooleanValue("AllowThreads", false));
+
         const bool isVerbose = (globalConfig.GetBooleanValue("PythonVerbose", false) ||
                                 pythonConfig.GetBooleanValue("Verbose", false));
 
