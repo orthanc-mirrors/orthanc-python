@@ -23,7 +23,9 @@
 
 
 // Forward declaration of the custom global functions
+extern PyObject *RegisterIncomingHttpRequestFilter(PyObject* module, PyObject *args);
 extern PyObject *RegisterOnChangeCallback(PyObject* module, PyObject *args);
+extern PyObject *RegisterOnStoredInstanceCallback(PyObject* module, PyObject *args);
 extern PyObject *RegisterRestCallback(PyObject* module, PyObject *args);
 // End of forward declarations
 
@@ -2018,8 +2020,12 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Generated from C function OrthancPluginUncompressImage()" },
   { "WriteFile", sdk_OrthancPluginWriteFile, METH_VARARGS,
     "Generated from C function OrthancPluginWriteFile()" },
+  { "RegisterIncomingHttpRequestFilter", RegisterIncomingHttpRequestFilter, METH_VARARGS,
+    "Implemented in C++ function RegisterIncomingHttpRequestFilter()" },
   { "RegisterOnChangeCallback", RegisterOnChangeCallback, METH_VARARGS,
     "Implemented in C++ function RegisterOnChangeCallback()" },
+  { "RegisterOnStoredInstanceCallback", RegisterOnStoredInstanceCallback, METH_VARARGS,
+    "Implemented in C++ function RegisterOnStoredInstanceCallback()" },
   { "RegisterRestCallback", RegisterRestCallback, METH_VARARGS,
     "Implemented in C++ function RegisterRestCallback()" },
   { NULL, NULL }

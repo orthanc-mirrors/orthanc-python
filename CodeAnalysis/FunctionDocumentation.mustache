@@ -1,3 +1,8 @@
+{{#args}}{{#callable_protocol_return}}
+class {{callable_type}}(typing.Protocol):
+    def __call__(self, {{callable_protocol_args}}) -> {{callable_protocol_return}}:
+        ...
+{{/callable_protocol_return}}{{/args}}
 {{#documentation.short_description}}
 # {{documentation.short_description}}
 {{/documentation.short_description}}

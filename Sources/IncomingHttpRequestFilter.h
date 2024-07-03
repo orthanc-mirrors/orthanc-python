@@ -21,8 +21,4 @@
 
 #pragma once
 
-#include "PythonHeaderWrapper.h"
-
-PyObject* RegisterIncomingHttpRequestFilter(PyObject* module, PyObject* args);
-
 void FinalizeIncomingHttpRequestFilter();

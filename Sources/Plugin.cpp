@@ -283,23 +283,7 @@ static void SetupGlobalFunctions()
 
   std::list<PyMethodDef> functions;
 
-  {
-    PyMethodDef f = { "RegisterOnStoredInstanceCallback", RegisterOnStoredInstanceCallback,
-                      METH_VARARGS, "" };
-    functions.push_back(f);
-  }
-
   
-  /**
-   * New in release 3.0
-   **/
-  
-  {
-    PyMethodDef f = { "RegisterIncomingHttpRequestFilter", RegisterIncomingHttpRequestFilter, METH_VARARGS, "" };
-    functions.push_back(f);
-  }
-
-
   /**
    * New in release 3.2
    **/
@@ -464,7 +448,7 @@ extern "C"
 {
   ORTHANC_PLUGINS_API int32_t OrthancPluginInitialize(OrthancPluginContext* c)
   {
-    OrthancPlugins::SetGlobalContext(c);
+    OrthancPlugins::SetGlobalContext(c, PLUGIN_NAME);
     ORTHANC_PLUGINS_LOG_WARNING("Python plugin is initializing");
     
 

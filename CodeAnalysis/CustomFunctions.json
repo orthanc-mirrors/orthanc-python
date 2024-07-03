@@ -17,7 +17,9 @@
       {
         "sdk_name" : "callback",
         "sdk_type" : "Callable",
-        "callable_type" : "typing.Callable[[RestOutput, str], None]"
+        "callable_type" : "RestCallback",
+        "callable_protocol_args" : "output: RestOutput, url: str, method: HttpMethod, groups: dict, get: dict, headers: dict, body: bytes=None",
+        "callable_protocol_return" : "None"
       }
     ],
     "return_sdk_type" : "void"
@@ -36,7 +38,52 @@
       {
         "sdk_name" : "callback",
         "sdk_type" : "Callable",
-        "callable_type" : "typing.Callable[[ChangeType, ResourceType, str], None]"
+        "callable_type" : "OnChangeCallback",
+        "callable_protocol_args" : "change_type: ChangeType, resource_type: ResourceType, resource_id: str",
+        "callable_protocol_return" : "None"
+      }
+    ],
+    "return_sdk_type" : "void"
+  },
+
+  {
+    "short_name" : "RegisterOnStoredInstanceCallback",
+    "implementation" : "RegisterOnStoredInstanceCallback",
+    "documentation" : {
+      "description" : [ "Register a callback for received DICOM instances." ],
+      "args" : {
+        "callback" : "The callback function."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "callback",
+        "sdk_type" : "Callable",
+        "callable_type" : "OnStoredInstanceCallback",
+        "callable_protocol_args" : "instance: DicomInstance, instance_id: str",
+        "callable_protocol_return" : "None"
+      }
+    ],
+    "return_sdk_type" : "void"
+  },
+
+  {
+    "comment" : "New in release 3.0",
+    "short_name" : "RegisterIncomingHttpRequestFilter",
+    "implementation" : "RegisterIncomingHttpRequestFilter",
+    "documentation" : {
+      "description" : [ "Callback to filter incoming HTTP requests received by Orthanc." ],
+      "args" : {
+        "callback" : "The callback function."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "callback",
+        "sdk_type" : "Callable",
+        "callable_type" : "IncomingHttpRequestFilter",
+        "callable_protocol_args" : "uri: str, method: HttpMethod, ip: str, headers: dict, get: dict",
+        "callable_protocol_return" : "bool"
       }
     ],
     "return_sdk_type" : "void"

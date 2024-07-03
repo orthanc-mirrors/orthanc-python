@@ -1313,6 +1313,7 @@ class ValueRepresentation(enum.Enum):
     UT: int = 27,
 
 
+
 # This function returns the MIME type of a file by inspecting its extension
 def AutodetectMimeType(path: str) -> str:
     """
@@ -1325,6 +1326,7 @@ def AutodetectMimeType(path: str) -> str:
       str: The MIME type. This is a statically-allocated string, do not free it.
     """
     ...
+
 # This function compresses or decompresses a buffer, using the version of the zlib library that is used by the Orthanc core
 def BufferCompression(source: bytes, compression: CompressionType, uncompress: int) -> bytes:
     """
@@ -1339,6 +1341,7 @@ def BufferCompression(source: bytes, compression: CompressionType, uncompress: i
       bytes: 0 if success, or the error code if failure.
     """
     ...
+
 # This function checks whether the version of the Orthanc server running this plugin, is above the version of the current Orthanc SDK header
 def CheckVersion() -> int:
     """
@@ -1348,6 +1351,7 @@ def CheckVersion() -> int:
       int: 1 if and only if the versions are compatible. If the result is 0, the initialization of the plugin should fail.
     """
     ...
+
 # This function checks whether the version of the Orthanc server running this plugin, is above the given version
 def CheckVersionAdvanced(expected_major: int, expected_minor: int, expected_revision: int) -> int:
     """
@@ -1362,6 +1366,7 @@ def CheckVersionAdvanced(expected_major: int, expected_minor: int, expected_revi
       int: 1 if and only if the versions are compatible. If the result is 0, the initialization of the plugin should fail.
     """
     ...
+
 # This function compresses the given memory buffer containing an image using the JPEG specification, and stores the result of the compression into a newly allocated memory buffer
 def CompressJpegImage(format: PixelFormat, width: int, height: int, pitch: int, buffer: bytes, quality: int) -> bytes:
     """
@@ -1379,6 +1384,7 @@ def CompressJpegImage(format: PixelFormat, width: int, height: int, pitch: int, 
       bytes: 0 if success, or the error code if failure.
     """
     ...
+
 # This function compresses the given memory buffer containing an image using the PNG specification, and stores the result of the compression into a newly allocated memory buffer
 def CompressPngImage(format: PixelFormat, width: int, height: int, pitch: int, buffer: bytes) -> bytes:
     """
@@ -1395,6 +1401,7 @@ def CompressPngImage(format: PixelFormat, width: int, height: int, pitch: int, b
       bytes: 0 if success, or the error code if failure.
     """
     ...
+
 # This functions computes the MD5 cryptographic hash of the given memory buffer
 def ComputeMd5(buffer: bytes) -> str:
     """
@@ -1407,6 +1414,7 @@ def ComputeMd5(buffer: bytes) -> str:
       str: The NULL value in case of error, or a string containing the cryptographic hash. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # This functions computes the SHA-1 cryptographic hash of the given memory buffer
 def ComputeSha1(buffer: bytes) -> str:
     """
@@ -1419,6 +1427,7 @@ def ComputeSha1(buffer: bytes) -> str:
       str: The NULL value in case of error, or a string containing the cryptographic hash. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # This function takes as input a string containing a JSON file describing the content of a DICOM instance
 def CreateDicom(json: str, pixel_data: Image, flags: CreateDicomFlags) -> bytes:
     """
@@ -1434,6 +1443,7 @@ def CreateDicom(json: str, pixel_data: Image, flags: CreateDicomFlags) -> bytes:
       bytes: 0 if success, other value if error.
     """
     ...
+
 # This function takes as input a string containing a JSON file describing the content of a DICOM instance
 def CreateDicom2(json: str, pixel_data: Image, flags: CreateDicomFlags, private_creator: str) -> bytes:
     """
@@ -1450,6 +1460,7 @@ def CreateDicom2(json: str, pixel_data: Image, flags: CreateDicomFlags, private_
       bytes: 0 if success, other value if error.
     """
     ...
+
 # This function parses a memory buffer that contains a DICOM file
 def CreateDicomInstance(buffer: bytes) -> DicomInstance:
     """
@@ -1462,6 +1473,7 @@ def CreateDicomInstance(buffer: bytes) -> DicomInstance:
       DicomInstance: The newly allocated DICOM instance. It must be freed with OrthancPluginFreeDicomInstance().
     """
     ...
+
 # This function creates a "matcher" object that can be used to check whether a DICOM instance matches a C-Find query
 def CreateFindMatcher(query: bytes) -> FindMatcher:
     """
@@ -1474,6 +1486,7 @@ def CreateFindMatcher(query: bytes) -> FindMatcher:
       FindMatcher: The newly allocated matcher. It must be freed with OrthancPluginFreeFindMatcher().
     """
     ...
+
 # This function creates an image of given size and format
 def CreateImage(format: PixelFormat, width: int, height: int) -> Image:
     """
@@ -1488,6 +1501,7 @@ def CreateImage(format: PixelFormat, width: int, height: int) -> Image:
       Image: The newly allocated image. It must be freed with OrthancPluginFreeImage().
     """
     ...
+
 # This function decodes one frame of a DICOM image that is stored in a memory buffer
 def DecodeDicomImage(buffer: bytes, frame_index: int) -> Image:
     """
@@ -1501,6 +1515,7 @@ def DecodeDicomImage(buffer: bytes, frame_index: int) -> Image:
       Image: The uncompressed image. It must be freed with OrthancPluginFreeImage().
     """
     ...
+
 # This function takes as input a memory buffer containing a DICOM file, and outputs a JSON string representing the tags of this DICOM file
 def DicomBufferToJson(buffer: bytes, format: DicomToJsonFormat, flags: DicomToJsonFlags, max_string_length: int) -> str:
     """
@@ -1516,6 +1531,7 @@ def DicomBufferToJson(buffer: bytes, format: DicomToJsonFormat, flags: DicomToJs
       str: The NULL value if the case of an error, or the JSON string. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # This function formats a DICOM instance that is stored in Orthanc, and outputs a JSON string representing the tags of this DICOM instance
 def DicomInstanceToJson(instance_id: str, format: DicomToJsonFormat, flags: DicomToJsonFlags, max_string_length: int) -> str:
     """
@@ -1531,6 +1547,7 @@ def DicomInstanceToJson(instance_id: str, format: DicomToJsonFormat, flags: Dico
       str: The NULL value if the case of an error, or the JSON string. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # Add JavaScript code to customize the default behavior of Orthanc Explorer
 def ExtendOrthancExplorer(javascript: str) -> None:
     """
@@ -1540,6 +1557,7 @@ def ExtendOrthancExplorer(javascript: str) -> None:
       javascript (str): The custom JavaScript code.
     """
     ...
+
 # This function generates a token that can be set in the HTTP header "Authorization" so as to grant full access to the REST API of Orthanc using an external HTTP client
 def GenerateRestApiAuthorizationToken() -> str:
     """
@@ -1551,6 +1569,7 @@ def GenerateRestApiAuthorizationToken() -> str:
       str: The authorization token, or NULL value in the case of an error. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # Generate a random GUID/UUID (globally unique identifier)
 def GenerateUuid() -> str:
     """
@@ -1560,6 +1579,7 @@ def GenerateUuid() -> str:
       str: NULL in the case of an error, or a newly allocated string containing the UUID. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # Get the value of one of the command-line arguments that were used to launch Orthanc
 def GetCommandLineArgument(argument: int) -> str:
     """
@@ -1572,6 +1592,7 @@ def GetCommandLineArgument(argument: int) -> str:
       str: The value of the argument, or NULL in the case of an error. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # Retrieve the number of command-line arguments that were used to launch Orthanc
 def GetCommandLineArgumentsCount() -> int:
     """
@@ -1581,6 +1602,7 @@ def GetCommandLineArgumentsCount() -> int:
       int: The number of arguments.
     """
     ...
+
 # This function returns the content of the configuration that is used by Orthanc, formatted as a JSON string
 def GetConfiguration() -> str:
     """
@@ -1590,6 +1612,7 @@ def GetConfiguration() -> str:
       str: NULL in the case of an error, or a newly allocated string containing the configuration. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # This function returns the path to the configuration file(s) that was specified when starting Orthanc
 def GetConfigurationPath() -> str:
     """
@@ -1599,6 +1622,7 @@ def GetConfigurationPath() -> str:
       str: NULL in the case of an error, or a newly allocated string containing the path. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # Retrieve a DICOM instance using its Orthanc identifier
 def GetDicomForInstance(instance_id: str) -> bytes:
     """
@@ -1611,6 +1635,7 @@ def GetDicomForInstance(instance_id: str) -> bytes:
       bytes: 0 if success, or the error code if failure.
     """
     ...
+
 # This function returns the description of a given error code
 def GetErrorDescription(error: ErrorCode) -> str:
     """
@@ -1623,6 +1648,7 @@ def GetErrorDescription(error: ErrorCode) -> str:
       str: The error description. This is a statically-allocated string, do not free it.
     """
     ...
+
 # Retrieve the expected version of the database schema
 def GetExpectedDatabaseVersion() -> int:
     """
@@ -1632,6 +1658,7 @@ def GetExpectedDatabaseVersion() -> int:
       int: The version.
     """
     ...
+
 # This function returns the name of a font that is built in the Orthanc core
 def GetFontName(font_index: int) -> str:
     """
@@ -1644,6 +1671,7 @@ def GetFontName(font_index: int) -> str:
       str: The font name. This is a statically-allocated string, do not free it.
     """
     ...
+
 # This function returns the size of a font that is built in the Orthanc core
 def GetFontSize(font_index: int) -> int:
     """
@@ -1656,6 +1684,7 @@ def GetFontSize(font_index: int) -> int:
       int: The font size.
     """
     ...
+
 # This function returns the number of fonts that are built in the Orthanc core
 def GetFontsCount() -> int:
     """
@@ -1665,6 +1694,7 @@ def GetFontsCount() -> int:
       int: The number of fonts.
     """
     ...
+
 # Get the value of a global property that is stored in the Orthanc database
 def GetGlobalProperty(property: int, default_value: str) -> str:
     """
@@ -1678,6 +1708,7 @@ def GetGlobalProperty(property: int, default_value: str) -> str:
       str: The value of the global property, or NULL in the case of an error. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # This function returns the path to the directory containing the Orthanc executable
 def GetOrthancDirectory() -> str:
     """
@@ -1687,6 +1718,7 @@ def GetOrthancDirectory() -> str:
       str: NULL in the case of an error, or a newly allocated string containing the path. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # This function returns the path to the Orthanc executable
 def GetOrthancPath() -> str:
     """
@@ -1696,6 +1728,7 @@ def GetOrthancPath() -> str:
       str: NULL in the case of an error, or a newly allocated string containing the path. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # This function returns the parameters of the Orthanc peers that are known to the Orthanc server hosting the plugin
 def GetPeers() -> Peers:
     """
@@ -1705,6 +1738,7 @@ def GetPeers() -> Peers:
       Peers: NULL if error, or a newly allocated opaque data structure containing the peers. This structure must be freed with OrthancPluginFreePeers().
     """
     ...
+
 # This function makes a lookup to the dictionary of DICOM tags that are known to Orthanc, and returns the symbolic name of a DICOM tag
 def GetTagName(group: int, element: int, private_creator: str) -> str:
     """
@@ -1719,6 +1753,7 @@ def GetTagName(group: int, element: int, private_creator: str) -> str:
       str: NULL in the case of an error, or a newly allocated string containing the path. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # Make a HTTP DELETE call to the given URL
 def HttpDelete(url: str, username: str, password: str) -> None:
     """
@@ -1730,6 +1765,7 @@ def HttpDelete(url: str, username: str, password: str) -> None:
       password (str): The password (can be "NULL" if no password protection).
     """
     ...
+
 # Make a HTTP GET call to the given URL
 def HttpGet(url: str, username: str, password: str) -> bytes:
     """
@@ -1744,6 +1780,7 @@ def HttpGet(url: str, username: str, password: str) -> bytes:
       bytes: 0 if success, or the error code if failure.
     """
     ...
+
 # Make a HTTP POST call to the given URL
 def HttpPost(url: str, body: bytes, username: str, password: str) -> bytes:
     """
@@ -1759,6 +1796,7 @@ def HttpPost(url: str, body: bytes, username: str, password: str) -> bytes:
       bytes: 0 if success, or the error code if failure.
     """
     ...
+
 # Make a HTTP PUT call to the given URL
 def HttpPut(url: str, body: bytes, username: str, password: str) -> bytes:
     """
@@ -1774,6 +1812,7 @@ def HttpPut(url: str, body: bytes, username: str, password: str) -> bytes:
       bytes: 0 if success, or the error code if failure.
     """
     ...
+
 # Log an error message using the Orthanc logging system
 def LogError(message: str) -> None:
     """
@@ -1783,6 +1822,7 @@ def LogError(message: str) -> None:
       message (str): The message to be logged.
     """
     ...
+
 # Log an information message using the Orthanc logging system
 def LogInfo(message: str) -> None:
     """
@@ -1792,6 +1832,7 @@ def LogInfo(message: str) -> None:
       message (str): The message to be logged.
     """
     ...
+
 # Log a warning message using the Orthanc logging system
 def LogWarning(message: str) -> None:
     """
@@ -1801,6 +1842,7 @@ def LogWarning(message: str) -> None:
       message (str): The message to be logged.
     """
     ...
+
 # Look for an instance stored in Orthanc, using its SOP Instance UID tag (0x0008, 0x0018)
 def LookupInstance(sop_instance_u_i_d: str) -> str:
     """
@@ -1813,6 +1855,7 @@ def LookupInstance(sop_instance_u_i_d: str) -> str:
       str: The NULL value if the instance is non-existent, or a string containing the Orthanc ID of the instance. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # Look for a patient stored in Orthanc, using its Patient ID tag (0x0010, 0x0020)
 def LookupPatient(patient_i_d: str) -> str:
     """
@@ -1825,6 +1868,7 @@ def LookupPatient(patient_i_d: str) -> str:
       str: The NULL value if the patient is non-existent, or a string containing the Orthanc ID of the patient. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # Look for a series stored in Orthanc, using its Series Instance UID tag (0x0020, 0x000e)
 def LookupSeries(series_u_i_d: str) -> str:
     """
@@ -1837,6 +1881,7 @@ def LookupSeries(series_u_i_d: str) -> str:
       str: The NULL value if the series is non-existent, or a string containing the Orthanc ID of the series. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # Look for a study stored in Orthanc, using its Study Instance UID tag (0x0020, 0x000d)
 def LookupStudy(study_u_i_d: str) -> str:
     """
@@ -1849,6 +1894,7 @@ def LookupStudy(study_u_i_d: str) -> str:
       str: The NULL value if the study is non-existent, or a string containing the Orthanc ID of the study. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # Look for a study stored in Orthanc, using its Accession Number tag (0x0008, 0x0050)
 def LookupStudyWithAccessionNumber(accession_number: str) -> str:
     """
@@ -1861,6 +1907,7 @@ def LookupStudyWithAccessionNumber(accession_number: str) -> str:
       str: The NULL value if the study is non-existent, or a string containing the Orthanc ID of the study. This string must be freed by OrthancPluginFreeString().
     """
     ...
+
 # Read the content of a file on the filesystem, and returns it into a newly allocated memory buffer
 def ReadFile(path: str) -> bytes:
     """
@@ -1873,6 +1920,7 @@ def ReadFile(path: str) -> bytes:
       bytes: 0 if success, or the error code if failure.
     """
     ...
+
 # This function declares a new public tag in the dictionary of DICOM tags that are known to Orthanc
 def RegisterDictionaryTag(group: int, element: int, vr: ValueRepresentation, name: str, min_multiplicity: int, max_multiplicity: int) -> None:
     """
@@ -1887,6 +1935,7 @@ def RegisterDictionaryTag(group: int, element: int, vr: ValueRepresentation, nam
       max_multiplicity (int): The maximum multiplicity of the tag. A value of 0 means an arbitrary multiplicity (""n"").
     """
     ...
+
 # This function declares a custom error code that can be generated by this plugin
 def RegisterErrorCode(code: int, http_status: int, message: str) -> None:
     """
@@ -1898,6 +1947,7 @@ def RegisterErrorCode(code: int, http_status: int, message: str) -> None:
       message (str): The description of the error.
     """
     ...
+
 # This function declares a new private tag in the dictionary of DICOM tags that are known to Orthanc
 def RegisterPrivateDictionaryTag(group: int, element: int, vr: ValueRepresentation, name: str, min_multiplicity: int, max_multiplicity: int, private_creator: str) -> None:
     """
@@ -1913,6 +1963,7 @@ def RegisterPrivateDictionaryTag(group: int, element: int, vr: ValueRepresentati
       private_creator (str): The private creator of this private tag.
     """
     ...
+
 # Make a DELETE call to the built-in Orthanc REST API
 def RestApiDelete(uri: str) -> None:
     """
@@ -1923,6 +1974,7 @@ def RestApiDelete(uri: str) -> None:
       uri (str): The URI to delete in the built-in Orthanc API.
     """
     ...
+
 # Make a DELETE call to the Orthanc REST API, after all the plugins are applied
 def RestApiDeleteAfterPlugins(uri: str) -> None:
     """
@@ -1933,6 +1985,7 @@ def RestApiDeleteAfterPlugins(uri: str) -> None:
       uri (str): The URI to delete in the built-in Orthanc API.
     """
     ...
+
 # Make a GET call to the built-in Orthanc REST API
 def RestApiGet(uri: str) -> bytes:
     """
@@ -1946,6 +1999,7 @@ def RestApiGet(uri: str) -> bytes:
       bytes: 0 if success, or the error code if failure.
     """
     ...
+
 # Make a GET call to the Orthanc REST API, after all the plugins are applied
 def RestApiGetAfterPlugins(uri: str) -> bytes:
     """
@@ -1959,6 +2013,7 @@ def RestApiGetAfterPlugins(uri: str) -> bytes:
       bytes: 0 if success, or the error code if failure.
     """
     ...
+
 # Make a POST call to the built-in Orthanc REST API
 def RestApiPost(uri: str, body: bytes) -> bytes:
     """
@@ -1973,6 +2028,7 @@ def RestApiPost(uri: str, body: bytes) -> bytes:
       bytes: 0 if success, or the error code if failure.
     """
     ...
+
 # Make a POST call to the Orthanc REST API, after all the plugins are applied
 def RestApiPostAfterPlugins(uri: str, body: bytes) -> bytes:
     """
@@ -1987,6 +2043,7 @@ def RestApiPostAfterPlugins(uri: str, body: bytes) -> bytes:
       bytes: 0 if success, or the error code if failure.
     """
     ...
+
 # Make a PUT call to the built-in Orthanc REST API
 def RestApiPut(uri: str, body: bytes) -> bytes:
     """
@@ -2001,6 +2058,7 @@ def RestApiPut(uri: str, body: bytes) -> bytes:
       bytes: 0 if success, or the error code if failure.
     """
     ...
+
 # Make a PUT call to the Orthanc REST API, after all the plugins are applied
 def RestApiPutAfterPlugins(uri: str, body: bytes) -> bytes:
     """
@@ -2015,6 +2073,7 @@ def RestApiPutAfterPlugins(uri: str, body: bytes) -> bytes:
       bytes: 0 if success, or the error code if failure.
     """
     ...
+
 # Set a description for this plugin
 def SetDescription(description: str) -> None:
     """
@@ -2024,6 +2083,7 @@ def SetDescription(description: str) -> None:
       description (str): The description.
     """
     ...
+
 # Set the value of a global property into the Orthanc database
 def SetGlobalProperty(property: int, value: str) -> None:
     """
@@ -2034,6 +2094,7 @@ def SetGlobalProperty(property: int, value: str) -> None:
       value (str): The value to be set in the global property.
     """
     ...
+
 # This function sets the value of a metrics to monitor the behavior of the plugin through tools such as Prometheus
 def SetMetricsValue(name: str, value: float, type: MetricsType) -> None:
     """
@@ -2045,6 +2106,7 @@ def SetMetricsValue(name: str, value: float, type: MetricsType) -> None:
       type (MetricsType): The type of the metrics. This parameter is only taken into consideration the first time this metrics is set.
     """
     ...
+
 # For plugins that come with a Web interface, this function declares the entry path where to find this interface
 def SetRootUri(uri: str) -> None:
     """
@@ -2054,6 +2116,7 @@ def SetRootUri(uri: str) -> None:
       uri (str): The root URI for this plugin.
     """
     ...
+
 # This function parses a memory buffer that contains a DICOM file, then transcodes it to the given transfer syntax
 def TranscodeDicomInstance(buffer: bytes, transfer_syntax: str) -> DicomInstance:
     """
@@ -2067,6 +2130,7 @@ def TranscodeDicomInstance(buffer: bytes, transfer_syntax: str) -> DicomInstance
       DicomInstance: The newly allocated DICOM instance. It must be freed with OrthancPluginFreeDicomInstance().
     """
     ...
+
 # This function decodes a compressed image from a memory buffer
 def UncompressImage(data: bytes, format: ImageFormat) -> Image:
     """
@@ -2080,6 +2144,7 @@ def UncompressImage(data: bytes, format: ImageFormat) -> Image:
       Image: The uncompressed image. It must be freed with OrthancPluginFreeImage().
     """
     ...
+
 # Write the content of a memory buffer to the filesystem
 def WriteFile(path: str, data: bytes) -> None:
     """
@@ -2090,23 +2155,61 @@ def WriteFile(path: str, data: bytes) -> None:
       data (bytes): The content of the memory buffer.
     """
     ...
+
+class IncomingHttpRequestFilter(typing.Protocol):
+    def __call__(self, uri: str, method: HttpMethod, ip: str, headers: dict, get: dict) -> bool:
+        ...
+
+# Callback to filter incoming HTTP requests received by Orthanc
+def RegisterIncomingHttpRequestFilter(callback: IncomingHttpRequestFilter) -> None:
+    """
+    Callback to filter incoming HTTP requests received by Orthanc.
+
+    Args:
+      callback (IncomingHttpRequestFilter): The callback function.
+    """
+    ...
+
+class OnChangeCallback(typing.Protocol):
+    def __call__(self, change_type: ChangeType, resource_type: ResourceType, resource_id: str) -> None:
+        ...
+
 # Register a callback to monitor changes
-def RegisterOnChangeCallback(callback: typing.Callable[[ChangeType, ResourceType, str], None]) -> None:
+def RegisterOnChangeCallback(callback: OnChangeCallback) -> None:
     """
     Register a callback to monitor changes.
 
     Args:
-      callback (typing.Callable[[ChangeType, ResourceType, str], None]): The callback function.
+      callback (OnChangeCallback): The callback function.
     """
     ...
+
+class OnStoredInstanceCallback(typing.Protocol):
+    def __call__(self, instance: DicomInstance, instance_id: str) -> None:
+        ...
+
+# Register a callback for received DICOM instances
+def RegisterOnStoredInstanceCallback(callback: OnStoredInstanceCallback) -> None:
+    """
+    Register a callback for received DICOM instances.
+
+    Args:
+      callback (OnStoredInstanceCallback): The callback function.
+    """
+    ...
+
+class RestCallback(typing.Protocol):
+    def __call__(self, output: RestOutput, url: str, method: HttpMethod, groups: dict, get: dict, headers: dict, body: bytes=None) -> None:
+        ...
+
 # Register a REST callback
-def RegisterRestCallback(path_regular_expression: str, callback: typing.Callable[[RestOutput, str], None]) -> None:
+def RegisterRestCallback(path_regular_expression: str, callback: RestCallback) -> None:
     """
     Register a REST callback.
 
     Args:
       path_regular_expression (str): Regular expression for the URI. May contain groups.
-      callback (typing.Callable[[RestOutput, str], None]): The callback function to handle the REST call.
+      callback (RestCallback): The callback function to handle the REST call.
     """
     ...
 
@@ -2117,6 +2220,7 @@ class DicomInstance:
     """
     ...
 
+    
     # This function returns the Application Entity Title (AET) of the DICOM modality from which a DICOM instance originates
     def GetInstanceRemoteAet(self) -> str:
         """
@@ -2126,6 +2230,7 @@ class DicomInstance:
           str: The AET if success, NULL if error.
         """
         ...
+    
     # This function returns the number of bytes of the given DICOM instance
     def GetInstanceSize(self) -> int:
         """
@@ -2135,6 +2240,7 @@ class DicomInstance:
           int: The size of the file, -1 in case of error.
         """
         ...
+    
     # This function returns a pointer to a newly created string containing a JSON file
     def GetInstanceJson(self) -> str:
         """
@@ -2144,6 +2250,7 @@ class DicomInstance:
           str: The NULL value in case of error, or a string containing the JSON file. This string must be freed by OrthancPluginFreeString().
         """
         ...
+    
     # This function returns a pointer to a newly created string containing a JSON file
     def GetInstanceSimplifiedJson(self) -> str:
         """
@@ -2153,6 +2260,7 @@ class DicomInstance:
           str: The NULL value in case of error, or a string containing the JSON file. This string must be freed by OrthancPluginFreeString().
         """
         ...
+    
     # This function checks whether the DICOM instance of interest is associated with some metadata
     def HasInstanceMetadata(self, metadata: str) -> int:
         """
@@ -2165,6 +2273,7 @@ class DicomInstance:
           int: 1 if the metadata is present, 0 if it is absent, -1 in case of error.
         """
         ...
+    
     # This functions returns the value of some metadata that is associated with the DICOM instance of interest
     def GetInstanceMetadata(self, metadata: str) -> str:
         """
@@ -2177,6 +2286,7 @@ class DicomInstance:
           str: The metadata value if success, NULL if error. Please note that the returned string belongs to the instance object and must NOT be deallocated. Please make a copy of the string if you wish to access it later.
         """
         ...
+    
     # This function returns the origin of a DICOM instance that has been received by Orthanc
     def GetInstanceOrigin(self) -> InstanceOrigin:
         """
@@ -2186,6 +2296,7 @@ class DicomInstance:
           InstanceOrigin: The origin of the instance.
         """
         ...
+    
     # This function returns a pointer to a newly created string that contains the transfer syntax UID of the DICOM instance
     def GetInstanceTransferSyntaxUid(self) -> str:
         """
@@ -2195,6 +2306,7 @@ class DicomInstance:
           str: The NULL value in case of error, or a string containing the transfer syntax UID. This string must be freed by OrthancPluginFreeString().
         """
         ...
+    
     # This function returns a Boolean value indicating whether the DICOM instance contains the pixel data (7FE0,0010) tag
     def HasInstancePixelData(self) -> int:
         """
@@ -2204,6 +2316,7 @@ class DicomInstance:
           int: "1" if the DICOM instance contains pixel data, or "0" if the tag is missing, or "-1" in the case of an error.
         """
         ...
+    
     # This function returns the number of frames that are part of a DICOM image managed by the Orthanc core
     def GetInstanceFramesCount(self) -> int:
         """
@@ -2213,6 +2326,7 @@ class DicomInstance:
           int: The number of frames (will be zero in the case of an error).
         """
         ...
+    
     # This function returns a memory buffer containing the raw content of a frame in a DICOM instance that is managed by the Orthanc core
     def GetInstanceRawFrame(self, frame_index: int) -> bytes:
         """
@@ -2225,6 +2339,7 @@ class DicomInstance:
           bytes: 0 if success, or the error code if failure.
         """
         ...
+    
     # This function decodes one frame of a DICOM image that is managed by the Orthanc core
     def GetInstanceDecodedFrame(self, frame_index: int) -> Image:
         """
@@ -2237,6 +2352,7 @@ class DicomInstance:
           Image: The uncompressed image. It must be freed with OrthancPluginFreeImage().
         """
         ...
+    
     # This function returns a memory buffer containing the serialization of a DICOM instance that is managed by the Orthanc core
     def SerializeDicomInstance(self) -> bytes:
         """
@@ -2246,6 +2362,7 @@ class DicomInstance:
           bytes: 0 if success, or the error code if failure.
         """
         ...
+    
     # This function takes as DICOM instance managed by the Orthanc core, and outputs a JSON string representing the tags of this DICOM file
     def GetInstanceAdvancedJson(self, format: DicomToJsonFormat, flags: DicomToJsonFlags, max_string_length: int) -> str:
         """
@@ -2261,6 +2378,7 @@ class DicomInstance:
         """
         ...
 
+    
     # Get the content of the DICOM instance
     def GetInstanceData(self) -> bytes:
         """
@@ -2283,6 +2401,7 @@ class FindAnswers:
     """
     ...
 
+    
     # This function adds one answer (encoded as a DICOM file) to the set of answers corresponding to some C-Find SCP request that is not related to modality worklists
     def FindAddAnswer(self, dicom: bytes) -> None:
         """
@@ -2292,6 +2411,7 @@ class FindAnswers:
           dicom (bytes): The answer to be added, encoded as a DICOM file.
         """
         ...
+    
     # This function marks as incomplete the set of answers corresponding to some C-Find SCP request that is not related to modality worklists
     def FindMarkIncomplete(self) -> None:
         """
@@ -2305,6 +2425,7 @@ class FindMatcher:
     """
     ...
 
+    
     # This function checks whether one DICOM instance matches C-Find matcher that was previously allocated using OrthancPluginCreateFindMatcher()
     def FindMatcherIsMatch(self, dicom: bytes) -> int:
         """
@@ -2324,6 +2445,7 @@ class FindQuery:
     """
     ...
 
+    
     # This function returns the number of tags that are contained in the given C-Find query
     def GetFindQuerySize(self) -> int:
         """
@@ -2333,6 +2455,7 @@ class FindQuery:
           int: The number of tags.
         """
         ...
+    
     # This function returns the symbolic name of one DICOM tag in the given C-Find query
     def GetFindQueryTagName(self, index: int) -> str:
         """
@@ -2345,6 +2468,7 @@ class FindQuery:
           str: 0 if success, other value if error.
         """
         ...
+    
     # This function returns the value associated with one tag in the given C-Find query
     def GetFindQueryValue(self, index: int) -> str:
         """
@@ -2358,6 +2482,7 @@ class FindQuery:
         """
         ...
 
+    
     # This function returns the element of one DICOM tag in the given C-Find query
     def GetFindQueryTagElement(self, index: int) -> int:
         """
@@ -2370,6 +2495,7 @@ class FindQuery:
           int: The value of the element.
         """
         ...
+    
     # This function returns the group of one DICOM tag in the given C-Find query
     def GetFindQueryTagGroup(self, index: int) -> int:
         """
@@ -2388,6 +2514,7 @@ class Image:
     """
     ...
 
+    
     # This function returns the type of memory layout for the pixels of the given image
     def GetImagePixelFormat(self) -> PixelFormat:
         """
@@ -2397,6 +2524,7 @@ class Image:
           PixelFormat: The pixel format.
         """
         ...
+    
     # This function returns the width of the given image
     def GetImageWidth(self) -> int:
         """
@@ -2406,6 +2534,7 @@ class Image:
           int: The width.
         """
         ...
+    
     # This function returns the height of the given image
     def GetImageHeight(self) -> int:
         """
@@ -2415,6 +2544,7 @@ class Image:
           int: The height.
         """
         ...
+    
     # This function returns the pitch of the given image
     def GetImagePitch(self) -> int:
         """
@@ -2424,6 +2554,7 @@ class Image:
           int: The pitch.
         """
         ...
+    
     # This function creates a new image, changing the memory layout of the pixels
     def ConvertPixelFormat(self, target_format: PixelFormat) -> Image:
         """
@@ -2436,6 +2567,7 @@ class Image:
           Image: The resulting image. It must be freed with OrthancPluginFreeImage().
         """
         ...
+    
     # This function draws some text on some image
     def DrawText(self, font_index: int, utf8_text: str, x: int, y: int, r: int, g: int, b: int) -> None:
         """
@@ -2452,6 +2584,7 @@ class Image:
         """
         ...
 
+    
     # This function returns a pointer to the memory buffer that contains the pixels of the image
     def GetImageBuffer(self) -> bytes:
         """
@@ -2467,6 +2600,7 @@ class Job:
     """
     ...
 
+    
     # This function adds the given job to the pending jobs of Orthanc
     def SubmitJob(self, priority: int) -> str:
         """
@@ -2486,6 +2620,7 @@ class Peers:
     """
     ...
 
+    
     # This function returns the number of Orthanc peers
     def GetPeersCount(self) -> int:
         """
@@ -2496,6 +2631,7 @@ class Peers:
           int: The number of peers.
         """
         ...
+    
     # This function returns the symbolic name of the Orthanc peer, which corresponds to the key of the "OrthancPeers" configuration option of Orthanc
     def GetPeerName(self, peer_index: int) -> str:
         """
@@ -2509,6 +2645,7 @@ class Peers:
           str: The symbolic name, or NULL in the case of an error.
         """
         ...
+    
     # This function returns the base URL to the REST API of some Orthanc peer
     def GetPeerUrl(self, peer_index: int) -> str:
         """
@@ -2522,6 +2659,7 @@ class Peers:
           str: The URL, or NULL in the case of an error.
         """
         ...
+    
     # This function returns some user-defined property of some Orthanc peer
     def GetPeerUserProperty(self, peer_index: int, user_property: str) -> str:
         """
@@ -2543,6 +2681,7 @@ class RestOutput:
     """
     ...
 
+    
     # This function answers to a REST request with the content of a memory buffer
     def AnswerBuffer(self, answer: bytes, mime_type: str) -> None:
         """
@@ -2553,6 +2692,7 @@ class RestOutput:
           mime_type (str): The MIME type of the answer.
         """
         ...
+    
     # This function answers to a REST request with a PNG image
     def CompressAndAnswerPngImage(self, format: PixelFormat, width: int, height: int, pitch: int, buffer: bytes) -> None:
         """
@@ -2566,6 +2706,7 @@ class RestOutput:
           buffer (bytes): The memory buffer containing the uncompressed image.
         """
         ...
+    
     # This function answers to a REST request by redirecting the user to another URI using HTTP status 301
     def Redirect(self, redirection: str) -> None:
         """
@@ -2575,6 +2716,7 @@ class RestOutput:
           redirection (str): Where to redirect.
         """
         ...
+    
     # This function answers to a REST request by sending a HTTP status code (such as "400 - Bad Request")
     def SendHttpStatusCode(self, status: int) -> None:
         """
@@ -2584,6 +2726,7 @@ class RestOutput:
           status (int): The HTTP status code to be sent.
         """
         ...
+    
     # This function answers to a REST request by signaling that it is not authorized
     def SendUnauthorized(self, realm: str) -> None:
         """
@@ -2593,6 +2736,7 @@ class RestOutput:
           realm (str): The realm for the authorization process.
         """
         ...
+    
     # This function answers to a REST request by signaling that the queried URI does not support this method
     def SendMethodNotAllowed(self, allowed_methods: str) -> None:
         """
@@ -2602,6 +2746,7 @@ class RestOutput:
           allowed_methods (str): The allowed methods for this URI (e.g. "GET,POST" after a PUT or a POST request).
         """
         ...
+    
     # This function sets a cookie in the HTTP client
     def SetCookie(self, cookie: str, value: str) -> None:
         """
@@ -2612,6 +2757,7 @@ class RestOutput:
           value (str): The value of the cookie.
         """
         ...
+    
     # This function sets a HTTP header in the HTTP answer
     def SetHttpHeader(self, key: str, value: str) -> None:
         """
@@ -2622,6 +2768,7 @@ class RestOutput:
           value (str): The value of the HTTP header.
         """
         ...
+    
     # Initiates a HTTP multipart answer, as the result of a REST request
     def StartMultipartAnswer(self, sub_type: str, content_type: str) -> None:
         """
@@ -2632,6 +2779,7 @@ class RestOutput:
           content_type (str): The MIME type of the items in the multipart answer.
         """
         ...
+    
     # This function sends an item as a part of some HTTP multipart answer that was initiated by OrthancPluginStartMultipartAnswer()
     def SendMultipartItem(self, answer: bytes) -> None:
         """
@@ -2641,6 +2789,7 @@ class RestOutput:
           answer (bytes): Pointer to the memory buffer containing the item.
         """
         ...
+    
     # This function answers to a HTTP request by sending a HTTP status code (such as "400 - Bad Request"), together with a body describing the error
     def SendHttpStatus(self, status: int, body: bytes) -> None:
         """
@@ -2652,6 +2801,7 @@ class RestOutput:
           body (bytes): The body of the answer.
         """
         ...
+    
     # This function answers to a REST request with a JPEG image
     def CompressAndAnswerJpegImage(self, format: PixelFormat, width: int, height: int, pitch: int, buffer: bytes, quality: int) -> None:
         """
@@ -2666,6 +2816,7 @@ class RestOutput:
           quality (int): The quality of the JPEG encoding, between 1 (worst quality, best compression) and 100 (best quality, worst compression).
         """
         ...
+    
     # This function sets the detailed description associated with an HTTP error
     def SetHttpErrorDetails(self, details: str, log: int) -> None:
         """
@@ -2690,6 +2841,7 @@ class StorageArea:
     """
     ...
 
+    
     # This function creates a new file inside the storage area that is currently used by Orthanc
     def StorageAreaCreate(self, uuid: str, content: bytes, size: int, type: ContentType) -> None:
         """
@@ -2702,6 +2854,7 @@ class StorageArea:
           type (ContentType): The type of the file content.
         """
         ...
+    
     # This function reads the content of a given file from the storage area that is currently used by Orthanc
     def StorageAreaRead(self, uuid: str, type: ContentType) -> bytes:
         """
@@ -2715,6 +2868,7 @@ class StorageArea:
           bytes: 0 if success, other value if error.
         """
         ...
+    
     # This function removes a given file from the storage area that is currently used by Orthanc
     def StorageAreaRemove(self, uuid: str, type: ContentType) -> None:
         """
@@ -2725,6 +2879,7 @@ class StorageArea:
           type (ContentType): The type of the file content.
         """
         ...
+    
     # This function requests the Orthanc core to reconstruct the main DICOM tags of all the resources of the given type
     def ReconstructMainDicomTags(self, level: ResourceType) -> None:
         """
@@ -2741,6 +2896,7 @@ class WorklistAnswers:
     """
     ...
 
+    
     # This function adds one worklist (encoded as a DICOM file) to the set of answers corresponding to some C-Find SCP request against modality worklists
     def WorklistAddAnswer(self, query: WorklistQuery, dicom: bytes) -> None:
         """
@@ -2751,6 +2907,7 @@ class WorklistAnswers:
           dicom (bytes): The worklist to answer, encoded as a DICOM file.
         """
         ...
+    
     # This function marks as incomplete the set of answers corresponding to some C-Find SCP request against modality worklists
     def WorklistMarkIncomplete(self) -> None:
         """
@@ -2764,6 +2921,7 @@ class WorklistQuery:
     """
     ...
 
+    
     # This function checks whether one worklist (encoded as a DICOM file) matches the C-Find SCP query against modality worklists
     def WorklistIsMatch(self, dicom: bytes) -> int:
         """
@@ -2776,6 +2934,7 @@ class WorklistQuery:
           int: 1 if the worklist matches the query, 0 otherwise.
         """
         ...
+    
     # This function retrieves the DICOM file that underlies a C-Find SCP query against modality worklists
     def WorklistGetDicomQuery(self) -> bytes:
         """
