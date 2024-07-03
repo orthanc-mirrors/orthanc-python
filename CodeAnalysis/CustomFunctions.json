@@ -261,5 +261,43 @@
       }
     ],
     "return_sdk_type" : "void"
+  },
+
+  {
+    "comment" : "New in release 3.3",
+    "short_name" : "RegisterStorageArea",
+    "implementation" : "RegisterStorageArea",
+    "documentation" : {
+      "description" : [ "Register a custom storage area." ],
+      "args" : {
+        "create" : "The callback function to store a file on the custom storage area.",
+        "read" : "The callback function to read a file from the custom storage area.",
+        "remove" : "The callback function to remove a file from the custom storage area."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "create",
+        "sdk_type" : "Callable",
+        "callable_type" : "StorageCreateCallback",
+        "callable_protocol_args" : "uuid: str, content_type: ContentType, data: bytes",
+        "callable_protocol_return" : "None"
+      },
+      {
+        "sdk_name" : "read",
+        "sdk_type" : "Callable",
+        "callable_type" : "StorageReadCallback",
+        "callable_protocol_args" : "uuid: str, content_type: ContentType",
+        "callable_protocol_return" : "bytes"
+      },
+      {
+        "sdk_name" : "remove",
+        "sdk_type" : "Callable",
+        "callable_type" : "StorageRemoveCallback",
+        "callable_protocol_args" : "uuid: str, content_type: ContentType",
+        "callable_protocol_return" : "None"
+      }
+    ],
+    "return_sdk_type" : "void"
   }
 ]

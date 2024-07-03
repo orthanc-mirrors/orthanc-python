@@ -2300,6 +2300,30 @@ def RegisterRestCallback(path_regular_expression: str, callback: RestCallback) -
     """
     ...
 
+class StorageCreateCallback(typing.Protocol):
+    def __call__(self, uuid: str, content_type: ContentType, data: bytes) -> None:
+        ...
+
+class StorageReadCallback(typing.Protocol):
+    def __call__(self, uuid: str, content_type: ContentType) -> bytes:
+        ...
+
+class StorageRemoveCallback(typing.Protocol):
+    def __call__(self, uuid: str, content_type: ContentType) -> None:
+        ...
+
+# Register a custom storage area
+def RegisterStorageArea(create: StorageCreateCallback, read: StorageReadCallback, remove: StorageRemoveCallback) -> None:
+    """
+    Register a custom storage area.
+
+    Args:
+      create (StorageCreateCallback): The callback function to store a file on the custom storage area.
+      read (StorageReadCallback): The callback function to read a file from the custom storage area.
+      remove (StorageRemoveCallback): The callback function to remove a file from the custom storage area.
+    """
+    ...
+
 class WorklistCallback(typing.Protocol):
     def __call__(self, answers: WorklistAnswers, query: WorklistQuery, issuer_aet: str, called_aet: str) -> None:
         ...

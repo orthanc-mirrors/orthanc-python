@@ -21,8 +21,4 @@
 
 #pragma once
 
-#include "PythonHeaderWrapper.h"
-
-PyObject* RegisterStorageArea(PyObject* module, PyObject* args);
-
 void FinalizeStorageArea();

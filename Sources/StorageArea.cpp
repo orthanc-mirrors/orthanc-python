@@ -21,6 +21,8 @@
 
 #include "StorageArea.h"
 
+#include "PythonHeaderWrapper.h"
+
 #include "../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
 #include "PythonString.h"
 

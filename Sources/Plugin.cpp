@@ -279,17 +279,7 @@ static void SetupGlobalFunctions()
 
   
   /**
-   * New in release 3.3
-   **/
-  
-  {
-    PyMethodDef f = { "RegisterStorageArea", RegisterStorageArea, METH_VARARGS, "" };
-    functions.push_back(f);
-  }
-
-
-  /**
-   * New in release 3.5
+   * New in release 4.0
    **/
   
   {
