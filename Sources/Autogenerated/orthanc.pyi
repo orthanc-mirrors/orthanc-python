@@ -2156,6 +2156,23 @@ def WriteFile(path: str, data: bytes) -> None:
     """
     ...
 
+# This function creates an image of given size and format, and initializes its pixel data from a memory buffer
+def CreateImageFromBuffer(format: PixelFormat, width: int, height: int, pitch: int, buffer: bytes) -> Image:
+    """
+    This function creates an image of given size and format, and initializes its pixel data from a memory buffer.
+
+    Args:
+      format (PixelFormat): The format of the pixels.
+      width (int): The width of the image.
+      height (int): The height of the image.
+      pitch (int): The pitch of the image (i.e. the number of bytes between 2 successive lines of the image in the memory buffer).
+      buffer (bytes): The memory buffer.
+
+    Returns:
+      Image: The newly allocated image.
+    """
+    ...
+
 # Get information about the given DICOM tag
 def LookupDictionary(name: str) -> dict:
     """

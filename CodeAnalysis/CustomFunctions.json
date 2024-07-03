@@ -107,5 +107,47 @@
       }
     ],
     "return_sdk_type" : "Dictionary"
+  },
+
+  {
+    "comment" : "New in release 3.2",
+    "short_name" : "CreateImageFromBuffer",
+    "implementation" : "CreateImageFromBuffer",
+    "documentation" : {
+      "description" : [ "This function creates an image of given size and format, and initializes its pixel data from a memory buffer." ],
+      "args" : {
+        "format" : "The format of the pixels.",
+        "width" : "The width of the image.",
+        "height" : "The height of the image.",
+        "pitch" : "The pitch of the image (i.e. the number of bytes between 2 successive lines of the image in the memory buffer).",
+        "buffer" : "The memory buffer."
+      },
+      "return" : "The newly allocated image."
+    },
+    "args" : [
+      {
+        "sdk_name" : "format",
+        "sdk_type" : "enumeration",
+        "sdk_enumeration" : "OrthancPluginPixelFormat"
+      },
+      {
+        "sdk_name" : "width",
+        "sdk_type" : "uint32_t"
+      },
+      {
+        "sdk_name" : "height",
+        "sdk_type" : "uint32_t"
+      },
+      {
+        "sdk_name" : "pitch",
+        "sdk_type" : "uint32_t"
+      },
+      {
+        "sdk_name" : "buffer",
+        "sdk_type" : "const void *"
+      }
+    ],
+    "return_sdk_type" : "object",
+    "return_sdk_class" : "OrthancPluginImage"
   }
 ]

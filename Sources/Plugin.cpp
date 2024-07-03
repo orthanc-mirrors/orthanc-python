@@ -289,11 +289,6 @@ static void SetupGlobalFunctions()
    **/
   
   {
-    PyMethodDef f = { "CreateImageFromBuffer", CreateImageFromBuffer, METH_VARARGS, "" };
-    functions.push_back(f);
-  }
-  
-  {
     PyMethodDef f = { "RegisterFindCallback", RegisterFindCallback, METH_VARARGS, "" };
     functions.push_back(f);
   }

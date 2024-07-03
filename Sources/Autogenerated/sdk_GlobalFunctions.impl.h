@@ -23,6 +23,7 @@
 
 
 // Forward declaration of the custom global functions
+extern PyObject *CreateImageFromBuffer(PyObject* module, PyObject *args);
 extern PyObject *LookupDictionary(PyObject* module, PyObject *args);
 extern PyObject *RegisterIncomingHttpRequestFilter(PyObject* module, PyObject *args);
 extern PyObject *RegisterOnChangeCallback(PyObject* module, PyObject *args);
@@ -2021,6 +2022,8 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Generated from C function OrthancPluginUncompressImage()" },
   { "WriteFile", sdk_OrthancPluginWriteFile, METH_VARARGS,
     "Generated from C function OrthancPluginWriteFile()" },
+  { "CreateImageFromBuffer", CreateImageFromBuffer, METH_VARARGS,
+    "Implemented in C++ function CreateImageFromBuffer()" },
   { "LookupDictionary", LookupDictionary, METH_VARARGS,
     "Implemented in C++ function LookupDictionary()" },
   { "RegisterIncomingHttpRequestFilter", RegisterIncomingHttpRequestFilter, METH_VARARGS,
