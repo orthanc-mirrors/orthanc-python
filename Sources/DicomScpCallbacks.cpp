@@ -232,7 +232,7 @@ static void* CreateMoveCallback(OrthancPluginResourceType resourceType,
     {
       PythonLock lock;
 
-      PythonObject dict(lock, PyDict_New());
+      PythonObject kw(lock, PyDict_New());
 
       std::string level;
       switch (resourceType_)
@@ -259,58 +259,58 @@ static void* CreateMoveCallback(OrthancPluginResourceType resourceType,
 
       {
         PythonString tmp(lock, level);
-        PyDict_SetItemString(dict.GetPyObject(), "Level", tmp.GetPyObject());
+        PyDict_SetItemString(kw.GetPyObject(), "Level", tmp.GetPyObject());
       }
 
       {
         PythonString tmp(lock, patientId_);
-        PyDict_SetItemString(dict.GetPyObject(), "PatientID", tmp.GetPyObject());
+        PyDict_SetItemString(kw.GetPyObject(), "PatientID", tmp.GetPyObject());
       }
 
       {
         PythonString tmp(lock, accessionNumber_);
-        PyDict_SetItemString(dict.GetPyObject(), "AccessionNumber", tmp.GetPyObject());
+        PyDict_SetItemString(kw.GetPyObject(), "AccessionNumber", tmp.GetPyObject());
       }
 
       {
         PythonString tmp(lock, studyInstanceUid_);
-        PyDict_SetItemString(dict.GetPyObject(), "StudyInstanceUID", tmp.GetPyObject());
+        PyDict_SetItemString(kw.GetPyObject(), "StudyInstanceUID", tmp.GetPyObject());
       }
 
       {
         PythonString tmp(lock, seriesInstanceUid_);
-        PyDict_SetItemString(dict.GetPyObject(), "SeriesInstanceUID", tmp.GetPyObject());
+        PyDict_SetItemString(kw.GetPyObject(), "SeriesInstanceUID", tmp.GetPyObject());
       }
 
       {
         PythonString tmp(lock, sopInstanceUid_);
-        PyDict_SetItemString(dict.GetPyObject(), "SOPInstanceUID", tmp.GetPyObject());
+        PyDict_SetItemString(kw.GetPyObject(), "SOPInstanceUID", tmp.GetPyObject());
       }
 
       {
         PythonString tmp(lock, originatorAet_);
-        PyDict_SetItemString(dict.GetPyObject(), "OriginatorAET", tmp.GetPyObject());
+        PyDict_SetItemString(kw.GetPyObject(), "OriginatorAET", tmp.GetPyObject());
       }
 
       {
         PythonString tmp(lock, sourceAet_);
-        PyDict_SetItemString(dict.GetPyObject(), "SourceAET", tmp.GetPyObject());
+        PyDict_SetItemString(kw.GetPyObject(), "SourceAET", tmp.GetPyObject());
       }
 
       {
         PythonString tmp(lock, targetAet_);
-        PyDict_SetItemString(dict.GetPyObject(), "TargetAET", tmp.GetPyObject());
+        PyDict_SetItemString(kw.GetPyObject(), "TargetAET", tmp.GetPyObject());
       }
 
       {
         PythonObject tmp(lock, PyLong_FromUnsignedLong(originatorId_));
-        PyDict_SetItemString(dict.GetPyObject(), "OriginatorID", tmp.GetPyObject());
+        PyDict_SetItemString(kw.GetPyObject(), "OriginatorID", tmp.GetPyObject());
       }
 
       PythonObject args(lock, PyTuple_New(0));
 
       assert(moveScpCallback_ != NULL);
-      PythonObject result(lock, PyObject_Call(moveScpCallback_, args.GetPyObject(), dict.GetPyObject()));
+      PythonObject result(lock, PyObject_Call(moveScpCallback_, args.GetPyObject(), kw.GetPyObject()));
 
       OrthancPluginErrorCode code = lock.CheckCallbackSuccess("Python C-MOVE SCP callback");
       if (code != OrthancPluginErrorCode_Success)
@@ -421,7 +421,7 @@ static void* CreateMoveCallback2(OrthancPluginResourceType resourceType,
 
     PythonLock lock;
 
-    PythonObject dict(lock, PyDict_New());
+    PythonObject kw(lock, PyDict_New());
 
     std::string level;
     switch (resourceType)
@@ -448,52 +448,52 @@ static void* CreateMoveCallback2(OrthancPluginResourceType resourceType,
 
     {
       PythonString tmp(lock, level);
-      PyDict_SetItemString(dict.GetPyObject(), "Level", tmp.GetPyObject());
+      PyDict_SetItemString(kw.GetPyObject(), "Level", tmp.GetPyObject());
     }
 
     {
       PythonString tmp(lock, _patientId);
-      PyDict_SetItemString(dict.GetPyObject(), "PatientID", tmp.GetPyObject());
+      PyDict_SetItemString(kw.GetPyObject(), "PatientID", tmp.GetPyObject());
     }
 
     {
       PythonString tmp(lock, _accessionNumber);
-      PyDict_SetItemString(dict.GetPyObject(), "AccessionNumber", tmp.GetPyObject());
+      PyDict_SetItemString(kw.GetPyObject(), "AccessionNumber", tmp.GetPyObject());
     }
 
     {
       PythonString tmp(lock, _studyInstanceUid);
-      PyDict_SetItemString(dict.GetPyObject(), "StudyInstanceUID", tmp.GetPyObject());
+      PyDict_SetItemString(kw.GetPyObject(), "StudyInstanceUID", tmp.GetPyObject());
     }
 
     {
       PythonString tmp(lock, _seriesInstanceUid);
-      PyDict_SetItemString(dict.GetPyObject(), "SeriesInstanceUID", tmp.GetPyObject());
+      PyDict_SetItemString(kw.GetPyObject(), "SeriesInstanceUID", tmp.GetPyObject());
     }
 
     {
       PythonString tmp(lock, _sopInstanceUid);
-      PyDict_SetItemString(dict.GetPyObject(), "SOPInstanceUID", tmp.GetPyObject());
+      PyDict_SetItemString(kw.GetPyObject(), "SOPInstanceUID", tmp.GetPyObject());
     }
 
     {
       PythonString tmp(lock, _originatorAet);
-      PyDict_SetItemString(dict.GetPyObject(), "OriginatorAET", tmp.GetPyObject());
+      PyDict_SetItemString(kw.GetPyObject(), "OriginatorAET", tmp.GetPyObject());
     }
 
     {
       PythonString tmp(lock, _sourceAet);
-      PyDict_SetItemString(dict.GetPyObject(), "SourceAET", tmp.GetPyObject());
+      PyDict_SetItemString(kw.GetPyObject(), "SourceAET", tmp.GetPyObject());
     }
 
     {
       PythonString tmp(lock, _targetAet);
-      PyDict_SetItemString(dict.GetPyObject(), "TargetAET", tmp.GetPyObject());
+      PyDict_SetItemString(kw.GetPyObject(), "TargetAET", tmp.GetPyObject());
     }
 
     {
       PythonObject tmp(lock, PyLong_FromUnsignedLong(originatorId));
-      PyDict_SetItemString(dict.GetPyObject(), "OriginatorID", tmp.GetPyObject());
+      PyDict_SetItemString(kw.GetPyObject(), "OriginatorID", tmp.GetPyObject());
     }
 
     PythonObject args(lock, PyTuple_New(0));
@@ -502,7 +502,7 @@ static void* CreateMoveCallback2(OrthancPluginResourceType resourceType,
     // the result is the python move driver that will be passed as first argument to GetMoveSize, Apply and Free.
     // After the PyObject_Call, result's ref count is 1 -> no need to add a reference but we need to decref explicitely
     // to delete the object at the end of the move.
-    PyObject* result = PyObject_Call(createMoveScpDriverCallback_, args.GetPyObject(), dict.GetPyObject());
+    PyObject* result = PyObject_Call(createMoveScpDriverCallback_, args.GetPyObject(), kw.GetPyObject());
 
     OrthancPluginErrorCode code = lock.CheckCallbackSuccess("Python C-MOVE SCP callback (Create)");
     if (code != OrthancPluginErrorCode_Success)
