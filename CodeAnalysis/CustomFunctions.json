@@ -149,5 +149,117 @@
     ],
     "return_sdk_type" : "object",
     "return_sdk_class" : "OrthancPluginImage"
+  },
+
+  {
+    "comment" : "New in release 3.2",
+    "short_name" : "RegisterFindCallback",
+    "implementation" : "RegisterFindCallback",
+    "documentation" : {
+      "description" : [ "Register a callback to handle C-Find requests." ],
+      "args" : {
+        "callback" : "The callback function."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "callback",
+        "sdk_type" : "Callable",
+        "callable_type" : "FindCallback",
+        "callable_protocol_args" : "answers: FindAnswers, query: FindQuery, issuer_aet: str, called_aet: str",
+        "callable_protocol_return" : "None"
+      }
+    ],
+    "return_sdk_type" : "void"
+  },
+
+  {
+    "comment" : "New in release 3.2",
+    "short_name" : "RegisterMoveCallback",
+    "implementation" : "RegisterMoveCallback",
+    "documentation" : {
+      "description" : [ "Register a callback to handle C-Move requests (simple version, with 1 suboperation)." ],
+      "args" : {
+        "callback" : "The callback function."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "callback",
+        "sdk_type" : "Callable",
+        "callable_type" : "MoveCallback",
+        "callable_protocol_args" : "Level: str, PatientID: str, AccessionNumber: str, StudyInstanceUID: str, SeriesInstanceUID: str, SOPInstanceUID: str, OriginatorAET: str, SourceAET: str, TargetAET: str, OriginatorID: int",
+        "callable_protocol_return" : "None"
+      }
+    ],
+    "return_sdk_type" : "void"
+  },
+
+  {
+    "comment" : "New in release 3.2",
+    "short_name" : "RegisterMoveCallback2",
+    "implementation" : "RegisterMoveCallback2",
+    "documentation" : {
+      "description" : [ "Register a callback to handle C-Move requests (full version, with multiple suboperations)." ],
+      "args" : {
+        "callback" : "Main callback that creates the C-Move driver.",
+        "get_move_size" : "Callback to read the number of C-Move suboperations.",
+        "apply_move" : "Callback to apply one C-Move suboperation.",
+        "free_move" : "Callback to free the C-Move driver."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "callback",
+        "sdk_type" : "Callable",
+        "callable_type" : "MoveCallback2",
+        "callable_protocol_args" : "Level: str, PatientID: str, AccessionNumber: str, StudyInstanceUID: str, SeriesInstanceUID: str, SOPInstanceUID: str, OriginatorAET: str, SourceAET: str, TargetAET: str, OriginatorID: int",
+        "callable_protocol_return" : "object",  "comment" : "This is the newly created C-Move driver."
+      },
+      {
+        "sdk_name" : "get_move_size",
+        "sdk_type" : "Callable",
+        "callable_type" : "GetMoveSizeCallback",
+        "callable_protocol_args" : "driver: object",
+        "callable_protocol_return" : "int"
+      },
+      {
+        "sdk_name" : "apply_move",
+        "sdk_type" : "Callable",
+        "callable_type" : "ApplyMoveCallback",
+        "callable_protocol_args" : "driver: object",
+        "callable_protocol_return" : "None"
+      },
+      {
+        "sdk_name" : "free_move",
+        "sdk_type" : "Callable",
+        "callable_type" : "FreeMoveCallback",
+        "callable_protocol_args" : "driver: object",
+        "callable_protocol_return" : "None"
+      }
+    ],
+    "return_sdk_type" : "void"
+  },
+
+  {
+    "comment" : "New in release 3.2",
+    "short_name" : "RegisterWorklistCallback",
+    "implementation" : "RegisterWorklistCallback",
+    "documentation" : {
+      "description" : [ "Register a callback to handle modality worklists requests." ],
+      "args" : {
+        "callback" : "The callback function."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "callback",
+        "sdk_type" : "Callable",
+        "callable_type" : "WorklistCallback",
+        "callable_protocol_args" : "answers: WorklistAnswers, query: WorklistQuery, issuer_aet: str, called_aet: str",
+        "callable_protocol_return" : "None"
+      }
+    ],
+    "return_sdk_type" : "void"
   }
 ]

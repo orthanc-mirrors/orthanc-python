@@ -25,10 +25,14 @@
 // Forward declaration of the custom global functions
 extern PyObject *CreateImageFromBuffer(PyObject* module, PyObject *args);
 extern PyObject *LookupDictionary(PyObject* module, PyObject *args);
+extern PyObject *RegisterFindCallback(PyObject* module, PyObject *args);
 extern PyObject *RegisterIncomingHttpRequestFilter(PyObject* module, PyObject *args);
+extern PyObject *RegisterMoveCallback(PyObject* module, PyObject *args);
+extern PyObject *RegisterMoveCallback2(PyObject* module, PyObject *args);
 extern PyObject *RegisterOnChangeCallback(PyObject* module, PyObject *args);
 extern PyObject *RegisterOnStoredInstanceCallback(PyObject* module, PyObject *args);
 extern PyObject *RegisterRestCallback(PyObject* module, PyObject *args);
+extern PyObject *RegisterWorklistCallback(PyObject* module, PyObject *args);
 // End of forward declarations
 
 
@@ -2026,14 +2030,22 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Implemented in C++ function CreateImageFromBuffer()" },
   { "LookupDictionary", LookupDictionary, METH_VARARGS,
     "Implemented in C++ function LookupDictionary()" },
+  { "RegisterFindCallback", RegisterFindCallback, METH_VARARGS,
+    "Implemented in C++ function RegisterFindCallback()" },
   { "RegisterIncomingHttpRequestFilter", RegisterIncomingHttpRequestFilter, METH_VARARGS,
     "Implemented in C++ function RegisterIncomingHttpRequestFilter()" },
+  { "RegisterMoveCallback", RegisterMoveCallback, METH_VARARGS,
+    "Implemented in C++ function RegisterMoveCallback()" },
+  { "RegisterMoveCallback2", RegisterMoveCallback2, METH_VARARGS,
+    "Implemented in C++ function RegisterMoveCallback2()" },
   { "RegisterOnChangeCallback", RegisterOnChangeCallback, METH_VARARGS,
     "Implemented in C++ function RegisterOnChangeCallback()" },
   { "RegisterOnStoredInstanceCallback", RegisterOnStoredInstanceCallback, METH_VARARGS,
     "Implemented in C++ function RegisterOnStoredInstanceCallback()" },
   { "RegisterRestCallback", RegisterRestCallback, METH_VARARGS,
     "Implemented in C++ function RegisterRestCallback()" },
+  { "RegisterWorklistCallback", RegisterWorklistCallback, METH_VARARGS,
+    "Implemented in C++ function RegisterWorklistCallback()" },
   { NULL, NULL }
 };
 

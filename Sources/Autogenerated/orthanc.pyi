@@ -2186,6 +2186,20 @@ def LookupDictionary(name: str) -> dict:
     """
     ...
 
+class FindCallback(typing.Protocol):
+    def __call__(self, answers: FindAnswers, query: FindQuery, issuer_aet: str, called_aet: str) -> None:
+        ...
+
+# Register a callback to handle C-Find requests
+def RegisterFindCallback(callback: FindCallback) -> None:
+    """
+    Register a callback to handle C-Find requests.
+
+    Args:
+      callback (FindCallback): The callback function.
+    """
+    ...
+
 class IncomingHttpRequestFilter(typing.Protocol):
     def __call__(self, uri: str, method: HttpMethod, ip: str, headers: dict, get: dict) -> bool:
         ...
@@ -2197,6 +2211,49 @@ def RegisterIncomingHttpRequestFilter(callback: IncomingHttpRequestFilter) -> No
 
     Args:
       callback (IncomingHttpRequestFilter): The callback function.
+    """
+    ...
+
+class MoveCallback(typing.Protocol):
+    def __call__(self, Level: str, PatientID: str, AccessionNumber: str, StudyInstanceUID: str, SeriesInstanceUID: str, SOPInstanceUID: str, OriginatorAET: str, SourceAET: str, TargetAET: str, OriginatorID: int) -> None:
+        ...
+
+# Register a callback to handle C-Move requests (simple version, with 1 suboperation)
+def RegisterMoveCallback(callback: MoveCallback) -> None:
+    """
+    Register a callback to handle C-Move requests (simple version, with 1 suboperation).
+
+    Args:
+      callback (MoveCallback): The callback function.
+    """
+    ...
+
+class MoveCallback2(typing.Protocol):
+    def __call__(self, Level: str, PatientID: str, AccessionNumber: str, StudyInstanceUID: str, SeriesInstanceUID: str, SOPInstanceUID: str, OriginatorAET: str, SourceAET: str, TargetAET: str, OriginatorID: int) -> object:
+        ...
+
+class GetMoveSizeCallback(typing.Protocol):
+    def __call__(self, driver: object) -> int:
+        ...
+
+class ApplyMoveCallback(typing.Protocol):
+    def __call__(self, driver: object) -> None:
+        ...
+
+class FreeMoveCallback(typing.Protocol):
+    def __call__(self, driver: object) -> None:
+        ...
+
+# Register a callback to handle C-Move requests (full version, with multiple suboperations)
+def RegisterMoveCallback2(callback: MoveCallback2, get_move_size: GetMoveSizeCallback, apply_move: ApplyMoveCallback, free_move: FreeMoveCallback) -> None:
+    """
+    Register a callback to handle C-Move requests (full version, with multiple suboperations).
+
+    Args:
+      callback (MoveCallback2): Main callback that creates the C-Move driver.
+      get_move_size (GetMoveSizeCallback): Callback to read the number of C-Move suboperations.
+      apply_move (ApplyMoveCallback): Callback to apply one C-Move suboperation.
+      free_move (FreeMoveCallback): Callback to free the C-Move driver.
     """
     ...
 
@@ -2240,6 +2297,20 @@ def RegisterRestCallback(path_regular_expression: str, callback: RestCallback) -
     Args:
       path_regular_expression (str): Regular expression for the URI. May contain groups.
       callback (RestCallback): The callback function to handle the REST call.
+    """
+    ...
+
+class WorklistCallback(typing.Protocol):
+    def __call__(self, answers: WorklistAnswers, query: WorklistQuery, issuer_aet: str, called_aet: str) -> None:
+        ...
+
+# Register a callback to handle modality worklists requests
+def RegisterWorklistCallback(callback: WorklistCallback) -> None:
+    """
+    Register a callback to handle modality worklists requests.
+
+    Args:
+      callback (WorklistCallback): The callback function.
     """
     ...
 
