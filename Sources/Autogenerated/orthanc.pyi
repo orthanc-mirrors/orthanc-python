@@ -2156,6 +2156,19 @@ def WriteFile(path: str, data: bytes) -> None:
     """
     ...
 
+# Get information about the given DICOM tag
+def LookupDictionary(name: str) -> dict:
+    """
+    Get information about the given DICOM tag.
+
+    Args:
+      name (str): The name of the DICOM tag.
+
+    Returns:
+      dict: Dictionary containing the requested information.
+    """
+    ...
+
 class IncomingHttpRequestFilter(typing.Protocol):
     def __call__(self, uri: str, method: HttpMethod, ip: str, headers: dict, get: dict) -> bool:
         ...

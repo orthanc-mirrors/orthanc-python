@@ -82,34 +82,34 @@ PyObject* LookupDictionary(PyObject* module, PyObject* args)
        **/
       PythonLock lock;
       
-      PythonObject kw(lock, PyDict_New());
+      PythonObject dict(lock, PyDict_New());
 
       {
         PythonObject tmp(lock, PyLong_FromUnsignedLong(entry.group));
-        PyDict_SetItemString(kw.GetPyObject(), "Group", tmp.GetPyObject());
+        PyDict_SetItemString(dict.GetPyObject(), "Group", tmp.GetPyObject());
       }
 
       {
         PythonObject tmp(lock, PyLong_FromUnsignedLong(entry.element));
-        PyDict_SetItemString(kw.GetPyObject(), "Element", tmp.GetPyObject());
+        PyDict_SetItemString(dict.GetPyObject(), "Element", tmp.GetPyObject());
       }
 
       {
         PythonObject tmp(lock, PyLong_FromUnsignedLong(entry.vr));
-        PyDict_SetItemString(kw.GetPyObject(), "ValueRepresentation", tmp.GetPyObject());
+        PyDict_SetItemString(dict.GetPyObject(), "ValueRepresentation", tmp.GetPyObject());
       }
 
       {
         PythonObject tmp(lock, PyLong_FromUnsignedLong(entry.minMultiplicity));
-        PyDict_SetItemString(kw.GetPyObject(), "MinMultiplicity", tmp.GetPyObject());
+        PyDict_SetItemString(dict.GetPyObject(), "MinMultiplicity", tmp.GetPyObject());
       }
 
       {
         PythonObject tmp(lock, PyLong_FromUnsignedLong(entry.maxMultiplicity));
-        PyDict_SetItemString(kw.GetPyObject(), "MaxMultiplicity", tmp.GetPyObject());
+        PyDict_SetItemString(dict.GetPyObject(), "MaxMultiplicity", tmp.GetPyObject());
       }
       
-      return kw.Release();
+      return dict.Release();
     }
     else
     {
@@ -287,11 +287,6 @@ static void SetupGlobalFunctions()
   /**
    * New in release 3.2
    **/
-  
-  {
-    PyMethodDef f = { "LookupDictionary", LookupDictionary, METH_VARARGS, "" };
-    functions.push_back(f);
-  }
   
   {
     PyMethodDef f = { "CreateImageFromBuffer", CreateImageFromBuffer, METH_VARARGS, "" };

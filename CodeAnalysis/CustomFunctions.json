@@ -87,5 +87,25 @@
       }
     ],
     "return_sdk_type" : "void"
+  },
+
+  {
+    "comment" : "New in release 3.2",
+    "short_name" : "LookupDictionary",
+    "implementation" : "LookupDictionary",
+    "documentation" : {
+      "description" : [ "Get information about the given DICOM tag." ],
+      "args" : {
+        "name" : "The name of the DICOM tag."
+      },
+      "return" : "Dictionary containing the requested information."
+    },
+    "args" : [
+      {
+        "sdk_name" : "name",
+        "sdk_type" : "const char *"
+      }
+    ],
+    "return_sdk_type" : "Dictionary"
   }
 ]

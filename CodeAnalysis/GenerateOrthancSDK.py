@@ -180,6 +180,7 @@ def DocumentFunction(f):
         elif a['sdk_type'] in [ 'int32_t', 'uint32_t', 'uint8_t', 'uint16_t', 'uint64_t' ]:
             arg_type = 'int'
         elif a['sdk_type'] == 'Callable':
+            # This is only used to generate the documentation file "orthanc.pyi"
             arg_type = a['callable_type']
         else:
             raise Exception('Argument type not implemented: %s' % a['sdk_type'])
@@ -212,6 +213,9 @@ def DocumentFunction(f):
         documentation['return_type'] = 'str'
     elif f['return_sdk_type'] in [ 'int32_t', 'uint32_t', 'uint16_t', 'int64_t' ]:
         documentation['return_type'] = 'int'
+    elif f['return_sdk_type'] == 'Dictionary':
+        # This is only used to generate the documentation file "orthanc.pyi"
+        documentation['return_type'] = 'dict'
     else:
         raise Exception('Return type not implemented: %s' % f['return_sdk_type'])
 
