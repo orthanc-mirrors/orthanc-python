@@ -21,8 +21,4 @@
 
 #pragma once
 
-#include "PythonHeaderWrapper.h"
-
-PyObject* RegisterStorageCommitmentScpCallback(PyObject* module, PyObject* args);
-
 void FinalizeStorageCommitmentScpCallback();

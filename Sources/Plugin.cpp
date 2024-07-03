@@ -258,62 +258,8 @@ PyObject* CreateImageFromBuffer(PyObject* module, PyObject* args)
 
 static bool pythonEnabled_ = false;
 static std::string userScriptName_;
-static std::vector<PyMethodDef>  globalFunctions_;
 static boost::thread displayMemoryUsageThread_;
 static bool displayMemoryUsageStopping_ = false;
-
-
-static void SetupGlobalFunctions()
-{
-  if (!globalFunctions_.empty())
-  {
-    return;
-//    ORTHANC_PLUGINS_THROW_EXCEPTION(BadSequenceOfCalls);
-  }
-
-  /**
-   * Add all the manual global functions
-   **/
-
-  std::list<PyMethodDef> functions;
-
-
-  /**
-   * Append all the global functions that were automatically generated
-   **/
-  
-  const PyMethodDef* sdk = GetOrthancSdkFunctions();
-
-  for (size_t i = 0; sdk[i].ml_name != NULL; i++)
-  {
-    functions.push_back(sdk[i]);
-  }
-
-  /**
-   * Flatten the list of functions into the vector
-   **/
-
-  globalFunctions_.resize(functions.size());
-  std::copy(functions.begin(), functions.end(), globalFunctions_.begin());
-
-  PyMethodDef sentinel = { NULL };
-  globalFunctions_.push_back(sentinel);
-}
-
-  
-static PyMethodDef* GetGlobalFunctions()
-{
-  if (globalFunctions_.empty())
-  {
-    // "SetupGlobalFunctions()" should have been called
-    ORTHANC_PLUGINS_THROW_EXCEPTION(BadSequenceOfCalls);
-  }
-  else
-  {
-    return &globalFunctions_[0];
-  }
-}
-
 
 
 #if HAS_DL_ITERATE == 1
@@ -458,8 +404,7 @@ extern "C"
         dl_iterate_phdr(ForceImportCallback, NULL);
 #endif
 
-        SetupGlobalFunctions();
-        PythonLock::GlobalInitialize("orthanc", "OrthancException", GetGlobalFunctions, RegisterOrthancSdk, isVerbose);
+        PythonLock::GlobalInitialize("orthanc", "OrthancException", GetOrthancSdkFunctions, RegisterOrthancSdk, isVerbose);
         PythonLock::AddSysPath(userScriptDirectory.string());
 
         if (pythonConfig.GetBooleanValue("DisplayMemoryUsage", false))
