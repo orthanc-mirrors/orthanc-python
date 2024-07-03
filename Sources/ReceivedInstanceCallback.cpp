@@ -21,6 +21,8 @@
 
 #include "ReceivedInstanceCallback.h"
 
+#include "PythonHeaderWrapper.h"
+
 #include "../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
 #include "ICallbackRegistration.h"
 #include "PythonString.h"

@@ -21,8 +21,4 @@
 
 #pragma once
 
-#include "PythonHeaderWrapper.h"
-
 void FinalizeReceivedInstanceCallback();
-
-PyObject* RegisterReceivedInstanceCallback(PyObject* module, PyObject* args);

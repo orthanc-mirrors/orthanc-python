@@ -299,5 +299,49 @@
       }
     ],
     "return_sdk_type" : "void"
+  },
+
+  {
+    "comment" : "New in release 4.0",
+    "short_name" : "RegisterIncomingCStoreInstanceFilter",
+    "implementation" : "RegisterIncomingCStoreInstanceFilter",
+    "documentation" : {
+      "description" : [ "Register a callback to filter incoming DICOM instances received by Orthanc through C-STORE." ],
+      "args" : {
+        "callback" : "The callback function."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "callback",
+        "sdk_type" : "Callable",
+        "callable_type" : "IncomingCStoreInstanceFilter",
+        "callable_protocol_args" : "received_dicom: DicomInstance",
+        "callable_protocol_return" : "int"
+      }
+    ],
+    "return_sdk_type" : "void"
+  },
+
+  {
+    "comment" : "New in release 4.0",
+    "short_name" : "RegisterReceivedInstanceCallback",
+    "implementation" : "RegisterReceivedInstanceCallback",
+    "documentation" : {
+      "description" : [ "Register a callback to keep/discard/modify a DICOM instance received by Orthanc from any source (C-STORE or REST API)." ],
+      "args" : {
+        "callback" : "The callback function."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "callback",
+        "sdk_type" : "Callable",
+        "callable_type" : "ReceivedInstanceCallback",
+        "callable_protocol_args" : "received_dicom: bytes, origin: InstanceOrigin",
+        "callable_protocol_return" : "tuple(ReceivedInstanceAction, bytes)"
+      }
+    ],
+    "return_sdk_type" : "void"
   }
 ]

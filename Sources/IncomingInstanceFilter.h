@@ -21,8 +21,4 @@
 
 #pragma once
 
-#include "PythonHeaderWrapper.h"
-
-PyObject* RegisterIncomingCStoreInstanceFilter(PyObject* module, PyObject* args);
-
 void FinalizeIncomingCStoreInstanceFilter();

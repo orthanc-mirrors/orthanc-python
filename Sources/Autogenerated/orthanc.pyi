@@ -2200,6 +2200,20 @@ def RegisterFindCallback(callback: FindCallback) -> None:
     """
     ...
 
+class IncomingCStoreInstanceFilter(typing.Protocol):
+    def __call__(self, received_dicom: DicomInstance) -> int:
+        ...
+
+# Register a callback to filter incoming DICOM instances received by Orthanc through C-STORE
+def RegisterIncomingCStoreInstanceFilter(callback: IncomingCStoreInstanceFilter) -> None:
+    """
+    Register a callback to filter incoming DICOM instances received by Orthanc through C-STORE.
+
+    Args:
+      callback (IncomingCStoreInstanceFilter): The callback function.
+    """
+    ...
+
 class IncomingHttpRequestFilter(typing.Protocol):
     def __call__(self, uri: str, method: HttpMethod, ip: str, headers: dict, get: dict) -> bool:
         ...
@@ -2282,6 +2296,20 @@ def RegisterOnStoredInstanceCallback(callback: OnStoredInstanceCallback) -> None
 
     Args:
       callback (OnStoredInstanceCallback): The callback function.
+    """
+    ...
+
+class ReceivedInstanceCallback(typing.Protocol):
+    def __call__(self, received_dicom: bytes, origin: InstanceOrigin) -> tuple(ReceivedInstanceAction, bytes):
+        ...
+
+# Register a callback to keep/discard/modify a DICOM instance received by Orthanc from any source (C-STORE or REST API)
+def RegisterReceivedInstanceCallback(callback: ReceivedInstanceCallback) -> None:
+    """
+    Register a callback to keep/discard/modify a DICOM instance received by Orthanc from any source (C-STORE or REST API).
+
+    Args:
+      callback (ReceivedInstanceCallback): The callback function.
     """
     ...
 

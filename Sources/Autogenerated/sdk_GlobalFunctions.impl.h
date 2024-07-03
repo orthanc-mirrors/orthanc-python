@@ -26,11 +26,13 @@
 extern PyObject *CreateImageFromBuffer(PyObject* module, PyObject *args);
 extern PyObject *LookupDictionary(PyObject* module, PyObject *args);
 extern PyObject *RegisterFindCallback(PyObject* module, PyObject *args);
+extern PyObject *RegisterIncomingCStoreInstanceFilter(PyObject* module, PyObject *args);
 extern PyObject *RegisterIncomingHttpRequestFilter(PyObject* module, PyObject *args);
 extern PyObject *RegisterMoveCallback(PyObject* module, PyObject *args);
 extern PyObject *RegisterMoveCallback2(PyObject* module, PyObject *args);
 extern PyObject *RegisterOnChangeCallback(PyObject* module, PyObject *args);
 extern PyObject *RegisterOnStoredInstanceCallback(PyObject* module, PyObject *args);
+extern PyObject *RegisterReceivedInstanceCallback(PyObject* module, PyObject *args);
 extern PyObject *RegisterRestCallback(PyObject* module, PyObject *args);
 extern PyObject *RegisterStorageArea(PyObject* module, PyObject *args);
 extern PyObject *RegisterWorklistCallback(PyObject* module, PyObject *args);
@@ -2033,6 +2035,8 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Implemented in C++ function LookupDictionary()" },
   { "RegisterFindCallback", RegisterFindCallback, METH_VARARGS,
     "Implemented in C++ function RegisterFindCallback()" },
+  { "RegisterIncomingCStoreInstanceFilter", RegisterIncomingCStoreInstanceFilter, METH_VARARGS,
+    "Implemented in C++ function RegisterIncomingCStoreInstanceFilter()" },
   { "RegisterIncomingHttpRequestFilter", RegisterIncomingHttpRequestFilter, METH_VARARGS,
     "Implemented in C++ function RegisterIncomingHttpRequestFilter()" },
   { "RegisterMoveCallback", RegisterMoveCallback, METH_VARARGS,
@@ -2043,6 +2047,8 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Implemented in C++ function RegisterOnChangeCallback()" },
   { "RegisterOnStoredInstanceCallback", RegisterOnStoredInstanceCallback, METH_VARARGS,
     "Implemented in C++ function RegisterOnStoredInstanceCallback()" },
+  { "RegisterReceivedInstanceCallback", RegisterReceivedInstanceCallback, METH_VARARGS,
+    "Implemented in C++ function RegisterReceivedInstanceCallback()" },
   { "RegisterRestCallback", RegisterRestCallback, METH_VARARGS,
     "Implemented in C++ function RegisterRestCallback()" },
   { "RegisterStorageArea", RegisterStorageArea, METH_VARARGS,

@@ -277,20 +277,6 @@ static void SetupGlobalFunctions()
 
   std::list<PyMethodDef> functions;
 
-  
-  /**
-   * New in release 4.0
-   **/
-  
-  {
-    PyMethodDef f = { "RegisterIncomingCStoreInstanceFilter", RegisterIncomingCStoreInstanceFilter, METH_VARARGS, "" };
-    functions.push_back(f);
-  }
-
-  {
-    PyMethodDef f = { "RegisterReceivedInstanceCallback", RegisterReceivedInstanceCallback, METH_VARARGS, "" };
-    functions.push_back(f);
-  }
 
   /**
    * New in release 4.1
