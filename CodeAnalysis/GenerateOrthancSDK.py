@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# SPDX-FileCopyrightText: 2020-2023 Osimis S.A., 2024-2024 Orthanc Team SRL, 2021-2024 Sebastien Jodogne, ICTEAM UCLouvain
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 ##
 ## Python plugin for Orthanc
 ## Copyright (C) 2020-2023 Osimis S.A., Belgium
