@@ -2300,7 +2300,7 @@ def RegisterOnStoredInstanceCallback(callback: OnStoredInstanceCallback) -> None
     ...
 
 class ReceivedInstanceCallback(typing.Protocol):
-    def __call__(self, received_dicom: bytes, origin: InstanceOrigin) -> tuple(ReceivedInstanceAction, bytes):
+    def __call__(self, received_dicom: bytes, origin: InstanceOrigin) -> tuple[ReceivedInstanceAction, bytes]:
         ...
 
 # Register a callback to keep/discard/modify a DICOM instance received by Orthanc from any source (C-STORE or REST API)
@@ -2349,6 +2349,25 @@ def RegisterStorageArea(create: StorageCreateCallback, read: StorageReadCallback
       create (StorageCreateCallback): The callback function to store a file on the custom storage area.
       read (StorageReadCallback): The callback function to read a file from the custom storage area.
       remove (StorageRemoveCallback): The callback function to remove a file from the custom storage area.
+    """
+    ...
+
+class StorageCommitmentScpCallback(typing.Protocol):
+    def __call__(self, job_id: str, transaction_uid: str, sop_class_uids: list[str], sop_instance_uids: list[str], remote_aet: str, called_aet: str) -> object:
+        ...
+
+class StorageCommitmentLookup(typing.Protocol):
+    def __call__(self, sop_class_uid: str, sop_instance_uid: str, driver: object) -> StorageCommitmentFailureReason:
+        ...
+
+# Register a callback to handle incoming requests to the storage commitment SCP
+def RegisterStorageCommitmentScpCallback(callback: StorageCommitmentScpCallback, lookup: StorageCommitmentLookup) -> None:
+    """
+    Register a callback to handle incoming requests to the storage commitment SCP.
+
+    Args:
+      callback (StorageCommitmentScpCallback): Main callback that creates the a driver to handle an incoming storage commitment request.
+      lookup (StorageCommitmentLookup): Callback function to get the status of one DICOM instance.
     """
     ...
 

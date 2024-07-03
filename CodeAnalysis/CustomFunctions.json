@@ -339,7 +339,37 @@
         "sdk_type" : "Callable",
         "callable_type" : "ReceivedInstanceCallback",
         "callable_protocol_args" : "received_dicom: bytes, origin: InstanceOrigin",
-        "callable_protocol_return" : "tuple(ReceivedInstanceAction, bytes)"
+        "callable_protocol_return" : "tuple[ReceivedInstanceAction, bytes]"
+      }
+    ],
+    "return_sdk_type" : "void"
+  },
+
+  {
+    "comment" : "New in release 4.1",
+    "short_name" : "RegisterStorageCommitmentScpCallback",
+    "implementation" : "RegisterStorageCommitmentScpCallback",
+    "documentation" : {
+      "description" : [ "Register a callback to handle incoming requests to the storage commitment SCP." ],
+      "args" : {
+        "callback" : "Main callback that creates the a driver to handle an incoming storage commitment request.",
+        "lookup" : "Callback function to get the status of one DICOM instance."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "callback",
+        "sdk_type" : "Callable",
+        "callable_type" : "StorageCommitmentScpCallback",
+        "callable_protocol_args" : "job_id: str, transaction_uid: str, sop_class_uids: list[str], sop_instance_uids: list[str], remote_aet: str, called_aet: str",
+        "callable_protocol_return" : "object",  "comment" : "This is the newly created storage commitment driver."
+      },
+      {
+        "sdk_name" : "lookup",
+        "sdk_type" : "Callable",
+        "callable_type" : "StorageCommitmentLookup",
+        "callable_protocol_args" : "sop_class_uid: str, sop_instance_uid: str, driver: object",
+        "callable_protocol_return" : "StorageCommitmentFailureReason"
       }
     ],
     "return_sdk_type" : "void"

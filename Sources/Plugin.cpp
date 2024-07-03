@@ -279,15 +279,6 @@ static void SetupGlobalFunctions()
 
 
   /**
-   * New in release 4.1
-   **/
-
-  {
-    PyMethodDef f = { "RegisterStorageCommitmentScpCallback", RegisterStorageCommitmentScpCallback, METH_VARARGS, "" };
-    functions.push_back(f);
-  }
-
-  /**
    * Append all the global functions that were automatically generated
    **/
   
