@@ -12,7 +12,7 @@ import subprocess
 import urllib.request
 
 TARGET = os.path.join(os.path.dirname(__file__), 'Orthanc')
-ORTHANC_JAVA_VERSION = '1.0'
+ORTHANC_JAVA_VERSION = 'default'
 PLUGIN_SDK_VERSION = '1.10.0'
 ORTHANC_CORE_REPOSITORY = 'https://orthanc.uclouvain.be/hg/orthanc/raw-file'
 ORTHANC_JAVA_REPOSITORY = 'https://orthanc.uclouvain.be/hg/orthanc-java/raw-file'
@@ -72,7 +72,7 @@ for f in FILES:
 
 commands.append([
     ORTHANC_JAVA_REPOSITORY,
-    'OrthancJava-%s' % ORTHANC_JAVA_VERSION,
+    ORTHANC_JAVA_VERSION,
     'Resources/Orthanc/Sdk-%s/orthanc/OrthancCPlugin.h' % PLUGIN_SDK_VERSION,
     'Sdk-%s/orthanc/OrthancCPlugin.h' % PLUGIN_SDK_VERSION,
 ])
@@ -86,7 +86,7 @@ for f in [
         ]:
     commands.append([
         ORTHANC_JAVA_REPOSITORY,
-        'OrthancJava-%s' % ORTHANC_JAVA_VERSION,
+        ORTHANC_JAVA_VERSION,
         'CodeGeneration/%s' % f,
         'Sdk-%s/%s' % (PLUGIN_SDK_VERSION, f),
     ])
