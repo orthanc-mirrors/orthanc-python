@@ -9,3 +9,4 @@ i/
 *.h.orig
 *.cpp.orig
 *.py.orig
+*.pyi.orig
