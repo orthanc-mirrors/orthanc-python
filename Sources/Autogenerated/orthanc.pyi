@@ -25,12 +25,11 @@
 # WARNING: Auto-generated file. Do not modify it by hand.
 
 
-import enum
 import typing
 
 
 
-class ChangeType(enum.Enum):
+class ChangeType():
     """
     The supported types of changes that can be signaled to the change callback.
     """
@@ -130,7 +129,7 @@ class ChangeType(enum.Enum):
     """
     JOB_FAILURE: int = 18,
 
-class CompressionType(enum.Enum):
+class CompressionType():
     """
     The compression algorithms that are supported by the Orthanc core.
     """
@@ -155,7 +154,7 @@ class CompressionType(enum.Enum):
     """
     GZIP_WITH_SIZE: int = 3,
 
-class ConstraintType(enum.Enum):
+class ConstraintType():
     """
     The constraints on the tags (main DICOM tags and identifier tags) that must be supported by the database plugins.
     """
@@ -185,7 +184,7 @@ class ConstraintType(enum.Enum):
     """
     LIST: int = 5,
 
-class ContentType(enum.Enum):
+class ContentType():
     """
     The content types that are supported by Orthanc plugins.
     """
@@ -210,7 +209,7 @@ class ContentType(enum.Enum):
     """
     DICOM_UNTIL_PIXEL_DATA: int = 3,
 
-class CreateDicomFlags(enum.Enum):
+class CreateDicomFlags():
     """
     Flags to the creation of a DICOM file.
     """
@@ -230,7 +229,7 @@ class CreateDicomFlags(enum.Enum):
     """
     GENERATE_IDENTIFIERS: int = 2,
 
-class DicomToJsonFlags(enum.Enum):
+class DicomToJsonFlags():
     """
     Flags to customize a DICOM-to-JSON conversion. By default, binary tags are formatted using Data URI scheme.
     """
@@ -280,7 +279,7 @@ class DicomToJsonFlags(enum.Enum):
     """
     SKIP_GROUP_LENGTHS: int = 128,
 
-class DicomToJsonFormat(enum.Enum):
+class DicomToJsonFormat():
     """
     The possible output formats for a DICOM-to-JSON conversion.
     """
@@ -300,7 +299,7 @@ class DicomToJsonFormat(enum.Enum):
     """
     HUMAN: int = 3,
 
-class DicomWebBinaryMode(enum.Enum):
+class DicomWebBinaryMode():
     """
     The available modes to export a binary DICOM tag into a DICOMweb JSON or XML document.
     """
@@ -320,7 +319,7 @@ class DicomWebBinaryMode(enum.Enum):
     """
     BULK_DATA_URI: int = 2,
 
-class ErrorCode(enum.Enum):
+class ErrorCode():
     """
     The various error codes that can be returned by the Orthanc core.
     """
@@ -860,7 +859,7 @@ class ErrorCode(enum.Enum):
     """
     UNSUPPORTED_MEDIA_TYPE: int = 3000,
 
-class HttpMethod(enum.Enum):
+class HttpMethod():
     """
     The various HTTP methods for a REST call.
     """
@@ -885,7 +884,7 @@ class HttpMethod(enum.Enum):
     """
     DELETE: int = 4,
 
-class IdentifierConstraint(enum.Enum):
+class IdentifierConstraint():
     """
     The constraints on the DICOM identifiers that must be supported by the database plugins.
     """
@@ -910,7 +909,7 @@ class IdentifierConstraint(enum.Enum):
     """
     WILDCARD: int = 4,
 
-class ImageFormat(enum.Enum):
+class ImageFormat():
     """
     The image formats that are supported by the Orthanc core.
     """
@@ -930,7 +929,7 @@ class ImageFormat(enum.Enum):
     """
     DICOM: int = 2,
 
-class InstanceOrigin(enum.Enum):
+class InstanceOrigin():
     """
     The origin of a DICOM instance that has been received by Orthanc.
     """
@@ -965,7 +964,7 @@ class InstanceOrigin(enum.Enum):
     """
     WEB_DAV: int = 6,
 
-class JobStepStatus(enum.Enum):
+class JobStepStatus():
     """
     The possible status for one single step of a job.
     """
@@ -985,7 +984,7 @@ class JobStepStatus(enum.Enum):
     """
     CONTINUE: int = 3,
 
-class JobStopReason(enum.Enum):
+class JobStopReason():
     """
     Explains why the job should stop and release the resources it has allocated. This is especially important to disambiguate between the "paused" condition and the "final" conditions (success, failure, or canceled).
     """
@@ -1010,7 +1009,7 @@ class JobStopReason(enum.Enum):
     """
     CANCELED: int = 4,
 
-class MetricsType(enum.Enum):
+class MetricsType():
     """
     The available types of metrics.
     """
@@ -1025,7 +1024,7 @@ class MetricsType(enum.Enum):
     """
     TIMER: int = 1,
 
-class PixelFormat(enum.Enum):
+class PixelFormat():
     """
     The memory layout of the pixels of an image.
     """
@@ -1085,7 +1084,7 @@ class PixelFormat(enum.Enum):
     """
     GRAYSCALE64: int = 11,
 
-class ReceivedInstanceAction(enum.Enum):
+class ReceivedInstanceAction():
     """
     The action to be taken after ReceivedInstanceCallback is triggered
     """
@@ -1105,7 +1104,7 @@ class ReceivedInstanceAction(enum.Enum):
     """
     DISCARD: int = 3,
 
-class ResourceType(enum.Enum):
+class ResourceType():
     """
     The supported types of DICOM resources.
     """
@@ -1135,7 +1134,7 @@ class ResourceType(enum.Enum):
     """
     NONE: int = 4,
 
-class StorageCommitmentFailureReason(enum.Enum):
+class StorageCommitmentFailureReason():
     """
     The available values for the Failure Reason (0008,1197) during storage commitment. http://dicom.nema.org/medical/dicom/2019e/output/chtml/part03/sect_C.14.html#sect_C.14.1.1
     """
@@ -1175,7 +1174,7 @@ class StorageCommitmentFailureReason(enum.Enum):
     """
     DUPLICATE_TRANSACTION_UID: int = 6,
 
-class ValueRepresentation(enum.Enum):
+class ValueRepresentation():
     """
     The value representations present in the DICOM standard (version 2013).
     """
