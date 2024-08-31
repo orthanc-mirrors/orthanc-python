@@ -38,14 +38,14 @@ fi
 
 ROOT_DIR=`dirname $(readlink -f $0)`/../../..
 
-mkdir -p ${ROOT_DIR}/docker-build-buster/
+mkdir -p ${ROOT_DIR}/docker-build-bookworm/
 
-docker pull debian:buster-slim
+docker pull debian:bookworm-slim
 
 docker run -t ${DOCKER_FLAGS} --rm \
     -v ${ROOT_DIR}:/source:ro \
-    -v ${ROOT_DIR}/docker-build-buster:/target:rw \
-    debian:buster-slim \
-    bash /source/Resources/Builders/Debian/docker-internal.sh $1 buster 3.7 $(id -u) $(id -g)
+    -v ${ROOT_DIR}/docker-build-bookworm:/target:rw \
+    debian:bookworm-slim \
+    bash /source/Resources/Builders/Debian/docker-internal.sh $1 bookworm 3.11 $(id -u) $(id -g)
 
-ls -lR ${ROOT_DIR}/docker-build-buster/
+ls -lR ${ROOT_DIR}/docker-build-bookworm/

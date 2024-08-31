@@ -46,6 +46,6 @@ docker run -t ${DOCKER_FLAGS} --rm \
     -v ${ROOT_DIR}:/source:ro \
     -v ${ROOT_DIR}/docker-build-bullseye:/target:rw \
     debian:bullseye-slim \
-    bash /source/Resources/Builders/Debian/docker-internal.sh $1 3.9 $(id -u) $(id -g)
+    bash /source/Resources/Builders/Debian/docker-internal.sh $1 bullseye 3.9 $(id -u) $(id -g)
 
 ls -lR ${ROOT_DIR}/docker-build-bullseye/
