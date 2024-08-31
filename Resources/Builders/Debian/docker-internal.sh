@@ -27,30 +27,39 @@
 set -ex
 
 BUILD_TYPE=$1
-PYTHON_VERSION=$2
-USER_ID=$3
-GROUP_ID=$4
+DEBIAN_VERSION=$2
+PYTHON_VERSION=$3
+USER_ID=$4
+GROUP_ID=$5
 
 # Create the same user and group than the one who is running the
 # "./docker-{distro}-compile.sh" script on the hosting system (*)
 groupadd -g ${GROUP_ID} -r orthanc
 useradd -u ${USER_ID} -r -g orthanc orthanc
 
+if [ "${DEBIAN_VERSION}" = "bullseye" ]; then
+    MERCURIAL_PACKAGES=python
+else
+    MERCURIAL_PACKAGES=mercurial
+fi
+
 apt-get update
-DEBIAN_FRONTEND=noninteractive apt-get -y install nano build-essential unzip cmake pkg-config python libpython3-dev curl
+DEBIAN_FRONTEND=noninteractive apt-get -y install nano build-essential unzip cmake pkg-config libpython3-dev curl ${MERCURIAL_PACKAGES}
 apt-get -y clean
 rm -rf /var/lib/apt/lists/*
 
 
-# On Bullseye, we get "stat: cannot statx
-# '/usr/share/mercurial/hgext.rc': Operation not permitted" if
-# installing the "mercurial" package using apt-get. As a consequence,
-# we manually install Mercurial from sources.
-MERCURIAL=mercurial-5.4.1
-cd /tmp
-curl https://www.mercurial-scm.org/release/${MERCURIAL}.tar.gz > ${MERCURIAL}.tar.gz
-tar xvf ${MERCURIAL}.tar.gz
-export PATH=${PATH}:/tmp/${MERCURIAL}/
+if [ "${DEBIAN_VERSION}" = "bullseye" ]; then
+   # On Bullseye, we get "stat: cannot statx
+   # '/usr/share/mercurial/hgext.rc': Operation not permitted" if
+   # installing the "mercurial" package using apt-get. As a consequence,
+   # we manually install Mercurial from sources.
+   MERCURIAL=mercurial-5.4.1
+   cd /tmp
+   curl https://www.mercurial-scm.org/release/${MERCURIAL}.tar.gz > ${MERCURIAL}.tar.gz
+   tar xvf ${MERCURIAL}.tar.gz
+   export PATH=${PATH}:/tmp/${MERCURIAL}/
+fi
 
 
 mkdir /tmp/source-writeable
