@@ -2,7 +2,9 @@ Bug:
 ===
 
 * The plugin does not support calls to 'curl http://localhost:8042/tools/reset -d ""' 
-  if the script registers the OnChangeCallback. Ex:
+  if the script registers the OnChangeCallback. 
+  https://discourse.orthanc-server.org/t/problem-when-restarting-orthanc-via-api-tools-reset/5183
+  Ex:
 
     import orthanc
 
