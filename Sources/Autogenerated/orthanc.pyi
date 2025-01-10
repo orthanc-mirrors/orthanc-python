@@ -31,7 +31,7 @@ import typing
 
 class ChangeType():
     """
-    The supported types of changes that can be signaled to the change callback.
+    The supported types of changes that can be signaled to the change callback. Note: this enum is not used to store changes in the DB !
     """
 
     """
@@ -211,7 +211,7 @@ class ContentType():
 
 class CreateDicomFlags():
     """
-    Flags to the creation of a DICOM file.
+    Flags for the creation of a DICOM file.
     """
 
     """
@@ -550,6 +550,26 @@ class ErrorCode():
     REVISION: int = 43,
 
     """
+    A main DICOM Tag has been defined multiple times for the same resource level
+    """
+    MAIN_DICOM_TAGS_MULTIPLY_DEFINED: int = 44,
+
+    """
+    Access to a resource is forbidden
+    """
+    FORBIDDEN_ACCESS: int = 45,
+
+    """
+    Duplicate resource
+    """
+    DUPLICATE_RESOURCE: int = 46,
+
+    """
+    Your configuration file contains configuration that are mutually incompatible
+    """
+    INCOMPATIBLE_CONFIGURATIONS: int = 47,
+
+    """
     SQLite: The database is not opened
     """
     SQLITE_NOT_OPENED: int = 1000,
@@ -605,7 +625,7 @@ class ErrorCode():
     SQLITE_CANNOT_STEP: int = 1010,
 
     """
-    SQLite: Bing a value while out of range (serious error)
+    SQLite: Bind a value while out of range (serious error)
     """
     SQLITE_BIND_OUT_OF_RANGE: int = 1011,
 
@@ -1008,6 +1028,91 @@ class JobStopReason():
     The job was canceled, and might be resubmitted later
     """
     CANCELED: int = 4,
+
+class LoadDicomInstanceMode():
+    """
+    Mode specifying how to load a DICOM instance.
+    """
+
+    """
+    Load the whole DICOM file, including pixel data
+    """
+    WHOLE_DICOM: int = 1,
+
+    """
+    Load the whole DICOM file until pixel data, which speeds up the loading
+    """
+    UNTIL_PIXEL_DATA: int = 2,
+
+    """
+    Load the whole DICOM file until pixel data, and replace pixel data by an empty tag whose VR (value representation) is the same as those of the original DICOM file
+    """
+    EMPTY_PIXEL_DATA: int = 3,
+
+class LogCategory():
+    """
+    The log categories supported by Orthanc. These values must match those of enumeration "LogCategory" in the Orthanc Core.
+    """
+
+    """
+    Generic (default) category
+    """
+    GENERIC: int = 1,
+
+    """
+    Plugin engine related logs (shall not be used by plugins)
+    """
+    PLUGINS: int = 2,
+
+    """
+    HTTP related logs
+    """
+    HTTP: int = 4,
+
+    """
+    SQLite related logs (shall not be used by plugins)
+    """
+    SQLITE: int = 8,
+
+    """
+    DICOM related logs
+    """
+    DICOM: int = 16,
+
+    """
+    jobs related logs
+    """
+    JOBS: int = 32,
+
+    """
+    Lua related logs (shall not be used by plugins)
+    """
+    LUA: int = 64,
+
+class LogLevel():
+    """
+    The log levels supported by Orthanc. These values must match those of enumeration "LogLevel" in the Orthanc Core.
+    """
+
+    """
+    Error log level
+    """
+    ERROR: int = 0,
+
+    """
+    Warning log level
+    """
+    WARNING: int = 1,
+
+    """
+    Info log level
+    """
+    INFO: int = 2,
+
+    """
+    Trace log level
+    """
+    TRACE: int = 3,
 
 class MetricsType():
     """
@@ -1560,6 +1665,17 @@ def ExtendOrthancExplorer(javascript: str) -> None:
     """
     ...
 
+# Add JavaScript code to customize the default behavior of Orthanc Explorer
+def ExtendOrthancExplorer2(plugin: str, javascript: str) -> None:
+    """
+    Add JavaScript code to customize the default behavior of Orthanc Explorer. This can for instance be used to add new buttons.
+
+    Args:
+      plugin (str): Identifier of your plugin (it must match "OrthancPluginGetName()").
+      javascript (str): The custom JavaScript code.
+    """
+    ...
+
 # This function generates a token that can be set in the HTTP header "Authorization" so as to grant full access to the REST API of Orthanc using an external HTTP client
 def GenerateRestApiAuthorizationToken() -> str:
     """
@@ -1622,6 +1738,14 @@ def GetConfigurationPath() -> str:
 
     Returns:
       str: NULL in the case of an error, or a newly allocated string containing the path. This string must be freed by OrthancPluginFreeString().
+    """
+    ...
+
+def GetDatabaseServerIdentifier() -> str:
+    """
+
+    Returns:
+      str: the database server identifier.  This is a statically-allocated string, do not free it.
     """
     ...
 
@@ -1815,6 +1939,20 @@ def HttpPut(url: str, body: bytes, username: str, password: str) -> bytes:
     """
     ...
 
+# This function loads a DICOM instance from the content of the Orthanc database
+def LoadDicomInstance(instance_id: str, mode: LoadDicomInstanceMode) -> DicomInstance:
+    """
+    This function loads a DICOM instance from the content of the Orthanc database. The function returns a new pointer to a data structure that is managed by the Orthanc core.
+
+    Args:
+      instance_id (str): The Orthanc identifier of the DICOM instance of interest.
+      mode (LoadDicomInstanceMode): Flag specifying how to deal with pixel data.
+
+    Returns:
+      DicomInstance: The newly allocated DICOM instance. It must be freed with OrthancPluginFreeDicomInstance().
+    """
+    ...
+
 # Log an error message using the Orthanc logging system
 def LogError(message: str) -> None:
     """
@@ -1832,6 +1970,21 @@ def LogInfo(message: str) -> None:
 
     Args:
       message (str): The message to be logged.
+    """
+    ...
+
+# Log a message using the Orthanc logging system
+def LogMessage(message: str, plugin: str, file: str, line: int, category: LogCategory, level: LogLevel) -> None:
+    """
+    Log a message using the Orthanc logging system.
+
+    Args:
+      message (str): The message to be logged.
+      plugin (str): The plugin name.
+      file (str): The filename in the plugin code.
+      line (int): The file line in the plugin code.
+      category (LogCategory): The category.
+      level (LogLevel): The level of the message.
     """
     ...
 
@@ -2076,12 +2229,33 @@ def RestApiPutAfterPlugins(uri: str, body: bytes) -> bytes:
     """
     ...
 
+# This function gives a name to the thread that is calling this function
+def SetCurrentThreadName(thread_name: str) -> None:
+    """
+    This function gives a name to the thread that is calling this function. This name is used in the Orthanc logs. This function must only be called from threads that the plugin has created itself.
+
+    Args:
+      thread_name (str): The name of the current thread. A thread name cannot be longer than 16 characters.
+    """
+    ...
+
 # Set a description for this plugin
 def SetDescription(description: str) -> None:
     """
     Set a description for this plugin. It is displayed in the "Plugins" page of Orthanc Explorer.
 
     Args:
+      description (str): The description.
+    """
+    ...
+
+# Set a description for this plugin
+def SetDescription2(plugin: str, description: str) -> None:
+    """
+    Set a description for this plugin. It is displayed in the "Plugins" page of Orthanc Explorer.
+
+    Args:
+      plugin (str): Identifier of your plugin (it must match "OrthancPluginGetName()").
       description (str): The description.
     """
     ...
@@ -2097,10 +2271,10 @@ def SetGlobalProperty(property: int, value: str) -> None:
     """
     ...
 
-# This function sets the value of a metrics to monitor the behavior of the plugin through tools such as Prometheus
+# This function sets the value of a floating-point metrics to monitor the behavior of the plugin through tools such as Prometheus
 def SetMetricsValue(name: str, value: float, type: MetricsType) -> None:
     """
-    This function sets the value of a metrics to monitor the behavior of the plugin through tools such as Prometheus. The values of all the metrics are stored within the Orthanc context.
+    This function sets the value of a floating-point metrics to monitor the behavior of the plugin through tools such as Prometheus. The values of all the metrics are stored within the Orthanc context.
 
     Args:
       name (str): The name of the metrics to be set.
@@ -2115,6 +2289,17 @@ def SetRootUri(uri: str) -> None:
     For plugins that come with a Web interface, this function declares the entry path where to find this interface. This information is notably used in the "Plugins" page of Orthanc Explorer.
 
     Args:
+      uri (str): The root URI for this plugin.
+    """
+    ...
+
+# For plugins that come with a Web interface, this function declares the entry path where to find this interface
+def SetRootUri2(plugin: str, uri: str) -> None:
+    """
+    For plugins that come with a Web interface, this function declares the entry path where to find this interface. This information is notably used in the "Plugins" page of Orthanc Explorer.
+
+    Args:
+      plugin (str): Identifier of your plugin (it must match "OrthancPluginGetName()").
       uri (str): The root URI for this plugin.
     """
     ...
@@ -3001,6 +3186,26 @@ class RestOutput:
           log (int): Whether to also write the detailed error to the Orthanc logs.
         """
         ...
+    
+    # Initiates an HTTP stream answer, as the result of a REST request
+    def StartStreamAnswer(self, content_type: str) -> None:
+        """
+        Initiates an HTTP stream answer, as the result of a REST request.
+
+        Args:
+          content_type (str): The MIME type of the items in the stream answer.
+        """
+        ...
+    
+    # This function sends a chunk as part of some HTTP stream answer that was initiated by OrthancPluginStartStreamAnswer()
+    def SendStreamChunk(self, answer: bytes) -> None:
+        """
+        This function sends a chunk as part of some HTTP stream answer that was initiated by OrthancPluginStartStreamAnswer().
+
+        Args:
+          answer (bytes): Pointer to the memory buffer containing the item.
+        """
+        ...
 
 class ServerChunkedRequestReader:
     """
@@ -3063,6 +3268,13 @@ class StorageArea:
           level (ResourceType): The type of the resources of interest.
         """
         ...
+
+class WebDavCollection:
+    """
+    WebDAV collection
+    """
+    ...
+
 
 class WorklistAnswers:
     """

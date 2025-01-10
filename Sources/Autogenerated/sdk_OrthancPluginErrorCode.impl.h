@@ -344,6 +344,30 @@ void RegisterOrthancPluginErrorCodeEnumeration(PyObject* module)
   }
 
   {
+    PyObject* tmp = PyLong_FromLong(44);
+    PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "MAIN_DICOM_TAGS_MULTIPLY_DEFINED", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(45);
+    PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "FORBIDDEN_ACCESS", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(46);
+    PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "DUPLICATE_RESOURCE", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
+    PyObject* tmp = PyLong_FromLong(47);
+    PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "INCOMPATIBLE_CONFIGURATIONS", tmp);
+    Py_DECREF(tmp);
+  }
+
+  {
     PyObject* tmp = PyLong_FromLong(1000);
     PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "SQLITE_NOT_OPENED", tmp);
     Py_DECREF(tmp);

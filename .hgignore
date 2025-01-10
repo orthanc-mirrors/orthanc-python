@@ -10,3 +10,4 @@ i/
 *.cpp.orig
 *.py.orig
 *.pyi.orig
+CodeAnalysis/.venv/
