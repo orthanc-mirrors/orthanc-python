@@ -8,6 +8,7 @@ Files:
   CITATION.cff
   CodeAnalysis/README.txt
   NEWS
+  OrthancSDKVersion.cmake
   README
   Sources/README.txt
   TODO
