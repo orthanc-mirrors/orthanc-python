@@ -1,13 +1,13 @@
 /**
- * SPDX-FileCopyrightText: 2020-2023 Osimis S.A., 2024-2024 Orthanc Team SRL, 2021-2024 Sebastien Jodogne, ICTEAM UCLouvain
+ * SPDX-FileCopyrightText: 2020-2023 Osimis S.A., 2024-2025 Orthanc Team SRL, 2021-2025 Sebastien Jodogne, ICTEAM UCLouvain
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
 /**
  * Python plugin for Orthanc
  * Copyright (C) 2020-2023 Osimis S.A., Belgium
- * Copyright (C) 2024-2024 Orthanc Team SRL, Belgium
- * Copyright (C) 2021-2024 Sebastien Jodogne, ICTEAM UCLouvain, Belgium
+ * Copyright (C) 2024-2025 Orthanc Team SRL, Belgium
+ * Copyright (C) 2021-2025 Sebastien Jodogne, ICTEAM UCLouvain, Belgium
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -436,81 +436,5 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetHttpErrorDetails(
 
   Py_INCREF(Py_None);
   return Py_None;
-}
-
-static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginStartStreamAnswer(
-  sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
-{
-  PythonLock::LogCall("Calling method OrthancPluginStartStreamAnswer() on object of class OrthancPluginRestOutput");
-
-  if (self->object_ == NULL)
-  {
-    PyErr_SetString(PyExc_ValueError, "Invalid object");
-    return NULL;
-  }
-
-  const char* arg0 = NULL;
-
-  if (!PyArg_ParseTuple(args, "s", &arg0))
-  {
-    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
-    return NULL;
-  }
-
-  OrthancPluginErrorCode code;
-  {
-    PythonThreadsAllower allower;
-    code = OrthancPluginStartStreamAnswer(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
-  }
-  
-
-  if (code == OrthancPluginErrorCode_Success)
-  {
-    Py_INCREF(Py_None);
-    return Py_None;
-  }
-  else
-  {
-    PythonLock::RaiseException(code);
-    return NULL;
-  }
-}
-
-static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendStreamChunk(
-  sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
-{
-  PythonLock::LogCall("Calling method OrthancPluginSendStreamChunk() on object of class OrthancPluginRestOutput");
-
-  if (self->object_ == NULL)
-  {
-    PyErr_SetString(PyExc_ValueError, "Invalid object");
-    return NULL;
-  }
-
-  Py_buffer arg0;
-
-  if (!PyArg_ParseTuple(args, "s*", &arg0))
-  {
-    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
-    return NULL;
-  }
-
-  OrthancPluginErrorCode code;
-  {
-    PythonThreadsAllower allower;
-    code = OrthancPluginSendStreamChunk(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
-  }
-  PyBuffer_Release(&arg0);
-
-  if (code == OrthancPluginErrorCode_Success)
-  {
-    Py_INCREF(Py_None);
-    return Py_None;
-  }
-  else
-  {
-    PythonLock::RaiseException(code);
-    return NULL;
-  }
 }
 

@@ -1,13 +1,13 @@
 /**
- * SPDX-FileCopyrightText: 2020-2023 Osimis S.A., 2024-2024 Orthanc Team SRL, 2021-2024 Sebastien Jodogne, ICTEAM UCLouvain
+ * SPDX-FileCopyrightText: 2020-2023 Osimis S.A., 2024-2025 Orthanc Team SRL, 2021-2025 Sebastien Jodogne, ICTEAM UCLouvain
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
 /**
  * Python plugin for Orthanc
  * Copyright (C) 2020-2023 Osimis S.A., Belgium
- * Copyright (C) 2024-2024 Orthanc Team SRL, Belgium
- * Copyright (C) 2021-2024 Sebastien Jodogne, ICTEAM UCLouvain, Belgium
+ * Copyright (C) 2024-2025 Orthanc Team SRL, Belgium
+ * Copyright (C) 2021-2025 Sebastien Jodogne, ICTEAM UCLouvain, Belgium
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -53,10 +53,6 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendHttpStatus(
 static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginCompressAndAnswerJpegImage(
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args);
 static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetHttpErrorDetails(
-  sdk_OrthancPluginRestOutput_Object* self, PyObject *args);
-static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginStartStreamAnswer(
-  sdk_OrthancPluginRestOutput_Object* self, PyObject *args);
-static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendStreamChunk(
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args);
 // End of forward declarations
 
@@ -105,12 +101,6 @@ static PyMethodDef sdk_OrthancPluginRestOutput_Methods[] = {
   { "SetHttpErrorDetails",
     (PyCFunction) sdk_OrthancPluginRestOutput_OrthancPluginSetHttpErrorDetails, METH_VARARGS,
     "Generated from C function OrthancPluginSetHttpErrorDetails()" },
-  { "StartStreamAnswer",
-    (PyCFunction) sdk_OrthancPluginRestOutput_OrthancPluginStartStreamAnswer, METH_VARARGS,
-    "Generated from C function OrthancPluginStartStreamAnswer()" },
-  { "SendStreamChunk",
-    (PyCFunction) sdk_OrthancPluginRestOutput_OrthancPluginSendStreamChunk, METH_VARARGS,
-    "Generated from C function OrthancPluginSendStreamChunk()" },
   { NULL }  /* Sentinel */
 };
 

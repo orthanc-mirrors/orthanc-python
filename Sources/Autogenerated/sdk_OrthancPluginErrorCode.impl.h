@@ -1,13 +1,13 @@
 /**
- * SPDX-FileCopyrightText: 2020-2023 Osimis S.A., 2024-2024 Orthanc Team SRL, 2021-2024 Sebastien Jodogne, ICTEAM UCLouvain
+ * SPDX-FileCopyrightText: 2020-2023 Osimis S.A., 2024-2025 Orthanc Team SRL, 2021-2025 Sebastien Jodogne, ICTEAM UCLouvain
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
 /**
  * Python plugin for Orthanc
  * Copyright (C) 2020-2023 Osimis S.A., Belgium
- * Copyright (C) 2024-2024 Orthanc Team SRL, Belgium
- * Copyright (C) 2021-2024 Sebastien Jodogne, ICTEAM UCLouvain, Belgium
+ * Copyright (C) 2024-2025 Orthanc Team SRL, Belgium
+ * Copyright (C) 2021-2025 Sebastien Jodogne, ICTEAM UCLouvain, Belgium
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -340,30 +340,6 @@ void RegisterOrthancPluginErrorCodeEnumeration(PyObject* module)
   {
     PyObject* tmp = PyLong_FromLong(43);
     PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "REVISION", tmp);
-    Py_DECREF(tmp);
-  }
-
-  {
-    PyObject* tmp = PyLong_FromLong(44);
-    PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "MAIN_DICOM_TAGS_MULTIPLY_DEFINED", tmp);
-    Py_DECREF(tmp);
-  }
-
-  {
-    PyObject* tmp = PyLong_FromLong(45);
-    PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "FORBIDDEN_ACCESS", tmp);
-    Py_DECREF(tmp);
-  }
-
-  {
-    PyObject* tmp = PyLong_FromLong(46);
-    PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "DUPLICATE_RESOURCE", tmp);
-    Py_DECREF(tmp);
-  }
-
-  {
-    PyObject* tmp = PyLong_FromLong(47);
-    PyDict_SetItemString(sdk_OrthancPluginErrorCode_Type.tp_dict, "INCOMPATIBLE_CONFIGURATIONS", tmp);
     Py_DECREF(tmp);
   }
 

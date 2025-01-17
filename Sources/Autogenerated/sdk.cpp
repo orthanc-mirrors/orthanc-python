@@ -1,13 +1,13 @@
 /**
- * SPDX-FileCopyrightText: 2020-2023 Osimis S.A., 2024-2024 Orthanc Team SRL, 2021-2024 Sebastien Jodogne, ICTEAM UCLouvain
+ * SPDX-FileCopyrightText: 2020-2023 Osimis S.A., 2024-2025 Orthanc Team SRL, 2021-2025 Sebastien Jodogne, ICTEAM UCLouvain
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
 /**
  * Python plugin for Orthanc
  * Copyright (C) 2020-2023 Osimis S.A., Belgium
- * Copyright (C) 2024-2024 Orthanc Team SRL, Belgium
- * Copyright (C) 2021-2024 Sebastien Jodogne, ICTEAM UCLouvain, Belgium
+ * Copyright (C) 2024-2025 Orthanc Team SRL, Belgium
+ * Copyright (C) 2021-2025 Sebastien Jodogne, ICTEAM UCLouvain, Belgium
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -49,9 +49,6 @@
 #include "./sdk_OrthancPluginInstanceOrigin.impl.h"
 #include "./sdk_OrthancPluginJobStepStatus.impl.h"
 #include "./sdk_OrthancPluginJobStopReason.impl.h"
-#include "./sdk_OrthancPluginLoadDicomInstanceMode.impl.h"
-#include "./sdk_OrthancPluginLogCategory.impl.h"
-#include "./sdk_OrthancPluginLogLevel.impl.h"
 #include "./sdk_OrthancPluginMetricsType.impl.h"
 #include "./sdk_OrthancPluginPixelFormat.impl.h"
 #include "./sdk_OrthancPluginReceivedInstanceAction.impl.h"
@@ -70,7 +67,6 @@
 #include "./sdk_OrthancPluginRestOutput.impl.h"
 #include "./sdk_OrthancPluginServerChunkedRequestReader.impl.h"
 #include "./sdk_OrthancPluginStorageArea.impl.h"
-#include "./sdk_OrthancPluginWebDavCollection.impl.h"
 #include "./sdk_OrthancPluginWorklistAnswers.impl.h"
 #include "./sdk_OrthancPluginWorklistQuery.impl.h"
 
@@ -87,7 +83,6 @@
 #include "./sdk_OrthancPluginRestOutput.methods.h"
 #include "./sdk_OrthancPluginServerChunkedRequestReader.methods.h"
 #include "./sdk_OrthancPluginStorageArea.methods.h"
-#include "./sdk_OrthancPluginWebDavCollection.methods.h"
 #include "./sdk_OrthancPluginWorklistAnswers.methods.h"
 #include "./sdk_OrthancPluginWorklistQuery.methods.h"
 
@@ -108,9 +103,6 @@ void RegisterOrthancSdk(PyObject* module)
   RegisterOrthancPluginInstanceOriginEnumeration(module);
   RegisterOrthancPluginJobStepStatusEnumeration(module);
   RegisterOrthancPluginJobStopReasonEnumeration(module);
-  RegisterOrthancPluginLoadDicomInstanceModeEnumeration(module);
-  RegisterOrthancPluginLogCategoryEnumeration(module);
-  RegisterOrthancPluginLogLevelEnumeration(module);
   RegisterOrthancPluginMetricsTypeEnumeration(module);
   RegisterOrthancPluginPixelFormatEnumeration(module);
   RegisterOrthancPluginReceivedInstanceActionEnumeration(module);
@@ -129,7 +121,6 @@ void RegisterOrthancSdk(PyObject* module)
   RegisterOrthancPluginRestOutputClass(module);
   RegisterOrthancPluginServerChunkedRequestReaderClass(module);
   RegisterOrthancPluginStorageAreaClass(module);
-  RegisterOrthancPluginWebDavCollectionClass(module);
   RegisterOrthancPluginWorklistAnswersClass(module);
   RegisterOrthancPluginWorklistQueryClass(module);
 }

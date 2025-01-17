@@ -1,9 +1,6 @@
 Pending changes in the mainline
 ===============================
 
-=> Minimum SDK version: 1.12.6 <=
-
-* Added "orthanc.RestOutput.StartStreamAnswer()" and "orthanc.RestOutput.SendStreamChunk()"
 * In "orthanc.pyi", enumerations are not tagged as deriving from "enum.Enum" anymore:
   https://github.com/orthanc-server/orthanc-builder/issues/21
 * Docker-based builder scripts for Debian 12 (bookworm)

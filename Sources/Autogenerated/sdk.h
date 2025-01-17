@@ -1,13 +1,13 @@
 /**
- * SPDX-FileCopyrightText: 2020-2023 Osimis S.A., 2024-2024 Orthanc Team SRL, 2021-2024 Sebastien Jodogne, ICTEAM UCLouvain
+ * SPDX-FileCopyrightText: 2020-2023 Osimis S.A., 2024-2025 Orthanc Team SRL, 2021-2025 Sebastien Jodogne, ICTEAM UCLouvain
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
 /**
  * Python plugin for Orthanc
  * Copyright (C) 2020-2023 Osimis S.A., Belgium
- * Copyright (C) 2024-2024 Orthanc Team SRL, Belgium
- * Copyright (C) 2021-2024 Sebastien Jodogne, ICTEAM UCLouvain, Belgium
+ * Copyright (C) 2024-2025 Orthanc Team SRL, Belgium
+ * Copyright (C) 2021-2025 Sebastien Jodogne, ICTEAM UCLouvain, Belgium
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -45,7 +45,6 @@ PyTypeObject* GetOrthancPluginPeersType();
 PyTypeObject* GetOrthancPluginRestOutputType();
 PyTypeObject* GetOrthancPluginServerChunkedRequestReaderType();
 PyTypeObject* GetOrthancPluginStorageAreaType();
-PyTypeObject* GetOrthancPluginWebDavCollectionType();
 PyTypeObject* GetOrthancPluginWorklistAnswersType();
 PyTypeObject* GetOrthancPluginWorklistQueryType();
 
@@ -149,15 +148,6 @@ typedef struct
   OrthancPluginStorageArea* object_;
   bool borrowed_;
 } sdk_OrthancPluginStorageArea_Object;
-
-typedef struct
-{
-  PyObject_HEAD
-
-  /* Type-specific fields go here. */
-  OrthancPluginWebDavCollection* object_;
-  bool borrowed_;
-} sdk_OrthancPluginWebDavCollection_Object;
 
 typedef struct
 {
