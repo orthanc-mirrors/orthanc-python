@@ -35,6 +35,8 @@ else()
   set(ORTHANC_FRAMEWORK_DEFAULT_SOURCE "web")
 endif()
 
+include(${CMAKE_SOURCE_DIR}/OrthancSDKVersion.cmake)
+
 
 if (NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
   # The Python version cannot be controlled on OS X (yet)
@@ -181,7 +183,7 @@ if (USE_FRAMEWORK_ORTHANC_SDK)
     )
 else()
   include_directories(
-    ${CMAKE_SOURCE_DIR}/Resources/Orthanc/Sdk-1.10.0
+    ${CMAKE_SOURCE_DIR}/Resources/Orthanc/Sdk-${ORTHANC_SDK_VERSION}
     )
 endif()
 
