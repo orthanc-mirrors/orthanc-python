@@ -67,6 +67,7 @@ mkdir /tmp/source-writeable
 cp -r /source/CMakeLists.txt /tmp/source-writeable/
 cp -r /source/Sources /tmp/source-writeable/
 cp -r /source/Resources /tmp/source-writeable/
+cp -r /source/OrthancSDKVersion.cmake /tmp/source-writeable/
 
 mkdir /tmp/build
 cd /tmp/build
