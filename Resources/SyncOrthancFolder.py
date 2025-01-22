@@ -109,17 +109,18 @@ commands.append([
 
 
 for f in [
-        'CodeModel.json',
-        'CodeModel.json.license',
-        'ClassDocumentation.json',
-        'ClassDocumentation.json.license',
+        ('ClassDocumentation.json',         'CodeGeneration/ClassDocumentation.json'),
+        ('ClassDocumentation.json.license', 'CodeGeneration/ClassDocumentation.json.license'),
+        ('CodeModel.json',                  'Resources/CodeModel-%s.json' % PLUGIN_SDK_VERSION),
+        ('CodeModel.json.license',          'Resources/CodeModel-%s.json.license' % PLUGIN_SDK_VERSION),
         ]:
     commands.append([
         ORTHANC_JAVA_REPOSITORY,
         ORTHANC_JAVA_VERSION,
-        'CodeGeneration/%s' % f,
-        'Sdk-%s/%s' % (PLUGIN_SDK_VERSION, f),
+        f[1],
+        'Sdk-%s/%s' % (PLUGIN_SDK_VERSION, f[0]),
     ])
+
 
 
 pool = multiprocessing.Pool(10)  # simultaneous downloads
