@@ -438,3 +438,79 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetHttpErrorDetails(
   return Py_None;
 }
 
+static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginStartStreamAnswer(
+  sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
+{
+  PythonLock::LogCall("Calling method OrthancPluginStartStreamAnswer() on object of class OrthancPluginRestOutput");
+
+  if (self->object_ == NULL)
+  {
+    PyErr_SetString(PyExc_ValueError, "Invalid object");
+    return NULL;
+  }
+
+  const char* arg0 = NULL;
+
+  if (!PyArg_ParseTuple(args, "s", &arg0))
+  {
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
+    return NULL;
+  }
+
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginStartStreamAnswer(OrthancPlugins::GetGlobalContext(), self->object_, arg0);
+  }
+  
+
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
+  else
+  {
+    PythonLock::RaiseException(code);
+    return NULL;
+  }
+}
+
+static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendStreamChunk(
+  sdk_OrthancPluginRestOutput_Object* self, PyObject *args)
+{
+  PythonLock::LogCall("Calling method OrthancPluginSendStreamChunk() on object of class OrthancPluginRestOutput");
+
+  if (self->object_ == NULL)
+  {
+    PyErr_SetString(PyExc_ValueError, "Invalid object");
+    return NULL;
+  }
+
+  Py_buffer arg0;
+
+  if (!PyArg_ParseTuple(args, "s*", &arg0))
+  {
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
+    return NULL;
+  }
+
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginSendStreamChunk(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
+  }
+  PyBuffer_Release(&arg0);
+
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
+  else
+  {
+    PythonLock::RaiseException(code);
+    return NULL;
+  }
+}
+

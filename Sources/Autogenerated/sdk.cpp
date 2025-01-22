@@ -49,6 +49,9 @@
 #include "./sdk_OrthancPluginInstanceOrigin.impl.h"
 #include "./sdk_OrthancPluginJobStepStatus.impl.h"
 #include "./sdk_OrthancPluginJobStopReason.impl.h"
+#include "./sdk_OrthancPluginLoadDicomInstanceMode.impl.h"
+#include "./sdk_OrthancPluginLogCategory.impl.h"
+#include "./sdk_OrthancPluginLogLevel.impl.h"
 #include "./sdk_OrthancPluginMetricsType.impl.h"
 #include "./sdk_OrthancPluginPixelFormat.impl.h"
 #include "./sdk_OrthancPluginReceivedInstanceAction.impl.h"
@@ -67,6 +70,7 @@
 #include "./sdk_OrthancPluginRestOutput.impl.h"
 #include "./sdk_OrthancPluginServerChunkedRequestReader.impl.h"
 #include "./sdk_OrthancPluginStorageArea.impl.h"
+#include "./sdk_OrthancPluginWebDavCollection.impl.h"
 #include "./sdk_OrthancPluginWorklistAnswers.impl.h"
 #include "./sdk_OrthancPluginWorklistQuery.impl.h"
 
@@ -83,6 +87,7 @@
 #include "./sdk_OrthancPluginRestOutput.methods.h"
 #include "./sdk_OrthancPluginServerChunkedRequestReader.methods.h"
 #include "./sdk_OrthancPluginStorageArea.methods.h"
+#include "./sdk_OrthancPluginWebDavCollection.methods.h"
 #include "./sdk_OrthancPluginWorklistAnswers.methods.h"
 #include "./sdk_OrthancPluginWorklistQuery.methods.h"
 
@@ -103,6 +108,9 @@ void RegisterOrthancSdk(PyObject* module)
   RegisterOrthancPluginInstanceOriginEnumeration(module);
   RegisterOrthancPluginJobStepStatusEnumeration(module);
   RegisterOrthancPluginJobStopReasonEnumeration(module);
+  RegisterOrthancPluginLoadDicomInstanceModeEnumeration(module);
+  RegisterOrthancPluginLogCategoryEnumeration(module);
+  RegisterOrthancPluginLogLevelEnumeration(module);
   RegisterOrthancPluginMetricsTypeEnumeration(module);
   RegisterOrthancPluginPixelFormatEnumeration(module);
   RegisterOrthancPluginReceivedInstanceActionEnumeration(module);
@@ -121,6 +129,7 @@ void RegisterOrthancSdk(PyObject* module)
   RegisterOrthancPluginRestOutputClass(module);
   RegisterOrthancPluginServerChunkedRequestReaderClass(module);
   RegisterOrthancPluginStorageAreaClass(module);
+  RegisterOrthancPluginWebDavCollectionClass(module);
   RegisterOrthancPluginWorklistAnswersClass(module);
   RegisterOrthancPluginWorklistQueryClass(module);
 }

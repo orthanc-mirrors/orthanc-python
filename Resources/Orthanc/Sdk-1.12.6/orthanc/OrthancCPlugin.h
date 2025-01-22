@@ -121,7 +121,7 @@
 
 #define ORTHANC_PLUGINS_MINIMAL_MAJOR_NUMBER     1
 #define ORTHANC_PLUGINS_MINIMAL_MINOR_NUMBER     12
-#define ORTHANC_PLUGINS_MINIMAL_REVISION_NUMBER  5
+#define ORTHANC_PLUGINS_MINIMAL_REVISION_NUMBER  6
 
 
 #if !defined(ORTHANC_PLUGINS_VERSION_IS_ABOVE)
@@ -324,6 +324,7 @@ extern "C"
     OrthancPluginErrorCode_AlreadyExistingTag = 2042    /*!< Cannot override the value of a tag that already exists */,
     OrthancPluginErrorCode_NoStorageCommitmentHandler = 2043    /*!< No request handler factory for DICOM N-ACTION SCP (storage commitment) */,
     OrthancPluginErrorCode_NoCGetHandler = 2044    /*!< No request handler factory for DICOM C-GET SCP */,
+    OrthancPluginErrorCode_DicomGetUnavailable = 2045    /*!< DicomUserConnection: The C-GET command is not supported by the remote SCP */,
     OrthancPluginErrorCode_UnsupportedMediaType = 3000    /*!< Unsupported media type */,
 
     _OrthancPluginErrorCode_INTERNAL = 0x7fffffff
@@ -9601,9 +9602,9 @@ extern "C"
 
 
   /**
-   * @brief Send a chunk as a part of some HTTP stream answer.
+   * @brief Send a chunk as a part of an HTTP stream answer.
    *
-   * This function sends a chunk as part of some HTTP stream
+   * This function sends a chunk as part of an HTTP stream
    * answer that was initiated by OrthancPluginStartStreamAnswer().
    * 
    * @param context The Orthanc plugin context, as received by OrthancPluginInitialize().

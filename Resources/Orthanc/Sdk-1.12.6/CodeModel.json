@@ -1085,10 +1085,10 @@
                             "answerSize": "Number of bytes of the item."
                         },
                         "description": [
-                            "This function sends a chunk as part of some HTTP stream answer that was initiated by OrthancPluginStartStreamAnswer()."
+                            "This function sends a chunk as part of an HTTP stream answer that was initiated by OrthancPluginStartStreamAnswer()."
                         ],
                         "return": "0 if success, or the error code if failure (this notably happens if the connection is closed by the client).",
-                        "summary": "Send a chunk as a part of some HTTP stream answer."
+                        "summary": "Send a chunk as a part of an HTTP stream answer."
                     },
                     "return_sdk_enumeration": "OrthancPluginErrorCode",
                     "return_sdk_type": "enumeration"
@@ -2183,6 +2183,11 @@
                     "documentation": "No request handler factory for DICOM C-GET SCP",
                     "key": "NoCGetHandler",
                     "value": 2044
+                },
+                {
+                    "documentation": "DicomUserConnection: The C-GET command is not supported by the remote SCP",
+                    "key": "DicomGetUnavailable",
+                    "value": 2045
                 },
                 {
                     "documentation": "Unsupported media type",
