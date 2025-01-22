@@ -54,6 +54,10 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginCompressAndAnswerJpegI
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args);
 static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSetHttpErrorDetails(
   sdk_OrthancPluginRestOutput_Object* self, PyObject *args);
+static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginStartStreamAnswer(
+  sdk_OrthancPluginRestOutput_Object* self, PyObject *args);
+static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendStreamChunk(
+  sdk_OrthancPluginRestOutput_Object* self, PyObject *args);
 // End of forward declarations
 
 
@@ -101,6 +105,12 @@ static PyMethodDef sdk_OrthancPluginRestOutput_Methods[] = {
   { "SetHttpErrorDetails",
     (PyCFunction) sdk_OrthancPluginRestOutput_OrthancPluginSetHttpErrorDetails, METH_VARARGS,
     "Generated from C function OrthancPluginSetHttpErrorDetails()" },
+  { "StartStreamAnswer",
+    (PyCFunction) sdk_OrthancPluginRestOutput_OrthancPluginStartStreamAnswer, METH_VARARGS,
+    "Generated from C function OrthancPluginStartStreamAnswer()" },
+  { "SendStreamChunk",
+    (PyCFunction) sdk_OrthancPluginRestOutput_OrthancPluginSendStreamChunk, METH_VARARGS,
+    "Generated from C function OrthancPluginSendStreamChunk()" },
   { NULL }  /* Sentinel */
 };
 

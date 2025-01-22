@@ -45,6 +45,7 @@ PyTypeObject* GetOrthancPluginPeersType();
 PyTypeObject* GetOrthancPluginRestOutputType();
 PyTypeObject* GetOrthancPluginServerChunkedRequestReaderType();
 PyTypeObject* GetOrthancPluginStorageAreaType();
+PyTypeObject* GetOrthancPluginWebDavCollectionType();
 PyTypeObject* GetOrthancPluginWorklistAnswersType();
 PyTypeObject* GetOrthancPluginWorklistQueryType();
 
@@ -148,6 +149,15 @@ typedef struct
   OrthancPluginStorageArea* object_;
   bool borrowed_;
 } sdk_OrthancPluginStorageArea_Object;
+
+typedef struct
+{
+  PyObject_HEAD
+
+  /* Type-specific fields go here. */
+  OrthancPluginWebDavCollection* object_;
+  bool borrowed_;
+} sdk_OrthancPluginWebDavCollection_Object;
 
 typedef struct
 {
