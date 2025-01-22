@@ -1,6 +1,10 @@
 Pending changes in the mainline
 ===============================
 
+
+Version 5.0 (2025-01-22)
+========================
+
 => Minimum SDK version: 1.12.6 <=
 
 * Added "orthanc.RestOutput.StartStreamAnswer()" and "orthanc.RestOutput.SendStreamChunk()"
