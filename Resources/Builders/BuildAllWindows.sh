@@ -68,6 +68,9 @@ cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Wi
 bash ${DIR}/MinGW32-Python3.12/docker-compile.sh Release
 cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Win32-Python3.12-${VERSION}.dll
 
+bash ${DIR}/MinGW32-Python3.13/docker-compile.sh Release
+cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Win32-Python3.13-${VERSION}.dll
+
 
 ## Windows 64
 
@@ -91,3 +94,6 @@ cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Wi
 
 bash ${DIR}/MinGW64-Python3.12/docker-compile.sh Release
 cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Win64-Python3.12-${VERSION}.dll
+
+bash ${DIR}/MinGW64-Python3.13/docker-compile.sh Release
+cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Win64-Python3.13-${VERSION}.dll

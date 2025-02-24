@@ -1,6 +1,8 @@
 Pending changes in the mainline
 ===============================
 
+* Added Windows builder for Python 3.13
+
 
 Version 5.0 (2025-01-22)
 ========================
