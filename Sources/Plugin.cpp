@@ -286,6 +286,49 @@ PyObject* CreateImageFromBuffer(PyObject* module, PyObject* args)
   }
 }
 
+PyObject* SetStableStatus(PyObject* module, PyObject* args)
+{
+  const char* resourceId = NULL;
+  long int stableStatus = 0;
+
+  if (!PyArg_ParseTuple(args, "sl", &resourceId, &stableStatus))
+  {
+    PyErr_SetString(PyExc_TypeError, "Please provide a string containing the resourceId and a integer with 0 for stable and 1 for unstable");
+    return NULL;
+  }
+  else
+  {
+    OrthancPluginErrorCode code;
+    int32_t statusHasChanged;
+
+    {
+      PythonThreadsAllower allower;
+      code = OrthancPluginSetStableStatus(OrthancPlugins::GetGlobalContext(), &statusHasChanged, resourceId, static_cast<OrthancPluginStableStatus>(stableStatus));
+    }
+    
+    if (code == OrthancPluginErrorCode_Success)
+    {
+      /**
+       * "PyGILState_Ensure()" can be invoked several times from the
+       * same thread, so no problem in creating a PythonLock even if
+       * the GIL is already locked.
+       **/
+      PythonLock lock;
+
+      PythonObject tuple(lock, PyTuple_New(2));
+      PyTuple_SetItem(tuple.GetPyObject(), 0, PyLong_FromUnsignedLong(static_cast<unsigned long>(code)));
+      PyTuple_SetItem(tuple.GetPyObject(), 1, PyLong_FromLong(static_cast<long>(statusHasChanged)));
+      
+      return tuple.Release();
+    }
+    else
+    {
+      std::string message = "Failed to change stable status of resource: " + std::string(resourceId);
+      PyErr_SetString(PyExc_TypeError, message.c_str());
+      return NULL;
+    }
+  }
+}
 
 
 static bool pythonEnabled_ = false;

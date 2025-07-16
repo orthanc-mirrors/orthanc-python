@@ -42,8 +42,35 @@ extern PyObject *RegisterRestCallback(PyObject* module, PyObject *args);
 extern PyObject *RegisterStorageArea(PyObject* module, PyObject *args);
 extern PyObject *RegisterStorageCommitmentScpCallback(PyObject* module, PyObject *args);
 extern PyObject *RegisterWorklistCallback(PyObject* module, PyObject *args);
+extern PyObject *SetStableStatus(PyObject* module, PyObject *args);
 // End of forward declarations
 
+
+static PyObject* sdk_OrthancPluginAuditLog(PyObject* module, PyObject* args)
+{
+  PythonLock::LogCall("Calling Python global function: OrthancPluginAuditLog()");
+
+  const char* arg0 = NULL;
+  long int arg1 = 0;
+  const char* arg2 = NULL;
+  const char* arg3 = NULL;
+  Py_buffer arg4;
+
+  if (!PyArg_ParseTuple(args, "slsss*", &arg0, &arg1, &arg2, &arg3, &arg4))
+  {
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (5 arguments expected)");
+    return NULL;
+  }
+
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginAuditLog(OrthancPlugins::GetGlobalContext(), arg0, static_cast<OrthancPluginResourceType>(arg1), arg2, arg3, arg4.buf, arg4.len);
+  }
+  PyBuffer_Release(&arg4);
+
+  Py_INCREF(Py_None);
+  return Py_None;
+}
 
 static PyObject* sdk_OrthancPluginAutodetectMimeType(PyObject* module, PyObject* args)
 {
@@ -449,6 +476,39 @@ static PyObject* sdk_OrthancPluginCreateImage(PyObject* module, PyObject* args)
   }
 }
 
+static PyObject* sdk_OrthancPluginCreateKeysValuesIterator(PyObject* module, PyObject* args)
+{
+  PythonLock::LogCall("Calling Python global function: OrthancPluginCreateKeysValuesIterator()");
+
+  const char* arg0 = NULL;
+
+  if (!PyArg_ParseTuple(args, "s", &arg0))
+  {
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
+    return NULL;
+  }
+
+  // This is the case of a constructor
+  OrthancPluginKeysValuesIterator* obj;
+  {
+    PythonThreadsAllower allower;
+    obj = OrthancPluginCreateKeysValuesIterator(OrthancPlugins::GetGlobalContext(), arg0);
+  }
+  
+  if (obj == NULL)
+  {
+    PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
+    return NULL;  
+  }
+  else
+  {
+    PyObject *argList = Py_BuildValue("Lb", obj, false /* not borrowed */);
+    PyObject *python = PyObject_CallObject((PyObject *) &sdk_OrthancPluginKeysValuesIterator_Type, argList);
+    Py_DECREF(argList);
+    return python;
+  }
+}
+
 static PyObject* sdk_OrthancPluginDecodeDicomImage(PyObject* module, PyObject* args)
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginDecodeDicomImage()");
@@ -480,6 +540,38 @@ static PyObject* sdk_OrthancPluginDecodeDicomImage(PyObject* module, PyObject* a
     PyObject *python = PyObject_CallObject((PyObject *) &sdk_OrthancPluginImage_Type, argList);
     Py_DECREF(argList);
     return python;
+  }
+}
+
+static PyObject* sdk_OrthancPluginDeleteKeyValue(PyObject* module, PyObject* args)
+{
+  PythonLock::LogCall("Calling Python global function: OrthancPluginDeleteKeyValue()");
+
+  const char* arg0 = NULL;
+  const char* arg1 = NULL;
+
+  if (!PyArg_ParseTuple(args, "ss", &arg0, &arg1))
+  {
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
+    return NULL;
+  }
+
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginDeleteKeyValue(OrthancPlugins::GetGlobalContext(), arg0, arg1);
+  }
+  
+
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
+  else
+  {
+    PythonLock::RaiseException(code);
+    return NULL;
   }
 }
 
@@ -544,6 +636,38 @@ static PyObject* sdk_OrthancPluginDicomInstanceToJson(PyObject* module, PyObject
   else
   {
     return PyUnicode_FromString(s.GetContent());
+  }
+}
+
+static PyObject* sdk_OrthancPluginEnqueueValue(PyObject* module, PyObject* args)
+{
+  PythonLock::LogCall("Calling Python global function: OrthancPluginEnqueueValue()");
+
+  const char* arg0 = NULL;
+  Py_buffer arg1;
+
+  if (!PyArg_ParseTuple(args, "ss*", &arg0, &arg1))
+  {
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
+    return NULL;
+  }
+
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginEnqueueValue(OrthancPlugins::GetGlobalContext(), arg0, arg1.buf, arg1.len);
+  }
+  PyBuffer_Release(&arg1);
+
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
+  else
+  {
+    PythonLock::RaiseException(code);
+    return NULL;
   }
 }
 
@@ -635,6 +759,36 @@ static PyObject* sdk_OrthancPluginGenerateUuid(PyObject* module, PyObject* args)
   else
   {
     return PyUnicode_FromString(s.GetContent());
+  }
+}
+
+static PyObject* sdk_OrthancPluginGetAttachmentCustomData(PyObject* module, PyObject* args)
+{
+  PythonLock::LogCall("Calling Python global function: OrthancPluginGetAttachmentCustomData()");
+
+  const char* arg0 = NULL;
+
+  if (!PyArg_ParseTuple(args, "s", &arg0))
+  {
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
+    return NULL;
+  }
+
+  OrthancPlugins::MemoryBuffer buffer;
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginGetAttachmentCustomData(OrthancPlugins::GetGlobalContext(), *buffer, arg0);
+  }
+  
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    return PyBytes_FromStringAndSize(buffer.GetData(), buffer.GetSize());
+  }
+  else
+  {
+    PythonLock::RaiseException(code);
+    return NULL;  
   }
 }
 
@@ -1809,6 +1963,38 @@ static PyObject* sdk_OrthancPluginRestApiPutAfterPlugins(PyObject* module, PyObj
   }
 }
 
+static PyObject* sdk_OrthancPluginSetAttachmentCustomData(PyObject* module, PyObject* args)
+{
+  PythonLock::LogCall("Calling Python global function: OrthancPluginSetAttachmentCustomData()");
+
+  const char* arg0 = NULL;
+  Py_buffer arg1;
+
+  if (!PyArg_ParseTuple(args, "ss*", &arg0, &arg1))
+  {
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
+    return NULL;
+  }
+
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginSetAttachmentCustomData(OrthancPlugins::GetGlobalContext(), arg0, arg1.buf, arg1.len);
+  }
+  PyBuffer_Release(&arg1);
+
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
+  else
+  {
+    PythonLock::RaiseException(code);
+    return NULL;
+  }
+}
+
 static PyObject* sdk_OrthancPluginSetCurrentThreadName(PyObject* module, PyObject* args)
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginSetCurrentThreadName()");
@@ -1986,6 +2172,39 @@ static PyObject* sdk_OrthancPluginSetRootUri2(PyObject* module, PyObject* args)
   return Py_None;
 }
 
+static PyObject* sdk_OrthancPluginStoreKeyValue(PyObject* module, PyObject* args)
+{
+  PythonLock::LogCall("Calling Python global function: OrthancPluginStoreKeyValue()");
+
+  const char* arg0 = NULL;
+  const char* arg1 = NULL;
+  Py_buffer arg2;
+
+  if (!PyArg_ParseTuple(args, "sss*", &arg0, &arg1, &arg2))
+  {
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
+    return NULL;
+  }
+
+  OrthancPluginErrorCode code;
+  {
+    PythonThreadsAllower allower;
+    code = OrthancPluginStoreKeyValue(OrthancPlugins::GetGlobalContext(), arg0, arg1, arg2.buf, arg2.len);
+  }
+  PyBuffer_Release(&arg2);
+
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
+  else
+  {
+    PythonLock::RaiseException(code);
+    return NULL;
+  }
+}
+
 static PyObject* sdk_OrthancPluginTranscodeDicomInstance(PyObject* module, PyObject* args)
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginTranscodeDicomInstance()");
@@ -2089,6 +2308,8 @@ static PyObject* sdk_OrthancPluginWriteFile(PyObject* module, PyObject* args)
 
 static PyMethodDef ORTHANC_SDK_FUNCTIONS[] = 
 {
+  { "AuditLog", sdk_OrthancPluginAuditLog, METH_VARARGS,
+    "Generated from C function OrthancPluginAuditLog()" },
   { "AutodetectMimeType", sdk_OrthancPluginAutodetectMimeType, METH_VARARGS,
     "Generated from C function OrthancPluginAutodetectMimeType()" },
   { "BufferCompression", sdk_OrthancPluginBufferCompression, METH_VARARGS,
@@ -2115,12 +2336,18 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Generated from C function OrthancPluginCreateFindMatcher()" },
   { "CreateImage", sdk_OrthancPluginCreateImage, METH_VARARGS,
     "Generated from C function OrthancPluginCreateImage()" },
+  { "CreateKeysValuesIterator", sdk_OrthancPluginCreateKeysValuesIterator, METH_VARARGS,
+    "Generated from C function OrthancPluginCreateKeysValuesIterator()" },
   { "DecodeDicomImage", sdk_OrthancPluginDecodeDicomImage, METH_VARARGS,
     "Generated from C function OrthancPluginDecodeDicomImage()" },
+  { "DeleteKeyValue", sdk_OrthancPluginDeleteKeyValue, METH_VARARGS,
+    "Generated from C function OrthancPluginDeleteKeyValue()" },
   { "DicomBufferToJson", sdk_OrthancPluginDicomBufferToJson, METH_VARARGS,
     "Generated from C function OrthancPluginDicomBufferToJson()" },
   { "DicomInstanceToJson", sdk_OrthancPluginDicomInstanceToJson, METH_VARARGS,
     "Generated from C function OrthancPluginDicomInstanceToJson()" },
+  { "EnqueueValue", sdk_OrthancPluginEnqueueValue, METH_VARARGS,
+    "Generated from C function OrthancPluginEnqueueValue()" },
   { "ExtendOrthancExplorer", sdk_OrthancPluginExtendOrthancExplorer, METH_VARARGS,
     "Generated from C function OrthancPluginExtendOrthancExplorer()" },
   { "ExtendOrthancExplorer2", sdk_OrthancPluginExtendOrthancExplorer2, METH_VARARGS,
@@ -2129,6 +2356,8 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Generated from C function OrthancPluginGenerateRestApiAuthorizationToken()" },
   { "GenerateUuid", sdk_OrthancPluginGenerateUuid, METH_VARARGS,
     "Generated from C function OrthancPluginGenerateUuid()" },
+  { "GetAttachmentCustomData", sdk_OrthancPluginGetAttachmentCustomData, METH_VARARGS,
+    "Generated from C function OrthancPluginGetAttachmentCustomData()" },
   { "GetCommandLineArgument", sdk_OrthancPluginGetCommandLineArgument, METH_VARARGS,
     "Generated from C function OrthancPluginGetCommandLineArgument()" },
   { "GetCommandLineArgumentsCount", sdk_OrthancPluginGetCommandLineArgumentsCount, METH_VARARGS,
@@ -2213,6 +2442,8 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Generated from C function OrthancPluginRestApiPut()" },
   { "RestApiPutAfterPlugins", sdk_OrthancPluginRestApiPutAfterPlugins, METH_VARARGS,
     "Generated from C function OrthancPluginRestApiPutAfterPlugins()" },
+  { "SetAttachmentCustomData", sdk_OrthancPluginSetAttachmentCustomData, METH_VARARGS,
+    "Generated from C function OrthancPluginSetAttachmentCustomData()" },
   { "SetCurrentThreadName", sdk_OrthancPluginSetCurrentThreadName, METH_VARARGS,
     "Generated from C function OrthancPluginSetCurrentThreadName()" },
   { "SetDescription", sdk_OrthancPluginSetDescription, METH_VARARGS,
@@ -2227,6 +2458,8 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Generated from C function OrthancPluginSetRootUri()" },
   { "SetRootUri2", sdk_OrthancPluginSetRootUri2, METH_VARARGS,
     "Generated from C function OrthancPluginSetRootUri2()" },
+  { "StoreKeyValue", sdk_OrthancPluginStoreKeyValue, METH_VARARGS,
+    "Generated from C function OrthancPluginStoreKeyValue()" },
   { "TranscodeDicomInstance", sdk_OrthancPluginTranscodeDicomInstance, METH_VARARGS,
     "Generated from C function OrthancPluginTranscodeDicomInstance()" },
   { "UncompressImage", sdk_OrthancPluginUncompressImage, METH_VARARGS,
@@ -2261,6 +2494,8 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Implemented in C++ function RegisterStorageCommitmentScpCallback()" },
   { "RegisterWorklistCallback", RegisterWorklistCallback, METH_VARARGS,
     "Implemented in C++ function RegisterWorklistCallback()" },
+  { "SetStableStatus", SetStableStatus, METH_VARARGS,
+    "Implemented in C++ function SetStableStatus()" },
   { NULL, NULL }
 };
 

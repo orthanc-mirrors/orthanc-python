@@ -230,6 +230,9 @@ def DocumentFunction(f):
     elif f['return_sdk_type'] == 'Dictionary':
         # This is only used to generate the documentation file "orthanc.pyi"
         documentation['return_type'] = 'dict'
+    elif f['return_sdk_type'] == 'Tuple':
+        # This is only used to generate the documentation file "orthanc.pyi"
+        documentation['return_type'] = 'tuple'
     else:
         raise Exception('Return type not implemented: %s' % f['return_sdk_type'])
 

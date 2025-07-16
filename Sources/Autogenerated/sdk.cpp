@@ -43,6 +43,7 @@
 #include "./sdk_OrthancPluginDicomToJsonFormat.impl.h"
 #include "./sdk_OrthancPluginDicomWebBinaryMode.impl.h"
 #include "./sdk_OrthancPluginErrorCode.impl.h"
+#include "./sdk_OrthancPluginHttpAuthenticationStatus.impl.h"
 #include "./sdk_OrthancPluginHttpMethod.impl.h"
 #include "./sdk_OrthancPluginIdentifierConstraint.impl.h"
 #include "./sdk_OrthancPluginImageFormat.impl.h"
@@ -54,9 +55,12 @@
 #include "./sdk_OrthancPluginLogLevel.impl.h"
 #include "./sdk_OrthancPluginMetricsType.impl.h"
 #include "./sdk_OrthancPluginPixelFormat.impl.h"
+#include "./sdk_OrthancPluginQueueOrigin.impl.h"
 #include "./sdk_OrthancPluginReceivedInstanceAction.impl.h"
 #include "./sdk_OrthancPluginResourceType.impl.h"
+#include "./sdk_OrthancPluginStableStatus.impl.h"
 #include "./sdk_OrthancPluginStorageCommitmentFailureReason.impl.h"
+#include "./sdk_OrthancPluginStoreStatus.impl.h"
 #include "./sdk_OrthancPluginValueRepresentation.impl.h"
 
 #include "./sdk_OrthancPluginDicomInstance.impl.h"
@@ -66,6 +70,7 @@
 #include "./sdk_OrthancPluginFindQuery.impl.h"
 #include "./sdk_OrthancPluginImage.impl.h"
 #include "./sdk_OrthancPluginJob.impl.h"
+#include "./sdk_OrthancPluginKeysValuesIterator.impl.h"
 #include "./sdk_OrthancPluginPeers.impl.h"
 #include "./sdk_OrthancPluginRestOutput.impl.h"
 #include "./sdk_OrthancPluginServerChunkedRequestReader.impl.h"
@@ -83,6 +88,7 @@
 #include "./sdk_OrthancPluginFindQuery.methods.h"
 #include "./sdk_OrthancPluginImage.methods.h"
 #include "./sdk_OrthancPluginJob.methods.h"
+#include "./sdk_OrthancPluginKeysValuesIterator.methods.h"
 #include "./sdk_OrthancPluginPeers.methods.h"
 #include "./sdk_OrthancPluginRestOutput.methods.h"
 #include "./sdk_OrthancPluginServerChunkedRequestReader.methods.h"
@@ -102,6 +108,7 @@ void RegisterOrthancSdk(PyObject* module)
   RegisterOrthancPluginDicomToJsonFormatEnumeration(module);
   RegisterOrthancPluginDicomWebBinaryModeEnumeration(module);
   RegisterOrthancPluginErrorCodeEnumeration(module);
+  RegisterOrthancPluginHttpAuthenticationStatusEnumeration(module);
   RegisterOrthancPluginHttpMethodEnumeration(module);
   RegisterOrthancPluginIdentifierConstraintEnumeration(module);
   RegisterOrthancPluginImageFormatEnumeration(module);
@@ -113,9 +120,12 @@ void RegisterOrthancSdk(PyObject* module)
   RegisterOrthancPluginLogLevelEnumeration(module);
   RegisterOrthancPluginMetricsTypeEnumeration(module);
   RegisterOrthancPluginPixelFormatEnumeration(module);
+  RegisterOrthancPluginQueueOriginEnumeration(module);
   RegisterOrthancPluginReceivedInstanceActionEnumeration(module);
   RegisterOrthancPluginResourceTypeEnumeration(module);
+  RegisterOrthancPluginStableStatusEnumeration(module);
   RegisterOrthancPluginStorageCommitmentFailureReasonEnumeration(module);
+  RegisterOrthancPluginStoreStatusEnumeration(module);
   RegisterOrthancPluginValueRepresentationEnumeration(module);
 
   RegisterOrthancPluginDicomInstanceClass(module);
@@ -125,6 +135,7 @@ void RegisterOrthancSdk(PyObject* module)
   RegisterOrthancPluginFindQueryClass(module);
   RegisterOrthancPluginImageClass(module);
   RegisterOrthancPluginJobClass(module);
+  RegisterOrthancPluginKeysValuesIteratorClass(module);
   RegisterOrthancPluginPeersClass(module);
   RegisterOrthancPluginRestOutputClass(module);
   RegisterOrthancPluginServerChunkedRequestReaderClass(module);

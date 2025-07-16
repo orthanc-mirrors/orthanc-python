@@ -373,5 +373,32 @@
       }
     ],
     "return_sdk_type" : "void"
+  },
+
+  {
+    "comment" : "New in release 6.0",
+    "short_name" : "SetStableStatus",
+    "implementation" : "SetStableStatus",
+    "documentation" : {
+      "description" : [ "Change the Stable status of a resource" ],
+      "args" : {
+        "resourceId" : "The id of the resource.",
+        "stableStatus" : "The new stable status: 0 for Stable, 1 for Unstable."
+      },
+      "return" : "A tuple with (The error code, An integer indicating wheter the status has changed (1) or not (0) during the execution of this command)."
+    },
+    "args" : [
+      {
+        "sdk_name" : "resourceId",
+        "sdk_type" : "const char *"
+      },
+      {
+        "sdk_name" : "stableStatus",
+        "sdk_type" : "enumeration",
+        "sdk_enumeration" : "OrthancPluginStableStatus"
+      }
+    ],
+    "return_sdk_type" : "Tuple"
   }
+
 ]
