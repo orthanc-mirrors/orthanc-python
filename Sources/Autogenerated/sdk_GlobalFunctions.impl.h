@@ -64,7 +64,7 @@ static PyObject* sdk_OrthancPluginAuditLog(PyObject* module, PyObject* args)
 
   {
     PythonThreadsAllower allower;
-    OrthancPluginAuditLog(OrthancPlugins::GetGlobalContext(), arg0, static_cast<OrthancPluginResourceType>(arg1), arg2, arg3, arg4.buf, arg4.len);
+    OrthancPluginAuditLog(OrthancPlugins::GetGlobalContext(), arg0, static_cast<OrthancPluginResourceType>(arg1), arg2, arg3, (arg4.len > 0 ? arg4.buf : NULL), (arg4.len > 0 ? arg4.len : 0));
   }
   PyBuffer_Release(&arg4);
 
@@ -119,7 +119,7 @@ static PyObject* sdk_OrthancPluginBufferCompression(PyObject* module, PyObject* 
   OrthancPluginErrorCode code;
   {
     PythonThreadsAllower allower;
-    code = OrthancPluginBufferCompression(OrthancPlugins::GetGlobalContext(), *buffer, arg0.buf, arg0.len, static_cast<OrthancPluginCompressionType>(arg2), arg3);
+    code = OrthancPluginBufferCompression(OrthancPlugins::GetGlobalContext(), *buffer, (arg0.len > 0 ? arg0.buf : NULL), (arg0.len > 0 ? arg0.len : 0), static_cast<OrthancPluginCompressionType>(arg2), arg3);
   }
   PyBuffer_Release(&arg0);
   if (code == OrthancPluginErrorCode_Success)
@@ -255,7 +255,7 @@ static PyObject* sdk_OrthancPluginComputeMd5(PyObject* module, PyObject* args)
   OrthancPlugins::OrthancString s;
   {
     PythonThreadsAllower allower;
-    s.Assign(OrthancPluginComputeMd5(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len));
+    s.Assign(OrthancPluginComputeMd5(OrthancPlugins::GetGlobalContext(), (arg0.len > 0 ? arg0.buf : NULL), (arg0.len > 0 ? arg0.len : 0)));
   }
   PyBuffer_Release(&arg0);
   if (s.GetContent() == NULL)
@@ -284,7 +284,7 @@ static PyObject* sdk_OrthancPluginComputeSha1(PyObject* module, PyObject* args)
   OrthancPlugins::OrthancString s;
   {
     PythonThreadsAllower allower;
-    s.Assign(OrthancPluginComputeSha1(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len));
+    s.Assign(OrthancPluginComputeSha1(OrthancPlugins::GetGlobalContext(), (arg0.len > 0 ? arg0.buf : NULL), (arg0.len > 0 ? arg0.len : 0)));
   }
   PyBuffer_Release(&arg0);
   if (s.GetContent() == NULL)
@@ -391,7 +391,7 @@ static PyObject* sdk_OrthancPluginCreateDicomInstance(PyObject* module, PyObject
   OrthancPluginDicomInstance* obj;
   {
     PythonThreadsAllower allower;
-    obj = OrthancPluginCreateDicomInstance(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len);
+    obj = OrthancPluginCreateDicomInstance(OrthancPlugins::GetGlobalContext(), (arg0.len > 0 ? arg0.buf : NULL), (arg0.len > 0 ? arg0.len : 0));
   }
   PyBuffer_Release(&arg0);
   if (obj == NULL)
@@ -424,7 +424,7 @@ static PyObject* sdk_OrthancPluginCreateFindMatcher(PyObject* module, PyObject* 
   OrthancPluginFindMatcher* obj;
   {
     PythonThreadsAllower allower;
-    obj = OrthancPluginCreateFindMatcher(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len);
+    obj = OrthancPluginCreateFindMatcher(OrthancPlugins::GetGlobalContext(), (arg0.len > 0 ? arg0.buf : NULL), (arg0.len > 0 ? arg0.len : 0));
   }
   PyBuffer_Release(&arg0);
   if (obj == NULL)
@@ -526,7 +526,7 @@ static PyObject* sdk_OrthancPluginDecodeDicomImage(PyObject* module, PyObject* a
   OrthancPluginImage* obj;
   {
     PythonThreadsAllower allower;
-    obj = OrthancPluginDecodeDicomImage(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len, arg2);
+    obj = OrthancPluginDecodeDicomImage(OrthancPlugins::GetGlobalContext(), (arg0.len > 0 ? arg0.buf : NULL), (arg0.len > 0 ? arg0.len : 0), arg2);
   }
   PyBuffer_Release(&arg0);
   if (obj == NULL)
@@ -593,7 +593,7 @@ static PyObject* sdk_OrthancPluginDicomBufferToJson(PyObject* module, PyObject* 
   OrthancPlugins::OrthancString s;
   {
     PythonThreadsAllower allower;
-    s.Assign(OrthancPluginDicomBufferToJson(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len, static_cast<OrthancPluginDicomToJsonFormat>(arg2), static_cast<OrthancPluginDicomToJsonFlags>(arg3), arg4));
+    s.Assign(OrthancPluginDicomBufferToJson(OrthancPlugins::GetGlobalContext(), (arg0.len > 0 ? arg0.buf : NULL), (arg0.len > 0 ? arg0.len : 0), static_cast<OrthancPluginDicomToJsonFormat>(arg2), static_cast<OrthancPluginDicomToJsonFlags>(arg3), arg4));
   }
   PyBuffer_Release(&arg0);
   if (s.GetContent() == NULL)
@@ -655,7 +655,7 @@ static PyObject* sdk_OrthancPluginEnqueueValue(PyObject* module, PyObject* args)
   OrthancPluginErrorCode code;
   {
     PythonThreadsAllower allower;
-    code = OrthancPluginEnqueueValue(OrthancPlugins::GetGlobalContext(), arg0, arg1.buf, arg1.len);
+    code = OrthancPluginEnqueueValue(OrthancPlugins::GetGlobalContext(), arg0, (arg1.len > 0 ? arg1.buf : NULL), (arg1.len > 0 ? arg1.len : 0));
   }
   PyBuffer_Release(&arg1);
 
@@ -1262,7 +1262,7 @@ static PyObject* sdk_OrthancPluginHttpPost(PyObject* module, PyObject* args)
   OrthancPluginErrorCode code;
   {
     PythonThreadsAllower allower;
-    code = OrthancPluginHttpPost(OrthancPlugins::GetGlobalContext(), *buffer, arg0, arg1.buf, arg1.len, arg3, arg4);
+    code = OrthancPluginHttpPost(OrthancPlugins::GetGlobalContext(), *buffer, arg0, (arg1.len > 0 ? arg1.buf : NULL), (arg1.len > 0 ? arg1.len : 0), arg3, arg4);
   }
   PyBuffer_Release(&arg1);
   if (code == OrthancPluginErrorCode_Success)
@@ -1295,7 +1295,7 @@ static PyObject* sdk_OrthancPluginHttpPut(PyObject* module, PyObject* args)
   OrthancPluginErrorCode code;
   {
     PythonThreadsAllower allower;
-    code = OrthancPluginHttpPut(OrthancPlugins::GetGlobalContext(), *buffer, arg0, arg1.buf, arg1.len, arg3, arg4);
+    code = OrthancPluginHttpPut(OrthancPlugins::GetGlobalContext(), *buffer, arg0, (arg1.len > 0 ? arg1.buf : NULL), (arg1.len > 0 ? arg1.len : 0), arg3, arg4);
   }
   PyBuffer_Release(&arg1);
   if (code == OrthancPluginErrorCode_Success)
@@ -1856,7 +1856,7 @@ static PyObject* sdk_OrthancPluginRestApiPost(PyObject* module, PyObject* args)
   OrthancPluginErrorCode code;
   {
     PythonThreadsAllower allower;
-    code = OrthancPluginRestApiPost(OrthancPlugins::GetGlobalContext(), *buffer, arg0, arg1.buf, arg1.len);
+    code = OrthancPluginRestApiPost(OrthancPlugins::GetGlobalContext(), *buffer, arg0, (arg1.len > 0 ? arg1.buf : NULL), (arg1.len > 0 ? arg1.len : 0));
   }
   PyBuffer_Release(&arg1);
   if (code == OrthancPluginErrorCode_Success)
@@ -1887,7 +1887,7 @@ static PyObject* sdk_OrthancPluginRestApiPostAfterPlugins(PyObject* module, PyOb
   OrthancPluginErrorCode code;
   {
     PythonThreadsAllower allower;
-    code = OrthancPluginRestApiPostAfterPlugins(OrthancPlugins::GetGlobalContext(), *buffer, arg0, arg1.buf, arg1.len);
+    code = OrthancPluginRestApiPostAfterPlugins(OrthancPlugins::GetGlobalContext(), *buffer, arg0, (arg1.len > 0 ? arg1.buf : NULL), (arg1.len > 0 ? arg1.len : 0));
   }
   PyBuffer_Release(&arg1);
   if (code == OrthancPluginErrorCode_Success)
@@ -1918,7 +1918,7 @@ static PyObject* sdk_OrthancPluginRestApiPut(PyObject* module, PyObject* args)
   OrthancPluginErrorCode code;
   {
     PythonThreadsAllower allower;
-    code = OrthancPluginRestApiPut(OrthancPlugins::GetGlobalContext(), *buffer, arg0, arg1.buf, arg1.len);
+    code = OrthancPluginRestApiPut(OrthancPlugins::GetGlobalContext(), *buffer, arg0, (arg1.len > 0 ? arg1.buf : NULL), (arg1.len > 0 ? arg1.len : 0));
   }
   PyBuffer_Release(&arg1);
   if (code == OrthancPluginErrorCode_Success)
@@ -1949,7 +1949,7 @@ static PyObject* sdk_OrthancPluginRestApiPutAfterPlugins(PyObject* module, PyObj
   OrthancPluginErrorCode code;
   {
     PythonThreadsAllower allower;
-    code = OrthancPluginRestApiPutAfterPlugins(OrthancPlugins::GetGlobalContext(), *buffer, arg0, arg1.buf, arg1.len);
+    code = OrthancPluginRestApiPutAfterPlugins(OrthancPlugins::GetGlobalContext(), *buffer, arg0, (arg1.len > 0 ? arg1.buf : NULL), (arg1.len > 0 ? arg1.len : 0));
   }
   PyBuffer_Release(&arg1);
   if (code == OrthancPluginErrorCode_Success)
@@ -1979,7 +1979,7 @@ static PyObject* sdk_OrthancPluginSetAttachmentCustomData(PyObject* module, PyOb
   OrthancPluginErrorCode code;
   {
     PythonThreadsAllower allower;
-    code = OrthancPluginSetAttachmentCustomData(OrthancPlugins::GetGlobalContext(), arg0, arg1.buf, arg1.len);
+    code = OrthancPluginSetAttachmentCustomData(OrthancPlugins::GetGlobalContext(), arg0, (arg1.len > 0 ? arg1.buf : NULL), (arg1.len > 0 ? arg1.len : 0));
   }
   PyBuffer_Release(&arg1);
 
@@ -2189,7 +2189,7 @@ static PyObject* sdk_OrthancPluginStoreKeyValue(PyObject* module, PyObject* args
   OrthancPluginErrorCode code;
   {
     PythonThreadsAllower allower;
-    code = OrthancPluginStoreKeyValue(OrthancPlugins::GetGlobalContext(), arg0, arg1, arg2.buf, arg2.len);
+    code = OrthancPluginStoreKeyValue(OrthancPlugins::GetGlobalContext(), arg0, arg1, (arg2.len > 0 ? arg2.buf : NULL), (arg2.len > 0 ? arg2.len : 0));
   }
   PyBuffer_Release(&arg2);
 
@@ -2222,7 +2222,7 @@ static PyObject* sdk_OrthancPluginTranscodeDicomInstance(PyObject* module, PyObj
   OrthancPluginDicomInstance* obj;
   {
     PythonThreadsAllower allower;
-    obj = OrthancPluginTranscodeDicomInstance(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len, arg2);
+    obj = OrthancPluginTranscodeDicomInstance(OrthancPlugins::GetGlobalContext(), (arg0.len > 0 ? arg0.buf : NULL), (arg0.len > 0 ? arg0.len : 0), arg2);
   }
   PyBuffer_Release(&arg0);
   if (obj == NULL)
@@ -2256,7 +2256,7 @@ static PyObject* sdk_OrthancPluginUncompressImage(PyObject* module, PyObject* ar
   OrthancPluginImage* obj;
   {
     PythonThreadsAllower allower;
-    obj = OrthancPluginUncompressImage(OrthancPlugins::GetGlobalContext(), arg0.buf, arg0.len, static_cast<OrthancPluginImageFormat>(arg2));
+    obj = OrthancPluginUncompressImage(OrthancPlugins::GetGlobalContext(), (arg0.len > 0 ? arg0.buf : NULL), (arg0.len > 0 ? arg0.len : 0), static_cast<OrthancPluginImageFormat>(arg2));
   }
   PyBuffer_Release(&arg0);
   if (obj == NULL)
@@ -2289,7 +2289,7 @@ static PyObject* sdk_OrthancPluginWriteFile(PyObject* module, PyObject* args)
   OrthancPluginErrorCode code;
   {
     PythonThreadsAllower allower;
-    code = OrthancPluginWriteFile(OrthancPlugins::GetGlobalContext(), arg0, arg1.buf, arg1.len);
+    code = OrthancPluginWriteFile(OrthancPlugins::GetGlobalContext(), arg0, (arg1.len > 0 ? arg1.buf : NULL), (arg1.len > 0 ? arg1.len : 0));
   }
   PyBuffer_Release(&arg1);
 

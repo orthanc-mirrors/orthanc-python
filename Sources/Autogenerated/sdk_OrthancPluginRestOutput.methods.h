@@ -50,7 +50,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginAnswerBuffer(
 
   {
     PythonThreadsAllower allower;
-    OrthancPluginAnswerBuffer(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len, arg2);
+    OrthancPluginAnswerBuffer(OrthancPlugins::GetGlobalContext(), self->object_, (arg0.len > 0 ? arg0.buf : NULL), (arg0.len > 0 ? arg0.len : 0), arg2);
   }
   PyBuffer_Release(&arg0);
 
@@ -328,7 +328,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendMultipartItem(
   OrthancPluginErrorCode code;
   {
     PythonThreadsAllower allower;
-    code = OrthancPluginSendMultipartItem(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
+    code = OrthancPluginSendMultipartItem(OrthancPlugins::GetGlobalContext(), self->object_, (arg0.len > 0 ? arg0.buf : NULL), (arg0.len > 0 ? arg0.len : 0));
   }
   PyBuffer_Release(&arg0);
 
@@ -366,7 +366,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendHttpStatus(
 
   {
     PythonThreadsAllower allower;
-    OrthancPluginSendHttpStatus(OrthancPlugins::GetGlobalContext(), self->object_, arg0, arg1.buf, arg1.len);
+    OrthancPluginSendHttpStatus(OrthancPlugins::GetGlobalContext(), self->object_, arg0, (arg1.len > 0 ? arg1.buf : NULL), (arg1.len > 0 ? arg1.len : 0));
   }
   PyBuffer_Release(&arg1);
 
@@ -498,7 +498,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendStreamChunk(
   OrthancPluginErrorCode code;
   {
     PythonThreadsAllower allower;
-    code = OrthancPluginSendStreamChunk(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
+    code = OrthancPluginSendStreamChunk(OrthancPlugins::GetGlobalContext(), self->object_, (arg0.len > 0 ? arg0.buf : NULL), (arg0.len > 0 ? arg0.len : 0));
   }
   PyBuffer_Release(&arg0);
 

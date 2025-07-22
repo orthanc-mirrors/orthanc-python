@@ -303,8 +303,8 @@ def FormatFunction(f):
         if arg['sdk_type'] == 'const void *':
             call_args.append(arg['name'] + '.buf')
         elif arg['sdk_type'] == 'const_void_pointer_with_size':
-            call_args.append(arg['name'] + '.buf')
-            call_args.append(arg['name'] + '.len')
+            call_args.append('(' + arg['name'] + '.len > 0 ? ' + arg['name'] + '.buf' + ' : NULL)')
+            call_args.append('(' + arg['name'] + '.len > 0 ? ' + arg['name'] + '.len' + ' : 0)')
         elif arg['sdk_type'] == 'enumeration':
             call_args.append('static_cast<%s>(%s)' % (arg['sdk_enumeration'], arg['name']))
         elif arg['sdk_type'] == 'const_object':

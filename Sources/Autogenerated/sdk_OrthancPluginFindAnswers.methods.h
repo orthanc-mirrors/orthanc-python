@@ -50,7 +50,7 @@ static PyObject *sdk_OrthancPluginFindAnswers_OrthancPluginFindAddAnswer(
   OrthancPluginErrorCode code;
   {
     PythonThreadsAllower allower;
-    code = OrthancPluginFindAddAnswer(OrthancPlugins::GetGlobalContext(), self->object_, arg0.buf, arg0.len);
+    code = OrthancPluginFindAddAnswer(OrthancPlugins::GetGlobalContext(), self->object_, (arg0.len > 0 ? arg0.buf : NULL), (arg0.len > 0 ? arg0.len : 0));
   }
   PyBuffer_Release(&arg0);
 

@@ -57,7 +57,7 @@ static PyObject *sdk_OrthancPluginWorklistAnswers_OrthancPluginWorklistAddAnswer
   OrthancPluginErrorCode code;
   {
     PythonThreadsAllower allower;
-    code = OrthancPluginWorklistAddAnswer(OrthancPlugins::GetGlobalContext(), self->object_, arg0 == Py_None ? NULL : reinterpret_cast<sdk_OrthancPluginWorklistQuery_Object*>(arg0)->object_, arg1.buf, arg1.len);
+    code = OrthancPluginWorklistAddAnswer(OrthancPlugins::GetGlobalContext(), self->object_, arg0 == Py_None ? NULL : reinterpret_cast<sdk_OrthancPluginWorklistQuery_Object*>(arg0)->object_, (arg1.len > 0 ? arg1.buf : NULL), (arg1.len > 0 ? arg1.len : 0));
   }
   PyBuffer_Release(&arg1);
 
