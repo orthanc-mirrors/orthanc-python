@@ -41,7 +41,7 @@ static PyObject *sdk_OrthancPluginFindAnswers_OrthancPluginFindAddAnswer(
 
   Py_buffer arg0;
 
-  if (!PyArg_ParseTuple(args, "s*", &arg0))
+  if (!PyArg_ParseTuple(args, "z*", &arg0))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;

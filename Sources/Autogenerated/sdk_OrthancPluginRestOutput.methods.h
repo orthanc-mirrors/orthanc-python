@@ -42,7 +42,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginAnswerBuffer(
   Py_buffer arg0;
   const char* arg2 = NULL;
 
-  if (!PyArg_ParseTuple(args, "s*s", &arg0, &arg2))
+  if (!PyArg_ParseTuple(args, "z*s", &arg0, &arg2))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
@@ -75,7 +75,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginCompressAndAnswerPngIm
   unsigned long arg3 = 0;
   Py_buffer arg4;
 
-  if (!PyArg_ParseTuple(args, "lkkks*", &arg0, &arg1, &arg2, &arg3, &arg4))
+  if (!PyArg_ParseTuple(args, "lkkkz*", &arg0, &arg1, &arg2, &arg3, &arg4))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (5 arguments expected)");
     return NULL;
@@ -319,7 +319,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendMultipartItem(
 
   Py_buffer arg0;
 
-  if (!PyArg_ParseTuple(args, "s*", &arg0))
+  if (!PyArg_ParseTuple(args, "z*", &arg0))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
@@ -358,7 +358,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendHttpStatus(
   unsigned short arg0 = 0;
   Py_buffer arg1;
 
-  if (!PyArg_ParseTuple(args, "Hs*", &arg0, &arg1))
+  if (!PyArg_ParseTuple(args, "Hz*", &arg0, &arg1))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
@@ -392,7 +392,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginCompressAndAnswerJpegI
   Py_buffer arg4;
   unsigned char arg5 = 0;
 
-  if (!PyArg_ParseTuple(args, "lkkks*b", &arg0, &arg1, &arg2, &arg3, &arg4, &arg5))
+  if (!PyArg_ParseTuple(args, "lkkkz*b", &arg0, &arg1, &arg2, &arg3, &arg4, &arg5))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (6 arguments expected)");
     return NULL;
@@ -489,7 +489,7 @@ static PyObject *sdk_OrthancPluginRestOutput_OrthancPluginSendStreamChunk(
 
   Py_buffer arg0;
 
-  if (!PyArg_ParseTuple(args, "s*", &arg0))
+  if (!PyArg_ParseTuple(args, "z*", &arg0))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;

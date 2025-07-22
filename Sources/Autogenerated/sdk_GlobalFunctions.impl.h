@@ -56,7 +56,7 @@ static PyObject* sdk_OrthancPluginAuditLog(PyObject* module, PyObject* args)
   const char* arg3 = NULL;
   Py_buffer arg4;
 
-  if (!PyArg_ParseTuple(args, "slsss*", &arg0, &arg1, &arg2, &arg3, &arg4))
+  if (!PyArg_ParseTuple(args, "slssz*", &arg0, &arg1, &arg2, &arg3, &arg4))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (5 arguments expected)");
     return NULL;
@@ -109,7 +109,7 @@ static PyObject* sdk_OrthancPluginBufferCompression(PyObject* module, PyObject* 
   long int arg2 = 0;
   unsigned char arg3 = 0;
 
-  if (!PyArg_ParseTuple(args, "s*lb", &arg0, &arg2, &arg3))
+  if (!PyArg_ParseTuple(args, "z*lb", &arg0, &arg2, &arg3))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
     return NULL;
@@ -182,7 +182,7 @@ static PyObject* sdk_OrthancPluginCompressJpegImage(PyObject* module, PyObject* 
   Py_buffer arg4;
   unsigned char arg5 = 0;
 
-  if (!PyArg_ParseTuple(args, "lkkks*b", &arg0, &arg1, &arg2, &arg3, &arg4, &arg5))
+  if (!PyArg_ParseTuple(args, "lkkkz*b", &arg0, &arg1, &arg2, &arg3, &arg4, &arg5))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (6 arguments expected)");
     return NULL;
@@ -216,7 +216,7 @@ static PyObject* sdk_OrthancPluginCompressPngImage(PyObject* module, PyObject* a
   unsigned long arg3 = 0;
   Py_buffer arg4;
 
-  if (!PyArg_ParseTuple(args, "lkkks*", &arg0, &arg1, &arg2, &arg3, &arg4))
+  if (!PyArg_ParseTuple(args, "lkkkz*", &arg0, &arg1, &arg2, &arg3, &arg4))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (5 arguments expected)");
     return NULL;
@@ -246,7 +246,7 @@ static PyObject* sdk_OrthancPluginComputeMd5(PyObject* module, PyObject* args)
 
   Py_buffer arg0;
 
-  if (!PyArg_ParseTuple(args, "s*", &arg0))
+  if (!PyArg_ParseTuple(args, "z*", &arg0))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
@@ -275,7 +275,7 @@ static PyObject* sdk_OrthancPluginComputeSha1(PyObject* module, PyObject* args)
 
   Py_buffer arg0;
 
-  if (!PyArg_ParseTuple(args, "s*", &arg0))
+  if (!PyArg_ParseTuple(args, "z*", &arg0))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
@@ -381,7 +381,7 @@ static PyObject* sdk_OrthancPluginCreateDicomInstance(PyObject* module, PyObject
 
   Py_buffer arg0;
 
-  if (!PyArg_ParseTuple(args, "s*", &arg0))
+  if (!PyArg_ParseTuple(args, "z*", &arg0))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
@@ -414,7 +414,7 @@ static PyObject* sdk_OrthancPluginCreateFindMatcher(PyObject* module, PyObject* 
 
   Py_buffer arg0;
 
-  if (!PyArg_ParseTuple(args, "s*", &arg0))
+  if (!PyArg_ParseTuple(args, "z*", &arg0))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (1 arguments expected)");
     return NULL;
@@ -516,7 +516,7 @@ static PyObject* sdk_OrthancPluginDecodeDicomImage(PyObject* module, PyObject* a
   Py_buffer arg0;
   unsigned long arg2 = 0;
 
-  if (!PyArg_ParseTuple(args, "s*k", &arg0, &arg2))
+  if (!PyArg_ParseTuple(args, "z*k", &arg0, &arg2))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
@@ -584,7 +584,7 @@ static PyObject* sdk_OrthancPluginDicomBufferToJson(PyObject* module, PyObject* 
   long int arg3 = 0;
   unsigned long arg4 = 0;
 
-  if (!PyArg_ParseTuple(args, "s*llk", &arg0, &arg2, &arg3, &arg4))
+  if (!PyArg_ParseTuple(args, "z*llk", &arg0, &arg2, &arg3, &arg4))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (4 arguments expected)");
     return NULL;
@@ -646,7 +646,7 @@ static PyObject* sdk_OrthancPluginEnqueueValue(PyObject* module, PyObject* args)
   const char* arg0 = NULL;
   Py_buffer arg1;
 
-  if (!PyArg_ParseTuple(args, "ss*", &arg0, &arg1))
+  if (!PyArg_ParseTuple(args, "sz*", &arg0, &arg1))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
@@ -1252,7 +1252,7 @@ static PyObject* sdk_OrthancPluginHttpPost(PyObject* module, PyObject* args)
   const char* arg3 = NULL;
   const char* arg4 = NULL;
 
-  if (!PyArg_ParseTuple(args, "ss*ss", &arg0, &arg1, &arg3, &arg4))
+  if (!PyArg_ParseTuple(args, "sz*ss", &arg0, &arg1, &arg3, &arg4))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (4 arguments expected)");
     return NULL;
@@ -1285,7 +1285,7 @@ static PyObject* sdk_OrthancPluginHttpPut(PyObject* module, PyObject* args)
   const char* arg3 = NULL;
   const char* arg4 = NULL;
 
-  if (!PyArg_ParseTuple(args, "ss*ss", &arg0, &arg1, &arg3, &arg4))
+  if (!PyArg_ParseTuple(args, "sz*ss", &arg0, &arg1, &arg3, &arg4))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (4 arguments expected)");
     return NULL;
@@ -1846,7 +1846,7 @@ static PyObject* sdk_OrthancPluginRestApiPost(PyObject* module, PyObject* args)
   const char* arg0 = NULL;
   Py_buffer arg1;
 
-  if (!PyArg_ParseTuple(args, "ss*", &arg0, &arg1))
+  if (!PyArg_ParseTuple(args, "sz*", &arg0, &arg1))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
@@ -1877,7 +1877,7 @@ static PyObject* sdk_OrthancPluginRestApiPostAfterPlugins(PyObject* module, PyOb
   const char* arg0 = NULL;
   Py_buffer arg1;
 
-  if (!PyArg_ParseTuple(args, "ss*", &arg0, &arg1))
+  if (!PyArg_ParseTuple(args, "sz*", &arg0, &arg1))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
@@ -1908,7 +1908,7 @@ static PyObject* sdk_OrthancPluginRestApiPut(PyObject* module, PyObject* args)
   const char* arg0 = NULL;
   Py_buffer arg1;
 
-  if (!PyArg_ParseTuple(args, "ss*", &arg0, &arg1))
+  if (!PyArg_ParseTuple(args, "sz*", &arg0, &arg1))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
@@ -1939,7 +1939,7 @@ static PyObject* sdk_OrthancPluginRestApiPutAfterPlugins(PyObject* module, PyObj
   const char* arg0 = NULL;
   Py_buffer arg1;
 
-  if (!PyArg_ParseTuple(args, "ss*", &arg0, &arg1))
+  if (!PyArg_ParseTuple(args, "sz*", &arg0, &arg1))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
@@ -1970,7 +1970,7 @@ static PyObject* sdk_OrthancPluginSetAttachmentCustomData(PyObject* module, PyOb
   const char* arg0 = NULL;
   Py_buffer arg1;
 
-  if (!PyArg_ParseTuple(args, "ss*", &arg0, &arg1))
+  if (!PyArg_ParseTuple(args, "sz*", &arg0, &arg1))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
@@ -2180,7 +2180,7 @@ static PyObject* sdk_OrthancPluginStoreKeyValue(PyObject* module, PyObject* args
   const char* arg1 = NULL;
   Py_buffer arg2;
 
-  if (!PyArg_ParseTuple(args, "sss*", &arg0, &arg1, &arg2))
+  if (!PyArg_ParseTuple(args, "ssz*", &arg0, &arg1, &arg2))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (3 arguments expected)");
     return NULL;
@@ -2212,7 +2212,7 @@ static PyObject* sdk_OrthancPluginTranscodeDicomInstance(PyObject* module, PyObj
   Py_buffer arg0;
   const char* arg2 = NULL;
 
-  if (!PyArg_ParseTuple(args, "s*s", &arg0, &arg2))
+  if (!PyArg_ParseTuple(args, "z*s", &arg0, &arg2))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
@@ -2246,7 +2246,7 @@ static PyObject* sdk_OrthancPluginUncompressImage(PyObject* module, PyObject* ar
   Py_buffer arg0;
   long int arg2 = 0;
 
-  if (!PyArg_ParseTuple(args, "s*l", &arg0, &arg2))
+  if (!PyArg_ParseTuple(args, "z*l", &arg0, &arg2))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;
@@ -2280,7 +2280,7 @@ static PyObject* sdk_OrthancPluginWriteFile(PyObject* module, PyObject* args)
   const char* arg0 = NULL;
   Py_buffer arg1;
 
-  if (!PyArg_ParseTuple(args, "ss*", &arg0, &arg1))
+  if (!PyArg_ParseTuple(args, "sz*", &arg0, &arg1))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;

@@ -44,7 +44,7 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaCreate(
   unsigned long long arg2 = 0;
   long int arg3 = 0;
 
-  if (!PyArg_ParseTuple(args, "ss*Kl", &arg0, &arg1, &arg2, &arg3))
+  if (!PyArg_ParseTuple(args, "sz*Kl", &arg0, &arg1, &arg2, &arg3))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (4 arguments expected)");
     return NULL;

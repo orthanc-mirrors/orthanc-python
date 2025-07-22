@@ -42,7 +42,7 @@ static PyObject *sdk_OrthancPluginWorklistAnswers_OrthancPluginWorklistAddAnswer
   PyObject* arg0 = NULL;
   Py_buffer arg1;
 
-  if (!PyArg_ParseTuple(args, "Os*", &arg0, &arg1))
+  if (!PyArg_ParseTuple(args, "Oz*", &arg0, &arg1))
   {
     PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (2 arguments expected)");
     return NULL;

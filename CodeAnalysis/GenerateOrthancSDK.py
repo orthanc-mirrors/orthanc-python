@@ -263,7 +263,7 @@ def FormatFunction(f):
                 'python_type' : 'Py_buffer',
                 'release' : 'PyBuffer_Release(&%s);' % arg['name'],
             })
-            tuple_format += 's*'
+            tuple_format += 'z*'
         elif arg['sdk_type'] == 'const char *':
             args.append({
                 'name' : arg['name'],
