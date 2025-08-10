@@ -414,6 +414,11 @@ extern "C"
     
     OrthancPlugins::SetDescription(PLUGIN_NAME, "Run Python scripts as Orthanc plugins");
     
+    ORTHANC_PLUGINS_LOG_WARNING("Version of the Orthanc SDK in use by the Python plugin: " +
+                                boost::lexical_cast<std::string>(ORTHANC_PLUGINS_MINIMAL_MAJOR_NUMBER) + "." +
+                                boost::lexical_cast<std::string>(ORTHANC_PLUGINS_MINIMAL_MINOR_NUMBER) + "." +
+                                boost::lexical_cast<std::string>(ORTHANC_PLUGINS_MINIMAL_REVISION_NUMBER));
+
     try
     {
       /**
