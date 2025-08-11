@@ -130,7 +130,12 @@
                         "return": "The NULL value in case of error, or a string containing the transfer syntax UID. This string must be freed by OrthancPluginFreeString().",
                         "summary": "Get the transfer syntax of a DICOM file."
                     },
-                    "return_sdk_type": "char *"
+                    "return_sdk_type": "char *",
+                    "since_sdk": [
+                        1,
+                        6,
+                        1
+                    ]
                 },
                 {
                     "args": [],
@@ -144,7 +149,12 @@
                         "return": "\"1\" if the DICOM instance contains pixel data, or \"0\" if the tag is missing, or \"-1\" in the case of an error.",
                         "summary": "Check whether the DICOM file has pixel data."
                     },
-                    "return_sdk_type": "int32_t"
+                    "return_sdk_type": "int32_t",
+                    "since_sdk": [
+                        1,
+                        6,
+                        1
+                    ]
                 },
                 {
                     "args": [],
@@ -158,7 +168,12 @@
                         "return": "The number of frames (will be zero in the case of an error).",
                         "summary": "Get the number of frames in a DICOM instance."
                     },
-                    "return_sdk_type": "uint32_t"
+                    "return_sdk_type": "uint32_t",
+                    "since_sdk": [
+                        1,
+                        7,
+                        0
+                    ]
                 },
                 {
                     "args": [
@@ -181,7 +196,12 @@
                         "return": "0 if success, or the error code if failure.",
                         "summary": "Get the raw content of a frame in a DICOM instance."
                     },
-                    "return_sdk_type": "OrthancPluginMemoryBuffer *"
+                    "return_sdk_type": "OrthancPluginMemoryBuffer *",
+                    "since_sdk": [
+                        1,
+                        7,
+                        0
+                    ]
                 },
                 {
                     "args": [
@@ -204,7 +224,12 @@
                         "summary": "Decode one frame from a DICOM instance."
                     },
                     "return_sdk_class": "OrthancPluginImage",
-                    "return_sdk_type": "object"
+                    "return_sdk_type": "object",
+                    "since_sdk": [
+                        1,
+                        7,
+                        0
+                    ]
                 },
                 {
                     "args": [],
@@ -220,7 +245,12 @@
                         "return": "0 if success, or the error code if failure.",
                         "summary": "Writes a DICOM instance to a memory buffer."
                     },
-                    "return_sdk_type": "OrthancPluginMemoryBuffer *"
+                    "return_sdk_type": "OrthancPluginMemoryBuffer *",
+                    "since_sdk": [
+                        1,
+                        7,
+                        0
+                    ]
                 },
                 {
                     "args": [
@@ -256,14 +286,24 @@
                         "return": "The NULL value if the case of an error, or the JSON string. This string must be freed by OrthancPluginFreeString().",
                         "summary": "Format a DICOM memory buffer as a JSON string."
                     },
-                    "return_sdk_type": "char *"
+                    "return_sdk_type": "char *",
+                    "since_sdk": [
+                        1,
+                        7,
+                        0
+                    ]
                 }
             ],
             "name": "OrthancPluginDicomInstance"
         },
         {
             "methods": [],
-            "name": "OrthancPluginDicomWebNode"
+            "name": "OrthancPluginDicomWebNode",
+            "since_sdk": [
+                1,
+                5,
+                4
+            ]
         },
         {
             "methods": [
@@ -289,7 +329,12 @@
                         "summary": "Add one answer to some C-Find request."
                     },
                     "return_sdk_enumeration": "OrthancPluginErrorCode",
-                    "return_sdk_type": "enumeration"
+                    "return_sdk_type": "enumeration",
+                    "since_sdk": [
+                        1,
+                        1,
+                        0
+                    ]
                 },
                 {
                     "args": [],
@@ -304,10 +349,20 @@
                         "summary": "Mark the set of C-Find answers as incomplete."
                     },
                     "return_sdk_enumeration": "OrthancPluginErrorCode",
-                    "return_sdk_type": "enumeration"
+                    "return_sdk_type": "enumeration",
+                    "since_sdk": [
+                        1,
+                        1,
+                        0
+                    ]
                 }
             ],
-            "name": "OrthancPluginFindAnswers"
+            "name": "OrthancPluginFindAnswers",
+            "since_sdk": [
+                1,
+                1,
+                0
+            ]
         },
         {
             "destructor": "OrthancPluginFreeFindMatcher",
@@ -333,10 +388,20 @@
                         "return": "1 if the DICOM instance matches the query, 0 otherwise.",
                         "summary": "Test whether a DICOM instance matches a C-Find query."
                     },
-                    "return_sdk_type": "int32_t"
+                    "return_sdk_type": "int32_t",
+                    "since_sdk": [
+                        1,
+                        2,
+                        0
+                    ]
                 }
             ],
-            "name": "OrthancPluginFindMatcher"
+            "name": "OrthancPluginFindMatcher",
+            "since_sdk": [
+                1,
+                2,
+                0
+            ]
         },
         {
             "methods": [
@@ -352,7 +417,12 @@
                         "return": "The number of tags.",
                         "summary": "Get the number of tags in a C-Find query."
                     },
-                    "return_sdk_type": "uint32_t"
+                    "return_sdk_type": "uint32_t",
+                    "since_sdk": [
+                        1,
+                        1,
+                        0
+                    ]
                 },
                 {
                     "args": [
@@ -374,7 +444,12 @@
                         "return": "0 if success, other value if error.",
                         "summary": "Get the symbolic name of one tag in a C-Find query."
                     },
-                    "return_sdk_type": "char *"
+                    "return_sdk_type": "char *",
+                    "since_sdk": [
+                        1,
+                        1,
+                        0
+                    ]
                 },
                 {
                     "args": [
@@ -396,10 +471,20 @@
                         "return": "0 if success, other value if error.",
                         "summary": "Get the value associated with one tag in a C-Find query."
                     },
-                    "return_sdk_type": "char *"
+                    "return_sdk_type": "char *",
+                    "since_sdk": [
+                        1,
+                        1,
+                        0
+                    ]
                 }
             ],
-            "name": "OrthancPluginFindQuery"
+            "name": "OrthancPluginFindQuery",
+            "since_sdk": [
+                1,
+                1,
+                0
+            ]
         },
         {
             "destructor": "OrthancPluginFreeImage",
@@ -570,10 +655,20 @@
                         "return": "ID of the newly-submitted job. This string must be freed by OrthancPluginFreeString().",
                         "summary": "Submit a new job to the jobs engine of Orthanc."
                     },
-                    "return_sdk_type": "char *"
+                    "return_sdk_type": "char *",
+                    "since_sdk": [
+                        1,
+                        4,
+                        2
+                    ]
                 }
             ],
-            "name": "OrthancPluginJob"
+            "name": "OrthancPluginJob",
+            "since_sdk": [
+                1,
+                4,
+                2
+            ]
         },
         {
             "destructor": "OrthancPluginFreeKeysValuesIterator",
@@ -590,7 +685,12 @@
                         "return": "The current key, or NULL in the case of an error.",
                         "summary": "Get the current key of an iterator over a key-value store."
                     },
-                    "return_sdk_type": "const char *"
+                    "return_sdk_type": "const char *",
+                    "since_sdk": [
+                        1,
+                        12,
+                        8
+                    ]
                 },
                 {
                     "args": [],
@@ -606,10 +706,20 @@
                         "return": "The current value, or NULL in the case of an error.",
                         "summary": "Get the current value of an iterator over a key-value store."
                     },
-                    "return_sdk_type": "OrthancPluginMemoryBuffer *"
+                    "return_sdk_type": "OrthancPluginMemoryBuffer *",
+                    "since_sdk": [
+                        1,
+                        12,
+                        8
+                    ]
                 }
             ],
-            "name": "OrthancPluginKeysValuesIterator"
+            "name": "OrthancPluginKeysValuesIterator",
+            "since_sdk": [
+                1,
+                12,
+                8
+            ]
         },
         {
             "destructor": "OrthancPluginFreePeers",
@@ -627,7 +737,12 @@
                         "return": "The number of peers.",
                         "summary": "Get the number of Orthanc peers."
                     },
-                    "return_sdk_type": "uint32_t"
+                    "return_sdk_type": "uint32_t",
+                    "since_sdk": [
+                        1,
+                        4,
+                        2
+                    ]
                 },
                 {
                     "args": [
@@ -650,7 +765,12 @@
                         "return": "The symbolic name, or NULL in the case of an error.",
                         "summary": "Get the symbolic name of an Orthanc peer."
                     },
-                    "return_sdk_type": "const char *"
+                    "return_sdk_type": "const char *",
+                    "since_sdk": [
+                        1,
+                        4,
+                        2
+                    ]
                 },
                 {
                     "args": [
@@ -673,7 +793,12 @@
                         "return": "The URL, or NULL in the case of an error.",
                         "summary": "Get the base URL of an Orthanc peer."
                     },
-                    "return_sdk_type": "const char *"
+                    "return_sdk_type": "const char *",
+                    "since_sdk": [
+                        1,
+                        4,
+                        2
+                    ]
                 },
                 {
                     "args": [
@@ -702,10 +827,20 @@
                         "return": "The value of the user property, or NULL if it is not defined.",
                         "summary": "Get some user-defined property of an Orthanc peer."
                     },
-                    "return_sdk_type": "const char *"
+                    "return_sdk_type": "const char *",
+                    "since_sdk": [
+                        1,
+                        4,
+                        2
+                    ]
                 }
             ],
-            "name": "OrthancPluginPeers"
+            "name": "OrthancPluginPeers",
+            "since_sdk": [
+                1,
+                4,
+                2
+            ]
         },
         {
             "methods": [
@@ -1080,7 +1215,12 @@
                         ],
                         "summary": "Provide a detailed description for an HTTP error."
                     },
-                    "return_sdk_type": "void"
+                    "return_sdk_type": "void",
+                    "since_sdk": [
+                        1,
+                        5,
+                        0
+                    ]
                 },
                 {
                     "args": [
@@ -1103,7 +1243,12 @@
                         "summary": "Start an HTTP stream answer."
                     },
                     "return_sdk_enumeration": "OrthancPluginErrorCode",
-                    "return_sdk_type": "enumeration"
+                    "return_sdk_type": "enumeration",
+                    "since_sdk": [
+                        1,
+                        12,
+                        6
+                    ]
                 },
                 {
                     "args": [
@@ -1127,14 +1272,24 @@
                         "summary": "Send a chunk as a part of an HTTP stream answer."
                     },
                     "return_sdk_enumeration": "OrthancPluginErrorCode",
-                    "return_sdk_type": "enumeration"
+                    "return_sdk_type": "enumeration",
+                    "since_sdk": [
+                        1,
+                        12,
+                        6
+                    ]
                 }
             ],
             "name": "OrthancPluginRestOutput"
         },
         {
             "methods": [],
-            "name": "OrthancPluginServerChunkedRequestReader"
+            "name": "OrthancPluginServerChunkedRequestReader",
+            "since_sdk": [
+                1,
+                5,
+                7
+            ]
         },
         {
             "methods": [
@@ -1272,7 +1427,12 @@
         },
         {
             "methods": [],
-            "name": "OrthancPluginWebDavCollection"
+            "name": "OrthancPluginWebDavCollection",
+            "since_sdk": [
+                1,
+                10,
+                1
+            ]
         },
         {
             "methods": [
@@ -1448,26 +1608,51 @@
                 {
                     "documentation": "The list of Orthanc peers has changed",
                     "key": "UpdatedPeers",
+                    "since_sdk": [
+                        1,
+                        4,
+                        2
+                    ],
                     "value": 14
                 },
                 {
                     "documentation": "The list of DICOM modalities has changed",
                     "key": "UpdatedModalities",
+                    "since_sdk": [
+                        1,
+                        4,
+                        2
+                    ],
                     "value": 15
                 },
                 {
                     "documentation": "New Job submitted",
                     "key": "JobSubmitted",
+                    "since_sdk": [
+                        1,
+                        7,
+                        2
+                    ],
                     "value": 16
                 },
                 {
                     "documentation": "A Job has completed successfully",
                     "key": "JobSuccess",
+                    "since_sdk": [
+                        1,
+                        7,
+                        2
+                    ],
                     "value": 17
                 },
                 {
                     "documentation": "A Job has failed",
                     "key": "JobFailure",
+                    "since_sdk": [
+                        1,
+                        7,
+                        2
+                    ],
                     "value": 18
                 }
             ]
@@ -1499,6 +1684,11 @@
                 {
                     "documentation": "No compression (new in Orthanc 1.12.8)",
                     "key": "None",
+                    "since_sdk": [
+                        1,
+                        12,
+                        8
+                    ],
                     "value": 4
                 }
             ]
@@ -1556,6 +1746,11 @@
                 {
                     "documentation": "DICOM Header till pixel data",
                     "key": "DicomUntilPixelData",
+                    "since_sdk": [
+                        1,
+                        9,
+                        2
+                    ],
                     "value": 3
                 }
             ]
@@ -1567,6 +1762,11 @@
                 {
                     "documentation": "Default mode",
                     "key": "None",
+                    "since_sdk": [
+                        1,
+                        2,
+                        0
+                    ],
                     "value": 0
                 },
                 {
@@ -1623,11 +1823,21 @@
                 {
                     "documentation": "Stop processing after pixel data (new in 1.9.1)",
                     "key": "StopAfterPixelData",
+                    "since_sdk": [
+                        1,
+                        9,
+                        1
+                    ],
                     "value": 64
                 },
                 {
                     "documentation": "Skip tags whose element is zero (new in 1.9.1)",
                     "key": "SkipGroupLengths",
+                    "since_sdk": [
+                        1,
+                        9,
+                        1
+                    ],
                     "value": 128
                 }
             ]
@@ -1656,6 +1866,11 @@
         {
             "documentation": "The available modes to export a binary DICOM tag into a DICOMweb JSON or XML document.",
             "name": "OrthancPluginDicomWebBinaryMode",
+            "since_sdk": [
+                1,
+                5,
+                4
+            ],
             "values": [
                 {
                     "documentation": "Don't include binary tags",
@@ -2241,8 +2456,13 @@
             ]
         },
         {
-            "documentation": "The status related to the authentication of a HTTP request.",
+            "documentation": "Status associated with the authentication of a HTTP request.",
             "name": "OrthancPluginHttpAuthenticationStatus",
+            "since_sdk": [
+                1,
+                12,
+                9
+            ],
             "values": [
                 {
                     "documentation": "The authentication has been granted",
@@ -2260,7 +2480,7 @@
                     "value": 2
                 },
                 {
-                    "documentation": "Redirect to another path (e.g. for login, 307 HTTP status)",
+                    "documentation": "Redirect to another path (307 HTTP status, e.g., for login)",
                     "key": "Redirect",
                     "value": 3
                 }
@@ -2371,6 +2591,11 @@
                 {
                     "documentation": "Instance received through WebDAV (new in 1.8.0)",
                     "key": "WebDav",
+                    "since_sdk": [
+                        1,
+                        8,
+                        0
+                    ],
                     "value": 6
                 }
             ]
@@ -2378,6 +2603,11 @@
         {
             "documentation": "The possible status for one single step of a job.",
             "name": "OrthancPluginJobStepStatus",
+            "since_sdk": [
+                1,
+                4,
+                2
+            ],
             "values": [
                 {
                     "documentation": "The job has successfully executed all its steps",
@@ -2399,6 +2629,11 @@
         {
             "documentation": "Explains why the job should stop and release the resources it has allocated. This is especially important to disambiguate between the \"paused\" condition and the \"final\" conditions (success, failure, or canceled).",
             "name": "OrthancPluginJobStopReason",
+            "since_sdk": [
+                1,
+                4,
+                2
+            ],
             "values": [
                 {
                     "documentation": "The job has succeeded",
@@ -2425,6 +2660,11 @@
         {
             "documentation": "Mode specifying how to load a DICOM instance.",
             "name": "OrthancPluginLoadDicomInstanceMode",
+            "since_sdk": [
+                1,
+                12,
+                1
+            ],
             "values": [
                 {
                     "documentation": "Load the whole DICOM file, including pixel data",
@@ -2446,6 +2686,11 @@
         {
             "documentation": "The log categories supported by Orthanc. These values must match those of enumeration \"LogCategory\" in the Orthanc Core.",
             "name": "OrthancPluginLogCategory",
+            "since_sdk": [
+                1,
+                12,
+                4
+            ],
             "values": [
                 {
                     "documentation": "Generic (default) category",
@@ -2487,6 +2732,11 @@
         {
             "documentation": "The log levels supported by Orthanc. These values must match those of enumeration \"LogLevel\" in the Orthanc Core.",
             "name": "OrthancPluginLogLevel",
+            "since_sdk": [
+                1,
+                12,
+                4
+            ],
             "values": [
                 {
                     "documentation": "Error log level",
@@ -2513,6 +2763,11 @@
         {
             "documentation": "The available types of metrics.",
             "name": "OrthancPluginMetricsType",
+            "since_sdk": [
+                1,
+                5,
+                4
+            ],
             "values": [
                 {
                     "documentation": "Default metrics",
@@ -2563,26 +2818,51 @@
                 {
                     "documentation": "Color image in RGB48 format. This format describes a color image. The pixels are stored in 6 consecutive bytes. The memory layout is RRGGBB.",
                     "key": "RGB48",
+                    "since_sdk": [
+                        1,
+                        3,
+                        1
+                    ],
                     "value": 7
                 },
                 {
                     "documentation": "Graylevel, unsigned 32bpp image. The image is graylevel. Each pixel is unsigned and stored in four bytes.",
                     "key": "Grayscale32",
+                    "since_sdk": [
+                        1,
+                        3,
+                        1
+                    ],
                     "value": 8
                 },
                 {
                     "documentation": "Graylevel, floating-point 32bpp image. The image is graylevel. Each pixel is floating-point and stored in four bytes.",
                     "key": "Float32",
+                    "since_sdk": [
+                        1,
+                        3,
+                        1
+                    ],
                     "value": 9
                 },
                 {
                     "documentation": "Color image in BGRA32 format. This format describes a color image. The pixels are stored in 4 consecutive bytes. The memory layout is BGRA.",
                     "key": "BGRA32",
+                    "since_sdk": [
+                        1,
+                        3,
+                        1
+                    ],
                     "value": 10
                 },
                 {
                     "documentation": "Graylevel, unsigned 64bpp image. The image is graylevel. Each pixel is unsigned and stored in eight bytes.",
                     "key": "Grayscale64",
+                    "since_sdk": [
+                        1,
+                        4,
+                        0
+                    ],
                     "value": 11
                 }
             ]
@@ -2590,6 +2870,11 @@
         {
             "documentation": "The supported modes to remove an element from a queue.",
             "name": "OrthancPluginQueueOrigin",
+            "since_sdk": [
+                1,
+                12,
+                8
+            ],
             "values": [
                 {
                     "documentation": "Dequeue from the front of the queue",
@@ -2606,6 +2891,11 @@
         {
             "documentation": "The action to be taken after ReceivedInstanceCallback is triggered",
             "name": "OrthancPluginReceivedInstanceAction",
+            "since_sdk": [
+                1,
+                10,
+                0
+            ],
             "values": [
                 {
                     "documentation": "Keep the instance as is",
@@ -2658,6 +2948,11 @@
         {
             "documentation": "The \"Stable\" status of a resource.",
             "name": "OrthancPluginStableStatus",
+            "since_sdk": [
+                1,
+                12,
+                9
+            ],
             "values": [
                 {
                     "documentation": "The resource is stable",
@@ -2674,6 +2969,11 @@
         {
             "documentation": "The available values for the Failure Reason (0008,1197) during storage commitment. http://dicom.nema.org/medical/dicom/2019e/output/chtml/part03/sect_C.14.html#sect_C.14.1.1",
             "name": "OrthancPluginStorageCommitmentFailureReason",
+            "since_sdk": [
+                1,
+                6,
+                0
+            ],
             "values": [
                 {
                     "documentation": "Success: The DICOM instance is properly stored in the SCP",
@@ -2715,6 +3015,11 @@
         {
             "documentation": "The store status related to the adoption of a DICOM instance.",
             "name": "OrthancPluginStoreStatus",
+            "since_sdk": [
+                1,
+                12,
+                8
+            ],
             "values": [
                 {
                     "documentation": "The file has been stored/adopted",
@@ -2917,7 +3222,12 @@
                 "return": "1 if and only if the versions are compatible. If the result is 0, the initialization of the plugin should fail.",
                 "summary": "Check that the version of the hosting Orthanc is above a given version."
             },
-            "return_sdk_type": "int32_t"
+            "return_sdk_type": "int32_t",
+            "since_sdk": [
+                1,
+                4,
+                0
+            ]
         },
         {
             "args": [],
@@ -4211,7 +4521,12 @@
                 "summary": "Register a new private tag into the DICOM dictionary."
             },
             "return_sdk_enumeration": "OrthancPluginErrorCode",
-            "return_sdk_type": "enumeration"
+            "return_sdk_type": "enumeration",
+            "since_sdk": [
+                1,
+                2,
+                0
+            ]
         },
         {
             "args": [
@@ -4452,7 +4767,12 @@
                 "return": "NULL in the case of an error, or a newly allocated string containing the UUID. This string must be freed by OrthancPluginFreeString().",
                 "summary": "Generate an UUID."
             },
-            "return_sdk_type": "char *"
+            "return_sdk_type": "char *",
+            "since_sdk": [
+                1,
+                1,
+                0
+            ]
         },
         {
             "args": [
@@ -4475,7 +4795,12 @@
                 "summary": "Create a C-Find matcher."
             },
             "return_sdk_class": "OrthancPluginFindMatcher",
-            "return_sdk_type": "object"
+            "return_sdk_type": "object",
+            "since_sdk": [
+                1,
+                2,
+                0
+            ]
         },
         {
             "args": [],
@@ -4489,7 +4814,12 @@
                 "summary": "Return the list of available Orthanc peers."
             },
             "return_sdk_class": "OrthancPluginPeers",
-            "return_sdk_type": "object"
+            "return_sdk_type": "object",
+            "since_sdk": [
+                1,
+                4,
+                2
+            ]
         },
         {
             "args": [
@@ -4510,7 +4840,12 @@
                 "return": "The MIME type. This is a statically-allocated string, do not free it.",
                 "summary": "Detect the MIME type of a file."
             },
-            "return_sdk_type": "const char *"
+            "return_sdk_type": "const char *",
+            "since_sdk": [
+                1,
+                5,
+                0
+            ]
         },
         {
             "args": [
@@ -4543,7 +4878,12 @@
                 ],
                 "summary": "Set the value of a floating-point metrics."
             },
-            "return_sdk_type": "void"
+            "return_sdk_type": "void",
+            "since_sdk": [
+                1,
+                5,
+                4
+            ]
         },
         {
             "args": [
@@ -4576,7 +4916,12 @@
                 "return": "NULL in the case of an error, or a newly allocated string containing the path. This string must be freed by OrthancPluginFreeString().",
                 "summary": "Returns the symbolic name of a DICOM tag."
             },
-            "return_sdk_type": "char *"
+            "return_sdk_type": "char *",
+            "since_sdk": [
+                1,
+                5,
+                7
+            ]
         },
         {
             "args": [
@@ -4599,7 +4944,12 @@
                 "summary": "Parse a DICOM instance."
             },
             "return_sdk_class": "OrthancPluginDicomInstance",
-            "return_sdk_type": "object"
+            "return_sdk_type": "object",
+            "since_sdk": [
+                1,
+                7,
+                0
+            ]
         },
         {
             "args": [
@@ -4628,7 +4978,12 @@
                 "summary": "Parse and transcode a DICOM instance."
             },
             "return_sdk_class": "OrthancPluginDicomInstance",
-            "return_sdk_type": "object"
+            "return_sdk_type": "object",
+            "since_sdk": [
+                1,
+                7,
+                0
+            ]
         },
         {
             "args": [],
@@ -4643,7 +4998,12 @@
                 "return": "The authorization token, or NULL value in the case of an error. This string must be freed by OrthancPluginFreeString().",
                 "summary": "Generate a token to grant full access to the REST API of Orthanc."
             },
-            "return_sdk_type": "char *"
+            "return_sdk_type": "char *",
+            "since_sdk": [
+                1,
+                8,
+                1
+            ]
         },
         {
             "args": [
@@ -4686,7 +5046,12 @@
                 "return": "0 if success, other value if error.",
                 "summary": "Create a DICOM instance from a JSON string and an image, with a private creator."
             },
-            "return_sdk_type": "OrthancPluginMemoryBuffer *"
+            "return_sdk_type": "OrthancPluginMemoryBuffer *",
+            "since_sdk": [
+                1,
+                9,
+                0
+            ]
         },
         {
             "args": [],
@@ -4697,7 +5062,12 @@
                 "return": "the database server identifier.  This is a statically-allocated string, do not free it.",
                 "summary": "Gets the DatabaseServerIdentifier."
             },
-            "return_sdk_type": "const char *"
+            "return_sdk_type": "const char *",
+            "since_sdk": [
+                1,
+                11,
+                1
+            ]
         },
         {
             "args": [
@@ -4726,7 +5096,12 @@
                 "summary": "Load a DICOM instance from the Orthanc server."
             },
             "return_sdk_class": "OrthancPluginDicomInstance",
-            "return_sdk_type": "object"
+            "return_sdk_type": "object",
+            "since_sdk": [
+                1,
+                12,
+                1
+            ]
         },
         {
             "args": [
@@ -4748,7 +5123,12 @@
                 "summary": "Set the name of the current thread."
             },
             "return_sdk_enumeration": "OrthancPluginErrorCode",
-            "return_sdk_type": "enumeration"
+            "return_sdk_type": "enumeration",
+            "since_sdk": [
+                1,
+                12,
+                2
+            ]
         },
         {
             "args": [
@@ -4800,7 +5180,12 @@
                 ],
                 "summary": "Log a message."
             },
-            "return_sdk_type": "void"
+            "return_sdk_type": "void",
+            "since_sdk": [
+                1,
+                12,
+                4
+            ]
         },
         {
             "args": [
@@ -4822,7 +5207,12 @@
                 "return": "0 if success, other value if error.",
                 "summary": "Retrieve the custom data associated with an attachment in the Orthanc database."
             },
-            "return_sdk_type": "OrthancPluginMemoryBuffer *"
+            "return_sdk_type": "OrthancPluginMemoryBuffer *",
+            "since_sdk": [
+                1,
+                12,
+                8
+            ]
         },
         {
             "args": [
@@ -4851,7 +5241,12 @@
                 "summary": "Update the custom data associated with an attachment in the Orthanc database."
             },
             "return_sdk_enumeration": "OrthancPluginErrorCode",
-            "return_sdk_type": "enumeration"
+            "return_sdk_type": "enumeration",
+            "since_sdk": [
+                1,
+                12,
+                8
+            ]
         },
         {
             "args": [
@@ -4884,7 +5279,12 @@
                 "summary": "Store a key-value pair in the Orthanc database."
             },
             "return_sdk_enumeration": "OrthancPluginErrorCode",
-            "return_sdk_type": "enumeration"
+            "return_sdk_type": "enumeration",
+            "since_sdk": [
+                1,
+                12,
+                8
+            ]
         },
         {
             "args": [
@@ -4910,7 +5310,12 @@
                 "summary": "Delete a key-value pair from the Orthanc database."
             },
             "return_sdk_enumeration": "OrthancPluginErrorCode",
-            "return_sdk_type": "enumeration"
+            "return_sdk_type": "enumeration",
+            "since_sdk": [
+                1,
+                12,
+                8
+            ]
         },
         {
             "args": [
@@ -4932,7 +5337,12 @@
                 "summary": "Create an iterator over the key-value pairs of a key-value store in the Orthanc database."
             },
             "return_sdk_class": "OrthancPluginKeysValuesIterator",
-            "return_sdk_type": "object"
+            "return_sdk_type": "object",
+            "since_sdk": [
+                1,
+                12,
+                8
+            ]
         },
         {
             "args": [
@@ -4959,53 +5369,70 @@
                 "summary": "Append a value to the back of a queue."
             },
             "return_sdk_enumeration": "OrthancPluginErrorCode",
-            "return_sdk_type": "enumeration"
+            "return_sdk_type": "enumeration",
+            "since_sdk": [
+                1,
+                12,
+                8
+            ]
         },
         {
             "args": [
                 {
                     "name": "arg0",
-                    "sdk_name": "userId",
+                    "sdk_name": "sourcePlugin",
                     "sdk_type": "const char *"
                 },
                 {
                     "name": "arg1",
+                    "sdk_name": "userId",
+                    "sdk_type": "const char *"
+                },
+                {
+                    "name": "arg2",
                     "sdk_enumeration": "OrthancPluginResourceType",
                     "sdk_name": "resourceType",
                     "sdk_type": "enumeration"
                 },
                 {
-                    "name": "arg2",
+                    "name": "arg3",
                     "sdk_name": "resourceId",
                     "sdk_type": "const char *"
                 },
                 {
-                    "name": "arg3",
+                    "name": "arg4",
                     "sdk_name": "action",
                     "sdk_type": "const char *"
                 },
                 {
-                    "name": "arg4",
+                    "name": "arg5",
                     "sdk_name": "logData",
                     "sdk_type": "const_void_pointer_with_size"
                 }
             ],
-            "c_function": "OrthancPluginAuditLog",
+            "c_function": "OrthancPluginEmitAuditLog",
             "documentation": {
                 "args": {
-                    "action": "The action that is performed on the resource.",
+                    "action": "The action that was performed on the resource.",
                     "logData": "A pointer to custom log data.",
-                    "logDataSize": "The size of custom log data.",
-                    "resourceId": "The resource this log relates to.",
-                    "resourceType": "The type of the resource this log relates to.",
-                    "userId": "A string uniquely identifying the user or entity that is executing the action on the resource."
+                    "logDataSize": "The size of the custom log data.",
+                    "resourceId": "The resource this audit log relates to.",
+                    "resourceType": "The type of the resource this audit log relates to.",
+                    "sourcePlugin": "The name of the source plugin, to properly interpret the content of \"action\" and \"logData\".",
+                    "userId": "A string that uniquely identifies the user or entity that is executing the action on the resource."
                 },
                 "description": [
-                    "Generate an audit log that might be handled by plugins that have registered an handler."
+                    "Generate an audit log that will be broadcasted to all the plugins that have registered a callback handler using OrthancPluginRegisterAuditLogHandler(). If no plugin has registered such a callback, the audit log is ignored.",
+                    "A typical handler would record the audit log in a database and/or relay the audit log to a message broker."
                 ],
-                "summary": "Generate an audit log"
+                "summary": "Generate an audit log to signal security-related events."
             },
-            "return_sdk_type": "void"
+            "return_sdk_type": "void",
+            "since_sdk": [
+                1,
+                12,
+                9
+            ]
         }
     ]
 }

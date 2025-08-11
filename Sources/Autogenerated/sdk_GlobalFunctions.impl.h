@@ -46,32 +46,6 @@ extern PyObject *SetStableStatus(PyObject* module, PyObject *args);
 // End of forward declarations
 
 
-static PyObject* sdk_OrthancPluginAuditLog(PyObject* module, PyObject* args)
-{
-  PythonLock::LogCall("Calling Python global function: OrthancPluginAuditLog()");
-
-  const char* arg0 = NULL;
-  long int arg1 = 0;
-  const char* arg2 = NULL;
-  const char* arg3 = NULL;
-  Py_buffer arg4;
-
-  if (!PyArg_ParseTuple(args, "slssz*", &arg0, &arg1, &arg2, &arg3, &arg4))
-  {
-    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (5 arguments expected)");
-    return NULL;
-  }
-
-  {
-    PythonThreadsAllower allower;
-    OrthancPluginAuditLog(OrthancPlugins::GetGlobalContext(), arg0, static_cast<OrthancPluginResourceType>(arg1), arg2, arg3, (arg4.len > 0 ? arg4.buf : NULL), (arg4.len > 0 ? arg4.len : 0));
-  }
-  PyBuffer_Release(&arg4);
-
-  Py_INCREF(Py_None);
-  return Py_None;
-}
-
 static PyObject* sdk_OrthancPluginAutodetectMimeType(PyObject* module, PyObject* args)
 {
   PythonLock::LogCall("Calling Python global function: OrthancPluginAutodetectMimeType()");
@@ -637,6 +611,33 @@ static PyObject* sdk_OrthancPluginDicomInstanceToJson(PyObject* module, PyObject
   {
     return PyUnicode_FromString(s.GetContent());
   }
+}
+
+static PyObject* sdk_OrthancPluginEmitAuditLog(PyObject* module, PyObject* args)
+{
+  PythonLock::LogCall("Calling Python global function: OrthancPluginEmitAuditLog()");
+
+  const char* arg0 = NULL;
+  const char* arg1 = NULL;
+  long int arg2 = 0;
+  const char* arg3 = NULL;
+  const char* arg4 = NULL;
+  Py_buffer arg5;
+
+  if (!PyArg_ParseTuple(args, "sslssz*", &arg0, &arg1, &arg2, &arg3, &arg4, &arg5))
+  {
+    PyErr_SetString(PyExc_TypeError, "Bad types for the arguments (6 arguments expected)");
+    return NULL;
+  }
+
+  {
+    PythonThreadsAllower allower;
+    OrthancPluginEmitAuditLog(OrthancPlugins::GetGlobalContext(), arg0, arg1, static_cast<OrthancPluginResourceType>(arg2), arg3, arg4, (arg5.len > 0 ? arg5.buf : NULL), (arg5.len > 0 ? arg5.len : 0));
+  }
+  PyBuffer_Release(&arg5);
+
+  Py_INCREF(Py_None);
+  return Py_None;
 }
 
 static PyObject* sdk_OrthancPluginEnqueueValue(PyObject* module, PyObject* args)
@@ -2308,8 +2309,6 @@ static PyObject* sdk_OrthancPluginWriteFile(PyObject* module, PyObject* args)
 
 static PyMethodDef ORTHANC_SDK_FUNCTIONS[] = 
 {
-  { "AuditLog", sdk_OrthancPluginAuditLog, METH_VARARGS,
-    "Generated from C function OrthancPluginAuditLog()" },
   { "AutodetectMimeType", sdk_OrthancPluginAutodetectMimeType, METH_VARARGS,
     "Generated from C function OrthancPluginAutodetectMimeType()" },
   { "BufferCompression", sdk_OrthancPluginBufferCompression, METH_VARARGS,
@@ -2346,6 +2345,8 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Generated from C function OrthancPluginDicomBufferToJson()" },
   { "DicomInstanceToJson", sdk_OrthancPluginDicomInstanceToJson, METH_VARARGS,
     "Generated from C function OrthancPluginDicomInstanceToJson()" },
+  { "EmitAuditLog", sdk_OrthancPluginEmitAuditLog, METH_VARARGS,
+    "Generated from C function OrthancPluginEmitAuditLog()" },
   { "EnqueueValue", sdk_OrthancPluginEnqueueValue, METH_VARARGS,
     "Generated from C function OrthancPluginEnqueueValue()" },
   { "ExtendOrthancExplorer", sdk_OrthancPluginExtendOrthancExplorer, METH_VARARGS,

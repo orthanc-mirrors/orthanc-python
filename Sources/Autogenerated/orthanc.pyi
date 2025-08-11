@@ -891,7 +891,7 @@ class ErrorCode():
 
 class HttpAuthenticationStatus():
     """
-    The status related to the authentication of a HTTP request.
+    Status associated with the authentication of a HTTP request.
     """
 
     """
@@ -910,7 +910,7 @@ class HttpAuthenticationStatus():
     FORBIDDEN: int = 2,
 
     """
-    Redirect to another path (e.g. for login, 307 HTTP status)
+    Redirect to another path (307 HTTP status, e.g., for login)
     """
     REDIRECT: int = 3,
 
@@ -1516,20 +1516,6 @@ class ValueRepresentation():
 
 
 
-# Generate an audit log that might be handled by plugins that have registered an handler
-def AuditLog(user_id: str, resource_type: ResourceType, resource_id: str, action: str, log_data: bytes) -> None:
-    """
-    Generate an audit log that might be handled by plugins that have registered an handler.
-
-    Args:
-      user_id (str): A string uniquely identifying the user or entity that is executing the action on the resource.
-      resource_type (ResourceType): The type of the resource this log relates to.
-      resource_id (str): The resource this log relates to.
-      action (str): The action that is performed on the resource.
-      log_data (bytes): A pointer to custom log data.
-    """
-    ...
-
 # This function returns the MIME type of a file by inspecting its extension
 def AutodetectMimeType(path: str) -> str:
     """
@@ -1783,6 +1769,22 @@ def DicomInstanceToJson(instance_id: str, format: DicomToJsonFormat, flags: Dico
 
     Returns:
       str: The NULL value if the case of an error, or the JSON string. This string must be freed by OrthancPluginFreeString().
+    """
+    ...
+
+# Generate an audit log that will be broadcasted to all the plugins that have registered a callback handler using OrthancPluginRegisterAuditLogHandler()
+def EmitAuditLog(source_plugin: str, user_id: str, resource_type: ResourceType, resource_id: str, action: str, log_data: bytes) -> None:
+    """
+    Generate an audit log that will be broadcasted to all the plugins that have registered a callback handler using OrthancPluginRegisterAuditLogHandler(). If no plugin has registered such a callback, the audit log is ignored.
+    A typical handler would record the audit log in a database and/or relay the audit log to a message broker.
+
+    Args:
+      source_plugin (str): The name of the source plugin, to properly interpret the content of "action" and "logData".
+      user_id (str): A string that uniquely identifies the user or entity that is executing the action on the resource.
+      resource_type (ResourceType): The type of the resource this audit log relates to.
+      resource_id (str): The resource this audit log relates to.
+      action (str): The action that was performed on the resource.
+      log_data (bytes): A pointer to custom log data.
     """
     ...
 

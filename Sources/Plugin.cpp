@@ -299,7 +299,7 @@ PyObject* SetStableStatus(PyObject* module, PyObject* args)
   else
   {
     OrthancPluginErrorCode code;
-    int32_t statusHasChanged;
+    uint8_t statusHasChanged;
 
     {
       PythonThreadsAllower allower;
