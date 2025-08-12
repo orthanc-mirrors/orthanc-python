@@ -235,6 +235,11 @@ else()
     /usr/local/
     PATH_SUFFIXES include/orthanc
     )
+
+  if (${ORTHANC_SDK_SYSTEM_DIR} STREQUAL "ORTHANC_SDK_SYSTEM_DIR-NOTFOUND")
+    message(FATAL_ERROR "Cannot locate the orthanc/OrthancCPlugin.h header")
+  endif()
+
   set(ORTHANC_SDK ${ORTHANC_SDK_SYSTEM_DIR}/OrthancCPlugin.h)
 endif()
 
