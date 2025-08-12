@@ -16,6 +16,7 @@ Copyright: 2020-2023 Osimis S.A. (Belgium), 2024-2025 Orthanc Team SRL (Belgium)
 License: CC0-1.0
 
 Files:
+  CodeAnalysis/ClassDocumentation.json
   CodeAnalysis/CustomFunctions.json
   CodeAnalysis/CustomMethods.json
   CodeAnalysis/FunctionBody.mustache
