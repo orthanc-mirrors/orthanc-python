@@ -35,9 +35,6 @@ else()
   set(ORTHANC_FRAMEWORK_DEFAULT_SOURCE "web")
 endif()
 
-## TODO
-set(ORTHANC_CODE_MODEL ${CMAKE_SOURCE_DIR}/Resources/Orthanc/Sdk-1.12.9/orthanc/OrthancPluginCodeModel.json)
-
 include(${CMAKE_SOURCE_DIR}/OrthancSDKVersion.cmake)
 
 
@@ -218,6 +215,8 @@ endif()
 #####################################################################
 ## Auto-generate the wrapper
 #####################################################################
+
+set(ORTHANC_CODE_MODEL ${CMAKE_SOURCE_DIR}/Resources/Orthanc/OrthancPluginCodeModel.json)
 
 add_custom_command(
   OUTPUT

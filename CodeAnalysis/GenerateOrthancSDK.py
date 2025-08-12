@@ -358,7 +358,10 @@ def FormatFunction(f):
         if arg['sdk_type'] == 'const void *':
             call_args.append(arg['name'] + '.buf')
         elif arg['sdk_type'] == 'const_void_pointer_with_size':
-            call_args.append('(' + arg['name'] + '.len > 0 ? ' + arg['name'] + '.buf' + ' : NULL)')
+            # NB: The cast to "const char*" allows compatibility with functions whose
+            # signatures were incorrect at the time they were introduced, notably:
+            #   - argument "body" of "OrthancPluginSendHttpStatus()" in 1.11.1
+            call_args.append('reinterpret_cast<const char*>(' + arg['name'] + '.len > 0 ? ' + arg['name'] + '.buf' + ' : NULL)')
             call_args.append('(' + arg['name'] + '.len > 0 ? ' + arg['name'] + '.len' + ' : 0)')
         elif arg['sdk_type'] == 'enumeration':
             call_args.append('static_cast<%s>(%s)' % (arg['sdk_enumeration'], arg['name']))
@@ -465,10 +468,11 @@ for c in model['classes']:
     methods = []
 
     for m in c['methods']:
-        g = FormatFunction(m)
-        if g != None:
-            g['self'] = ', self->object_'
-            methods.append(g)
+        if IsPrimitiveAvailable(m):
+            g = FormatFunction(m)
+            if g != None:
+                g['self'] = ', self->object_'
+                methods.append(g)
 
     custom_methods = []
 
