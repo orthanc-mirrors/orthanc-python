@@ -62,7 +62,12 @@ parser.add_argument('--target',
 args = parser.parse_args()
 
 TARGET = os.path.realpath(args.target)
-os.makedirs(TARGET, exist_ok = True)
+
+try:
+    # "exist_ok = True" is not available on Python 2.7, which is still in use on our CIS for Ubuntu 16.04
+    os.makedirs(TARGET)
+except:
+    pass
 
 
 ##

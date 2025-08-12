@@ -49,7 +49,7 @@ else
 fi
 
 apt-get update
-DEBIAN_FRONTEND=noninteractive apt-get -y install nano build-essential unzip cmake pkg-config libpython3-dev curl ${MERCURIAL_PACKAGES}
+DEBIAN_FRONTEND=noninteractive apt-get -y install nano build-essential unzip cmake pkg-config libpython3-dev curl python3-pystache ${MERCURIAL_PACKAGES}
 apt-get -y clean
 rm -rf /var/lib/apt/lists/*
 
