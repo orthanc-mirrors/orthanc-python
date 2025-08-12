@@ -31,7 +31,7 @@ import typing
 
 class ChangeType():
     """
-    The supported types of changes that can be signaled to the change callback. Note: This enumeration is not used to store changes in the database!
+    The supported types of changes that can be signaled to the change callback. Note: this enum is not used to store changes in the DB !
     """
 
     """
@@ -153,11 +153,6 @@ class CompressionType():
     gzip, prefixed with uncompressed size (uint64_t)
     """
     GZIP_WITH_SIZE: int = 3,
-
-    """
-    No compression (new in Orthanc 1.12.8)
-    """
-    NONE: int = 4,
 
 class ConstraintType():
     """
@@ -889,31 +884,6 @@ class ErrorCode():
     """
     UNSUPPORTED_MEDIA_TYPE: int = 3000,
 
-class HttpAuthenticationStatus():
-    """
-    Status associated with the authentication of a HTTP request.
-    """
-
-    """
-    The authentication has been granted
-    """
-    GRANTED: int = 0,
-
-    """
-    The authentication has failed (401 HTTP status)
-    """
-    UNAUTHORIZED: int = 1,
-
-    """
-    The authorization has failed (403 HTTP status)
-    """
-    FORBIDDEN: int = 2,
-
-    """
-    Redirect to another path (307 HTTP status, e.g., for login)
-    """
-    REDIRECT: int = 3,
-
 class HttpMethod():
     """
     The various HTTP methods for a REST call.
@@ -1224,21 +1194,6 @@ class PixelFormat():
     """
     GRAYSCALE64: int = 11,
 
-class QueueOrigin():
-    """
-    The supported modes to remove an element from a queue.
-    """
-
-    """
-    Dequeue from the front of the queue
-    """
-    FRONT: int = 0,
-
-    """
-    Dequeue from the back of the queue
-    """
-    BACK: int = 1,
-
 class ReceivedInstanceAction():
     """
     The action to be taken after ReceivedInstanceCallback is triggered
@@ -1289,21 +1244,6 @@ class ResourceType():
     """
     NONE: int = 4,
 
-class StableStatus():
-    """
-    The "Stable" status of a resource.
-    """
-
-    """
-    The resource is stable
-    """
-    STABLE: int = 0,
-
-    """
-    The resource is unstable
-    """
-    UNSTABLE: int = 1,
-
 class StorageCommitmentFailureReason():
     """
     The available values for the Failure Reason (0008,1197) during storage commitment. http://dicom.nema.org/medical/dicom/2019e/output/chtml/part03/sect_C.14.html#sect_C.14.1.1
@@ -1343,36 +1283,6 @@ class StorageCommitmentFailureReason():
     0131H: The Transaction UID of the Storage Commitment Request is already in use
     """
     DUPLICATE_TRANSACTION_UID: int = 6,
-
-class StoreStatus():
-    """
-    The store status related to the adoption of a DICOM instance.
-    """
-
-    """
-    The file has been stored/adopted
-    """
-    SUCCESS: int = 0,
-
-    """
-    The file has already been stored/adopted (only if OverwriteInstances is set to false)
-    """
-    ALREADY_STORED: int = 1,
-
-    """
-    The file could not be stored/adopted
-    """
-    FAILURE: int = 2,
-
-    """
-    The file has been filtered out by a Lua script or a plugin
-    """
-    FILTERED_OUT: int = 3,
-
-    """
-    The storage is full (only if MaximumStorageSize/MaximumPatientCount is set and MaximumStorageMode is Reject)
-    """
-    STORAGE_FULL: int = 4,
 
 class ValueRepresentation():
     """
@@ -1704,19 +1614,6 @@ def CreateImage(format: PixelFormat, width: int, height: int) -> Image:
     """
     ...
 
-# The iterator loops over the keys according to the lexicographical order
-def CreateKeysValuesIterator(store_id: str) -> KeysValuesIterator:
-    """
-    The iterator loops over the keys according to the lexicographical order.
-
-    Args:
-      store_id (str): A unique identifier identifying both the plugin and the key-value store.
-
-    Returns:
-      KeysValuesIterator: The newly allocated iterator, or NULL in the case of an error. The iterator must be freed by calling OrthancPluginFreeKeysValuesIterator().
-    """
-    ...
-
 # This function decodes one frame of a DICOM image that is stored in a memory buffer
 def DecodeDicomImage(buffer: bytes, frame_index: int) -> Image:
     """
@@ -1728,15 +1625,6 @@ def DecodeDicomImage(buffer: bytes, frame_index: int) -> Image:
 
     Returns:
       Image: The uncompressed image. It must be freed with OrthancPluginFreeImage().
-    """
-    ...
-
-def DeleteKeyValue(store_id: str, key: str) -> None:
-    """
-
-    Args:
-      store_id (str): A unique identifier identifying both the plugin and the key-value store.
-      key (str): The key of the value to store (note: storeId + key must be unique).
     """
     ...
 
@@ -1769,31 +1657,6 @@ def DicomInstanceToJson(instance_id: str, format: DicomToJsonFormat, flags: Dico
 
     Returns:
       str: The NULL value if the case of an error, or the JSON string. This string must be freed by OrthancPluginFreeString().
-    """
-    ...
-
-# Generate an audit log that will be broadcasted to all the plugins that have registered a callback handler using OrthancPluginRegisterAuditLogHandler()
-def EmitAuditLog(source_plugin: str, user_id: str, resource_type: ResourceType, resource_id: str, action: str, log_data: bytes) -> None:
-    """
-    Generate an audit log that will be broadcasted to all the plugins that have registered a callback handler using OrthancPluginRegisterAuditLogHandler(). If no plugin has registered such a callback, the audit log is ignored.
-    A typical handler would record the audit log in a database and/or relay the audit log to a message broker.
-
-    Args:
-      source_plugin (str): The name of the source plugin, to properly interpret the content of "action" and "logData".
-      user_id (str): A string that uniquely identifies the user or entity that is executing the action on the resource.
-      resource_type (ResourceType): The type of the resource this audit log relates to.
-      resource_id (str): The resource this audit log relates to.
-      action (str): The action that was performed on the resource.
-      log_data (bytes): A pointer to custom log data.
-    """
-    ...
-
-def EnqueueValue(queue_id: str, value: bytes) -> None:
-    """
-
-    Args:
-      queue_id (str): A unique identifier identifying both the plugin and the queue.
-      value (bytes): The value to store.
     """
     ...
 
@@ -1837,19 +1700,6 @@ def GenerateUuid() -> str:
 
     Returns:
       str: NULL in the case of an error, or a newly allocated string containing the UUID. This string must be freed by OrthancPluginFreeString().
-    """
-    ...
-
-# If no custom data is associated with the attachment of interest, the target memory buffer is filled with the NULL value and a zero size
-def GetAttachmentCustomData(attachment_uuid: str) -> bytes:
-    """
-    If no custom data is associated with the attachment of interest, the target memory buffer is filled with the NULL value and a zero size.
-
-    Args:
-      attachment_uuid (str): The UUID of the attachment of interest.
-
-    Returns:
-      bytes: 0 if success, other value if error.
     """
     ...
 
@@ -2384,17 +2234,6 @@ def RestApiPutAfterPlugins(uri: str, body: bytes) -> bytes:
     """
     ...
 
-# This function is notably used in the "orthanc-advanced-storage" when the plugin moves an attachment
-def SetAttachmentCustomData(attachment_uuid: str, custom_data: bytes) -> None:
-    """
-    This function is notably used in the "orthanc-advanced-storage" when the plugin moves an attachment.
-
-    Args:
-      attachment_uuid (str): The UUID of the attachment of interest.
-      custom_data (bytes): The value to store.
-    """
-    ...
-
 # This function gives a name to the thread that is calling this function
 def SetCurrentThreadName(thread_name: str) -> None:
     """
@@ -2467,16 +2306,6 @@ def SetRootUri2(plugin: str, uri: str) -> None:
     Args:
       plugin (str): Identifier of your plugin (it must match "OrthancPluginGetName()").
       uri (str): The root URI for this plugin.
-    """
-    ...
-
-def StoreKeyValue(store_id: str, key: str, value: bytes) -> None:
-    """
-
-    Args:
-      store_id (str): A unique identifier identifying both the plugin and the key-value store.
-      key (str): The key of the value to store (note: storeId + key must be unique).
-      value (bytes): The value to store.
     """
     ...
 
@@ -3163,33 +2992,6 @@ class Job:
         """
         ...
 
-class KeysValuesIterator:
-    """
-    Key-Value store iterator
-    """
-    ...
-
-    
-    # Before using this function, the function OrthancPluginKeysValuesIteratorNext() must have been called at least once
-    def KeysValuesIteratorGetKey(self) -> str:
-        """
-        Before using this function, the function OrthancPluginKeysValuesIteratorNext() must have been called at least once.
-
-        Returns:
-          str: The current key, or NULL in the case of an error.
-        """
-        ...
-    
-    # Before using this function, the function OrthancPluginKeysValuesIteratorNext() must have been called at least once
-    def KeysValuesIteratorGetValue(self) -> bytes:
-        """
-        Before using this function, the function OrthancPluginKeysValuesIteratorNext() must have been called at least once.
-
-        Returns:
-          bytes: The current value, or NULL in the case of an error.
-        """
-        ...
-
 class Peers:
     """
     Orthanc peer
@@ -3442,7 +3244,6 @@ class StorageArea:
     def StorageAreaCreate(self, uuid: str, content: bytes, size: int, type: ContentType) -> None:
         """
         This function creates a new file inside the storage area that is currently used by Orthanc.
-        Warning: This function will result in a "not implemented" error on versions of the Orthanc core above 1.12.6.
 
         Args:
           uuid (str): The identifier of the file to be created.
@@ -3456,7 +3257,6 @@ class StorageArea:
     def StorageAreaRead(self, uuid: str, type: ContentType) -> bytes:
         """
         This function reads the content of a given file from the storage area that is currently used by Orthanc.
-        Warning: This function will result in a "not implemented" error on versions of the Orthanc core above 1.12.6.
 
         Args:
           uuid (str): The identifier of the file to be read.
@@ -3471,7 +3271,6 @@ class StorageArea:
     def StorageAreaRemove(self, uuid: str, type: ContentType) -> None:
         """
         This function removes a given file from the storage area that is currently used by Orthanc.
-        Warning: This function will result in a "not implemented" error on versions of the Orthanc core above 1.12.6.
 
         Args:
           uuid (str): The identifier of the file to be removed.

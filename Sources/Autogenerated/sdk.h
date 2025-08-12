@@ -41,7 +41,6 @@ PyTypeObject* GetOrthancPluginFindMatcherType();
 PyTypeObject* GetOrthancPluginFindQueryType();
 PyTypeObject* GetOrthancPluginImageType();
 PyTypeObject* GetOrthancPluginJobType();
-PyTypeObject* GetOrthancPluginKeysValuesIteratorType();
 PyTypeObject* GetOrthancPluginPeersType();
 PyTypeObject* GetOrthancPluginRestOutputType();
 PyTypeObject* GetOrthancPluginServerChunkedRequestReaderType();
@@ -114,15 +113,6 @@ typedef struct
   OrthancPluginJob* object_;
   bool borrowed_;
 } sdk_OrthancPluginJob_Object;
-
-typedef struct
-{
-  PyObject_HEAD
-
-  /* Type-specific fields go here. */
-  OrthancPluginKeysValuesIterator* object_;
-  bool borrowed_;
-} sdk_OrthancPluginKeysValuesIterator_Object;
 
 typedef struct
 {

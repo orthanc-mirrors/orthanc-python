@@ -98,7 +98,7 @@ static PyObject *sdk_OrthancPluginStorageArea_OrthancPluginStorageAreaRead(
   
   if (code == OrthancPluginErrorCode_Success)
   {
-    return PyBytes_FromStringAndSize(buffer.GetData(), buffer.GetSize());
+    return PyBytes_FromStringAndSize(reinterpret_cast<const char*>(buffer.GetData()), buffer.GetSize());
   }
   else
   {

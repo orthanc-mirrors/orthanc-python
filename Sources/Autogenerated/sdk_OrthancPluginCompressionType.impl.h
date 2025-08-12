@@ -97,12 +97,6 @@ void RegisterOrthancPluginCompressionTypeEnumeration(PyObject* module)
     Py_DECREF(tmp);
   }
 
-  {
-    PyObject* tmp = PyLong_FromLong(4);
-    PyDict_SetItemString(sdk_OrthancPluginCompressionType_Type.tp_dict, "NONE", tmp);
-    Py_DECREF(tmp);
-  }
-
 
   Py_INCREF(&sdk_OrthancPluginCompressionType_Type);
   if (PyModule_AddObject(module, "CompressionType", (PyObject *)&sdk_OrthancPluginCompressionType_Type) < 0)

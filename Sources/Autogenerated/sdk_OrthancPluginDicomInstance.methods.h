@@ -328,7 +328,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceRawFrame
   
   if (code == OrthancPluginErrorCode_Success)
   {
-    return PyBytes_FromStringAndSize(buffer.GetData(), buffer.GetSize());
+    return PyBytes_FromStringAndSize(reinterpret_cast<const char*>(buffer.GetData()), buffer.GetSize());
   }
   else
   {
@@ -399,7 +399,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginSerializeDicomInsta
   
   if (code == OrthancPluginErrorCode_Success)
   {
-    return PyBytes_FromStringAndSize(buffer.GetData(), buffer.GetSize());
+    return PyBytes_FromStringAndSize(reinterpret_cast<const char*>(buffer.GetData()), buffer.GetSize());
   }
   else
   {

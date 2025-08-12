@@ -37,14 +37,9 @@ import subprocess
 import urllib.request
 
 TARGET = os.path.join(os.path.dirname(__file__), 'Orthanc')
-ORTHANC_JAVA_VERSION = 'default'
-ORTHANC_CORE_REPOSITORY = 'https://orthanc.uclouvain.be/hg/orthanc/raw-file'
-ORTHANC_JAVA_REPOSITORY = 'https://orthanc.uclouvain.be/hg/orthanc-java/raw-file'
-
-with open(os.path.join(os.path.dirname(__file__), '..', 'OrthancSDKVersion.cmake'), 'r') as f:
-    m = re.match('^set\(ORTHANC_SDK_VERSION "([0-9.]+)"\)$', f.read(), re.MULTILINE)
-    assert(m != None)
-    PLUGIN_SDK_VERSION = m.group(1)
+REPOSITORY = 'https://orthanc.uclouvain.be/hg/orthanc/raw-file'
+PLUGIN_SDK_VERSIONS = [ '1.12.6', '1.12.9' ]
+PLUGIN_CODE_MODEL_VERSION = '1.12.9'
 
 
 FILES = [
@@ -66,12 +61,17 @@ FILES = [
     ('OrthancServer/Plugins/Samples/Common/VersionScriptPlugins.map', 'Plugins'),
 ]
 
+SDK = [
+    'orthanc/OrthancCPlugin.h',
+]
+
+CODE_MODEL = 'orthanc/OrthancPluginCodeModel.json'
+
 
 def Download(x):
-    repository = x[0]
-    branch = x[1]
-    source = x[2]
-    target = os.path.join(TARGET, x[3])
+    branch = x[0]
+    source = x[1]
+    target = os.path.join(TARGET, x[2])
     print(target)
 
     try:
@@ -79,7 +79,7 @@ def Download(x):
     except:
         pass
 
-    url = '%s/%s/%s' % (repository, branch, source)
+    url = '%s/%s/%s' % (REPOSITORY, branch, source)
 
     with open(target, 'wb') as f:
         try:
@@ -93,34 +93,24 @@ commands = []
 
 for f in FILES:
     commands.append([
-        ORTHANC_CORE_REPOSITORY,
         'default',
         f[0],
         os.path.join(f[1], os.path.basename(f[0]))
     ])
 
+for f in SDK:
+    for version in PLUGIN_SDK_VERSIONS:
+        commands.append([
+            'Orthanc-%s' % version,
+            'OrthancServer/Plugins/Include/%s' % f,
+            'Sdk-%s/%s' % (version, f)
+        ])
 
 commands.append([
-    ORTHANC_JAVA_REPOSITORY,
-    ORTHANC_JAVA_VERSION,
-    'Resources/Orthanc/Sdk-%s/orthanc/OrthancCPlugin.h' % PLUGIN_SDK_VERSION,
-    'Sdk-%s/orthanc/OrthancCPlugin.h' % PLUGIN_SDK_VERSION,
+    'Orthanc-%s' % version,
+    'OrthancServer/Plugins/Include/%s' % CODE_MODEL,
+    'Sdk-%s/%s' % (version, CODE_MODEL)
 ])
-
-
-for f in [
-        ('ClassDocumentation.json',         'CodeGeneration/ClassDocumentation.json'),
-        ('ClassDocumentation.json.license', 'CodeGeneration/ClassDocumentation.json.license'),
-        ('CodeModel.json',                  'Resources/CodeModel-%s.json' % PLUGIN_SDK_VERSION),
-        ('CodeModel.json.license',          'Resources/CodeModel-%s.json.license' % PLUGIN_SDK_VERSION),
-        ]:
-    commands.append([
-        ORTHANC_JAVA_REPOSITORY,
-        ORTHANC_JAVA_VERSION,
-        f[1],
-        'Sdk-%s/%s' % (PLUGIN_SDK_VERSION, f[0]),
-    ])
-
 
 
 pool = multiprocessing.Pool(10)  # simultaneous downloads
