@@ -27,12 +27,13 @@
 // WARNING: Auto-generated file. Do not modify it by hand.
 
 
-#include "sdk.h"
+#include <PythonHeaderWrapper.h>  // Must be before "sdk.h"
+#include "./sdk.h"
 
-#include "../PythonLock.h"
-#include "../PythonThreadsAllower.h"
+#include <PythonLock.h>
+#include <PythonThreadsAllower.h>
 
-#include "../../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
+#include <OrthancPluginCppWrapper.h>
 
 {{#enumerations}}
 #include "./sdk_{{name}}.impl.h"

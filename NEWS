@@ -1,9 +1,12 @@
 Pending changes in the mainline
 ===============================
 
-=> Minimum SDK version: 1.12.9 <=
+=> Maximum SDK version: 1.12.9 <=
 
-* New methods imported from SDK 1.12.9 (TODO: sync again once released)
+* The auto-generation of the Python wrapper is now part of the build,
+  to exploit the ORTHANC_PLUGIN_SINCE_SDK macro to provide backward
+  compatibility with the SDK that is actually installed on the system
+* New methods imported from SDK 1.12.9 (TODO: sync again once released):
   - AuditLog()
   - SetStableStatus()
 * Added Windows builder for Python 3.13
