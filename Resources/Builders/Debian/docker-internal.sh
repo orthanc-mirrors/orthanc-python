@@ -96,3 +96,4 @@ fi
 # running "./debian-{distro}-compile.sh" script. This allows to avoid
 # files owned by the "root" user on the host filesystem.
 su -c "cp /tmp/build/libOrthancPython.so /target" orthanc
+su -c "cp /tmp/build/orthanc.pyi /target" orthanc
