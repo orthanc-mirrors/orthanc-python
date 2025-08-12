@@ -65,5 +65,19 @@
       ],
       "return_sdk_type" : "OrthancPluginMemoryBuffer *"
     }
+  ],
+
+  "OrthancPluginKeysValuesIterator" : [
+    {
+      "short_name" : "Next",
+      "implementation" : "KeysValuesIteratorNext",
+      "documentation" : {
+        "description" : [ "Advance to the next element in the iterator." ],
+        "return" : "Whether the iterator is done."
+      },
+      "args" : [
+      ],
+      "return_sdk_type" : "bool"
+    }
   ]
 }

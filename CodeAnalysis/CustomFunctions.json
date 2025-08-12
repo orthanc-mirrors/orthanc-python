@@ -377,6 +377,32 @@
 
   {
     "comment" : "New in release 6.0",
+    "short_name" : "GetKeyValue",
+    "implementation" : "GetKeyValue",
+    "documentation" : {
+      "description" : [ "Get the value associated with a key in the Orthanc key-value store." ],
+      "args" : {
+        "storeId" : "The key-value store.",
+        "key" : "The key."
+      },
+      "return" : "The value, or None."
+    },
+    "args" : [
+      {
+        "sdk_name" : "storeId",
+        "sdk_type" : "const char *"
+      },
+      {
+        "sdk_name" : "key",
+        "sdk_type" : "const char *"
+      }
+    ],
+    "return_sdk_type" : "OrthancPluginMemoryBuffer *",
+    "since_sdk" : [ 1, 12, 8 ]
+  },
+
+  {
+    "comment" : "New in release 6.0",
     "short_name" : "SetStableStatus",
     "implementation" : "SetStableStatus",
     "documentation" : {

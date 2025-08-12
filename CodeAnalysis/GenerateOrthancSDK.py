@@ -189,9 +189,11 @@ def ToLowerCase(name):
     return s
 
 
-def GetShortName(name):
+def GetShortName(name, parent_class = None):
     if not name.startswith('OrthancPlugin'):
         raise Exception()
+    elif parent_class != None and name.startswith(parent_class):
+        return name[len(parent_class):]
     else:
         return name[len('OrthancPlugin'):]
 
@@ -207,6 +209,10 @@ ORTHANC_TO_PYTHON_NUMERIC_TYPES = {
     'int32_t' : {
         'type' : 'long int',
         'format' : 'l',
+        },
+    'int64_t' : {
+        'type' : 'long long',
+        'format' : 'L',
         },
     'uint16_t' : {
         'type' : 'unsigned short',
@@ -248,7 +254,7 @@ def DocumentFunction(f):
             arg_type = GetShortName(a['sdk_enumeration'])
         elif a['sdk_type'] == 'const_object':
             arg_type = GetShortName(a['sdk_class'])
-        elif a['sdk_type'] in [ 'int32_t', 'uint32_t', 'uint8_t', 'uint16_t', 'uint64_t' ]:
+        elif a['sdk_type'] in [ 'int32_t', 'int64_t', 'uint32_t', 'uint8_t', 'uint16_t', 'uint64_t' ]:
             arg_type = 'int'
         elif a['sdk_type'] == 'Callable':
             # This is only used to generate the documentation file "orthanc.pyi"
@@ -290,6 +296,9 @@ def DocumentFunction(f):
     elif f['return_sdk_type'] == 'Tuple':
         # This is only used to generate the documentation file "orthanc.pyi"
         documentation['return_type'] = 'tuple'
+    elif f['return_sdk_type'] == 'bool':
+        # This is only used to generate the documentation file "orthanc.pyi"
+        documentation['return_type'] = 'bool'
     else:
         raise Exception('Return type not implemented: %s' % f['return_sdk_type'])
 
@@ -299,10 +308,10 @@ def DocumentFunction(f):
     return documentation
 
 
-def FormatFunction(f):
+def FormatFunction(f, parent_class = None):
     answer = {
         'c_function' : f['c_function'],
-        'short_name' : GetShortName(f['c_function']),
+        'short_name' : GetShortName(f['c_function'], parent_class),
         'has_args' : len(f['args']) > 0,
         'count_args' : len(f['args']),
     }
@@ -471,7 +480,7 @@ for c in model['classes']:
 
     for m in c['methods']:
         if IsPrimitiveAvailable(m):
-            g = FormatFunction(m)
+            g = FormatFunction(m, parent_class = c['name'])
             if g != None:
                 g['self'] = ', self->object_'
                 methods.append(g)

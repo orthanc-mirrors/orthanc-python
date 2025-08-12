@@ -143,7 +143,7 @@ PyObject* GetInstanceData(sdk_OrthancPluginDicomInstance_Object* self, PyObject 
   }
   else
   {
-    OrthancPluginDicomInstance* instance = reinterpret_cast<sdk_OrthancPluginDicomInstance_Object*>(self)->object_;
+    OrthancPluginDicomInstance* instance = self->object_;
 
     const void* data;
     size_t size;
@@ -185,7 +185,7 @@ PyObject* GetImageBuffer(sdk_OrthancPluginImage_Object* self, PyObject *args)
   }
   else
   {
-    OrthancPluginImage* image = reinterpret_cast<sdk_OrthancPluginImage_Object*>(self)->object_;
+    OrthancPluginImage* image = self->object_;
 
     const void* buffer;
     size_t size;
@@ -285,6 +285,75 @@ PyObject* CreateImageFromBuffer(PyObject* module, PyObject* args)
     }
   }
 }
+
+
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 8)
+PyObject* GetKeyValue(PyObject* module, PyObject* args)
+{
+  // The GIL is locked at this point (no need to create "PythonLock")
+
+  const char* storeId = NULL;
+  const char* key = NULL;
+
+  if (!PyArg_ParseTuple(args, "ss", &storeId, &key))
+  {
+    PyErr_SetString(PyExc_TypeError, "Bad arguments");
+    return NULL;
+  }
+  else
+  {
+    uint8_t found = 0;
+    OrthancPlugins::MemoryBuffer buffer;
+    OrthancPluginErrorCode code = OrthancPluginGetKeyValue(OrthancPlugins::GetGlobalContext(), &found, *buffer, storeId, key);
+
+    if (code == OrthancPluginErrorCode_Success)
+    {
+      if (found)
+      {
+        return PyBytes_FromStringAndSize(reinterpret_cast<const char*>(buffer.GetData()), buffer.GetSize());
+      }
+      else
+      {
+        return Py_None;
+      }
+    }
+    else
+    {
+      PyErr_SetString(PyExc_TypeError, OrthancPluginGetErrorDescription(OrthancPlugins::GetGlobalContext(), code));
+      return NULL;
+    }
+  }
+}
+#endif
+
+
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 8)
+PyObject* KeysValuesIteratorNext(sdk_OrthancPluginKeysValuesIterator_Object* self, PyObject *args)
+{
+  // The GIL is locked at this point (no need to create "PythonLock")
+
+  if (self->object_ == NULL)
+  {
+    PyErr_SetString(PyExc_ValueError, "Invalid object");
+    return NULL;
+  }
+  else
+  {
+    uint8_t done;
+    OrthancPluginErrorCode code = OrthancPluginKeysValuesIteratorNext(OrthancPlugins::GetGlobalContext(), &done, self->object_);
+
+    if (code == OrthancPluginErrorCode_Success)
+    {
+      return PyBool_FromLong(done ? 1 : 0);
+    }
+    else
+    {
+      PyErr_SetString(PyExc_TypeError, OrthancPluginGetErrorDescription(OrthancPlugins::GetGlobalContext(), code));
+      return NULL;
+    }
+  }
+}
+#endif
 
 
 #if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 9)
