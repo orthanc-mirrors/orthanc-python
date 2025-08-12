@@ -382,7 +382,7 @@
     "documentation" : {
       "description" : [ "Get the value associated with a key in the Orthanc key-value store." ],
       "args" : {
-        "storeId" : "The key-value store.",
+        "storeId" : "The identifier of the key-value store.",
         "key" : "The key."
       },
       "return" : "The value, or None."
@@ -403,12 +403,60 @@
 
   {
     "comment" : "New in release 6.0",
+    "short_name" : "DequeueValue",
+    "implementation" : "DequeueValue",
+    "documentation" : {
+      "description" : [ "Dequeue a value from a queue." ],
+      "args" : {
+        "queueId" : "The identifier of the queue.",
+        "origin" : "The position from where the value is dequeued (back for LIFO, front for FIFO)."
+      },
+      "return" : "The value, or None if no more value is available."
+    },
+    "args" : [
+      {
+        "sdk_name" : "queueId",
+        "sdk_type" : "const char *"
+      },
+      {
+        "sdk_name" : "origin",
+        "sdk_type" : "enumeration",
+        "sdk_enumeration" : "OrthancPluginQueueOrigin"
+      }
+    ],
+    "return_sdk_type" : "OrthancPluginMemoryBuffer *",
+    "since_sdk" : [ 1, 12, 8 ]
+  },
+
+  {
+    "comment" : "New in release 6.0",
+    "short_name" : "GetQueueSize",
+    "implementation" : "GetQueueSize",
+    "documentation" : {
+      "description" : [ "Get the number of elements in a queue." ],
+      "args" : {
+        "queueId" : "The identifier of the queue."
+      },
+      "return" : "The value, or None."
+    },
+    "args" : [
+      {
+        "sdk_name" : "queueId",
+        "sdk_type" : "const char *"
+      }
+    ],
+    "return_sdk_type" : "uint64_t",
+    "since_sdk" : [ 1, 12, 8 ]
+  },
+
+  {
+    "comment" : "New in release 6.0",
     "short_name" : "SetStableStatus",
     "implementation" : "SetStableStatus",
     "documentation" : {
       "description" : [ "Change the Stable status of a resource" ],
       "args" : {
-        "resourceId" : "The id of the resource.",
+        "resourceId" : "The identifier of the resource.",
         "stableStatus" : "The new stable status: 0 for Stable, 1 for Unstable."
       },
       "return" : "A tuple with (The error code, An integer indicating wheter the status has changed (1) or not (0) during the execution of this command)."

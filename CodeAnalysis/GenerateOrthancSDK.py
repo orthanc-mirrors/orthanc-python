@@ -254,7 +254,7 @@ def DocumentFunction(f):
             arg_type = GetShortName(a['sdk_enumeration'])
         elif a['sdk_type'] == 'const_object':
             arg_type = GetShortName(a['sdk_class'])
-        elif a['sdk_type'] in [ 'int32_t', 'int64_t', 'uint32_t', 'uint8_t', 'uint16_t', 'uint64_t' ]:
+        elif a['sdk_type'] in [ 'int32_t', 'int64_t', 'uint8_t', 'uint16_t', 'uint32_t', 'uint64_t' ]:
             arg_type = 'int'
         elif a['sdk_type'] == 'Callable':
             # This is only used to generate the documentation file "orthanc.pyi"
@@ -288,7 +288,7 @@ def DocumentFunction(f):
         documentation['return_type'] = 'bytes'
     elif f['return_sdk_type'] in [ 'char *', 'const char *' ]:
         documentation['return_type'] = 'str'
-    elif f['return_sdk_type'] in [ 'int32_t', 'uint32_t', 'uint16_t', 'int64_t' ]:
+    elif f['return_sdk_type'] in [ 'int32_t', 'int64_t', 'uint8_t', 'uint16_t', 'uint32_t', 'uint64_t' ]:
         documentation['return_type'] = 'int'
     elif f['return_sdk_type'] == 'Dictionary':
         # This is only used to generate the documentation file "orthanc.pyi"
@@ -386,7 +386,7 @@ def FormatFunction(f, parent_class = None):
 
     if f['return_sdk_type'] == 'void':
         answer['return_void'] = True
-    elif f['return_sdk_type'] in [ 'int32_t', 'uint32_t', 'int64_t' ]:
+    elif f['return_sdk_type'] in [ 'int32_t', 'int64_t', 'uint32_t', 'uint64_t' ]:
         answer['return_long'] = True
     elif f['return_sdk_type'] == 'OrthancPluginMemoryBuffer *':
         answer['return_bytes'] = True

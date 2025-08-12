@@ -304,7 +304,12 @@ PyObject* GetKeyValue(PyObject* module, PyObject* args)
   {
     uint8_t found = 0;
     OrthancPlugins::MemoryBuffer buffer;
-    OrthancPluginErrorCode code = OrthancPluginGetKeyValue(OrthancPlugins::GetGlobalContext(), &found, *buffer, storeId, key);
+    OrthancPluginErrorCode code;
+
+    {
+      PythonThreadsAllower allower;
+      code = OrthancPluginGetKeyValue(OrthancPlugins::GetGlobalContext(), &found, *buffer, storeId, key);
+    }
 
     if (code == OrthancPluginErrorCode_Success)
     {
@@ -316,6 +321,88 @@ PyObject* GetKeyValue(PyObject* module, PyObject* args)
       {
         return Py_None;
       }
+    }
+    else
+    {
+      PyErr_SetString(PyExc_TypeError, OrthancPluginGetErrorDescription(OrthancPlugins::GetGlobalContext(), code));
+      return NULL;
+    }
+  }
+}
+#endif
+
+
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 8)
+PyObject* DequeueValue(PyObject* module, PyObject* args)
+{
+  // The GIL is locked at this point (no need to create "PythonLock")
+
+  const char* queueId = NULL;
+  unsigned long origin = 0;
+
+  if (!PyArg_ParseTuple(args, "sl", &queueId, &origin))
+  {
+    PyErr_SetString(PyExc_TypeError, "Bad arguments");
+    return NULL;
+  }
+  else
+  {
+    uint8_t found = 0;
+    OrthancPlugins::MemoryBuffer buffer;
+    OrthancPluginErrorCode code;
+
+    {
+      PythonThreadsAllower allower;
+      code = OrthancPluginDequeueValue(OrthancPlugins::GetGlobalContext(), &found, *buffer, queueId,
+                                       static_cast<OrthancPluginQueueOrigin>(origin));
+    }
+
+    if (code == OrthancPluginErrorCode_Success)
+    {
+      if (found)
+      {
+        return PyBytes_FromStringAndSize(reinterpret_cast<const char*>(buffer.GetData()), buffer.GetSize());
+      }
+      else
+      {
+        return Py_None;
+      }
+    }
+    else
+    {
+      PyErr_SetString(PyExc_TypeError, OrthancPluginGetErrorDescription(OrthancPlugins::GetGlobalContext(), code));
+      return NULL;
+    }
+  }
+}
+#endif
+
+
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 8)
+PyObject* GetQueueSize(PyObject* module, PyObject* args)
+{
+  // The GIL is locked at this point (no need to create "PythonLock")
+
+  const char* queueId = NULL;
+
+  if (!PyArg_ParseTuple(args, "s", &queueId))
+  {
+    PyErr_SetString(PyExc_TypeError, "Bad arguments");
+    return NULL;
+  }
+  else
+  {
+    uint64_t size = 0;
+    OrthancPluginErrorCode code;
+
+    {
+      PythonThreadsAllower allower;
+      code = OrthancPluginGetQueueSize(OrthancPlugins::GetGlobalContext(), queueId, &size);
+    }
+
+    if (code == OrthancPluginErrorCode_Success)
+    {
+      return PyLong_FromLong(size);
     }
     else
     {
@@ -340,7 +427,12 @@ PyObject* KeysValuesIteratorNext(sdk_OrthancPluginKeysValuesIterator_Object* sel
   else
   {
     uint8_t done;
-    OrthancPluginErrorCode code = OrthancPluginKeysValuesIteratorNext(OrthancPlugins::GetGlobalContext(), &done, self->object_);
+    OrthancPluginErrorCode code;
+
+    {
+      PythonThreadsAllower allower;
+      code = OrthancPluginKeysValuesIteratorNext(OrthancPlugins::GetGlobalContext(), &done, self->object_);
+    }
 
     if (code == OrthancPluginErrorCode_Success)
     {
