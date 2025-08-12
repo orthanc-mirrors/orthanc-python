@@ -3,10 +3,11 @@ Pending changes in the mainline
 
 => Minimum SDK version: 1.12.9 <=
 
-* Added Windows builder for Python 3.13
 * New methods imported from SDK 1.12.9 (TODO: sync again once released)
   - AuditLog()
   - SetStableStatus()
+* Added Windows builder for Python 3.13
+* Added Docker-based builder scripts for Debian 13 (trixie)
 
 
 Version 5.0 (2025-01-22)

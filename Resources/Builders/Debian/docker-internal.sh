@@ -37,6 +37,11 @@ GROUP_ID=$5
 groupadd -g ${GROUP_ID} -r orthanc
 useradd -u ${USER_ID} -r -g orthanc orthanc
 
+# This line is needed since the release of Debian 13 (trixie)
+if [ "${DEBIAN_VERSION}" = "buster" ]; then
+    sed -i s/deb.debian.org/archive.debian.org/g /etc/apt/sources.list
+fi
+
 if [ "${DEBIAN_VERSION}" = "bullseye" ]; then
     MERCURIAL_PACKAGES=python
 else
