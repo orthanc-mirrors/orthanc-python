@@ -398,7 +398,8 @@
         "sdk_enumeration" : "OrthancPluginStableStatus"
       }
     ],
-    "return_sdk_type" : "Tuple"
+    "return_sdk_type" : "Tuple",
+    "since_sdk" : [ 1, 12, 9 ]
   }
 
 ]

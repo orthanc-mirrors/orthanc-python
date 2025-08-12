@@ -286,6 +286,8 @@ PyObject* CreateImageFromBuffer(PyObject* module, PyObject* args)
   }
 }
 
+
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 9)
 PyObject* SetStableStatus(PyObject* module, PyObject* args)
 {
   const char* resourceId = NULL;
@@ -329,6 +331,7 @@ PyObject* SetStableStatus(PyObject* module, PyObject* args)
     }
   }
 }
+#endif
 
 
 static bool pythonEnabled_ = false;

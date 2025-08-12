@@ -43,6 +43,29 @@ with open(os.path.join(os.path.dirname(__file__), '..', 'OrthancSDKVersion.cmake
     assert(m != None)
     PLUGIN_SDK_VERSION = m.group(1)
 
+    s = PLUGIN_SDK_VERSION.split('.')
+    assert(len(s) == 3)
+    PLUGIN_SDK_VERSION_PARSED = [ int(s[0]), int(s[1]), int(s[2]) ]
+
+
+def IsPrimitiveAvailable(item):
+    since_sdk = item.get('since_sdk')
+    if since_sdk != None:
+        assert(len(since_sdk) == 3)
+        assert(len(PLUGIN_SDK_VERSION_PARSED) == 3)
+        if since_sdk[0] < PLUGIN_SDK_VERSION_PARSED[0]:
+            return True
+        elif since_sdk[0] > PLUGIN_SDK_VERSION_PARSED[0]:
+            return False
+        elif since_sdk[1] < PLUGIN_SDK_VERSION_PARSED[1]:
+            return True
+        elif since_sdk[1] > PLUGIN_SDK_VERSION_PARSED[1]:
+            return False
+        else:
+            return since_sdk[2] <= PLUGIN_SDK_VERSION_PARSED[2]
+    else:
+        return True
+
 
 ##
 ## Parse the command-line arguments
@@ -352,13 +375,15 @@ globalFunctions = []
 customFunctions = []
 
 for f in model['global_functions']:
-    g = FormatFunction(f)
-    if g != None:
-        globalFunctions.append(g)
+    if IsPrimitiveAvailable(f):
+        g = FormatFunction(f)
+        if g != None:
+            globalFunctions.append(g)
 
 for f in CUSTOM_FUNCTIONS:
-    f['documentation'] = DocumentFunction(f)
-    customFunctions.append(f)
+    if IsPrimitiveAvailable(f):
+        f['documentation'] = DocumentFunction(f)
+        customFunctions.append(f)
 
 
 enumerations = []
@@ -367,13 +392,17 @@ with open(os.path.join(ROOT, 'Enumeration.mustache'), 'r') as f:
     ENUMERATION_TEMPLATE = f.read()
 
 for e in model['enumerations']:
+    if not IsPrimitiveAvailable(e):
+        continue
+
     values = []
     for value in e['values']:
-        values.append({
-            'key' : ToUpperCase(value['key']),
-            'value' : value['value'],
-            'documentation' : value['documentation'],
-        })
+        if IsPrimitiveAvailable(value):
+            values.append({
+                'key' : ToUpperCase(value['key']),
+                'value' : value['value'],
+                'documentation' : value['documentation'],
+            })
 
     enumerations.append({
         'name' : e['name'],
@@ -398,6 +427,9 @@ classes = []
 countDestructors = 0
 
 for c in model['classes']:
+    if not IsPrimitiveAvailable(c):
+        continue
+
     methods = []
 
     for m in c['methods']:
@@ -410,9 +442,10 @@ for c in model['classes']:
 
     if c['name'] in CUSTOM_METHODS:
         for custom_method in CUSTOM_METHODS[c['name']]:
-            custom_method['self'] = True   # Indicates that this is a method
-            custom_method['documentation'] = DocumentFunction(custom_method)
-            custom_methods.append(custom_method)
+            if IsPrimitiveAvailable(custom_method):
+                custom_method['self'] = True   # Indicates that this is a method
+                custom_method['documentation'] = DocumentFunction(custom_method)
+                custom_methods.append(custom_method)
 
     classes.append({
         'description' : classes_description[c['name']],

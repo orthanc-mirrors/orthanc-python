@@ -42,7 +42,6 @@ extern PyObject *RegisterRestCallback(PyObject* module, PyObject *args);
 extern PyObject *RegisterStorageArea(PyObject* module, PyObject *args);
 extern PyObject *RegisterStorageCommitmentScpCallback(PyObject* module, PyObject *args);
 extern PyObject *RegisterWorklistCallback(PyObject* module, PyObject *args);
-extern PyObject *SetStableStatus(PyObject* module, PyObject *args);
 // End of forward declarations
 
 
@@ -2262,8 +2261,6 @@ static PyMethodDef ORTHANC_SDK_FUNCTIONS[] =
     "Implemented in C++ function RegisterStorageCommitmentScpCallback()" },
   { "RegisterWorklistCallback", RegisterWorklistCallback, METH_VARARGS,
     "Implemented in C++ function RegisterWorklistCallback()" },
-  { "SetStableStatus", SetStableStatus, METH_VARARGS,
-    "Implemented in C++ function SetStableStatus()" },
   { NULL, NULL }
 };
 

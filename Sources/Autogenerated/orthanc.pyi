@@ -2577,20 +2577,6 @@ def RegisterWorklistCallback(callback: WorklistCallback) -> None:
     """
     ...
 
-# Change the Stable status of a resource
-def SetStableStatus(resource_id: str, stable_status: StableStatus) -> tuple:
-    """
-    Change the Stable status of a resource
-
-    Args:
-      resource_id (str): The id of the resource.
-      stable_status (StableStatus): The new stable status: 0 for Stable, 1 for Unstable.
-
-    Returns:
-      tuple: A tuple with (The error code, An integer indicating wheter the status has changed (1) or not (0) during the execution of this command).
-    """
-    ...
-
 
 class DicomInstance:
     """
