@@ -145,7 +145,7 @@ static PyObject *sdk_OrthancPluginImage_OrthancPluginConvertPixelFormat(
   if (obj == NULL)
   {
     PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
-    return NULL;  
+    return NULL;
   }
   else
   {

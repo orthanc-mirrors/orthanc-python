@@ -370,7 +370,7 @@ static PyObject* sdk_OrthancPluginCreateDicomInstance(PyObject* module, PyObject
   if (obj == NULL)
   {
     PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
-    return NULL;  
+    return NULL;
   }
   else
   {
@@ -403,7 +403,7 @@ static PyObject* sdk_OrthancPluginCreateFindMatcher(PyObject* module, PyObject* 
   if (obj == NULL)
   {
     PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
-    return NULL;  
+    return NULL;
   }
   else
   {
@@ -438,7 +438,7 @@ static PyObject* sdk_OrthancPluginCreateImage(PyObject* module, PyObject* args)
   if (obj == NULL)
   {
     PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
-    return NULL;  
+    return NULL;
   }
   else
   {
@@ -472,7 +472,7 @@ static PyObject* sdk_OrthancPluginDecodeDicomImage(PyObject* module, PyObject* a
   if (obj == NULL)
   {
     PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
-    return NULL;  
+    return NULL;
   }
   else
   {
@@ -982,7 +982,7 @@ static PyObject* sdk_OrthancPluginGetPeers(PyObject* module, PyObject* args)
   if (obj == NULL)
   {
     PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
-    return NULL;  
+    return NULL;
   }
   else
   {
@@ -1178,7 +1178,7 @@ static PyObject* sdk_OrthancPluginLoadDicomInstance(PyObject* module, PyObject* 
   if (obj == NULL)
   {
     PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
-    return NULL;  
+    return NULL;
   }
   else
   {
@@ -2009,7 +2009,7 @@ static PyObject* sdk_OrthancPluginTranscodeDicomInstance(PyObject* module, PyObj
   if (obj == NULL)
   {
     PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
-    return NULL;  
+    return NULL;
   }
   else
   {
@@ -2043,7 +2043,7 @@ static PyObject* sdk_OrthancPluginUncompressImage(PyObject* module, PyObject* ar
   if (obj == NULL)
   {
     PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
-    return NULL;  
+    return NULL;
   }
   else
   {

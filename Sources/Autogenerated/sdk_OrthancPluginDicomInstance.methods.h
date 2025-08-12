@@ -366,7 +366,7 @@ static PyObject *sdk_OrthancPluginDicomInstance_OrthancPluginGetInstanceDecodedF
   if (obj == NULL)
   {
     PythonLock::RaiseException(OrthancPluginErrorCode_InternalError);
-    return NULL;  
+    return NULL;
   }
   else
   {

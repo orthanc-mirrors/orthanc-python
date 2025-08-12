@@ -31,7 +31,7 @@ import typing
 
 class ChangeType():
     """
-    The supported types of changes that can be signaled to the change callback. Note: this enum is not used to store changes in the DB !
+    The supported types of changes that can be signaled to the change callback. Note: This enumeration is not used to store changes in the database!
     """
 
     """
@@ -3230,6 +3230,7 @@ class StorageArea:
     def StorageAreaCreate(self, uuid: str, content: bytes, size: int, type: ContentType) -> None:
         """
         This function creates a new file inside the storage area that is currently used by Orthanc.
+        Warning: This function will result in a "not implemented" error on versions of the Orthanc core above 1.12.6.
 
         Args:
           uuid (str): The identifier of the file to be created.
@@ -3243,6 +3244,7 @@ class StorageArea:
     def StorageAreaRead(self, uuid: str, type: ContentType) -> bytes:
         """
         This function reads the content of a given file from the storage area that is currently used by Orthanc.
+        Warning: This function will result in a "not implemented" error on versions of the Orthanc core above 1.12.6.
 
         Args:
           uuid (str): The identifier of the file to be read.
@@ -3257,6 +3259,7 @@ class StorageArea:
     def StorageAreaRemove(self, uuid: str, type: ContentType) -> None:
         """
         This function removes a given file from the storage area that is currently used by Orthanc.
+        Warning: This function will result in a "not implemented" error on versions of the Orthanc core above 1.12.6.
 
         Args:
           uuid (str): The identifier of the file to be removed.
