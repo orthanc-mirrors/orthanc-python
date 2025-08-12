@@ -39,7 +39,7 @@ ROOT = os.path.dirname(os.path.realpath(__file__))
 ##
 
 with open(os.path.join(ROOT, '..', 'CMakeLists.txt'), 'r') as f:
-    m = re.findall('^set\(ORTHANC_SDK_DEFAULT_VERSION "([^"]+)"\)$', f.read(), re.MULTILINE)
+    m = re.findall(r'^set\(ORTHANC_SDK_DEFAULT_VERSION "([^"]+)"\)$', f.read(), re.MULTILINE)
     assert(len(m) == 1)
     ORTHANC_SDK_DEFAULT_VERSION = m[0]
 
