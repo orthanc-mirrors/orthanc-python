@@ -1,1 +1,0 @@
-set(ORTHANC_SDK_VERSION "1.12.6")

@@ -70,7 +70,6 @@ fi
 mkdir /tmp/source-writeable
 
 cp /source/CMakeLists.txt /tmp/source-writeable/
-cp /source/OrthancSDKVersion.cmake /tmp/source-writeable/
 
 cp -r /source/CodeAnalysis /tmp/source-writeable/
 cp -r /source/Resources /tmp/source-writeable/
