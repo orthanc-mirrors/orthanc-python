@@ -65,9 +65,6 @@ set(ORTHANC_FRAMEWORK_VERSION "${ORTHANC_FRAMEWORK_DEFAULT_VERSION}" CACHE STRIN
 set(ORTHANC_FRAMEWORK_ARCHIVE "" CACHE STRING "Path to the Orthanc archive, if ORTHANC_FRAMEWORK_SOURCE is \"archive\"")
 set(ORTHANC_FRAMEWORK_ROOT "" CACHE STRING "Path to the Orthanc source directory, if ORTHANC_FRAMEWORK_SOURCE is \"path\"")
 
-# Advanced parameters to fine-tune linking against system libraries
-set(USE_SYSTEM_ORTHANC_SDK ON CACHE BOOL "Use the system-wide version of the Orthanc plugin SDK")
-
 # Generate the documentation about the "ORTHANC_SDK_VERSION" option
 set(tmp "Version of the Orthanc plugin SDK to use, if not using the system version (can be")
 foreach(version IN LISTS ORTHANC_SDK_AVAILABLE_VERSIONS)
@@ -75,6 +72,7 @@ foreach(version IN LISTS ORTHANC_SDK_AVAILABLE_VERSIONS)
 endforeach()
 set(tmp "${tmp} \"framework\", or \"path\")")
 
+set(USE_SYSTEM_ORTHANC_SDK ON CACHE BOOL "Use the system-wide version of the Orthanc plugin SDK")
 set(ORTHANC_SDK_VERSION "${ORTHANC_SDK_DEFAULT_VERSION}" CACHE STRING "${tmp}")
 set(ORTHANC_SDK_PATH "" CACHE STRING "Path to the orthanc/OrthancCPlugin.h file, if ORTHANC_SDK_VERSION is set to \"path\"")
 

@@ -31,9 +31,6 @@
 
 import multiprocessing
 import os
-import re
-import stat
-import subprocess
 import urllib.request
 
 TARGET = os.path.join(os.path.dirname(__file__), 'Orthanc')

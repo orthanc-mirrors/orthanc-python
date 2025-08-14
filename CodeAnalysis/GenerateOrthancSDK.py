@@ -116,6 +116,7 @@ def IsPrimitiveAvailable(item, key_prefix = ''):
                 key = item.get('key')
                 if key != None:
                     name = '%s_%s' % (key_prefix, key)
+            assert(name != None)
             print('Primitive unavailable in SDK: %s (only available since %s)' % (name, '.'.join(map(str, since_sdk))))
 
         return available
