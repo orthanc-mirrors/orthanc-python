@@ -22,7 +22,11 @@
         "callable_protocol_return" : "None"
       }
     ],
-    "return_sdk_type" : "void"
+    "return_sdk_type" : "void",
+    "sdk_functions" : [
+      "OrthancPluginRegisterRestCallback",
+      "OrthancPluginRegisterRestCallbackNoLock"
+    ]
   },
 
   {
@@ -43,7 +47,8 @@
         "callable_protocol_return" : "None"
       }
     ],
-    "return_sdk_type" : "void"
+    "return_sdk_type" : "void",
+    "sdk_functions" : [ "OrthancPluginRegisterOnChangeCallback" ]
   },
 
   {
@@ -64,7 +69,8 @@
         "callable_protocol_return" : "None"
       }
     ],
-    "return_sdk_type" : "void"
+    "return_sdk_type" : "void",
+    "sdk_functions" : [ "OrthancPluginRegisterOnStoredInstanceCallback" ]
   },
 
   {
@@ -86,7 +92,11 @@
         "callable_protocol_return" : "bool"
       }
     ],
-    "return_sdk_type" : "void"
+    "return_sdk_type" : "void",
+    "sdk_functions" : [
+      "OrthancPluginRegisterIncomingHttpRequestFilter",
+      "OrthancPluginRegisterIncomingHttpRequestFilter2"
+    ]
   },
 
   {
@@ -106,7 +116,8 @@
         "sdk_type" : "const char *"
       }
     ],
-    "return_sdk_type" : "Dictionary"
+    "return_sdk_type" : "Dictionary",
+    "sdk_functions" : [ "OrthancPluginLookupDictionary" ]
   },
 
   {
@@ -148,7 +159,8 @@
       }
     ],
     "return_sdk_type" : "object",
-    "return_sdk_class" : "OrthancPluginImage"
+    "return_sdk_class" : "OrthancPluginImage",
+    "sdk_functions" : [ "OrthancPluginCreateImageAccessor" ]
   },
 
   {
@@ -170,7 +182,8 @@
         "callable_protocol_return" : "None"
       }
     ],
-    "return_sdk_type" : "void"
+    "return_sdk_type" : "void",
+    "sdk_functions" : [ "OrthancPluginRegisterFindCallback" ]
   },
 
   {
@@ -192,7 +205,8 @@
         "callable_protocol_return" : "None"
       }
     ],
-    "return_sdk_type" : "void"
+    "return_sdk_type" : "void",
+    "sdk_functions" : [ "OrthancPluginRegisterMoveCallback" ]
   },
 
   {
@@ -260,7 +274,8 @@
         "callable_protocol_return" : "None"
       }
     ],
-    "return_sdk_type" : "void"
+    "return_sdk_type" : "void",
+    "sdk_functions" : [ "OrthancPluginRegisterWorklistCallback" ]
   },
 
   {
@@ -298,7 +313,8 @@
         "callable_protocol_return" : "None"
       }
     ],
-    "return_sdk_type" : "void"
+    "return_sdk_type" : "void",
+    "sdk_functions" : [ "OrthancPluginRegisterStorageArea" ]
   },
 
   {
@@ -320,7 +336,8 @@
         "callable_protocol_return" : "int"
       }
     ],
-    "return_sdk_type" : "void"
+    "return_sdk_type" : "void",
+    "sdk_functions" : [ "OrthancPluginRegisterIncomingCStoreInstanceFilter" ]
   },
 
   {
@@ -342,7 +359,8 @@
         "callable_protocol_return" : "tuple[ReceivedInstanceAction, bytes]"
       }
     ],
-    "return_sdk_type" : "void"
+    "return_sdk_type" : "void",
+    "sdk_functions" : [ "OrthancPluginRegisterReceivedInstanceCallback" ]
   },
 
   {
@@ -372,7 +390,8 @@
         "callable_protocol_return" : "StorageCommitmentFailureReason"
       }
     ],
-    "return_sdk_type" : "void"
+    "return_sdk_type" : "void",
+    "sdk_functions" : [ "OrthancPluginRegisterStorageCommitmentScpCallback" ]
   },
 
   {
@@ -398,7 +417,8 @@
       }
     ],
     "return_sdk_type" : "OrthancPluginMemoryBuffer *",
-    "since_sdk" : [ 1, 12, 8 ]
+    "since_sdk" : [ 1, 12, 8 ],
+    "sdk_functions" : [ "OrthancPluginGetKeyValue" ]
   },
 
   {
@@ -425,7 +445,8 @@
       }
     ],
     "return_sdk_type" : "OrthancPluginMemoryBuffer *",
-    "since_sdk" : [ 1, 12, 8 ]
+    "since_sdk" : [ 1, 12, 8 ],
+    "sdk_functions" : [ "OrthancPluginDequeueValue" ]
   },
 
   {
@@ -446,7 +467,8 @@
       }
     ],
     "return_sdk_type" : "uint64_t",
-    "since_sdk" : [ 1, 12, 8 ]
+    "since_sdk" : [ 1, 12, 8 ],
+    "sdk_functions" : [ "OrthancPluginGetQueueSize" ]
   },
 
   {
@@ -473,7 +495,8 @@
       }
     ],
     "return_sdk_type" : "Tuple",
-    "since_sdk" : [ 1, 12, 9 ]
+    "since_sdk" : [ 1, 12, 9 ],
+    "sdk_functions" : [ "OrthancPluginSetStableStatus" ]
   }
 
 ]

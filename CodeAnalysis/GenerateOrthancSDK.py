@@ -420,6 +420,7 @@ def FormatFunction(f, parent_class = None):
 
 globalFunctions = []
 customFunctions = []
+unwrappedFunctions = model.get('unwrapped_functions', [])
 
 for f in model['global_functions']:
     if IsPrimitiveAvailable(f):
@@ -428,6 +429,10 @@ for f in model['global_functions']:
             globalFunctions.append(g)
 
 for f in CUSTOM_FUNCTIONS:
+    for sdk in f.get('sdk_functions', []):
+        if sdk in unwrappedFunctions:
+            unwrappedFunctions.remove(sdk)
+
     if IsPrimitiveAvailable(f):
         f['documentation'] = DocumentFunction(f)
         customFunctions.append(f)
@@ -490,6 +495,10 @@ for c in model['classes']:
 
     if c['name'] in CUSTOM_METHODS:
         for custom_method in CUSTOM_METHODS[c['name']]:
+            for sdk in custom_method.get('sdk_functions', []):
+                if sdk in unwrappedFunctions:
+                    unwrappedFunctions.remove(sdk)
+
             if IsPrimitiveAvailable(custom_method):
                 custom_method['self'] = True   # Indicates that this is a method
                 custom_method['documentation'] = DocumentFunction(custom_method)
@@ -582,3 +591,8 @@ print('Number of manually implemented (custom) methods: %d' % countCustomMethods
 
 total = totalWrapped + len(sortedCustomFunctions) + countCustomMethods
 print('=> Total number of functions or methods in the Python wrapper: %d\n' % total)
+
+print('Functions in the latest Orthanc SDK that are not wrapped yet:')
+for f in unwrappedFunctions:
+    print('- %s()' % f)
+print('')

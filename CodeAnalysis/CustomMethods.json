@@ -16,7 +16,8 @@
           "sdk_type" : "uint32_t"
         }
       ],
-      "return_sdk_type" : "uint16_t"
+      "return_sdk_type" : "uint16_t",
+      "sdk_functions" : [ "OrthancPluginGetFindQueryTag" ]
     },
 
     {
@@ -49,7 +50,8 @@
       },
       "args" : [
       ],
-      "return_sdk_type" : "OrthancPluginMemoryBuffer *"
+      "return_sdk_type" : "OrthancPluginMemoryBuffer *",
+      "sdk_functions" : [ "OrthancPluginGetInstanceData" ]
     }
   ],
 
@@ -63,7 +65,8 @@
       },
       "args" : [
       ],
-      "return_sdk_type" : "OrthancPluginMemoryBuffer *"
+      "return_sdk_type" : "OrthancPluginMemoryBuffer *",
+      "sdk_functions" : [ "OrthancPluginGetImageBuffer" ]
     }
   ],
 
@@ -77,7 +80,8 @@
       },
       "args" : [
       ],
-      "return_sdk_type" : "bool"
+      "return_sdk_type" : "bool",
+      "sdk_functions" : [ "OrthancPluginKeysValuesIteratorNext" ]
     }
   ]
 }
