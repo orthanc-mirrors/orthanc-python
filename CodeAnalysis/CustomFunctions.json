@@ -481,7 +481,7 @@
         "resourceId" : "The identifier of the resource.",
         "stableStatus" : "The new stable status: 0 for Stable, 1 for Unstable."
       },
-      "return" : "A tuple with (The error code, An integer indicating wheter the status has changed (1) or not (0) during the execution of this command)."
+      "return" : "A tuple with (The error code, An integer indicating whether the status has changed (1) or not (0) during the execution of this command)."
     },
     "args" : [
       {
