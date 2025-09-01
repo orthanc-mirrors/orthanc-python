@@ -1,14 +1,13 @@
 cff-version: "1.1.0"
 message: "If you use this software, please cite it using these metadata."
-title: Orthanc
-abstract: "Orthanc is a lightweight open-source DICOM server for medical imaging supporting representational state transfer (REST)."
+title: "Combining Languages to Set a PACS on FHIR"
 authors:
   -
     affiliation: UCLouvain
     family-names: Jodogne
     given-names: "Sébastien"
-doi: "10.1007/s10278-018-0082-y"
-license: "GPL-3.0-or-later"
-repository-code: "https://orthanc.uclouvain.be/hg/orthanc/"
-version: 1.12.9
-date-released: 2025-08-11
+doi: "10.1007/978-3-031-96899-0_18"
+license: "AGPL-3.0-or-later"
+repository-code: "https://orthanc.uclouvain.be/hg/orthanc-python/"
+version: "6.0"
+date-released: 2025-08-12
