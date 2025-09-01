@@ -84,7 +84,6 @@ set(ORTHANC_SDK_PATH "" CACHE STRING "Path to the orthanc/OrthancCPlugin.h file,
 include(${CMAKE_SOURCE_DIR}/Resources/Orthanc/CMake/DownloadOrthancFramework.cmake)
 
 if (ORTHANC_FRAMEWORK_SOURCE STREQUAL "system")
-  include(FindBoost)
   find_package(Boost COMPONENTS filesystem regex thread)
 
   if (NOT Boost_FOUND)
