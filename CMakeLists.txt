@@ -356,8 +356,3 @@ install(
   RUNTIME DESTINATION lib    # Destination for Windows
   LIBRARY DESTINATION share/orthanc/plugins    # Destination for Linux
   )
-
-install(
-  FILES ${CMAKE_CURRENT_BINARY_DIR}/orthanc.pyi
-  DESTINATION .
-  )

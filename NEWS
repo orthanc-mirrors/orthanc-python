@@ -1,6 +1,8 @@
 Pending changes in the mainline
 ===============================
 
+* The "orthanc.pyi" stub is now excluded from the "install" step during the build
+
 
 Version 6.0 (2025-08-12)
 ========================
