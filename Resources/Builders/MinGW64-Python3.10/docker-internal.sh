@@ -63,3 +63,5 @@ if [ "$1" == "Release" ]; then
 fi
 
 make install
+
+cp ./orthanc.pyi /target

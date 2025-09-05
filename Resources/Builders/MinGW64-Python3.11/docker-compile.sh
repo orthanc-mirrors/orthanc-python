@@ -46,6 +46,7 @@ mkdir -p ${ROOT_DIR}/docker-build/
                -t mingw-python-build . )
 
 docker run -t ${DOCKER_FLAGS} --rm \
+    --network=host \
     --user $(id -u):$(id -g) \
     -v ${ROOT_DIR}:/source:ro \
     -v ${ROOT_DIR}/docker-build:/target:rw \

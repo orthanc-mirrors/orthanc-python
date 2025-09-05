@@ -96,3 +96,5 @@ fi
 # files owned by the "root" user on the host filesystem.
 su -c "cp /tmp/build/libOrthancPython.so /target" orthanc
 su -c "cp /tmp/build/orthanc.pyi /target" orthanc
+
+cp ./orthanc.pyi /target
