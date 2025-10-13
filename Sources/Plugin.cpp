@@ -378,6 +378,59 @@ PyObject* DequeueValue(PyObject* module, PyObject* args)
 #endif
 
 
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 10)
+PyObject* ReserveQueueValue(PyObject* module, PyObject* args)
+{
+  // The GIL is locked at this point (no need to create "PythonLock")
+  const char* queueId = NULL;
+  unsigned long origin = 0;
+  unsigned long releaseTimeout = 0;
+
+  if (!PyArg_ParseTuple(args, "slk", &queueId, &origin, &releaseTimeout))
+  {
+    PyErr_SetString(PyExc_TypeError, "Bad arguments");
+    return NULL;
+  }
+  else
+  {
+    uint8_t found = 0;
+    OrthancPlugins::MemoryBuffer buffer;
+    uint64_t valueId;
+    OrthancPluginErrorCode code;
+
+    {
+      PythonThreadsAllower allower;
+      code = OrthancPluginReserveQueueValue(OrthancPlugins::GetGlobalContext(), &found, *buffer, &valueId, queueId,
+                                            static_cast<OrthancPluginQueueOrigin>(origin), releaseTimeout);
+    }
+
+    if (code == OrthancPluginErrorCode_Success)
+    {
+      PythonLock lock;
+      PythonObject tuple(lock, PyTuple_New(2));
+
+      if (found)
+      {
+        PyTuple_SetItem(tuple.GetPyObject(), 0, PyBytes_FromStringAndSize(reinterpret_cast<const char*>(buffer.GetData()), buffer.GetSize()));
+        PyTuple_SetItem(tuple.GetPyObject(), 1, PyLong_FromUnsignedLongLong(static_cast<long long>(valueId)));
+      }
+      else
+      {
+        PyTuple_SetItem(tuple.GetPyObject(), 0, Py_None);
+        PyTuple_SetItem(tuple.GetPyObject(), 1, Py_None);
+      }
+      return tuple.Release();
+    }
+    else
+    {
+      PyErr_SetString(PyExc_TypeError, OrthancPluginGetErrorDescription(OrthancPlugins::GetGlobalContext(), code));
+      return NULL;
+    }
+  }
+}
+#endif
+
+
 #if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 8)
 PyObject* GetQueueSize(PyObject* module, PyObject* args)
 {

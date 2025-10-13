@@ -450,6 +450,40 @@
   },
 
   {
+    "comment" : "New in release 7.0",
+    "short_name" : "ReserveQueueValue",
+    "implementation" : "ReserveQueueValue",
+    "documentation" : {
+      "description" : [ "Reserve a value from a queue." ],
+      "args" : {
+        "queueId" : "The identifier of the queue.",
+        "origin" : "The position from where the value is reserved (back for LIFO, front for FIFO).",
+        "releaseTimeout": "The duration (in seconds) after which the value is released if not acknowledged."
+      },
+      "return" : "A tuple with (The value, or None if no more value is available + a value id that can be used to acknowledge the value)."
+
+    },
+    "args" : [
+      {
+        "sdk_name" : "queueId",
+        "sdk_type" : "const char *"
+      },
+      {
+        "sdk_name" : "origin",
+        "sdk_type" : "enumeration",
+        "sdk_enumeration" : "OrthancPluginQueueOrigin"
+      },
+      {
+        "sdk_name" : "releaseTimeout",
+        "sdk_type" : "uint32_t"
+      }
+    ],
+    "return_sdk_type" : "Tuple",
+    "since_sdk" : [ 1, 12, 10 ],
+    "sdk_functions" : [ "OrthancPluginReserveQueueValue" ]
+  },
+
+  {
     "comment" : "New in release 6.0",
     "short_name" : "GetQueueSize",
     "implementation" : "GetQueueSize",

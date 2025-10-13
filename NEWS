@@ -1,6 +1,8 @@
 Pending changes in the mainline
 ===============================
 
+TODO before release: update to SDK 1.12.10
+
 * The "orthanc.pyi" stub is now excluded from the "install" step during the build
 
 
