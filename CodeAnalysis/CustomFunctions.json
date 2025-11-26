@@ -187,6 +187,29 @@
   },
 
   {
+    "comment" : "New in release 7.0",
+    "short_name" : "RegisterFindCallback2",
+    "implementation" : "RegisterFindCallback2",
+    "documentation" : {
+      "description" : [ "Register a callback to handle C-Find requests (v2)." ],
+      "args" : {
+        "callback" : "The callback function."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "callback",
+        "sdk_type" : "Callable",
+        "callable_type" : "FindCallback2",
+        "callable_protocol_args" : "answers: FindAnswers, query: FindQuery, connection: DicomConnection",
+        "callable_protocol_return" : "None"
+      }
+    ],
+    "return_sdk_type" : "void",
+    "sdk_functions" : [ "OrthancPluginRegisterFindCallback" ]
+  },
+
+  {
     "comment" : "New in release 3.2",
     "short_name" : "RegisterMoveCallback",
     "implementation" : "RegisterMoveCallback",
@@ -210,11 +233,11 @@
   },
 
   {
-    "comment" : "New in release 3.2",
+    "comment" : "New in release 4.2",
     "short_name" : "RegisterMoveCallback2",
     "implementation" : "RegisterMoveCallback2",
     "documentation" : {
-      "description" : [ "Register a callback to handle C-Move requests (full version, with multiple suboperations)." ],
+      "description" : [ "Register a callback to handle C-Move requests (full version, with multiple suboperations.  Equivalent to the OrthancPluginRegisterMoveCallback from the C SDK)." ],
       "args" : {
         "callback" : "Main callback that creates the C-Move driver.",
         "get_move_size" : "Callback to read the number of C-Move suboperations.",
@@ -228,6 +251,52 @@
         "sdk_type" : "Callable",
         "callable_type" : "MoveCallback2",
         "callable_protocol_args" : "Level: str, PatientID: str, AccessionNumber: str, StudyInstanceUID: str, SeriesInstanceUID: str, SOPInstanceUID: str, OriginatorAET: str, SourceAET: str, TargetAET: str, OriginatorID: int",
+        "callable_protocol_return" : "object",  "comment" : "This is the newly created C-Move driver."
+      },
+      {
+        "sdk_name" : "get_move_size",
+        "sdk_type" : "Callable",
+        "callable_type" : "GetMoveSizeCallback",
+        "callable_protocol_args" : "driver: object",
+        "callable_protocol_return" : "int"
+      },
+      {
+        "sdk_name" : "apply_move",
+        "sdk_type" : "Callable",
+        "callable_type" : "ApplyMoveCallback",
+        "callable_protocol_args" : "driver: object",
+        "callable_protocol_return" : "None"
+      },
+      {
+        "sdk_name" : "free_move",
+        "sdk_type" : "Callable",
+        "callable_type" : "FreeMoveCallback",
+        "callable_protocol_args" : "driver: object",
+        "callable_protocol_return" : "None"
+      }
+    ],
+    "return_sdk_type" : "void"
+  },
+
+  {
+    "comment" : "New in release 7.0",
+    "short_name" : "RegisterMoveCallback3",
+    "implementation" : "RegisterMoveCallback3",
+    "documentation" : {
+      "description" : [ "Register a callback to handle C-Move requests (full version, with multiple suboperations.  Equivalent to the OrthancPluginRegisterMoveCallbeck2 from the C SDK)." ],
+      "args" : {
+        "callback" : "Main callback that creates the C-Move driver.",
+        "get_move_size" : "Callback to read the number of C-Move suboperations.",
+        "apply_move" : "Callback to apply one C-Move suboperation.",
+        "free_move" : "Callback to free the C-Move driver."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "callback",
+        "sdk_type" : "Callable",
+        "callable_type" : "MoveCallback3",
+        "callable_protocol_args" : "Connection: DicomConnection, Level: str, PatientID: str, AccessionNumber: str, StudyInstanceUID: str, SeriesInstanceUID: str, SOPInstanceUID: str, TargetAET: str, OriginatorID: int",
         "callable_protocol_return" : "object",  "comment" : "This is the newly created C-Move driver."
       },
       {

@@ -36,6 +36,7 @@
 
 
 static PyObject* findScpCallback_ = NULL;
+static PyObject* findScpCallback2_ = NULL;
 static PyObject* moveScpCallback_ = NULL;
 static PyObject* worklistScpCallback_ = NULL;
 
@@ -44,6 +45,9 @@ static PyObject* createMoveScpDriverCallback_ = NULL;
 static PyObject* getMoveSizeCallback_ = NULL;
 static PyObject* applyMoveCallback_ = NULL;
 static PyObject* freeMoveCallback_ = NULL;
+
+// version 3 of Python Move callbacks (version 2 in the C SDK)
+static PyObject* createMoveScpDriverCallback2_ = NULL;
 
 
 static PyObject *GetFindQueryTag(sdk_OrthancPluginFindQuery_Object* self,
@@ -142,6 +146,55 @@ static OrthancPluginErrorCode FindCallback(OrthancPluginFindAnswers *answers,
   }
 }
 
+
+static OrthancPluginErrorCode FindCallback2(OrthancPluginFindAnswers *answers,
+                                            const OrthancPluginFindQuery *query,
+                                            const OrthancPluginDicomConnection* connection)
+{
+  try
+  {
+    PythonLock lock;
+
+    PyObject *pAnswers, *pQuery, *pConnection;
+    
+    {
+      PythonObject args(lock, PyTuple_New(2));
+      PyTuple_SetItem(args.GetPyObject(), 0, PyLong_FromSsize_t((intptr_t) answers));
+      PyTuple_SetItem(args.GetPyObject(), 1, PyBool_FromLong(true /* borrowed, don't destruct */));
+      pAnswers = PyObject_CallObject((PyObject *) GetOrthancPluginFindAnswersType(), args.GetPyObject());
+    }
+    
+    {
+      PythonObject args(lock, PyTuple_New(2));
+      PyTuple_SetItem(args.GetPyObject(), 0, PyLong_FromSsize_t((intptr_t) query));
+      PyTuple_SetItem(args.GetPyObject(), 1, PyBool_FromLong(true /* borrowed, don't destruct */));
+      pQuery = PyObject_CallObject((PyObject *) GetOrthancPluginFindQueryType(), args.GetPyObject());
+    }
+    
+    {
+      PythonObject argsConnection(lock, PyTuple_New(2));
+      PyTuple_SetItem(argsConnection.GetPyObject(), 0, PyLong_FromSsize_t((intptr_t) connection));
+      PyTuple_SetItem(argsConnection.GetPyObject(), 1, PyBool_FromLong(true /* borrowed, don't destruct */));
+      pConnection = PyObject_CallObject((PyObject*) GetOrthancPluginDicomConnectionType(), argsConnection.GetPyObject());
+    }
+
+    {
+      PythonObject args(lock, PyTuple_New(3));
+      PyTuple_SetItem(args.GetPyObject(), 0, pAnswers);
+      PyTuple_SetItem(args.GetPyObject(), 1, pQuery);
+      PyTuple_SetItem(args.GetPyObject(), 2, pConnection);
+
+      assert(findScpCallback2_ != NULL);
+      PythonObject result(lock, PyObject_CallObject(findScpCallback2_, args.GetPyObject()));
+    }
+
+    return lock.CheckCallbackSuccess("Python C-FIND SCP callback (v2)");
+  }
+  catch (OrthancPlugins::PluginException& e)
+  {
+    return e.GetErrorCode();
+  }
+}
 
 
 class IMoveDriver : public boost::noncopyable
@@ -320,7 +373,7 @@ static void* CreateMoveCallback(OrthancPluginResourceType resourceType,
       assert(moveScpCallback_ != NULL);
       PythonObject result(lock, PyObject_Call(moveScpCallback_, args.GetPyObject(), kw.GetPyObject()));
 
-      OrthancPluginErrorCode code = lock.CheckCallbackSuccess("Python C-MOVE SCP callback");
+      OrthancPluginErrorCode code = lock.CheckCallbackSuccess("Python C-MOVE SCP callback (v1)");
       if (code != OrthancPluginErrorCode_Success)
       {
         throw OrthancPlugins::PluginException(code);
@@ -512,7 +565,157 @@ static void* CreateMoveCallback2(OrthancPluginResourceType resourceType,
     // to delete the object at the end of the move.
     PyObject* result = PyObject_Call(createMoveScpDriverCallback_, args.GetPyObject(), kw.GetPyObject());
 
-    OrthancPluginErrorCode code = lock.CheckCallbackSuccess("Python C-MOVE SCP callback (Create)");
+    OrthancPluginErrorCode code = lock.CheckCallbackSuccess("Python C-MOVE SCP callback (Create v2)");
+    if (code != OrthancPluginErrorCode_Success)
+    {
+      throw OrthancPlugins::PluginException(code);
+    }
+
+    return result;
+  }
+  catch (OrthancPlugins::PluginException& e)
+  {
+    return NULL;
+  }
+}
+
+
+static void* CreateMoveCallback3(OrthancPluginResourceType resourceType,
+                                 const char *patientId,
+                                 const char *accessionNumber,
+                                 const char *studyInstanceUid,
+                                 const char *seriesInstanceUid,
+                                 const char *sopInstanceUid,
+                                 const OrthancPluginDicomConnection* connection,
+                                 const char *targetAet,
+                                 uint16_t originatorId)
+{
+  assert(createMoveScpDriverCallback2_ != NULL);
+
+  try
+  {
+    std::string _patientId, _accessionNumber, _studyInstanceUid, _seriesInstanceUid, _sopInstanceUid, _targetAet;
+    if (patientId != NULL)
+    {
+      _patientId.assign(patientId);
+    }
+
+    if (accessionNumber != NULL)
+    {
+      _accessionNumber.assign(accessionNumber);
+    }
+    
+    if (studyInstanceUid != NULL)
+    {
+      _studyInstanceUid.assign(studyInstanceUid);
+    }
+
+    if (seriesInstanceUid != NULL)
+    {
+      _seriesInstanceUid.assign(seriesInstanceUid);
+    }
+
+    if (sopInstanceUid != NULL)
+    {
+      _sopInstanceUid.assign(sopInstanceUid);
+    }
+
+    if (targetAet != NULL)
+    {
+      _targetAet.assign(targetAet);
+    }
+
+    PythonLock lock;
+
+    PythonObject kw(lock, PyDict_New());
+
+    std::string level;
+    switch (resourceType)
+    {
+      case OrthancPluginResourceType_Patient:
+        level = "PATIENT";
+        break;
+        
+      case OrthancPluginResourceType_Study:
+        level = "STUDY";
+        break;
+        
+      case OrthancPluginResourceType_Series:
+        level = "SERIES";
+        break;
+        
+      case OrthancPluginResourceType_Instance:
+        level = "INSTANCE";
+        break;
+
+      default:
+        throw OrthancPlugins::PluginException(OrthancPluginErrorCode_ParameterOutOfRange);
+    }
+
+    {
+      PythonString tmp(lock, level);
+      PyDict_SetItemString(kw.GetPyObject(), "Level", tmp.GetPyObject());
+    }
+
+    {
+      PythonString tmp(lock, _patientId);
+      PyDict_SetItemString(kw.GetPyObject(), "PatientID", tmp.GetPyObject());
+    }
+
+    {
+      PythonString tmp(lock, _accessionNumber);
+      PyDict_SetItemString(kw.GetPyObject(), "AccessionNumber", tmp.GetPyObject());
+    }
+
+    {
+      PythonString tmp(lock, _studyInstanceUid);
+      PyDict_SetItemString(kw.GetPyObject(), "StudyInstanceUID", tmp.GetPyObject());
+    }
+
+    {
+      PythonString tmp(lock, _seriesInstanceUid);
+      PyDict_SetItemString(kw.GetPyObject(), "SeriesInstanceUID", tmp.GetPyObject());
+    }
+
+    {
+      PythonString tmp(lock, _sopInstanceUid);
+      PyDict_SetItemString(kw.GetPyObject(), "SOPInstanceUID", tmp.GetPyObject());
+    }
+
+    {
+      PythonString tmp(lock, _targetAet);
+      PyDict_SetItemString(kw.GetPyObject(), "TargetAET", tmp.GetPyObject());
+    }
+
+    {
+      PythonObject tmp(lock, PyLong_FromUnsignedLong(originatorId));
+      PyDict_SetItemString(kw.GetPyObject(), "OriginatorID", tmp.GetPyObject());
+    }
+
+    /**
+     * Construct an instance object of the "orthanc.DicomConnection"
+     * class. This is done by calling the constructor function
+     * "sdk_OrthancPluginDicomConnection_Type".
+     **/
+    PythonObject argsConnection(lock, PyTuple_New(2));
+    PyTuple_SetItem(argsConnection.GetPyObject(), 0, PyLong_FromSsize_t((intptr_t) connection));
+    PyTuple_SetItem(argsConnection.GetPyObject(), 1, PyBool_FromLong(true /* borrowed, don't destruct */));
+    PyObject *pConnection = PyObject_CallObject((PyObject*) GetOrthancPluginDicomConnectionType(), argsConnection.GetPyObject());
+    
+    /**
+     * Construct the arguments tuple (instance)
+     **/
+    PythonObject args(lock, PyTuple_New(1));
+    PyTuple_SetItem(args.GetPyObject(), 0, pConnection);
+
+
+    // Note: the result is not attached to the PythonLock because we want it to survive after this call since 
+    // the result is the python move driver that will be passed as first argument to GetMoveSize, Apply and Free.
+    // After the PyObject_Call, result's ref count is 1 -> no need to add a reference but we need to decref explicitely
+    // to delete the object at the end of the move.
+    PyObject* result = PyObject_Call(createMoveScpDriverCallback2_, args.GetPyObject(), kw.GetPyObject());
+
+    OrthancPluginErrorCode code = lock.CheckCallbackSuccess("Python C-MOVE SCP callback (Create v3)");
     if (code != OrthancPluginErrorCode_Success)
     {
       throw OrthancPlugins::PluginException(code);
@@ -659,6 +862,25 @@ PyObject* RegisterFindCallback(PyObject* module, PyObject* args)
 }
 
 
+PyObject* RegisterFindCallback2(PyObject* module, PyObject* args)
+{
+  // The GIL is locked at this point (no need to create "PythonLock")
+
+  class Registration : public ICallbackRegistration
+  {
+  public:
+    virtual void Register() ORTHANC_OVERRIDE
+    {
+      OrthancPluginRegisterFindCallback2(OrthancPlugins::GetGlobalContext(), FindCallback2);
+    }
+  };
+
+  Registration registration;
+  return ICallbackRegistration::Apply(
+    registration, args, findScpCallback2_, "Python C-FIND SCP callback (v2)");
+}
+
+
 PyObject* RegisterMoveCallback(PyObject* module, PyObject* args)
 {
   // The GIL is locked at this point (no need to create "PythonLock")
@@ -695,8 +917,29 @@ PyObject* RegisterMoveCallback2(PyObject* module, PyObject* args)
 
   Registration registration;
   return ICallbackRegistration::Apply4(
-    registration, args, createMoveScpDriverCallback_, getMoveSizeCallback_, applyMoveCallback_, freeMoveCallback_, "Python C-MOVE SCP callback (2)");
+    registration, args, createMoveScpDriverCallback_, getMoveSizeCallback_, applyMoveCallback_, freeMoveCallback_, "Python C-MOVE SCP callback (v2)");
 }
+
+
+PyObject* RegisterMoveCallback3(PyObject* module, PyObject* args)
+{
+  // The GIL is locked at this point (no need to create "PythonLock")
+
+  class Registration : public ICallbackRegistration
+  {
+  public:
+    virtual void Register() ORTHANC_OVERRIDE
+    {
+      OrthancPluginRegisterMoveCallback2(
+        OrthancPlugins::GetGlobalContext(), CreateMoveCallback3, GetMoveSize2, ApplyMove2, FreeMove2);
+    }
+  };
+
+  Registration registration;
+  return ICallbackRegistration::Apply4(
+    registration, args, createMoveScpDriverCallback2_, getMoveSizeCallback_, applyMoveCallback_, freeMoveCallback_, "Python C-MOVE SCP callback (v3)");
+}
+
 
 PyObject* RegisterWorklistCallback(PyObject* module, PyObject* args)
 {
@@ -720,10 +963,12 @@ PyObject* RegisterWorklistCallback(PyObject* module, PyObject* args)
 void FinalizeDicomScpCallbacks()
 {
   ICallbackRegistration::Unregister(findScpCallback_);
+  ICallbackRegistration::Unregister(findScpCallback2_);
   ICallbackRegistration::Unregister(moveScpCallback_);
   ICallbackRegistration::Unregister(worklistScpCallback_);
 
   ICallbackRegistration::Unregister(createMoveScpDriverCallback_);
+  ICallbackRegistration::Unregister(createMoveScpDriverCallback2_);
   ICallbackRegistration::Unregister(getMoveSizeCallback_);
   ICallbackRegistration::Unregister(applyMoveCallback_);
   ICallbackRegistration::Unregister(freeMoveCallback_);
