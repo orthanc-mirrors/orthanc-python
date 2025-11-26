@@ -147,6 +147,7 @@ static OrthancPluginErrorCode FindCallback(OrthancPluginFindAnswers *answers,
 }
 
 
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 10)
 static OrthancPluginErrorCode FindCallback2(OrthancPluginFindAnswers *answers,
                                             const OrthancPluginFindQuery *query,
                                             const OrthancPluginDicomConnection* connection)
@@ -195,6 +196,7 @@ static OrthancPluginErrorCode FindCallback2(OrthancPluginFindAnswers *answers,
     return e.GetErrorCode();
   }
 }
+#endif
 
 
 class IMoveDriver : public boost::noncopyable
@@ -580,6 +582,7 @@ static void* CreateMoveCallback2(OrthancPluginResourceType resourceType,
 }
 
 
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 10)
 static void* CreateMoveCallback3(OrthancPluginResourceType resourceType,
                                  const char *patientId,
                                  const char *accessionNumber,
@@ -728,6 +731,7 @@ static void* CreateMoveCallback3(OrthancPluginResourceType resourceType,
     return NULL;
   }
 }
+#endif
 
 
 static uint32_t GetMoveSize2(void *moveDriver)
@@ -862,6 +866,7 @@ PyObject* RegisterFindCallback(PyObject* module, PyObject* args)
 }
 
 
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 10)
 PyObject* RegisterFindCallback2(PyObject* module, PyObject* args)
 {
   // The GIL is locked at this point (no need to create "PythonLock")
@@ -879,6 +884,7 @@ PyObject* RegisterFindCallback2(PyObject* module, PyObject* args)
   return ICallbackRegistration::Apply(
     registration, args, findScpCallback2_, "Python C-FIND SCP callback (v2)");
 }
+#endif
 
 
 PyObject* RegisterMoveCallback(PyObject* module, PyObject* args)
@@ -921,6 +927,7 @@ PyObject* RegisterMoveCallback2(PyObject* module, PyObject* args)
 }
 
 
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 10)
 PyObject* RegisterMoveCallback3(PyObject* module, PyObject* args)
 {
   // The GIL is locked at this point (no need to create "PythonLock")
@@ -939,6 +946,7 @@ PyObject* RegisterMoveCallback3(PyObject* module, PyObject* args)
   return ICallbackRegistration::Apply4(
     registration, args, createMoveScpDriverCallback2_, getMoveSizeCallback_, applyMoveCallback_, freeMoveCallback_, "Python C-MOVE SCP callback (v3)");
 }
+#endif
 
 
 PyObject* RegisterWorklistCallback(PyObject* module, PyObject* args)

@@ -206,6 +206,7 @@
       }
     ],
     "return_sdk_type" : "void",
+    "since_sdk" : [ 1, 12, 10 ],
     "sdk_functions" : [ "OrthancPluginRegisterFindCallback" ]
   },
 
@@ -275,7 +276,8 @@
         "callable_protocol_return" : "None"
       }
     ],
-    "return_sdk_type" : "void"
+    "return_sdk_type" : "void",
+    "since_sdk" : [ 1, 12, 10 ]
   },
 
   {
@@ -321,7 +323,8 @@
         "callable_protocol_return" : "None"
       }
     ],
-    "return_sdk_type" : "void"
+    "return_sdk_type" : "void",
+    "since_sdk" : [ 1, 12, 10 ]
   },
 
   {
