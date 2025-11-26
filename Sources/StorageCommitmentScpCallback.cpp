@@ -32,6 +32,7 @@
 #include "ICallbackRegistration.h"
 #include "PythonString.h"
 
+#include <sdk.h>
 
 static PyObject*   storageCommitmentScpCallback_ = NULL;
 static PyObject*   storageCommitmentLookupCallback_ = NULL;
@@ -102,6 +103,73 @@ static OrthancPluginErrorCode StorageCommitmentSCPCallback(
   }
   return OrthancPluginErrorCode_Success;
 }
+
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 10)
+static OrthancPluginErrorCode StorageCommitmentSCPCallback2(
+  void**              handler /* out */,
+  const char*         jobId,
+  const char*         transactionUid,
+  const char* const*  sopClassUids,
+  const char* const*  sopInstanceUids,
+  uint32_t            countInstances,
+  const OrthancPluginDicomConnection* connection)
+{
+  try
+  {
+    PythonLock lock;
+
+    PythonObject args(lock, PyTuple_New(5));
+    {
+      PythonString str(lock, jobId);
+      PyTuple_SetItem(args.GetPyObject(), 0, str.Release());
+    }
+    {
+      PythonString str(lock, transactionUid);
+      PyTuple_SetItem(args.GetPyObject(), 1, str.Release());
+    }
+    {
+      PythonObject sopClassUidList(lock, PyList_New(countInstances));
+      for (uint32_t i = 0; i < countInstances; i++)
+      {
+        PythonString str(lock, sopClassUids[i]);
+        PyList_SetItem(sopClassUidList.GetPyObject(), i, str.Release());
+      }
+      PyTuple_SetItem(args.GetPyObject(), 2, sopClassUidList.Release());
+      PythonObject sopInstanceUidList(lock, PyList_New(countInstances));
+      for (uint32_t i = 0; i < countInstances; i++)
+      {
+        PythonString str(lock, sopInstanceUids[i]);
+        PyList_SetItem(sopInstanceUidList.GetPyObject(), i, str.Release());
+      }
+      PyTuple_SetItem(args.GetPyObject(), 3, sopInstanceUidList.Release());
+    }
+    {
+      PythonObject argsConnection(lock, PyTuple_New(2));
+      PyTuple_SetItem(argsConnection.GetPyObject(), 0, PyLong_FromSsize_t((intptr_t) connection));
+      PyTuple_SetItem(argsConnection.GetPyObject(), 1, PyBool_FromLong(true /* borrowed, don't destruct */));
+      PyObject *pConnection = PyObject_CallObject((PyObject*) GetOrthancPluginDicomConnectionType(), argsConnection.GetPyObject());
+  
+      PyTuple_SetItem(args.GetPyObject(), 4, pConnection);
+    }
+
+    PythonObject result(lock, PyObject_CallObject(storageCommitmentScpCallback_, args.GetPyObject()));
+    *handler = result.Release();
+
+    std::string traceback;
+    if (lock.HasErrorOccurred(traceback))
+    {
+      ORTHANC_PLUGINS_LOG_ERROR("Error in the Python storage commitment SCP callback (v2), traceback:\n" + traceback);
+      return OrthancPluginErrorCode_Plugin;
+    }
+  }
+  catch (OrthancPlugins::PluginException& e)
+  {
+    ORTHANC_PLUGINS_LOG_ERROR("Error in the Python storage commitment SCP callback (v2): " +
+                              std::string(e.What(OrthancPlugins::GetGlobalContext())));
+  }
+  return OrthancPluginErrorCode_Success;
+}
+#endif
 
 static OrthancPluginErrorCode StorageCommitmentLookupCallback(
   OrthancPluginStorageCommitmentFailureReason* target /* out */,
@@ -184,6 +252,34 @@ PyObject* RegisterStorageCommitmentScpCallback(PyObject* module, PyObject* args)
       "Python storage commitment SCP & Lookup callback");
   }
 }
+
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 10)
+PyObject* RegisterStorageCommitmentScpCallback2(PyObject* module, PyObject* args)
+{
+  // The GIL is locked at this point (no need to create "PythonLock")
+
+  class Registration : public ICallbackRegistration
+  {
+  public:
+    virtual void Register() ORTHANC_OVERRIDE
+    {
+      OrthancPluginRegisterStorageCommitmentScpCallback2(
+        OrthancPlugins::GetGlobalContext(),
+        StorageCommitmentSCPCallback2,
+        StorageCommitmentDestructor,
+        StorageCommitmentLookupCallback);
+    }
+  };
+
+  {
+    Registration registration;
+    return ICallbackRegistration::Apply2(registration, args,
+      storageCommitmentScpCallback_,
+      storageCommitmentLookupCallback_,
+      "Python storage commitment SCP & Lookup callback (v2)");
+  }
+}
+#endif
 
 void FinalizeStorageCommitmentScpCallback()
 {

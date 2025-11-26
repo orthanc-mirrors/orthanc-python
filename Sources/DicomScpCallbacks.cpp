@@ -846,7 +846,58 @@ OrthancPluginErrorCode WorklistCallback(OrthancPluginWorklistAnswers *answers,
   }
 }
 
-   
+
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 10)
+OrthancPluginErrorCode WorklistCallback2(OrthancPluginWorklistAnswers* answers,
+                                         const OrthancPluginWorklistQuery* query,
+                                         const OrthancPluginDicomConnection* connection)
+{
+  try
+  {
+    PythonLock lock;
+
+    PyObject *pAnswers, *pQuery, *pConnection;
+    
+    {
+      PythonObject args(lock, PyTuple_New(2));
+      PyTuple_SetItem(args.GetPyObject(), 0, PyLong_FromSsize_t((intptr_t) answers));
+      PyTuple_SetItem(args.GetPyObject(), 1, PyBool_FromLong(true /* borrowed, don't destruct */));
+      pAnswers = PyObject_CallObject((PyObject *) GetOrthancPluginWorklistAnswersType(), args.GetPyObject());
+    }
+    
+    {
+      PythonObject args(lock, PyTuple_New(2));
+      PyTuple_SetItem(args.GetPyObject(), 0, PyLong_FromSsize_t((intptr_t) query));
+      PyTuple_SetItem(args.GetPyObject(), 1, PyBool_FromLong(true /* borrowed, don't destruct */));
+      pQuery = PyObject_CallObject((PyObject *) GetOrthancPluginWorklistQueryType(), args.GetPyObject());
+    }
+    
+    {
+      PythonObject argsConnection(lock, PyTuple_New(2));
+      PyTuple_SetItem(argsConnection.GetPyObject(), 0, PyLong_FromSsize_t((intptr_t) connection));
+      PyTuple_SetItem(argsConnection.GetPyObject(), 1, PyBool_FromLong(true /* borrowed, don't destruct */));
+      pConnection = PyObject_CallObject((PyObject*) GetOrthancPluginDicomConnectionType(), argsConnection.GetPyObject());
+    }
+
+    {
+      PythonObject args(lock, PyTuple_New(3));
+      PyTuple_SetItem(args.GetPyObject(), 0, pAnswers);
+      PyTuple_SetItem(args.GetPyObject(), 1, pQuery);
+      PyTuple_SetItem(args.GetPyObject(), 2, pConnection);
+
+      assert(worklistScpCallback_ != NULL);
+      PythonObject result(lock, PyObject_CallObject(worklistScpCallback_, args.GetPyObject()));
+    }
+
+    return lock.CheckCallbackSuccess("Python C-FIND SCP for worklist callback (v2)");
+  }
+  catch (OrthancPlugins::PluginException& e)
+  {
+    return e.GetErrorCode();
+  }
+}
+#endif
+
 PyObject* RegisterFindCallback(PyObject* module, PyObject* args)
 {
   // The GIL is locked at this point (no need to create "PythonLock")
@@ -967,6 +1018,25 @@ PyObject* RegisterWorklistCallback(PyObject* module, PyObject* args)
     registration, args, worklistScpCallback_, "Python C-FIND SCP for worklist callback");
 }
 
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 10)
+PyObject* RegisterWorklistCallback2(PyObject* module, PyObject* args)
+{
+  // The GIL is locked at this point (no need to create "PythonLock")
+
+  class Registration : public ICallbackRegistration
+  {
+  public:
+    virtual void Register() ORTHANC_OVERRIDE
+    {
+      OrthancPluginRegisterWorklistCallback2(OrthancPlugins::GetGlobalContext(), WorklistCallback2);
+    }
+  };
+
+  Registration registration;
+  return ICallbackRegistration::Apply(
+    registration, args, worklistScpCallback_, "Python C-FIND SCP for worklist callback (v2)");
+}
+#endif
 
 void FinalizeDicomScpCallbacks()
 {

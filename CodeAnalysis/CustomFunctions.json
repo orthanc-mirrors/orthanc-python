@@ -207,7 +207,7 @@
     ],
     "return_sdk_type" : "void",
     "since_sdk" : [ 1, 12, 10 ],
-    "sdk_functions" : [ "OrthancPluginRegisterFindCallback" ]
+    "sdk_functions" : [ "OrthancPluginRegisterFindCallback2" ]
   },
 
   {
@@ -277,7 +277,8 @@
       }
     ],
     "return_sdk_type" : "void",
-    "since_sdk" : [ 1, 12, 10 ]
+    "since_sdk" : [ 1, 1, 0 ],
+    "sdk_functions" : [ "OrthancPluginRegisterMoveCallback" ]
   },
 
   {
@@ -324,7 +325,8 @@
       }
     ],
     "return_sdk_type" : "void",
-    "since_sdk" : [ 1, 12, 10 ]
+    "since_sdk" : [ 1, 12, 10 ],
+    "sdk_functions" : [ "OrthancPluginRegisterMoveCallback2" ]
   },
 
   {
@@ -348,6 +350,30 @@
     ],
     "return_sdk_type" : "void",
     "sdk_functions" : [ "OrthancPluginRegisterWorklistCallback" ]
+  },
+
+  {
+    "comment" : "New in release 7.0",
+    "short_name" : "RegisterWorklistCallback2",
+    "implementation" : "RegisterWorklistCallback2",
+    "documentation" : {
+      "description" : [ "Register a callback to handle modality worklists requests (v2)." ],
+      "args" : {
+        "callback" : "The callback function."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "callback",
+        "sdk_type" : "Callable",
+        "callable_type" : "WorklistCallback2",
+        "callable_protocol_args" : "answers: WorklistAnswers, query: WorklistQuery, connection: DicomConnection",
+        "callable_protocol_return" : "None"
+      }
+    ],
+    "return_sdk_type" : "void",
+    "sdk_functions" : [ "OrthancPluginRegisterWorklistCallback2" ],
+    "since_sdk" : [ 1, 12, 10 ]
   },
 
   {
@@ -464,6 +490,38 @@
     ],
     "return_sdk_type" : "void",
     "sdk_functions" : [ "OrthancPluginRegisterStorageCommitmentScpCallback" ]
+  },
+
+  {
+    "comment" : "New in release 7.0",
+    "short_name" : "RegisterStorageCommitmentScpCallback2",
+    "implementation" : "RegisterStorageCommitmentScpCallback2",
+    "documentation" : {
+      "description" : [ "Register a callback to handle incoming requests to the storage commitment SCP (v2)." ],
+      "args" : {
+        "callback" : "Main callback that creates the a driver to handle an incoming storage commitment request.",
+        "lookup" : "Callback function to get the status of one DICOM instance."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "callback",
+        "sdk_type" : "Callable",
+        "callable_type" : "StorageCommitmentScpCallback2",
+        "callable_protocol_args" : "job_id: str, transaction_uid: str, sop_class_uids: list[str], sop_instance_uids: list[str], connection: DicomConnection",
+        "callable_protocol_return" : "object",  "comment" : "This is the newly created storage commitment driver."
+      },
+      {
+        "sdk_name" : "lookup",
+        "sdk_type" : "Callable",
+        "callable_type" : "StorageCommitmentLookup",
+        "callable_protocol_args" : "sop_class_uid: str, sop_instance_uid: str, driver: object",
+        "callable_protocol_return" : "StorageCommitmentFailureReason"
+      }
+    ],
+    "return_sdk_type" : "void",
+    "sdk_functions" : [ "OrthancPluginRegisterStorageCommitmentScpCallback2" ],
+    "since_sdk" : [ 1, 12, 10 ]
   },
 
   {

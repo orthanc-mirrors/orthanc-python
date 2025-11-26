@@ -7,8 +7,9 @@ TODO before release: update to SDK 1.12.10
 * Added new SCP callbacks:
   - RegisterFindCallback2
   - RegisterMoveCallback3
-  - TODO: worklist + storage commitment
-  
+  - RegisterWorklistCallback2
+  - RegisterStorageCommitmentScpCallback2
+
 
 Version 6.0 (2025-08-12)
 ========================
