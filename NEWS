@@ -1,14 +1,14 @@
 Pending changes in the mainline
 ===============================
 
-TODO before release: update to SDK 1.12.10
+=> Maximum SDK version: 1.12.10 (default) <=
 
 * The "orthanc.pyi" stub is now excluded from the "install" step during the build
-* Added new SCP callbacks:
-  - RegisterFindCallback2
-  - RegisterMoveCallback3
-  - RegisterWorklistCallback2
-  - RegisterStorageCommitmentScpCallback2
+* Wrapped new SCP callbacks:
+  - RegisterFindCallback2()
+  - RegisterMoveCallback3()
+  - RegisterWorklistCallback2()
+  - RegisterStorageCommitmentScpCallback2()
 * Added Windows builder for Python 3.14 + fix builders for Python 3.13
 
 
