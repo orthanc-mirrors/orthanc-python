@@ -50,7 +50,7 @@ cmake /tmp/source-writeable/ \
       -DCMAKE_BUILD_TYPE=$1 \
       -DSTATIC_BUILD=ON \
       -DUSE_LEGACY_BOOST=ON \
-      -DPYTHON_VERSION=3.12 \
+      -DPYTHON_VERSION=3.13 \
       -DPYTHON_LIBRARY_NAME=${LIBRARY_NAME} \
       -DPYTHON_WINDOWS_ROOT=/tmp/build/python-3.13.2-win64 \
       -DCMAKE_TOOLCHAIN_FILE=/source/Resources/Orthanc/Toolchains/MinGW-W64-Toolchain64.cmake \

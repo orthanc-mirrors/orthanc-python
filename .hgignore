@@ -8,3 +8,5 @@ ThirdPartyDownloads/
 i/
 *.orig
 CodeAnalysis/.venv/
+Resources/Builders/build/
+docker-build/

@@ -26,42 +26,31 @@
 
 set -ex
 
-mkdir /tmp/source-writeable
-
-cp /source/CMakeLists.txt /tmp/source-writeable/
-
-cp -r /source/CodeAnalysis /tmp/source-writeable/
-cp -r /source/Resources /tmp/source-writeable/
-cp -r /source/Sources /tmp/source-writeable/
-
-mkdir /tmp/build
-cd /tmp/build
-
-wget https://orthanc.uclouvain.be/downloads/third-party-downloads/Python/python-3.13.2-win32.zip
-unzip python-3.13.2-win32.zip
-
-if [ "$1" == "Release" ]; then
-    LIBRARY_NAME=python313.lib
-else
-    LIBRARY_NAME=python313_d.lib
+if [ "$1" != "Debug" -a "$1" != "Release" ]; then
+    echo "Please provide build type: Debug or Release"
+    exit -1
 fi
 
-cmake /tmp/source-writeable/ \
-      -DCMAKE_BUILD_TYPE=$1 \
-      -DSTATIC_BUILD=ON \
-      -DUSE_LEGACY_BOOST=ON \
-      -DPYTHON_VERSION=3.13 \
-      -DPYTHON_LIBRARY_NAME=${LIBRARY_NAME} \
-      -DPYTHON_WINDOWS_ROOT=/tmp/build/python-3.13.2-win32/ \
-      -DCMAKE_TOOLCHAIN_FILE=/source/Resources/Orthanc/Toolchains/MinGW-W64-Toolchain32.cmake \
-      -DCMAKE_INSTALL_PREFIX=/target 
-
-make -j`nproc`
-
-if [ "$1" == "Release" ]; then
-    i686-w64-mingw32-strip ./libOrthancPython.dll
+if [ -t 1 ]; then
+    # TTY is available => use interactive mode
+    DOCKER_FLAGS='-i'
 fi
 
-make install
+ROOT_DIR=`dirname $(readlink -f $0)`/../../..
 
-cp ./orthanc.pyi /target
+mkdir -p ${ROOT_DIR}/docker-build/
+
+( cd ${ROOT_DIR}/Resources/Builders/ && \
+        docker build \
+               -f ./Dockerfile-MinGW-BuildEnvironment \
+               -t mingw-python-build . )
+
+docker run -t ${DOCKER_FLAGS} --rm \
+    --network=host \
+    --user $(id -u):$(id -g) \
+    -v ${ROOT_DIR}:/source:ro \
+    -v ${ROOT_DIR}/docker-build:/target:rw \
+    mingw-python-build \
+    bash /source/Resources/Builders/MinGW64-Python3.14/docker-internal.sh $1
+
+ls -lR ${ROOT_DIR}/docker-build/

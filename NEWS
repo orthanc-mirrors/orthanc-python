@@ -9,6 +9,7 @@ TODO before release: update to SDK 1.12.10
   - RegisterMoveCallback3
   - RegisterWorklistCallback2
   - RegisterStorageCommitmentScpCallback2
+* Added Windows builder for Python 3.14 + fix builders for Python 3.13
 
 
 Version 6.0 (2025-08-12)

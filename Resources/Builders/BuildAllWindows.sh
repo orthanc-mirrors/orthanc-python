@@ -44,6 +44,12 @@ echo "Version of the Python plugin: ${VERSION}"
 
 set -x
 
+bash ${DIR}/MinGW32-Python3.14/docker-compile.sh Release
+cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Win32-Python3.14-${VERSION}.dll
+
+bash ${DIR}/MinGW64-Python3.14/docker-compile.sh Release
+cp ${DIR}/../../docker-build/lib/libOrthancPython.dll ${TARGET}/OrthancPython-Win64-Python3.14-${VERSION}.dll
+
 
 ## Windows 32
 
