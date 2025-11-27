@@ -9,6 +9,9 @@ Pending changes in the mainline
   - RegisterMoveCallback3()
   - RegisterWorklistCallback2()
   - RegisterStorageCommitmentScpCallback2()
+* Wrapped new Queues methods:
+  - ReserveQueueValue()
+  - AcknowledgeQueueValue()
 * Added Windows builder for Python 3.14 + fix builders for Python 3.13
 
 
