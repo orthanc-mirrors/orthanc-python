@@ -9,5 +9,5 @@ authors:
 doi: "10.1007/978-3-031-96899-0_18"
 license: "AGPL-3.0-or-later"
 repository-code: "https://orthanc.uclouvain.be/hg/orthanc-python/"
-version: "6.0"
-date-released: 2025-08-12
+version: "7.0"
+date-released: 2025-12-02
