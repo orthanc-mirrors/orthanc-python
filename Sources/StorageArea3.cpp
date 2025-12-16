@@ -123,7 +123,7 @@ static OrthancPluginErrorCode StorageCreate2(OrthancPluginMemoryBuffer* customDa
         ORTHANC_PLUGINS_LOG_ERROR("The Python StorageCreate2 callback has not returned an int as the first element of the return tuple");
         return OrthancPluginErrorCode_Plugin;
       }
-      else if (!PyBytes_Check(pyTargetBuffer) && !Py_IsNone(pyTargetBuffer))
+      else if (!PyBytes_Check(pyTargetBuffer) && pyTargetBuffer != Py_None)
       {
         ORTHANC_PLUGINS_LOG_ERROR("The Python StorageCreate2 callback has not returned a byte array as the second element of the return tuple");
         return OrthancPluginErrorCode_Plugin;
@@ -133,7 +133,7 @@ static OrthancPluginErrorCode StorageCreate2(OrthancPluginMemoryBuffer* customDa
 
       if (returnCode == OrthancPluginErrorCode_Success)
       {
-        if (Py_IsNone(pyTargetBuffer)) // no custom-data, return directly
+        if (pyTargetBuffer == Py_None) // no custom-data, return directly
         {
           customData = NULL;
           return returnCode;
