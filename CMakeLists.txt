@@ -317,6 +317,7 @@ add_library(OrthancPython SHARED
   Sources/ReceivedInstanceCallback.cpp
   Sources/RestCallbacks.cpp
   Sources/StorageArea.cpp
+  Sources/StorageArea3.cpp
   Sources/StorageCommitmentScpCallback.cpp
 
   # Third-party sources

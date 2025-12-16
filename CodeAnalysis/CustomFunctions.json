@@ -661,6 +661,46 @@
     "return_sdk_type" : "Tuple",
     "since_sdk" : [ 1, 12, 9 ],
     "sdk_functions" : [ "OrthancPluginSetStableStatus" ]
+  },
+
+  {
+    "comment" : "New in release 7.1",
+    "short_name" : "RegisterStorageArea3",
+    "implementation" : "RegisterStorageArea3",
+    "documentation" : {
+      "description" : [ "Register a custom storage area (v3)." ],
+      "args" : {
+        "create" : "The callback function to store a file on the custom storage area (v2).",
+        "read" : "The callback function to read a file from the custom storage area (v2).",
+        "remove" : "The callback function to remove a file from the custom storage area (v2)."
+      }
+    },
+    "args" : [
+      {
+        "sdk_name" : "create",
+        "sdk_type" : "Callable",
+        "callable_type" : "StorageCreateCallback2",
+        "callable_protocol_args" : "uuid: str, content_type: ContentType, compression_type: CompressionType, content: bytes, dicom_instance: DicomInstance",
+        "callable_protocol_return" : "Tuple"
+      },
+      {
+        "sdk_name" : "read",
+        "sdk_type" : "Callable",
+        "callable_type" : "StorageReadCallback2",
+        "callable_protocol_args" : "uuid: str, content_type: ContentType, range_start: int, size: int, custom_data: bytes",
+        "callable_protocol_return" : "Tuple"
+      },
+      {
+        "sdk_name" : "remove",
+        "sdk_type" : "Callable",
+        "callable_type" : "StorageRemoveCallback2",
+        "callable_protocol_args" : "uuid: str, content_type: ContentType, custom_data: bytes",
+        "callable_protocol_return" : "ErrorCode"
+      }
+    ],
+    "return_sdk_type" : "void",
+    "since_sdk" : [ 1, 9, 0 ],
+    "sdk_functions" : [ "OrthancPluginRegisterStorageArea3" ]
   }
 
 ]

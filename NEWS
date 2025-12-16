@@ -1,11 +1,18 @@
 Pending changes in the mainline
 ===============================
 
+=> Maximum SDK version: 1.12.10 (default) <=
+=> Minimum SDK version: 1.7.2 <=
+
+
+* Added "RegisterStorageArea3"
+
 
 Version 7.0 (2025-12-02)
 ========================
 
 => Maximum SDK version: 1.12.10 (default) <=
+=> Minimum SDK version: 1.7.2 <=
 
 * The "orthanc.pyi" stub is now excluded from the "install" step during the build
 * Wrapped new SCP callbacks:

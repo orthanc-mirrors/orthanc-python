@@ -38,6 +38,7 @@
 #include "IncomingInstanceFilter.h"
 #include "ReceivedInstanceCallback.h"
 #include "StorageArea.h"
+#include "StorageArea3.h"
 #include "StorageCommitmentScpCallback.h"
 
 #include "PythonModule.h"
@@ -753,7 +754,10 @@ extern "C"
       FinalizeOnStoredInstanceCallback();
       FinalizeIncomingHttpRequestFilter();
       FinalizeDicomScpCallbacks();
-
+      FinalizeStorageArea();
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 9, 0)
+      FinalizeStorageArea3();
+#endif
       displayMemoryUsageStopping_ = true;
 
       if (displayMemoryUsageThread_.joinable())
