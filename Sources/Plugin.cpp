@@ -590,6 +590,8 @@ static int ForceImportCallback(struct dl_phdr_info *info, size_t size, void *dat
 
 static void DisplayMemoryUsageThread()
 {
+  OrthancPluginSetCurrentThreadName(OrthancPlugins::GetGlobalContext(), "PY-MEMORY");
+
   {
     PythonLock lock;
     lock.ExecuteCommand("import tracemalloc");

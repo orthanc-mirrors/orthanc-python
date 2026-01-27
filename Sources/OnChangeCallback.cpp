@@ -173,6 +173,8 @@ static void StopThread()
 
 static void ChangesWorker()
 {
+  OrthancPluginSetCurrentThreadName(OrthancPlugins::GetGlobalContext(), "PY-CHANGES");
+
   while (!stopping_)
   {
     for (;;)
