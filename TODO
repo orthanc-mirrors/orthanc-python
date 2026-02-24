@@ -22,6 +22,8 @@ Possible improvements:
 
 * Allow working with python virtual env (since python 3.11, we must sometimes use --break-system-packages).
 
+* Allow registering multiple callbacks when you want to install multiple independent python plugin (ex: RegisterOnChangeCallback).
+  Right now, there is a singleton in python for each callback.
 
 Primitives the Orthanc community is missing
 ===========================================
