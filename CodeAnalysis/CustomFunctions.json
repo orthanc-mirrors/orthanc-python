@@ -695,7 +695,7 @@
         "sdk_type" : "Callable",
         "callable_type" : "StorageRemoveCallback2",
         "callable_protocol_args" : "uuid: str, content_type: ContentType, custom_data: bytes",
-        "callable_protocol_return" : "ErrorCode"
+        "callable_protocol_return" : "None"
       }
     ],
     "return_sdk_type" : "void",
