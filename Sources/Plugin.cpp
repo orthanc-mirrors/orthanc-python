@@ -590,7 +590,9 @@ static int ForceImportCallback(struct dl_phdr_info *info, size_t size, void *dat
 
 static void DisplayMemoryUsageThread()
 {
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 2)
   OrthancPluginSetCurrentThreadName(OrthancPlugins::GetGlobalContext(), "PY-MEMORY");
+#endif
 
   {
     PythonLock lock;

@@ -173,7 +173,9 @@ static void StopThread()
 
 static void ChangesWorker()
 {
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 2)
   OrthancPluginSetCurrentThreadName(OrthancPlugins::GetGlobalContext(), "PY-CHANGES");
+#endif
 
   while (!stopping_)
   {
