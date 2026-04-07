@@ -91,14 +91,19 @@ private:
   boost::condition_variable  elementAvailable_;
   boost::condition_variable  emptied_;
 
-public:
-  ~PendingChanges()
+  void ClearInternal()
   {
     for (Queue::iterator it = queue_.begin(); it != queue_.end(); ++it)
     {
       assert(*it != NULL);
       delete *it;
     }
+  }
+
+public:
+  ~PendingChanges()
+  {
+    ClearInternal();
   }
   
   void Enqueue(OrthancPluginChangeType changeType,
@@ -149,6 +154,12 @@ public:
     {
       emptied_.wait(lock);
     }
+  }
+
+  void Clear()
+  {
+    boost::mutex::scoped_lock lock(mutex_);
+    ClearInternal();
   }
 };
 
@@ -263,4 +274,6 @@ void FinalizeOnChangeCallback()
 {
   StopThread();
   ICallbackRegistration::Unregister(changesCallback_);
+
+  pendingChanges_.Clear();
 }

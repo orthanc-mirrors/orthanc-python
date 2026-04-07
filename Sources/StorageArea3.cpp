@@ -363,16 +363,19 @@ void FinalizeStorageArea3()
   if (createCallback2_ != NULL)
   {
     Py_XDECREF(createCallback2_);
+    createCallback2_ = NULL;
   }
   
   if (readCallback2_ != NULL)
   {
     Py_XDECREF(readCallback2_);
+    readCallback2_ = NULL;
   }
   
   if (removeCallback2_ != NULL)
   {
     Py_XDECREF(removeCallback2_);
+    removeCallback2_ = NULL;
   }
 }
 
