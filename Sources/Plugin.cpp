@@ -757,9 +757,8 @@ extern "C"
       FinalizeIncomingHttpRequestFilter();
       FinalizeDicomScpCallbacks();
       FinalizeStorageArea();
-#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 9, 0)
       FinalizeStorageArea3();
-#endif
+
       displayMemoryUsageStopping_ = true;
 
       if (displayMemoryUsageThread_.joinable())
