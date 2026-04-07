@@ -28,8 +28,4 @@
 
 #include "../Resources/Orthanc/Plugins/OrthancPluginCppWrapper.h"
 
-#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 9, 0)
-
 void FinalizeStorageArea3();
-
-#endif
