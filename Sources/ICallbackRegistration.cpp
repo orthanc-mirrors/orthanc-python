@@ -160,5 +160,8 @@ void ICallbackRegistration::Unregister(PyObject*& singletonCallback)
   if (singletonCallback != NULL)
   {
     Py_XDECREF(singletonCallback);
+
+    // It is mandatory to set to NULL, in the case "/tools/reset" is used to restart Orthanc
+    singletonCallback = NULL;
   }
 }
