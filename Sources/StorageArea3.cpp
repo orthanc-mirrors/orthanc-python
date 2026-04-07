@@ -42,28 +42,20 @@ static PyObject*  readCallback2_ = NULL;
 static PyObject*  removeCallback2_ = NULL;
 
 
-static OrthancPluginErrorCode RunCallback(PythonLock& lock,
-                                          PyObject* callback,
-                                          const PythonObject& args,
-                                          const std::string& name)
+static void CheckCallback(PythonLock& lock,
+                          const std::string& name)
 {
-  PythonObject result(lock, PyObject_CallObject(callback, args.GetPyObject()));
-
   std::string traceback;
   if (lock.HasErrorOccurred(traceback))
   {
     ORTHANC_PLUGINS_LOG_ERROR("Error in the Python " + name + " callback, traceback:\n" + traceback);
-    return OrthancPluginErrorCode_Plugin;
-  }
-  else
-  {
-    return OrthancPluginErrorCode_Success;
+    throw OrthancPlugins::PluginException(OrthancPluginErrorCode_Plugin);
   }
 }
 
 
 // "callable_protocol_args" : "uuid: str, content_type: ContentType, compression_type: CompressionType, content: bytes, dicom_instance: DicomInstance",
-// "callable_protocol_return" : "Tuple" // error code + custom data
+// "callable_protocol_return" : "Tuple" with error code (integer) + custom data
 
 static OrthancPluginErrorCode StorageCreate2(OrthancPluginMemoryBuffer* customData,
                                              const char* uuid,
@@ -101,14 +93,11 @@ static OrthancPluginErrorCode StorageCreate2(OrthancPluginMemoryBuffer* customDa
     PyTuple_SetItem(args.GetPyObject(), 4, pDicomInstance);
 
     PythonObject result(lock, PyObject_CallObject(createCallback2_, args.GetPyObject()));
+
+    CheckCallback(lock, "StorageCreate2");
     
-    std::string traceback;
-    if (lock.HasErrorOccurred(traceback))
-    {
-      ORTHANC_PLUGINS_LOG_ERROR("Error in the Python StorageCreate2 callback, traceback:\n" + traceback);
-      return OrthancPluginErrorCode_Plugin;
-    }
-    else if (!PyTuple_Check(result.GetPyObject()) || PyTuple_Size(result.GetPyObject()) != 2)
+    if (!PyTuple_Check(result.GetPyObject()) ||
+        PyTuple_Size(result.GetPyObject()) != 2)
     {
       ORTHANC_PLUGINS_LOG_ERROR("The Python StorageCreate2 callback has not returned a tuple as expected");
       return OrthancPluginErrorCode_Plugin;
@@ -170,7 +159,7 @@ static OrthancPluginErrorCode StorageCreate2(OrthancPluginMemoryBuffer* customDa
       }
       else
       {
-        ORTHANC_PLUGINS_LOG_ERROR("The Python StorageCreate2 callback returned  " + boost::lexical_cast<std::string>(returnCode));
+        ORTHANC_PLUGINS_LOG_ERROR("The Python StorageCreate2 callback returned: " + boost::lexical_cast<std::string>(returnCode));
         return returnCode;
       }
     }
@@ -185,7 +174,7 @@ static OrthancPluginErrorCode StorageCreate2(OrthancPluginMemoryBuffer* customDa
 
 
 // "callable_protocol_args" : "uuid: str, content_type: ContentType, range_start: int, size: int, custom_data: bytes",
-// "callable_protocol_return" : "Tuple" ErrorCode, target
+// "callable_protocol_return" : "Tuple" with error code (integer) + target
 
 static OrthancPluginErrorCode StorageReadRange2(OrthancPluginMemoryBuffer64* target,
                                                 const char* uuid,
@@ -213,14 +202,11 @@ static OrthancPluginErrorCode StorageReadRange2(OrthancPluginMemoryBuffer64* tar
     PyTuple_SetItem(args.GetPyObject(), 4, PyBytes_FromStringAndSize(reinterpret_cast<const char*>(customData), customDataSize));
     
     PythonObject result(lock, PyObject_CallObject(readCallback2_, args.GetPyObject()));
-    
-    std::string traceback;
-    if (lock.HasErrorOccurred(traceback))
-    {
-      ORTHANC_PLUGINS_LOG_ERROR("Error in the Python StorageReadRange2 callback, traceback:\n" + traceback);
-      return OrthancPluginErrorCode_Plugin;
-    }
-    else if (!PyTuple_Check(result.GetPyObject()) || PyTuple_Size(result.GetPyObject()) != 2)
+
+    CheckCallback(lock, "StorageReadRange2");
+
+    if (!PyTuple_Check(result.GetPyObject()) ||
+        PyTuple_Size(result.GetPyObject()) != 2)
     {
       ORTHANC_PLUGINS_LOG_ERROR("The Python StorageReadRange2 callback has not returned a tuple as expected");
       return OrthancPluginErrorCode_Plugin;
@@ -269,7 +255,7 @@ static OrthancPluginErrorCode StorageReadRange2(OrthancPluginMemoryBuffer64* tar
       }
       else
       {
-        ORTHANC_PLUGINS_LOG_ERROR("The Python StorageReadRange2 callback returned  " + boost::lexical_cast<std::string>(returnCode));
+        ORTHANC_PLUGINS_LOG_ERROR("The Python StorageReadRange2 callback returned: " + boost::lexical_cast<std::string>(returnCode));
         return returnCode;
       }
     }
@@ -281,7 +267,7 @@ static OrthancPluginErrorCode StorageReadRange2(OrthancPluginMemoryBuffer64* tar
 }
 
 // "callable_protocol_args" : "uuid: str, content_type: ContentType, custom_data: bytes",
-// "callable_protocol_return" : "ErrorCode"
+// "callable_protocol_return" : "int" (error code)
 
 static OrthancPluginErrorCode StorageRemove2(const char* uuid,
                                              OrthancPluginContentType type,
@@ -304,7 +290,19 @@ static OrthancPluginErrorCode StorageRemove2(const char* uuid,
     PyTuple_SetItem(args.GetPyObject(), 1, PyLong_FromLong(type));
     PyTuple_SetItem(args.GetPyObject(), 2, PyBytes_FromStringAndSize(reinterpret_cast<const char*>(customData), customDataSize));
 
-    return RunCallback(lock, removeCallback2_, args, "StorageRemove2");
+    PythonObject result(lock, PyObject_CallObject(removeCallback2_, args.GetPyObject()));
+
+    CheckCallback(lock, "StorageRemove2");
+
+    if (!PyLong_Check(result.GetPyObject()))
+    {
+      ORTHANC_PLUGINS_LOG_ERROR("The Python StorageRemove2 callback has not returned an integer error code");
+      return OrthancPluginErrorCode_Plugin;
+    }
+    else
+    {
+      return static_cast<OrthancPluginErrorCode>(PyLong_AsLong(result.GetPyObject()));
+    }
   }
   catch (OrthancPlugins::PluginException& e)
   {
