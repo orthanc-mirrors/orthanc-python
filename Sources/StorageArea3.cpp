@@ -35,7 +35,7 @@
 #include <limits>
 
 
-#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 9, 0)
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 8)
 
 static PyObject*  createCallback2_ = NULL;
 static PyObject*  readCallback2_ = NULL;
@@ -376,6 +376,12 @@ void FinalizeStorageArea3()
   {
     Py_XDECREF(removeCallback2_);
   }
+}
+
+#else
+
+void FinalizeStorageArea3()
+{
 }
 
 #endif

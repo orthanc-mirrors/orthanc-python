@@ -699,7 +699,7 @@
       }
     ],
     "return_sdk_type" : "void",
-    "since_sdk" : [ 1, 9, 0 ],
+    "since_sdk" : [ 1, 12, 8 ],
     "sdk_functions" : [ "OrthancPluginRegisterStorageArea3" ]
   }
 
